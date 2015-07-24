@@ -1,0 +1,7 @@
+---
+cachedir: '/var/cache/r10k'
+
+sources:
+  main:
+    basedir: '/etc/puppetlabs/code/environments'
+    remote: 'https://github.com/vladgh/puppet.git'
