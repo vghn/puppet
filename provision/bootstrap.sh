@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+#
+# wget -qO- https://raw.githubusercontent.com/vladgh/puppet/master/provision/bootstrap.sh | bash
+
 set -e
 
 # VARs
@@ -22,11 +25,12 @@ $puppet resource service mcollective ensure=stopped enable=false
 $puppet resource package r10k ensure=latest provider=puppet_gem
 
 # Get configuration files
+mkdir -p /etc/puppetlabs/{code,r10k}
 wget -qO /etc/puppetlabs/r10k/r10k.yaml "${provision}/r10k.yaml"
 wget -qO /etc/puppetlabs/code/hiera.yaml "${provision}/hiera.yaml"
 
 # Deploy Puppet environments
-$r10k deploy environment --puppetfile --verbose
+$r10k --verbose deploy environment --puppetfile --verbose
 
 # DONE
 e_finish
