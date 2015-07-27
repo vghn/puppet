@@ -4,7 +4,7 @@
 
 # Define filebucket 'main'
 filebucket { 'main':
-  server => $::servername,
+  server => $servername,
   path   => false,
 }
 
