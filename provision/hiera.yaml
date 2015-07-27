@@ -7,7 +7,7 @@
 :json:
   :datadir: "/etc/puppetlabs/code/environments/%{::environment}/hieradata"
 :hierarchy:
-  - "%{::trusted.certname}"
+  - "nodes/%{::trusted.certname}"
   - "%{::role}"
   - "%{::group}"
   - "common"
