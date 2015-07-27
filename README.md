@@ -1,4 +1,33 @@
-# Puppet
+# Puppet Control Repo
 ## Under development
 
-Vlad's Puppet Control Repo
+## Overview
+Controls all environments.
+
+## Description
+### Puppetfile
+r10k needs this file to figure out what component modules you want from the
+Forge. The result is a modules directory containing all the modules specified in
+this file, for each environment/branch. The modules directory is listed in
+environment.conf's modulepath.
+
+### environment.conf
+This file can override several settings whenever the Puppet master is serving
+nodes assigned to that environment.
+[Config Files: environment.conf](https://docs.puppetlabs.com/puppet/latest/reference/config_file_environment.html)
+
+### hieradata
+Contains the hiera data files. It's intended to serve as a base only, for
+public data, and it should be overwritten or ammended with data from private
+sources.
+
+### manifests/
+Contains Puppet's main manifest `site.pp`
+
+### site/
+Contains organization-specific roles and profiles.
+This directory is specified as a modulepath in environment.conf
+[Designing Puppet – Roles and Profiles.](http://www.craigdunn.org/2012/05/239/)
+
+### provision/
+Contains the scripts and files that are used to spin up the nodes.
