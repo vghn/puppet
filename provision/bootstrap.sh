@@ -108,6 +108,5 @@ puppet apply \
   "/etc/puppetlabs/code/environments/${ENV}/manifests/site.pp"
 
 # Done
-echo "Finished ${BASH_SOURCE[0]} at $(/bin/date "+%F %T")"
 exit 0
 
