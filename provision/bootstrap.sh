@@ -1,44 +1,107 @@
 #!/usr/bin/env bash
 # This script installs and configures Puppet
 # USAGE:
-#   export ENV=production
-#   wget -qO- "https://raw.githubusercontent.com/vladgh/puppet/${ENV}/provision/bootstrap.sh" | bash
+#   wget -qO- "https://raw.githubusercontent.com/vladgh/puppet/production/provision/bootstrap.sh" | bash
 
-set -e
+# Immediately exit on error, including inside a chain of pipes.
+set -o errexit
+set -o nounset
+set -o pipefail
 
 # VARs
-ENV=${ENV:-production}
+ENV="${ENV:-production}"
+PATH=/opt/puppetlabs/puppet/bin:$PATH
+PROVISION_URL="https://raw.githubusercontent.com/vladgh/puppet/${ENV}/provision"
+PUPPET_COLLECTION='pc1'
+TMP_DIR="$(mktemp -d /tmp/puppet_bootstrap.XXXXX)"
+PUPPET_DEB="puppetlabs-release-${PUPPET_COLLECTION}-$(lsb_release -cs).deb"
+PUPPET_DIR="/etc/puppetlabs"
+should_apt_update=false
+packages=
 
-# Load Functions
-echo 'Loading remote functions'
-. <(wget -qO- https://vladgh.s3.amazonaws.com/scripts/common.sh) || true
+# Common functions
+is_cmd() { command -v "$@" >/dev/null 2>&1 ;}
+apt_install(){ sudo apt-get -qy install "$@" < /dev/null ;}
+apt_update(){ sudo apt-get -qy update < /dev/null ;}
 
-# Install packages
-load_remote_scripts aws git puppet
-aws_install_cli
-git_install_latest
-puppet_install_agent
-puppet='/opt/puppetlabs/bin/puppet'
+# Install Puppet release package
+if [ ! -s /etc/apt/sources.list.d/puppetlabs-${PUPPET_COLLECTION}.list ]; then
+  echo 'Installing Puppet release package'
+  wget -qO "${TMP_DIR}/${PUPPET_DEB}" "https://apt.puppetlabs.com/${PUPPET_DEB}"
+  sudo dpkg -i "${TMP_DIR}/${PUPPET_DEB}"
+  should_apt_update=true
+  packages="$packages puppet-agent"
+else
+  echo 'The Puppet release package is already installed'
+fi
 
-# Initial resources
-$puppet resource service puppet ensure=stopped enable=false
-$puppet resource service mcollective ensure=stopped enable=false
-$puppet resource package r10k ensure=latest provider=puppet_gem
-r10k='/opt/puppetlabs/puppet/bin/r10k'
+# Install GIT from the official Launchpad PPA repository
+if [ ! -s /etc/apt/sources.list.d/git-core-ppa-trusty.list ]; then
+  if ! is_cmd add-apt-repository; then
+    echo 'Installing APT utilities'
+    apt_update
+    apt_install python-software-properties software-properties-common
+  fi
+  echo 'Adding the official Launchpad repository for GIT'
+  sudo add-apt-repository -y 'ppa:git-core/ppa'
+  should_apt_update=true
+  packages="$packages git"
+else
+  echo 'The official Launchpad repository for GIT is already set up'
+fi
 
-# Get configuration files
-echo 'Getting r10k and hiera configurations'
-provision="https://raw.githubusercontent.com/vladgh/puppet/${ENV}/provision"
-mkdir -p /etc/puppetlabs/{code,r10k}
-wget -O /etc/puppetlabs/r10k/r10k.yaml "${provision}/r10k.yaml"
-wget -O /etc/puppetlabs/code/hiera.yaml "${provision}/hiera.yaml"
+# Check if Python PIP is installed
+if ! is_cmd pip; then
+  should_apt_update=true
+  packages="$packages python-pip"
+fi
+
+# Update APT if necessary
+$should_apt_update && apt_update
+
+# Install essential packages
+# shellcheck disable=SC2086
+[ -z "$packages" ] || apt_install $packages
+
+# Install AWS Command Line Tools
+if ! is_cmd aws; then
+  echo 'Installing AWS CLI'
+  sudo -H pip install --upgrade awscli
+else
+  echo 'AWS CLI is already installed'
+fi
+
+# Install essential gems
+for pgem in r10k aws-sdk; do
+  if ! is_cmd $pgem; then
+    echo "Installing the '$pgem' gem"
+    puppet resource package $pgem ensure=latest provider=puppet_gem
+  fi
+done
+
+# Create directories
+echo 'Creating Puppet directories'
+mkdir -p ${PUPPET_DIR}/{code/private,r10k,puppet}
+
+# Get initial configurations
+echo 'Getting initial configuration files'
+wget -qO "${PUPPET_DIR}/code/hiera.yaml" "${PROVISION_URL}/hiera.yaml"
+wget -qO "${PUPPET_DIR}/r10k/r10k.yaml" "${PROVISION_URL}/r10k.yaml"
+wget -qO "${PUPPET_DIR}/r10k/r10k_postrun.sh" "${PROVISION_URL}/r10k/postrun.sh"
 
 # Deploy Puppet environments
-$r10k deploy environment --puppetfile --verbose
+echo 'Deploying Puppet environment'
+r10k deploy environment --puppetfile --verbose
 
 # Apply Puppet
-$puppet apply "/etc/puppetlabs/code/environments/${ENV}/manifests/site.pp" \
-  --environment "$ENV"
+echo 'Applying Puppet'
+puppet apply \
+  --environment "$ENV" \
+  --detailed-exitcodes \
+  --verbose \
+  "/etc/puppetlabs/code/environments/${ENV}/manifests/site.pp"
 
-# DONE
-e_finish
+# Done
+echo "Finished ${BASH_SOURCE[0]} at $(/bin/date "+%F %T")"
+exit 0
+

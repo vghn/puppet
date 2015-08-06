@@ -5,3 +5,5 @@ sources:
   main:
     basedir: '/etc/puppetlabs/code/environments'
     remote: 'https://github.com/vladgh/puppet.git'
+
+postrun: ['/bin/bash', '/etc/puppetlabs/r10k/postrun.sh']

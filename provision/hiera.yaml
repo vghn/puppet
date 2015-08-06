@@ -1,13 +1,9 @@
 ---
 :backends:
   - yaml
-  - json
 :yaml:
-  :datadir: "/etc/puppetlabs/code/environments/%{::environment}/hieradata"
-:json:
-  :datadir: "/etc/puppetlabs/code/environments/%{::environment}/hieradata"
+  :datadir: "/etc/puppetlabs/code/environments/%{environment}/hieradata"
 :hierarchy:
-  - "nodes/%{::trusted.certname}"
-  - "%{::role}"
-  - "%{::group}"
-  - "common"
+  - "private/nodes/%{trusted.certname}"
+  - "private/%{role}"
+  - "global"
