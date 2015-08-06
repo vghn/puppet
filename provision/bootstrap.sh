@@ -1,7 +1,18 @@
 #!/usr/bin/env bash
 # This script installs and configures Puppet
 # USAGE:
-#   wget -qO- "https://raw.githubusercontent.com/vladgh/puppet/production/provision/bootstrap.sh" | bash
+# - Minimal example
+#   wget -qO- https://raw.githubusercontent.com/vladgh/puppet/production/provision/bootstrap.sh | bash
+#
+# - Providing an environment, role and private data path
+#   export ENV='development'
+#   export PRIVATE_DATA='s3://myBucket'
+#   mkdir -p /etc/facter/facts.d
+#   cat << EOF > /etc/facter/facts.d/myfacts.yaml
+#   ---
+#   role: 'myRole'
+#   EOF
+#   wget -qO- "https://raw.githubusercontent.com/vladgh/puppet/${ENV}/provision/bootstrap.sh" | bash
 
 # Immediately exit on error, including inside a chain of pipes.
 set -o errexit
@@ -72,22 +83,17 @@ else
 fi
 
 # Install essential gems
-for pgem in r10k aws-sdk; do
-  if ! is_cmd $pgem; then
-    echo "Installing the '$pgem' gem"
-    puppet resource package $pgem ensure=latest provider=puppet_gem
-  fi
-done
+is_cmd r10k || puppet resource package r10k ensure=latest provider=puppet_gem
 
 # Create directories
 echo 'Creating Puppet directories'
-mkdir -p ${PUPPET_DIR}/{code/private,r10k,puppet}
+mkdir -p ${PUPPET_DIR}/{code,r10k,puppet}
 
 # Get initial configurations
 echo 'Getting initial configuration files'
 wget -qO "${PUPPET_DIR}/code/hiera.yaml" "${PROVISION_URL}/hiera.yaml"
 wget -qO "${PUPPET_DIR}/r10k/r10k.yaml" "${PROVISION_URL}/r10k.yaml"
-wget -qO "${PUPPET_DIR}/r10k/r10k_postrun.sh" "${PROVISION_URL}/r10k/postrun.sh"
+wget -qO "${PUPPET_DIR}/r10k/postrun.sh" "${PROVISION_URL}/r10k_postrun.sh"
 
 # Deploy Puppet environments
 echo 'Deploying Puppet environment'

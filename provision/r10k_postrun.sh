@@ -14,8 +14,9 @@ if [[ "${PRIVATE_DATA}" =~ ^s3:// ]]; then
   for dir in ${ENV_DIR}/*; do
     [[ -d $dir ]] || break
     name=$(basename "$dir")
+    priv="${dir}/hieradata/private"
     /usr/local/bin/aws --region "$AWS_REGION" s3 sync \
-      "${PRIVATE_DATA}/${name}" "${dir}/hieradata/private/" --delete || break
+      "${PRIVATE_DATA}/${name}/" "${priv}/" --delete || break
   done
   #find ${ENV_DIR} -type d -empty -delete
 fi
