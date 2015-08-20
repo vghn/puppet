@@ -4,7 +4,7 @@ services:
   - docker
 
 before_install:
-  - sudo apt-get update && sudo apt-get install docker-engine
+  - sudo apt-get update && apt-cache search lxc
 
 script:
   - docker version
