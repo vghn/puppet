@@ -3,8 +3,11 @@ sudo: required
 services:
   - docker
 
-before_install:
+install:
   - wget -qO- https://get.docker.com/ | sh
+  - wget -qO /usr/local/bin/docker-compose https://github.com/docker/compose/releases/download/1.4.0/docker-compose-`uname -s`-`uname -m`
+  - chmod +x /usr/local/bin/docker-compose
 
 script:
   - docker version
+  - docker-compose version
