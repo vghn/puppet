@@ -6,4 +6,4 @@ services:
 before_install:
   - cat /etc/apt/sources.list.d/docker-source.list
   - cat /etc/apt/sources.list.d/git-ppa-source.list
-  - sudo apt-get update && sudo apt-get upgrade
+  - dpkg -l | grep docker
