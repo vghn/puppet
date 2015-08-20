@@ -1,11 +1,10 @@
-sudo: required
+dist: trusty
 
-services:
-  - docker
+env:
+  DOCKER_COMPOSE_VERSION: 1.4.0
 
 install:
-  - wget -qO- https://get.docker.com/ | sh
-  - wget -qO /usr/local/bin/docker-compose https://github.com/docker/compose/releases/download/1.4.0/docker-compose-`uname -s`-`uname -m`
+  - wget -qO /usr/local/bin/docker-compose https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m`
   - chmod +x /usr/local/bin/docker-compose
 
 script:
