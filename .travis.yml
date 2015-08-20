@@ -4,6 +4,7 @@ services:
   - docker
 
 before_install:
-  - cat /etc/apt/sources.list.d/docker-source.list
-  - cat /etc/apt/sources.list.d/git-ppa-source.list
-  - dpkg -l | grep docker
+  - sudo apt-get update && sudo apt-get install docker-engine
+
+script:
+  - docker version
