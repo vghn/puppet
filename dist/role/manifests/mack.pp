@@ -2,4 +2,3 @@
 class role::mack {
   include profile::base
 }
-

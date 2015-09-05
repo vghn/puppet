@@ -1,5 +1,4 @@
 # Chuck Role (ANS AWS AMIs)
 class role::chuck {
-  include profile::base
+  include profile::ec2_instance
 }
-

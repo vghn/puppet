@@ -2,4 +2,3 @@
 class role::harv {
   include profile::base
 }
-

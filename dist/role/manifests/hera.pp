@@ -2,4 +2,3 @@
 class role::hera {
   include profile::base
 }
-

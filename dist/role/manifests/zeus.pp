@@ -2,4 +2,3 @@
 class role::zeus {
   include profile::base
 }
-

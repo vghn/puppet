@@ -2,4 +2,3 @@
 class role::hades {
   include profile::base
 }
-

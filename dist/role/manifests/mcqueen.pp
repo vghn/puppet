@@ -2,4 +2,3 @@
 class role::mcqueen {
   include profile::base
 }
-
