@@ -101,13 +101,18 @@ wget -O "${CODE_DIR}/hiera.yaml" "${PROVISION_URL}/hiera.yaml"
 wget -O "${R10K_DIR}/r10k.yaml" "${PROVISION_URL}/r10k.yaml"
 wget -O "${R10K_DIR}/postrun.sh" "${PROVISION_URL}/r10k_postrun.sh"
 
+# Set Facter facts
+FACTS_DIR=/etc/puppetlabs/facter/facts.d
+mkdir -p $FACTS_DIR
+echo "role: ${ROLE}" > "${FACTS_DIR}/role.yaml"
+
 # R10K Deployment
 echo 'Deploy R10k environments'
 r10k deploy environment --puppetfile --verbose
 
 # Apply Puppet
 echo 'Apply Puppet'
-FACTER_ROLE=${ROLE} puppet apply \
+puppet apply \
   --detailed-exitcodes \
   --verbose \
   --environment="${ENVIRONMENT}" \
