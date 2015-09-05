@@ -1,1 +1,4 @@
 /modules/
+/tmp/
+/data/*
+!/data/global.yaml
