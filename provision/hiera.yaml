@@ -5,6 +5,7 @@
   :datadir: "%{environmentpath}/%{environment}/data"
 :hierarchy:
   - "%{trusted.certname}"
-  - "private"
+  - "%{role}.private"
   - "%{role}"
+  - "global.private"
   - "global"
