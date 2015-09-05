@@ -1,2 +1,10 @@
 ---
-# Global HIERA data
+# Global Hiera data
+
+# Classes
+classes:
+  - stdlib
+  - apt
+  - wget
+  - docker
+

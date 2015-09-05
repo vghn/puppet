@@ -99,7 +99,6 @@ mkdir -p "${CODE_DIR}"
 mkdir -p "${R10K_DIR}"
 wget -O "${CODE_DIR}/hiera.yaml" "${PROVISION_URL}/hiera.yaml"
 wget -O "${R10K_DIR}/r10k.yaml" "${PROVISION_URL}/r10k.yaml"
-wget -O "${R10K_DIR}/postrun.sh" "${PROVISION_URL}/r10k_postrun.sh"
 
 # Set Facter facts
 FACTS_DIR=/etc/puppetlabs/facter/facts.d
@@ -119,3 +118,4 @@ puppet apply \
   "${CODE_DIR}/environments/${ENVIRONMENT}/manifests/site.pp"
 
 echo "Bootstrap finished at $(/bin/date "+%F %T")"
+
