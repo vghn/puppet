@@ -11,13 +11,24 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-# VARs
+# DEFAULTS
 ROLE='none'
-ENV='production'
+ENVIRONMENT='production'
 PUPPET_COLLECTION='pc1'
 GIT_USER='vladgh'
 GIT_REPO='puppet'
-RAW_URL="https://raw.githubusercontent.com/${GIT_USER}/${GIT_REPO}/${ENV}"
+
+# Parse command line arguments
+for var in "$@"; do
+  if [[ "$var" =~ --role=.* ]]; then
+    ROLE=${var//--role=/}
+  elif [[ "$var" =~ --env=.* ]]; then
+    ENVIRONMENT=${var//--env=/}
+  fi
+done
+
+# VARs
+RAW_URL="https://raw.githubusercontent.com/${GIT_USER}/${GIT_REPO}/${ENVIRONMENT}"
 PROVISION_URL="${RAW_URL}/provision"
 PATH=/opt/puppetlabs/puppet/bin:/opt/puppetlabs/puppet/bin:$PATH
 TMPDIR=$(mktemp -d 2>/dev/null || mktemp -d -t 'tmp')
@@ -27,14 +38,6 @@ PUPPET_DIR=/etc/puppetlabs
 R10K_DIR="${PUPPET_DIR}/r10k"
 CODE_DIR="${PUPPET_DIR}/code"
 
-# Parse command line arguments
-for var in "$@"; do
-  if [[ "$var" =~ --role=.* ]]; then
-    ROLE=${var//--role=/}
-  elif [[ "$var" =~ --env=.* ]]; then
-    ENV=${var//--env=/}
-  fi
-done
 
 # Check if command exists
 is_cmd() { command -v "$@" >/dev/null 2>&1 ;}
@@ -43,18 +46,8 @@ apt_install(){ echo "Installing $*" && sudo apt-get -qy install "$@" < /dev/null
 apt_update() { echo 'Updating APT' && sudo apt-get -qy update < /dev/null ;}
 apt_upgrade(){ echo 'Upgrading system' && sudo apt-get -qy upgrade < /dev/null ;}
 
-# Parse command line arguments
-for var in "$@"; do
-  if [[ "$var" =~ --role=.* ]]; then
-    ROLE=${var//--role=/}
-  elif [[ "$var" =~ --appdir=.* ]]; then
-    ENV=${var//--env=/}
-  fi
-done
-
 # Update/upgrade system
-sudo apt-get -qy update < /dev/null
-sudo apt-get -qy dist-upgrade < /dev/null
+apt_update && apt_upgrade
 
 # Install apt utilities
 is_cmd add-apt-repository || \
@@ -114,10 +107,10 @@ r10k deploy environment --puppetfile --verbose
 
 # Apply Puppet
 echo 'Apply Puppet'
-puppet apply \
+FACTER_ROLE=${ROLE} puppet apply \
   --detailed-exitcodes \
   --verbose \
-  --environment="${ENV}" \
-  "${CODE_DIR}/environments/${ENV}/manifests/site.pp"
+  --environment="${ENVIRONMENT}" \
+  "${CODE_DIR}/environments/${ENVIRONMENT}/manifests/site.pp"
 
 echo "Bootstrap finished at $(/bin/date "+%F %T")"
