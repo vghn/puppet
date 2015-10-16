@@ -16,8 +16,10 @@ install:
   - sudo wget -qO /usr/local/bin/docker-compose https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m`
   - sudo chmod +x /usr/local/bin/docker-compose
   - sudo apt-get -qy install git # now that docker updated apt we can install git
+  - ./provision/bootstrap.sh
 
 script:
   - sudo docker version
   - sudo docker-compose version
-  - sudo git version
+  - git version
+  - puppet --version
