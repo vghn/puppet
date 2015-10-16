@@ -1,8 +1,10 @@
 # Puppet Control Repo
-## Under development
+
+## Development status ##
+This project is still in a prototype development stage.
 
 ## Overview
-Controls all environments.
+Controls Vlad's environments.
 
 ## Description
 ### Puppetfile
@@ -36,3 +38,5 @@ Contains Puppet's main manifests:
 ### provision/
 Contains the scripts and files that are used to spin up the nodes.
 
+## License ##
+Licensed under the Apache License, Version 2.0.
