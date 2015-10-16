@@ -15,7 +15,7 @@ install:
   - wget -qO- https://get.docker.com/ | sh
   - sudo wget -qO /usr/local/bin/docker-compose https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m`
   - sudo chmod +x /usr/local/bin/docker-compose
-  - sudo apt-get install git # now that docker updated apt we can install git
+  - sudo apt-get -qy install git # now that docker updated apt we can install git
 
 script:
   - sudo docker version
