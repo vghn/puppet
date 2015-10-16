@@ -22,4 +22,4 @@ script:
   - sudo docker version
   - sudo docker-compose version
   - git version
-  - puppet --version
+  - /opt/puppetlabs/bin/puppet --version
