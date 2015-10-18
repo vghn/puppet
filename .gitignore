@@ -1,0 +1,6 @@
+/modules/
+/tmp/
+
+# Everything in data except global.yaml
+/data/*
+!/data/global.yaml
