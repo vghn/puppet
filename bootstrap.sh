@@ -46,7 +46,7 @@ apt_update() { echo 'Updating APT' && sudo apt-get -qy update < /dev/null ;}
 apt_upgrade(){ echo 'Upgrading system' && sudo apt-get -qy upgrade < /dev/null ;}
 # Puppet apply
 puppet_apply() {
-  puppet apply \
+  sudo puppet apply \
     --verbose \
     --modulepath="${ROOTDIR}/modules" \
     --environment="${ENVIRONMENT}" \
@@ -54,7 +54,7 @@ puppet_apply() {
 }
 # Puppet module install
 puppet_mod_install(){
-  puppet module install --modulepath="${ROOTDIR}/modules" "$@"
+  sudo puppet module install --modulepath="${ROOTDIR}/modules" "$@"
 }
 
 # Update/upgrade system
@@ -90,8 +90,8 @@ puppet_mod_install hunner-hiera --version 1.3.2
 
 # Add external Facter facts
 factsdir='/etc/puppetlabs/facter/facts.d'
-mkdir -p "$factsdir"
-echo "role: ${ROLE}" > "${factsdir}/role.yaml"
+sudo mkdir -p "$factsdir"
+echo "role: ${ROLE}" | sudo tee "${factsdir}/role.yaml"
 
 # Apply bootstrap manifest
 echo 'Apply bootstrap manifest'
@@ -99,7 +99,7 @@ puppet_apply "${ROOTDIR}/manifests/bootstrap.pp"
 
 # Deploy R10K environaments
 echo 'Deploy R10k environments'
-r10k deploy environment --puppetfile --verbose --color
+sudo r10k deploy environment --puppetfile --verbose --color
 
 # Apply main Puppet manifest
 echo 'Apply main Puppet manifest'
