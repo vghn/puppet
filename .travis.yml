@@ -10,6 +10,10 @@ dist: trusty
   # global:
     # - DOCKER_COMPOSE_VERSION=1.4.2
 
+cache:
+  directories:
+    - /etc/puppetlabs/code/environments
+
 install:
   - bash bootstrap.sh
   # - sudo add-apt-repository -y ppa:git-core/ppa # Add repo but let docker update
@@ -19,8 +23,5 @@ install:
   # - sudo apt-get -qy install git # now that docker updated apt we can install git
   # - ./provision/bootstrap.sh
 
-# script:
-  # - sudo docker version
-  # - sudo docker-compose version
-  # - git version
-  # - /opt/puppetlabs/bin/puppet --version
+script:
+  - /opt/puppetlabs/bin/puppet --version

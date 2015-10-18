@@ -82,8 +82,12 @@ if [[ ! -x /opt/puppetlabs/bin/puppet ]] ; then
   debname="puppetlabs-release-${PUPPET_COLLECTION}-$(codename).deb"
   debfile="${TEMPDIR}/${debname}"
   wget -qO "$debfile" "https://apt.puppetlabs.com/${debname}"
-  sudo dpkg -i "$debfile"
-  apt_update && apt_install puppet-agent
+  if [ -s "$debfile" ]; then
+    sudo dpkg -i "$debfile"
+    apt_update && apt_install puppet-agent
+  else
+    echo 'Could not install Puppet release package'
+  fi
 fi
 
 # Ensure environment directory
