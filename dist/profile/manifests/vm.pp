@@ -4,7 +4,6 @@ class profile::vm {
 
   # Ensure essential packages
   ensure_packages([
-    'shellcheck',
     'vim'
   ])
 }
