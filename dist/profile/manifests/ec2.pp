@@ -1,12 +1,6 @@
 # AMI Profile
-class profile::ec2_instance {
+class profile::ec2 {
   include profile::base
-
-  # Disable Puppet services
-  service {['puppet', 'mcollective']:
-    ensure => stopped,
-    enable => false,
-  }
 
   # Ensure essential packages
   ensure_packages([
