@@ -24,4 +24,4 @@ install:
   # - ./provision/bootstrap.sh
 
 script:
-  - /opt/puppetlabs/bin/puppet --version
+  - sudo /opt/puppetlabs/bin/puppet --version
