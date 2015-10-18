@@ -3,13 +3,13 @@
 # VGH bootstrap script
 #
 # USAGE:
-# https://github.com/vladgh/puppet.git
-# bash puppet/bootstrap.sh --role=myrole --env=production
+# bash <(wget -qO- https://raw.githubusercontent.com/vladgh/puppet/master/provision/bootstrap.sh) --role=myrole --env=mybranch
 
 # DEFAULTS
 ROLE='none'
 ENVIRONMENT='production'
 PUPPET_COLLECTION='pc1'
+GITHUB_REPO='vladgh/puppet'
 
 # Wrap the entire script inside a function to make sure that, when piped, it's
 # retrieved completely
@@ -28,53 +28,59 @@ for var in "$@"; do
 done
 
 # VARs
-PATH=/opt/puppetlabs/bin:/opt/puppetlabs/puppet/bin:$PATH
 TEMPDIR=$(mktemp -d 2>/dev/null || mktemp -d -t 'tmp')
-ROOTDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
+RAWURL="https://raw.githubusercontent.com/${GITHUB_REPO}/${ENVIRONMENT}"
+PUPPET='/opt/puppetlabs/bin/puppet'
+R10K='/opt/puppetlabs/puppet/bin/r10k'
 
 # Check if command exists
 is_cmd() { command -v "$@" >/dev/null 2>&1 ;}
-# Release is Ubuntu
-is_ubuntu() { is_cmd lsb_release && [[ "$(lsb_release -si)" =~ Ubuntu ]] ;}
 # Get codename
 codename() { is_cmd lsb_release && lsb_release -cs ;}
 # APT install package
 apt_install(){ echo "Installing $*" && sudo apt-get -qy install "$@" < /dev/null ;}
 # Update APT
 apt_update() { echo 'Updating APT' && sudo apt-get -qy update < /dev/null ;}
-# Upgrade system
-apt_upgrade(){ echo 'Upgrading system' && sudo apt-get -qy upgrade < /dev/null ;}
-# Puppet apply
-puppet_apply() {
-  sudo /opt/puppetlabs/bin/puppet apply \
-    --verbose \
-    --environment="${ENVIRONMENT}" \
-    "$@"
-}
-# Puppet module install
+# Install Puppet module
 puppet_mod_install(){
-  sudo /opt/puppetlabs/bin/puppet module install \
-    --environment="${ENVIRONMENT}" \
-    "$@"
+  sudo $PUPPET module install --environment="${ENVIRONMENT}" "$@"
 }
-# Puppet config print
+# Get Puppet config
 puppet_config_print(){
-  sudo /opt/puppetlabs/bin/puppet config print \
-    --environment="${ENVIRONMENT}" \
-    "$@"
+  sudo $PUPPET config print --environment="${ENVIRONMENT}" "$@"
+}
+# Apply Puppet
+puppet_apply(){
+  # If apply runs with `--detailed-exitcodes`,an exit code of '0' means there
+  # were no changes an exit code of '2' means there were changes, an exit code
+  # of '4' means there were failures during the transaction, and an exit code
+  # of '6' means there were both changes and failures.
+  if sudo $PUPPET apply --verbose --environment="${ENVIRONMENT}" \
+    --detailed-exitcodes "$@"; then
+    echo 'Puppet run successful (no changes)'
+  else
+    exit_code=$?
+    if [ $exit_code -eq 2 ]; then
+      echo 'Puppet run successful'
+    else
+      echo 'Puppet run failed'
+      exit $exit_code
+    fi
+  fi
 }
 
-# Install Puppet release package
-if is_cmd puppet; then
-  echo "Puppet $(puppet --version) is already installed"
+# Install wget
+if is_cmd wget; then
+  :
 else
+  apt_update && apt_install wget
+fi
+
+# Install Puppet release package
+if [[ ! -x /opt/puppetlabs/bin/puppet ]] ; then
   echo 'Installing Puppet release package'
   debname="puppetlabs-release-${PUPPET_COLLECTION}-$(codename).deb"
   debfile="${TEMPDIR}/${debname}"
-  # Install wget
-  if ! is_cmd wget; then
-    apt_update && apt_install wget
-  fi
   wget -qO "$debfile" "https://apt.puppetlabs.com/${debname}"
   sudo dpkg -i "$debfile"
   apt_update && apt_install puppet-agent
@@ -98,16 +104,18 @@ echo "role: ${ROLE}" | sudo tee "${factsdir}/role.yaml"
 
 # Apply bootstrap manifest
 echo 'Apply bootstrap manifest'
-puppet_apply "${ROOTDIR}/manifests/bootstrap.pp"
+wget -qO "${TEMPDIR}/bootstrap.pp" "${RAWURL}/manifests/bootstrap.pp"
+puppet_apply "${TEMPDIR}/bootstrap.pp"
 
 # Deploy R10K environaments
-echo 'Deploy R10k environments'
-sudo /opt/puppetlabs/puppet/bin/r10k deploy environment \
+echo 'Deploy R10K environments'
+sudo $R10K deploy environment \
   --puppetfile --verbose --color
 
 # Apply main Puppet manifest
 echo 'Apply main Puppet manifest'
-puppet_apply "$(puppet_config_print manifest)/site.pp"
+manifest="$(puppet_config_print manifest)/site.pp"
+puppet_apply "$manifest"
 
 } # end bootstrap function
 
