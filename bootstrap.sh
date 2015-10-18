@@ -46,29 +46,23 @@ apt_update() { echo 'Updating APT' && sudo apt-get -qy update < /dev/null ;}
 apt_upgrade(){ echo 'Upgrading system' && sudo apt-get -qy upgrade < /dev/null ;}
 # Puppet apply
 puppet_apply() {
-  sudo puppet apply \
+  sudo /opt/puppetlabs/bin/puppet apply \
     --verbose \
-    --modulepath="${ROOTDIR}/modules" \
     --environment="${ENVIRONMENT}" \
     "$@"
 }
 # Puppet module install
 puppet_mod_install(){
-  sudo puppet module install --modulepath="${ROOTDIR}/modules" "$@"
+  sudo /opt/puppetlabs/bin/puppet module install \
+    --environment="${ENVIRONMENT}" \
+    "$@"
 }
-
-# Update/upgrade system
-apt_update && apt_upgrade
-
-# Install essential packages
-apt_install \
-  wget \
-  curl \
-  libffi-dev \
-  libssl-dev \
-  python-pip \
-  python-dev \
-  software-properties-common
+# Puppet config print
+puppet_config_print(){
+  sudo /opt/puppetlabs/bin/puppet config print \
+    --environment="${ENVIRONMENT}" \
+    "$@"
+}
 
 # Install Puppet release package
 if is_cmd puppet; then
@@ -77,10 +71,19 @@ else
   echo 'Installing Puppet release package'
   debname="puppetlabs-release-${PUPPET_COLLECTION}-$(codename).deb"
   debfile="${TEMPDIR}/${debname}"
+  # Install wget
+  if ! is_cmd wget; then
+    apt_update && apt_install wget
+  fi
   wget -qO "$debfile" "https://apt.puppetlabs.com/${debname}"
   sudo dpkg -i "$debfile"
   apt_update && apt_install puppet-agent
 fi
+
+# Ensure environment directory
+envpath=$(sudo /opt/puppetlabs/bin/puppet config print environmentpath)
+echo "Creating '${envpath}/${ENVIRONMENT}'"
+mkdir -p "${envpath}/${ENVIRONMENT}"
 
 # Install temporary bootstrap modules
 puppet_mod_install puppetlabs-apt --version 2.2.0
@@ -99,12 +102,12 @@ puppet_apply "${ROOTDIR}/manifests/bootstrap.pp"
 
 # Deploy R10K environaments
 echo 'Deploy R10k environments'
-sudo r10k deploy environment --puppetfile --verbose --color
+sudo /opt/puppetlabs/puppet/bin/r10k deploy environment \
+  --puppetfile --verbose --color
 
 # Apply main Puppet manifest
 echo 'Apply main Puppet manifest'
-puppet_apply \
-  "$(puppet config print manifest --environment="${ENVIRONMENT}")/site.pp"
+puppet_apply "$(puppet_config_print manifest)/site.pp"
 
 } # end bootstrap function
 
