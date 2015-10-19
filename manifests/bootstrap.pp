@@ -28,8 +28,9 @@ package {['pip', 'setuptools', 'awscli']:
 # Hiera config
 class {'hiera':
   hierarchy => [
-    '%{trusted.certname}',
-    '%{role}',
+    '"%{trusted.certname}"',
+    '"%{role}.private"',
+    '"%{role}"',
     'common',
   ],
   datadir   => '"%{environmentpath}/%{environment}/data"',
