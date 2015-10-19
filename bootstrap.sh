@@ -104,7 +104,9 @@ puppet_mod_install hunner-hiera --version 1.3.2
 # Add external Facter facts
 factsdir='/etc/puppetlabs/facter/facts.d'
 sudo mkdir -p "$factsdir"
-echo "role: ${ROLE}" | sudo tee "${factsdir}/role.yaml"
+if [ $ROLE != 'none' ]; then
+  echo "role: ${ROLE}" | sudo tee "${factsdir}/role.yaml"
+fi
 
 # Apply bootstrap manifest
 echo 'Apply bootstrap manifest'
