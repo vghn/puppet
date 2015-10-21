@@ -15,9 +15,9 @@ Exec { path => '/usr/local/bin:/usr/bin:/usr/sbin/:/bin:/sbin' }
 node default {
   if $::role {
     info("Applying role '${::role}'...")
-    include "role::${::role}"
+    include "::role::${::role}"
   } else {
     warning('The \'role\' fact could not be found! Applying defaults')
-    include 'role::none'
+    include '::role::none'
   }
 }

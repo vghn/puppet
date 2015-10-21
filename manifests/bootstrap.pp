@@ -6,15 +6,15 @@ ensure_packages ([
   'curl',
   'python-pip',
   'python-dev',
-  'software-properties-common'
+  'software-properties-common',
 ])
 
 # Include classes
-include apt
+include ::apt
 
 # Install latest GIT
 apt::ppa {'ppa:git-core/ppa': require => Package['software-properties-common']}
-class{'git': require => Apt::Ppa['ppa:git-core/ppa']}
+class{'::git': require => Apt::Ppa['ppa:git-core/ppa']}
 
 # Install PIP and AWS CLI
 # FIXME: pip and setuptools do not appear in `pip freeze` so puppet will install
@@ -26,7 +26,7 @@ package {['pip', 'setuptools', 'awscli']:
 }
 
 # Hiera config
-class {'hiera':
+class {'::hiera':
   hierarchy => [
     '"%{trusted.certname}"',
     '"roles/%{role}.private"',
@@ -47,7 +47,7 @@ file {'/etc/puppetlabs/r10k':
   group  => 'root',
   mode   => '0755',
 }
-class {'r10k':
+class {'::r10k':
   sources  => {
     'main' => {
       'remote'  => 'https://github.com/vladgh/puppet.git',

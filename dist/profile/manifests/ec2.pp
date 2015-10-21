@@ -1,13 +1,13 @@
 # AMI Profile
 class profile::ec2 {
-  include profile::base
+  include ::profile::base
 
   # Ensure essential packages
   ensure_packages([
     'nfs-common',
     'mysql-client',
     'ruby2.0',
-    'gdebi-core'
+    'gdebi-core',
   ])
 
   # AWS SDK for Ruby
