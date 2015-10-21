@@ -31,7 +31,7 @@ class {'hiera':
     '"%{trusted.certname}"',
     '"roles/%{role}.private"',
     '"roles/%{role}"',
-    '"env/%{environment}"'
+    '"env/%{environment}"',
     'common',
   ],
   datadir   => '"%{environmentpath}/%{environment}/data"',
