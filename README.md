@@ -1,4 +1,5 @@
 # Puppet Control Repo
+  [![Build Status](https://travis-ci.org/vladgh/puppet.svg?branch=master)](https://travis-ci.org/vladgh/puppet)
 
 ## Development status ##
 This project is still in a prototype development stage.
