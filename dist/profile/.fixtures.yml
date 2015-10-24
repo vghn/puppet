@@ -3,4 +3,5 @@ fixtures:
     profile: "#{source_dir}"
   repositories:
     stdlib: 'git://github.com/puppetlabs/puppetlabs-stdlib'
+    apt: 'git://github.com/puppetlabs/puppetlabs-apt'
     wget: 'git://github.com/maestrodev/puppet-wget'

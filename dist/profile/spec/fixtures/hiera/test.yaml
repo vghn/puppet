@@ -1,0 +1,8 @@
+---
+# Testing Hiera data
+
+# Classes
+classes:
+  - stdlib
+  - apt
+
