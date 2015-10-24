@@ -1,5 +1,4 @@
 language: ruby
-bundler_args: --without development system_tests
 
 rvm:
   - 2.1.6
@@ -7,7 +6,8 @@ rvm:
 env:
   - PUPPET_GEM_VERSION="~> 4.0" STRICT_VARIABLES=yes
 
-matrix:
-  fast_finish: true
+bundler_args: --without development system_tests
+
+cache: bundler
 
 script: 'cd dist/profile && bundle exec rake test'
