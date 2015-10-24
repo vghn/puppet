@@ -2,11 +2,10 @@ source 'https://rubygems.org'
 
 group :test do
   gem 'rake'
-  gem 'puppet', ENV['PUPPET_GEM_VERSION'] || '~> 4'
+  gem 'puppet', ENV['PUPPET_GEM_VERSION'] || '~> 4.0'
   gem 'rspec'
   gem 'rspec-puppet', git: 'https://github.com/rodjek/rspec-puppet.git'
   gem 'puppetlabs_spec_helper'
-  gem 'json'
   gem 'metadata-json-lint'
   gem 'rspec-puppet-facts'
   gem 'rubocop'

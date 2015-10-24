@@ -1,0 +1,18 @@
+# Everything in data except global.yaml
+/data/*
+!/data/global.yaml
+
+/modules/
+/tmp/
+.*.sw?
+/pkg
+/spec/fixtures
+/.rspec_system
+/.vagrant
+/.bundle
+/vendor
+/Gemfile.lock
+/junit
+/log
+.yardoc
+coverage
