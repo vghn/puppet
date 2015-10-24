@@ -1,0 +1,30 @@
+{
+  "name": "vladgh-profile",
+  "version": "0.0.1",
+  "author": "vladgh",
+  "summary": "Vlad's profiles",
+  "license": "MIT",
+  "source": "https://github.com/vladgh/puppet",
+  "project_page": "https://github.com/vladgh/puppet",
+  "issues_url": "https://github.com/vladgh/puppet/issues",
+  "dependencies": [
+    {
+      "name": "puppetlabs-stdlib",
+      "version_requirement": ">= 4.9.0"
+    }
+  ],
+  "requirements": [
+    {
+      "name": "puppet",
+      "version_requirement": ">= 4.0.0 < 5.0.0"
+    }
+  ],
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "Ubuntu",
+      "operatingsystemrelease": [
+        "14.04"
+      ]
+    }
+  ]
+}

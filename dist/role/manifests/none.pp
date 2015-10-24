@@ -1,5 +1,5 @@
 # No Role Class
 class role::none {
-  include profile::base
+  warning('Nothing to do here. Yet.')
 }
 

@@ -1,32 +1,37 @@
 # Bootstrap manifest
-notice("Bootstraping ${role}")
+info("Bootstraping ${role}")
 
 # Essential packages
 ensure_packages ([
   'curl',
   'python-pip',
-  'software-properties-common'
+  'python-dev',
+  'software-properties-common',
 ])
 
 # Include classes
-include apt
+include ::apt
 
 # Install latest GIT
 apt::ppa {'ppa:git-core/ppa': require => Package['software-properties-common']}
-class{'git': require => Apt::Ppa['ppa:git-core/ppa']}
+class{'::git': require => Apt::Ppa['ppa:git-core/ppa']}
 
 # Install PIP and AWS CLI
-package {'awscli':
+# FIXME: pip and setuptools do not appear in `pip freeze` so puppet will install
+# them every time
+package {['pip', 'setuptools', 'awscli']:
   ensure   => present,
-  provider => pip,
-  require  => Package['python-pip'],
+  provider => 'pip',
+  require  => Package['python-pip', 'python-dev'],
 }
 
 # Hiera config
-class {'hiera':
+class {'::hiera':
   hierarchy => [
-    '%{trusted.certname}',
-    '%{role}',
+    '"%{trusted.certname}"',
+    '"roles/%{role}.private"',
+    '"roles/%{role}"',
+    '"env/%{environment}"',
     'common',
   ],
   datadir   => '"%{environmentpath}/%{environment}/data"',
@@ -42,7 +47,7 @@ file {'/etc/puppetlabs/r10k':
   group  => 'root',
   mode   => '0755',
 }
-class {'r10k':
+class {'::r10k':
   sources  => {
     'main' => {
       'remote'  => 'https://github.com/vladgh/puppet.git',
