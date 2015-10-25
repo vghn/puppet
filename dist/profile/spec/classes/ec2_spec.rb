@@ -18,7 +18,12 @@ describe 'profile::ec2' do
         it { should contain_package('gdebi-core') }
 
         it { should contain_package('aws-sdk').with_provider('puppet_gem') }
+
         it { should contain_package('AWS CloudFormation').with_name('aws-cfn-bootstrap').with_provider('pip') }
+
+        it { should have_wget__fetch_resource_count(1) }
+        it { should contain_package('CodeDeploy Agent').with_name('codedeploy-agent').with_provider('dpkg') }
+        it { should contain_service('CodeDeploy Service').with_name('codedeploy-agent') }
       end
     end
   end
