@@ -11,14 +11,15 @@ class profile::ec2 {
   ])
 
   # AWS SDK for Ruby
-  package {'aws-sdk':
-    ensure   => installed,
+  package {'AWS SDK CLI':
+    ensure   => present,
+    name     => 'aws-sdk',
     provider => 'puppet_gem',
   }
 
   # AWS CloudFormation scripts
   package {'AWS CloudFormation':
-    ensure   => installed,
+    ensure   => present,
     name     => 'aws-cfn-bootstrap',
     source   => 'https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-latest.tar.gz',
     provider => 'pip',
@@ -30,7 +31,7 @@ class profile::ec2 {
     destination => '/tmp/codedeploy-agent_all.deb',
   }
   package {'CodeDeploy Agent':
-    ensure   => latest,
+    ensure   => present,
     name     => 'codedeploy-agent',
     source   => '/tmp/codedeploy-agent_all.deb',
     provider => dpkg,
@@ -45,16 +46,4 @@ class profile::ec2 {
     name    => 'codedeploy-agent',
     require => Package['CodeDeploy Agent'],
   }
-
-  # Docker-Compose
-  # wget::fetch {'Docker-Compose':
-    # source      => "https://github.com/docker/compose/releases/download/1.4.0/docker-compose-${::kernel}-${::os['hardware']}",
-    # destination => '/usr/local/bin/docker-compose',
-    # require     => Class['Docker'],
-  # }
-  # file {'/usr/local/bin/docker-compose':
-    # mode    => '0755',
-    # require => Wget::Fetch['Docker-Compose'],
-  # }
 }
-

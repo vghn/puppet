@@ -20,7 +20,7 @@ class profile::base {
     $user = 'root'
   }
   $ssh_authorized_keys = hiera_hash('ssh_authorized_keys', undef)
-  if ($ssh_authorized_keys) {
+  if ($ssh_authorized_keys != undef) {
     create_resources(
       'ssh_authorized_key',
       $ssh_authorized_keys,
