@@ -13,6 +13,8 @@ describe 'profile::base' do
 
         it { should contain_service('puppet').with_ensure('stopped').with_enable('false') }
         it { should contain_service('mcollective').with_ensure('stopped').with_enable('false') }
+
+        it { is_expected.to contain_ssh_authorized_key('testkey') }
       end
     end
   end

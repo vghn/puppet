@@ -19,11 +19,11 @@ class profile::base {
   } else {
     $user = 'root'
   }
-  $authorized_keys = hiera_hash('authorized_keys', undef)
-  if ($authorized_keys) {
+  $ssh_authorized_keys = hiera_hash('ssh_authorized_keys', undef)
+  if ($ssh_authorized_keys) {
     create_resources(
       'ssh_authorized_key',
-      $authorized_keys,
+      $ssh_authorized_keys,
       { user => $user }
     )
   }
