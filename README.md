@@ -5,7 +5,7 @@
 This project is still in a prototype development stage.
 
 ## Overview
-Controls Vlad's environments.
+Vlad's Puppet Control Repo.
 
 ## Description
 ### Puppetfile
@@ -19,9 +19,12 @@ This file can override several settings whenever the Puppet master is serving
 nodes assigned to that environment.
 [Config Files: environment.conf](https://docs.puppetlabs.com/puppet/latest/reference/config_file_environment.html)
 
-### data
+### bin/
+Contains various executable scripts.
+
+### data/
 Contains the hiera data files. It's intended to serve as a base only, for
-public data, and it should be overwritten or ammended with data from private
+public data, and it should be overwritten or amended with data from private
 sources.
 
 ### dist/
@@ -29,15 +32,10 @@ Contains organization-specific roles and profiles.
 This directory is specified as a modulepath in environment.conf
 [Designing Puppet – Roles and Profiles.](http://www.craigdunn.org/2012/05/239/)
 
-### hooks/
-Contains GIT hooks.
-
 ### manifests/
-Contains Puppet's main manifests:
-  - `site.pp`
-
-### provision/
-Contains the scripts and files that are used to spin up the nodes.
+Contains Puppet's manifests:
+  - `bootstrap.pp`: the bootstrapping manifest
+  - `site.pp`: the main manifest
 
 ## License ##
 Licensed under the Apache License, Version 2.0.

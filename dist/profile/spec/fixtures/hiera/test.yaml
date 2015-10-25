@@ -6,3 +6,5 @@ classes:
   - stdlib
   - apt
 
+ssh_authorized_keys:
+  testkey: {}
