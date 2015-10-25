@@ -40,7 +40,7 @@ class {'::hiera':
 }
 
 # Install and configure R10K
-# FIXME: Temporary fix until a new version of r10k (this is already in master)
+# FIXME: Temporary fix until R10K > 2.0.3 (this is already in master)
 file {'/etc/puppetlabs/r10k':
   ensure => 'directory',
   owner  => 'root',
