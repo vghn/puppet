@@ -17,14 +17,29 @@ describe 'profile::ec2' do
         it { should contain_package('ruby2.0') }
         it { should contain_package('gdebi-core') }
 
-        it { should contain_package('AWS SDK CLI').with_name('aws-sdk').with_provider('puppet_gem') }
+        it do
+          should contain_package('AWS SDK CLI')
+            .with_name('aws-sdk')
+            .with_provider('puppet_gem')
+        end
 
-        it { should contain_package('AWS CloudFormation').with_name('aws-cfn-bootstrap').with_provider('pip') }
+        it do
+          should contain_package('AWS CloudFormation')
+            .with_name('aws-cfn-bootstrap')
+            .with_provider('pip')
+        end
 
         it { should contain_package('wget') }
         it { should contain_wget__fetch('CodeDeploy Deb') }
-        it { should contain_package('CodeDeploy Agent').with_name('codedeploy-agent').with_provider('dpkg') }
-        it { should contain_service('CodeDeploy Service').with_name('codedeploy-agent') }
+        it do
+          should contain_package('CodeDeploy Agent')
+            .with_name('codedeploy-agent')
+            .with_provider('dpkg')
+        end
+        it do
+          should contain_service('CodeDeploy Service')
+            .with_name('codedeploy-agent')
+        end
       end
     end
   end
