@@ -3,7 +3,7 @@
 # VGH bootstrap script
 #
 # USAGE:
-# bash <(wget -qO- https://raw.githubusercontent.com/vladgh/puppet/master/provision/bootstrap.sh) --role=myrole --env=mybranch
+# bash <(wget -qO- https://raw.githubusercontent.com/vladgh/puppet/master/bootstrap.sh) --role=myrole --env=mybranch
 
 # DEFAULTS
 ROLE='none'
@@ -28,10 +28,10 @@ for var in "$@"; do
 done
 
 # VARs
-TEMPDIR=$(mktemp -d 2>/dev/null || mktemp -d -t 'tmp')
 RAWURL="https://raw.githubusercontent.com/${GITHUB_REPO}/${ENVIRONMENT}"
 PUPPET='/opt/puppetlabs/bin/puppet'
 R10K='/opt/puppetlabs/puppet/bin/r10k'
+TEMPDIR=$(mktemp -d 2>/dev/null || mktemp -d -t 'tmp')
 
 # Check if command exists
 is_cmd() { command -v "$@" >/dev/null 2>&1 ;}
@@ -103,15 +103,12 @@ puppet_mod_install hunner-hiera --version 1.3.2
 
 # Add external Facter facts
 factsdir='/etc/puppetlabs/facter/facts.d'
-sudo mkdir -p "$factsdir"
-if [ $ROLE != 'none' ]; then
-  echo "role: ${ROLE}" | sudo tee "${factsdir}/role.yaml"
-fi
+[ -d "$factsdir" ] || sudo mkdir -p "$factsdir"
+echo "role: ${ROLE}" | sudo tee "${factsdir}/role.yaml"
 
 # Apply bootstrap manifest
-echo 'Apply bootstrap manifest'
-wget -qO "${TEMPDIR}/bootstrap.pp" "${RAWURL}/manifests/bootstrap.pp"
-puppet_apply "${TEMPDIR}/bootstrap.pp"
+echo 'Apply remote bootstrap manifest'
+wget -qO- "${RAWURL}/manifests/bootstrap.pp" | puppet_apply
 
 # Deploy R10K environaments
 echo 'Deploy R10K environments'

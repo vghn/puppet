@@ -5,24 +5,20 @@ info("Bootstraping ${role}")
 ensure_packages ([
   'curl',
   'python-pip',
-  'python-dev',
-  'software-properties-common',
 ])
 
 # Include classes
 include ::apt
 
 # Install latest GIT
-apt::ppa {'ppa:git-core/ppa': require => Package['software-properties-common']}
-class{'::git': require => Apt::Ppa['ppa:git-core/ppa']}
+apt::ppa {'ppa:git-core/ppa': package_manage => true}
+class{'::git': require => [Apt::Ppa['ppa:git-core/ppa'], Class['apt::update']]}
 
 # Install PIP and AWS CLI
-# FIXME: pip and setuptools do not appear in `pip freeze` so puppet will install
-# them every time
-package {['pip', 'setuptools', 'awscli']:
+package {['pip', 'awscli']:
   ensure   => present,
   provider => 'pip',
-  require  => Package['python-pip', 'python-dev'],
+  require  => Package['python-pip'],
 }
 
 # Hiera config
