@@ -3,12 +3,12 @@ sudo: false
 language: ruby
 
 rvm:
-  - 2.1.6
+  - 2.1.7
 
 env:
   - PUPPET_GEM_VERSION="~> 4.0" STRICT_VARIABLES=yes
 
-bundler_args: --without development system_tests
+bundler_args: --gemfile dist/profile/Gemfile --without development system_tests
 
 cache: bundler
 
