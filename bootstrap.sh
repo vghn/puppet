@@ -70,11 +70,7 @@ puppet_apply(){
 }
 
 # Install wget
-if is_cmd wget; then
-  :
-else
-  apt_update && apt_install wget
-fi
+if is_cmd wget; then : ; else apt_update && apt_install wget; fi
 
 # Install Puppet release package
 if [[ ! -x /opt/puppetlabs/bin/puppet ]] ; then
