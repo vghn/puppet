@@ -4,7 +4,7 @@ require 'rspec-puppet-facts'
 include RspecPuppetFacts
 
 RSpec.configure do |c|
-  c.hiera_config = 'spec/fixtures/hiera/hiera.yaml'
+  c.hiera_config = 'spec/hiera/hiera.yaml'
 end
 
 require 'simplecov'

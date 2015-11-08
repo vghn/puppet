@@ -6,8 +6,7 @@ class profile::ec2 {
   ensure_packages([
     'nfs-common',
     'mysql-client',
-    'ruby2.0',
-    'gdebi-core',
+    'python-pip',
   ])
 
   # AWS SDK for Ruby
@@ -23,27 +22,34 @@ class profile::ec2 {
     name     => 'aws-cfn-bootstrap',
     source   => 'https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-latest.tar.gz',
     provider => 'pip',
+    require  => Package['python-pip'],
   }
 
   #AWS CodeDeploy
-  wget::fetch {'CodeDeploy Deb':
-    source      => 'https://aws-codedeploy-us-east-1.s3.amazonaws.com/latest/codedeploy-agent_all.deb',
-    destination => '/tmp/codedeploy-agent_all.deb',
-  }
-  package {'CodeDeploy Agent':
-    ensure   => present,
-    name     => 'codedeploy-agent',
-    source   => '/tmp/codedeploy-agent_all.deb',
-    provider => dpkg,
-    require  => [
-      Wget::Fetch['CodeDeploy Deb'],
-      Package['ruby2.0', 'gdebi-core']
-    ],
-  }
-  service {'CodeDeploy Service':
-    ensure  => running,
-    enable  => true,
-    name    => 'codedeploy-agent',
-    require => Package['CodeDeploy Agent'],
+  if ($::os['name'] == 'Ubuntu') {
+    ensure_packages([
+      'ruby2.0',
+      'gdebi-core',
+    ])
+    wget::fetch {'CodeDeploy Deb':
+      source      => 'https://aws-codedeploy-us-east-1.s3.amazonaws.com/latest/codedeploy-agent_all.deb',
+      destination => '/tmp/codedeploy-agent_all.deb',
+    }
+    package {'CodeDeploy Agent':
+      ensure   => present,
+      name     => 'codedeploy-agent',
+      source   => '/tmp/codedeploy-agent_all.deb',
+      provider => dpkg,
+      require  => [
+        Wget::Fetch['CodeDeploy Deb'],
+        Package['ruby2.0', 'gdebi-core']
+      ],
+    }
+    service {'CodeDeploy Service':
+      ensure  => running,
+      enable  => true,
+      name    => 'codedeploy-agent',
+      require => Package['CodeDeploy Agent'],
+    }
   }
 }

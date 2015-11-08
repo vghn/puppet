@@ -1,16 +1,18 @@
 # Base Profile
 class profile::base {
   # Disable Puppet services
-  service {['puppet', 'mcollective']:
-    ensure => stopped,
-    enable => false,
+  if ($::os['name'] != 'Debian' and $::os['release']['major'] != '8') {
+    service {['puppet', 'mcollective']:
+      ensure => stopped,
+      enable => false,
+    }
   }
 
   # Include classes
   hiera_include('classes', [])
 
   # SSH Keys
-  if (::ec2_metadata) {
+  if ($::ec2_metadata) {
     if ($::os['name'] == 'Ubuntu') {
       $user = 'ubuntu'
     } else {

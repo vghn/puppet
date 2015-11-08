@@ -1,20 +1,10 @@
 require 'spec_helper_acceptance'
 
-shared_examples 'profile::base' do
-  # Using puppet_apply as a helper
-  describe service('puppet') do
-    it { should_not be_running }
-  end
-  describe service('mcollective') do
-    it { should_not be_running }
-  end
-end
-
-describe 'profile::base' do
+describe 'profile::vm' do
   # Using puppet_apply as a helper
   it 'should work idempotently with no errors' do
     pp = <<-EOS
-      class { '::profile::base': }
+      class { '::profile::vm': }
     EOS
 
     # Run it twice and test for idempotency
@@ -23,4 +13,7 @@ describe 'profile::base' do
   end
 
   include_examples 'profile::base'
+  describe package('vim') do
+    it { should be_installed }
+  end
 end
