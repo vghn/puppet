@@ -5,24 +5,20 @@ info("Bootstraping ${role}")
 ensure_packages ([
   'curl',
   'python-pip',
-  'python-dev',
-  'software-properties-common',
 ])
 
 # Include classes
 include ::apt
 
 # Install latest GIT
-apt::ppa {'ppa:git-core/ppa': require => Package['software-properties-common']}
-class{'::git': require => Apt::Ppa['ppa:git-core/ppa']}
+apt::ppa {'ppa:git-core/ppa': package_manage => true}
+class{'::git': require => [Apt::Ppa['ppa:git-core/ppa'], Class['apt::update']]}
 
 # Install PIP and AWS CLI
-# FIXME: pip and setuptools do not appear in `pip freeze` so puppet will install
-# them every time
-package {['pip', 'setuptools', 'awscli']:
+package {['pip', 'awscli']:
   ensure   => present,
   provider => 'pip',
-  require  => Package['python-pip', 'python-dev'],
+  require  => Package['python-pip'],
 }
 
 # Hiera config
@@ -40,7 +36,7 @@ class {'::hiera':
 }
 
 # Install and configure R10K
-# FIXME: Temporary fix until R10K > 2.0.3 (this is already in master)
+# FIXME: Temporary fix until R10K module > 3.1.1 (this is already in master)
 file {'/etc/puppetlabs/r10k':
   ensure => 'directory',
   owner  => 'root',
@@ -48,15 +44,17 @@ file {'/etc/puppetlabs/r10k':
   mode   => '0755',
 }
 class {'::r10k':
-  sources  => {
+  sources => {
     'main' => {
       'remote'  => 'https://github.com/vladgh/puppet.git',
       'basedir' => "${::settings::codedir}/environments",
+      'prefix'  => false,
     },
   },
+  cachedir => '/opt/puppetlabs/r10k/cache',
   postrun  => ['/bin/bash', '/etc/puppetlabs/r10k/postrun.sh'],
   provider => 'puppet_gem',
-  version  => '2.0.3',
+  version  => '2.1.0',
   require  => [
     File['/etc/puppetlabs/r10k']
   ],

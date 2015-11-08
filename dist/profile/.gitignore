@@ -1,13 +1,7 @@
-# Everything in data except global.yaml
-/data/*
-!/data/global.yaml
-
 /modules/
 /tmp/
-.*.sw?
 /pkg
 /spec/fixtures/*
-!/spec/fixtures/hiera
 /.rspec_system
 /.vagrant
 /.bundle
@@ -15,5 +9,6 @@
 /Gemfile.lock
 /junit
 /log
+.*.sw?
 .yardoc
 coverage
