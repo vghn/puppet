@@ -10,4 +10,4 @@ env:
 
 install: 'cd dist/profile && bundle install --without development system_tests'
 
-script: 'cd dist/profile && bundle exec rake test'
+script: 'bundle exec rake test'
