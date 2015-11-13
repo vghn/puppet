@@ -79,7 +79,7 @@ if [[ ! -x /opt/puppetlabs/bin/puppet ]] ; then
   debfile="${TEMPDIR}/${debname}"
   wget -qO "$debfile" "https://apt.puppetlabs.com/${debname}"
   if [ -s "$debfile" ]; then
-    sudo dpkg -i "$debfile"
+    sudo dpkg -i "$debfile" && rm "$debfile"
     apt_update && apt_install puppet-agent
   else
     echo 'Could not install Puppet release package'
