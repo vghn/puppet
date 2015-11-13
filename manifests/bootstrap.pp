@@ -54,7 +54,7 @@ class {'::r10k':
   cachedir => '/opt/puppetlabs/r10k/cache',
   postrun  => ['/bin/bash', '/etc/puppetlabs/r10k/postrun.sh'],
   provider => 'puppet_gem',
-  version  => '2.1.0',
+  version  => '2.1.1',
   require  => [
     File['/etc/puppetlabs/r10k']
   ],
