@@ -16,7 +16,7 @@ describe 'profile::ec2' do
         it { should contain_package('mysql-client') }
         it { should contain_package('python-pip') }
 
-        if os != 'debian-8-x86_64'
+        unless os == 'debian-8-x86_64'
           it { should contain_package('ruby2.0') }
           it { should contain_package('gdebi-core') }
         end
@@ -33,7 +33,7 @@ describe 'profile::ec2' do
             .with_provider('pip')
         end
 
-        if os != 'debian-8-x86_64'
+        unless os == 'debian-8-x86_64'
           it { should contain_package('wget') }
           it { should contain_wget__fetch('CodeDeploy Deb') }
           it do
