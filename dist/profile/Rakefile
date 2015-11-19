@@ -50,7 +50,8 @@ task test: [
   :syntax,
   :lint,
   :rubocop,
-  :spec
+  :spec_prep,
+  :spec_standalone
 ]
 
 desc 'Run acceptance tests.'
