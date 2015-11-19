@@ -51,4 +51,4 @@ fixtures:
     docker: 'https://github.com/garethr/garethr-docker.git'
     concat:
       repo: 'https://github.com/puppetlabs/puppetlabs-concat.git'
-      branch: '2.0.x'
+      tag: '2.0.1'
