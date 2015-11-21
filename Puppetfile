@@ -10,7 +10,7 @@ mod 'puppetlabs/stdlib', '4.9.0'
 mod 'puppetlabs/vcsrepo', '1.3.1'
 mod 'concat',
   :git => 'https://github.com/puppetlabs/puppetlabs-concat.git',
-  :ref => '2.0.x'
+  :tag => '2.0.1'
 
 # Puppet approved modules
 mod 'zack/r10k', '3.1.1'

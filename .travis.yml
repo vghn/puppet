@@ -1,5 +1,3 @@
-sudo: false
-
 language: ruby
 
 install: 'cd dist/profile && bundle install --without development'
@@ -8,15 +6,16 @@ matrix:
   fast_finish: true
   include:
   - rvm: 2.1.7
+    sudo: false
     env: PUPPET_GEM_VERSION="~> 4.0" STRICT_VARIABLES=yes
     script: 'bundle exec rake test'
   - rvm: default
     sudo: required
     services: docker
-    env: BEAKER_set="ubuntu-14-04-x64"
+    env: BEAKER_set="ubuntu-trusty-x64"
     script: 'bundle exec rake acceptance'
   - rvm: default
     sudo: required
     services: docker
-    env: BEAKER_set="debian-8-2-x64"
+    env: BEAKER_set="debian-jessie-x64"
     script: 'bundle exec rake acceptance'

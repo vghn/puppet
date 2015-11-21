@@ -1,11 +1,9 @@
 # Base Profile
 class profile::base {
   # Disable Puppet services
-  if ($::os['name'] != 'Debian' and $::os['release']['major'] != '8') {
-    service {['puppet', 'mcollective']:
-      ensure => stopped,
-      enable => false,
-    }
+  service {['puppet', 'mcollective']:
+    ensure => stopped,
+    enable => false,
   }
 
   # Include classes

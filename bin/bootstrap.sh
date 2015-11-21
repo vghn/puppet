@@ -3,7 +3,7 @@
 # VGH bootstrap script
 #
 # USAGE:
-# bash <(wget -qO- https://raw.githubusercontent.com/vladgh/puppet/master/bootstrap.sh) --role=myrole --env=mybranch
+# bash <(wget -qO- https://raw.githubusercontent.com/vladgh/puppet/master/bin/bootstrap.sh) --role=myrole --env=mybranch
 
 # DEFAULTS
 ROLE='none'
@@ -79,7 +79,7 @@ if [[ ! -x /opt/puppetlabs/bin/puppet ]] ; then
   debfile="${TEMPDIR}/${debname}"
   wget -qO "$debfile" "https://apt.puppetlabs.com/${debname}"
   if [ -s "$debfile" ]; then
-    sudo dpkg -i "$debfile"
+    sudo dpkg -i "$debfile" && rm "$debfile"
     apt_update && apt_install puppet-agent
   else
     echo 'Could not install Puppet release package'
