@@ -3,7 +3,7 @@
 # VGH bootstrap script
 #
 # USAGE:
-# bash <(wget -qO- https://raw.githubusercontent.com/vladgh/puppet/master/bootstrap.sh) --role=myrole --env=mybranch
+# bash <(wget -qO- https://raw.githubusercontent.com/vladgh/puppet/master/bin/bootstrap.sh) --role=myrole --env=mybranch
 
 # DEFAULTS
 ROLE='none'
