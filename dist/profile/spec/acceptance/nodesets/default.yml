@@ -1,9 +1,9 @@
 HOSTS:
-  ubuntu-14-04-x64:
-    platform: ubuntu-14.04-x64
-    image: ubuntu:14.04
+  ubuntu-trusty-x64:
+    platform: ubuntu-trusty-x64
+    image: ubuntu:trusty
     hypervisor: docker
-    docker_container_name: ubuntu-14-04-x64
+    docker_container_name: ubuntu-trusty-x64
     docker_preserve_image: true
     docker_image_commands:
       - 'locale-gen en_US.UTF-8 && wget -O /tmp/puppetlabs-release.deb https://apt.puppetlabs.com/puppetlabs-release-pc1-$(lsb_release -cs).deb && dpkg -i /tmp/puppetlabs-release.deb && apt-get update && apt-get -y install puppet-agent'

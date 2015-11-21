@@ -12,10 +12,10 @@ matrix:
   - rvm: default
     sudo: required
     services: docker
-    env: BEAKER_set="ubuntu-14-04-x64"
+    env: BEAKER_set="ubuntu-trusty-x64"
     script: 'bundle exec rake acceptance'
   - rvm: default
     sudo: required
     services: docker
-    env: BEAKER_set="debian-8-2-x64"
+    env: BEAKER_set="debian-jessie-x64"
     script: 'bundle exec rake acceptance'
