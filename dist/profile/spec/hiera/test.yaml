@@ -5,6 +5,7 @@
 classes:
   - stdlib
   - apt
+  - ntp
 
 ssh_authorized_keys:
   testkey: {}

@@ -8,8 +8,11 @@ describe 'profile::base' do
           facts
         end
 
-        it { should contain_class('profile::base') }
         it { should compile.with_all_deps }
+        it { should contain_class('profile::base') }
+        it { should contain_class('stdlib') }
+        it { should contain_class('apt') }
+        it { should contain_class('ntp') }
 
         it do
           should contain_service('puppet')
