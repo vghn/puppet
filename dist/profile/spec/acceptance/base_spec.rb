@@ -8,7 +8,7 @@ shared_examples 'profile::base' do
   describe service('mcollective') do
     it { should_not be_running }
   end
-  describe service('ntpd') do
+  describe service('ntp') do
     it { should be_enabled }
     it { should be_running }
   end
