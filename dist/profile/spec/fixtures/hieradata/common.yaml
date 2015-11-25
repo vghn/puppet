@@ -1,0 +1,13 @@
+---
+# Testing Hiera data
+
+# Classes
+classes:
+  - stdlib
+  - apt
+  - ntp
+
+ssh_authorized_keys:
+  'test-key':
+    type: 'ssh-rsa'
+    key: 'ABC'

@@ -1,6 +1,6 @@
 .*.sw?
 /pkg
-/spec/fixtures
+/spec/fixtures/*
 !/spec/fixtures/hiera*
 /.rspec_system
 /.vagrant

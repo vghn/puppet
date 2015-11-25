@@ -13,7 +13,7 @@ shared_examples 'profile::base' do
     it { is_expected.to be_running }
   end
   describe user('root') do
-    it { should have_authorized_key 'ssh-rsa ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ test-key' }
+    it { should have_authorized_key 'ssh-rsa ABC test-key' }
   end
 end
 
