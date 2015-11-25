@@ -1,6 +1,10 @@
 language: ruby
 
-install: 'cd dist/profile && bundle install --without development'
+install: 'cd dist/profile && bundle install --without development --deployment'
+
+cache:
+  directories:
+    - dist/profile/vendor/bundle
 
 matrix:
   fast_finish: true
