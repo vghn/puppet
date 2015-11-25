@@ -14,6 +14,6 @@ describe 'profile::vm' do
 
   include_examples 'profile::base'
   describe package('vim') do
-    it { should be_installed }
+    it { is_expected.to be_installed }
   end
 end

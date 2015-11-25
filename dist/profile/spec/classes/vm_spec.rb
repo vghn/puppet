@@ -8,11 +8,11 @@ describe 'profile::vm' do
           facts
         end
 
-        it { should compile.with_all_deps }
-        it { should contain_class('profile::vm') }
-        it { should contain_class('profile::base') }
+        it { is_expected.to compile.with_all_deps }
+        it { is_expected.to contain_class('profile::vm') }
+        it { is_expected.to contain_class('profile::base') }
 
-        it { should contain_package('vim') }
+        it { is_expected.to contain_package('vim') }
       end
     end
   end
