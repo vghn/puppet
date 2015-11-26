@@ -1,10 +1,10 @@
 language: ruby
 
-install: 'cd dist/profile && bundle install --without development --deployment'
+install: 'cd dist/profile && bundle install --without development --path vendor/bundle'
 
 cache:
   directories:
-    - dist/profile/vendor
+    - dist/profile/vendor/bundle
     - dist/profile/spec/fixtures/modules
 
 matrix:
