@@ -4,7 +4,8 @@ install: 'cd dist/profile && bundle install --without development --deployment'
 
 cache:
   directories:
-    - dist/profile/vendor/bundle
+    - dist/profile/vendor
+    - dist/profile/spec/fixtures/modules
 
 matrix:
   fast_finish: true
@@ -17,9 +18,4 @@ matrix:
     sudo: required
     services: docker
     env: BEAKER_set="ubuntu-trusty-x64"
-    script: 'bundle exec rake acceptance'
-  - rvm: default
-    sudo: required
-    services: docker
-    env: BEAKER_set="debian-jessie-x64"
     script: 'bundle exec rake acceptance'
