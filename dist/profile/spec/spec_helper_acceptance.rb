@@ -5,7 +5,7 @@ RSpec.configure do |c|
   proj_root = File.expand_path(File.join(File.dirname(__FILE__), '..'))
   modules_dir = File.join(proj_root, 'spec', 'fixtures', 'modules')
   hiera_dir = File.join(proj_root, 'spec', 'fixtures', 'hieradata')
-  host_hiera_dir = '/etc/puppetlabs/code/environments/production/hieradata'
+  host_hiera_dir = '/etc/puppetlabs/code/environments/production'
 
   # Readable test descriptions
   c.formatter = :documentation
@@ -30,7 +30,7 @@ RSpec.configure do |c|
       # transferred in the step above
       copy_module_to host, source: proj_root, module_name: 'profile'
 
-      scp_to host, "#{hiera_dir}/common.yaml", "#{host_hiera_dir}/common.yaml"
+      scp_to host, hiera_dir, host_hiera_dir
     end
   end
 end
