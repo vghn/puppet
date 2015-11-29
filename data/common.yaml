@@ -6,7 +6,6 @@ classes:
   - stdlib
   - apt
   - ntp
-  - timezone
 
 # NTP Servers
 ntp::servers:
@@ -14,7 +13,4 @@ ntp::servers:
   - '1.amazon.pool.ntp.org'
   - '2.amazon.pool.ntp.org'
   - '3.amazon.pool.ntp.org'
-
-# Timezone  
-timezone::timezone: 'US/Central'
 

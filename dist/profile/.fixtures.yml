@@ -38,9 +38,6 @@ fixtures:
     locales:
       repo: 'saz/locales'
       ref: '2.2.2'
-    timezone:
-      repo: 'saz/timezone'
-      ref: '3.3.0'
     ssh:
       repo: 'saz/ssh'
       ref: '2.8.1'
