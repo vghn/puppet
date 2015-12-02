@@ -1,11 +1,15 @@
 require 'beaker-rspec/spec_helper'
 require 'beaker-rspec/helpers/serverspec'
+require 'beaker/puppet_install_helper'
+
+# Install Puppet
+run_puppet_install_helper unless ENV['BEAKER_provision'] == 'no'
 
 RSpec.configure do |c|
   proj_root = File.expand_path(File.join(File.dirname(__FILE__), '..'))
   modules_dir = File.join(proj_root, 'spec', 'fixtures', 'modules')
   hiera_dir = File.join(proj_root, 'spec', 'fixtures', 'hieradata')
-  host_hiera_dir = '/etc/puppetlabs/code/environments/production'
+  hiera_host_dir = '/etc/puppetlabs/code/environments/production'
 
   # Readable test descriptions
   c.formatter = :documentation
@@ -30,7 +34,8 @@ RSpec.configure do |c|
       # transferred in the step above
       copy_module_to host, source: proj_root, module_name: 'profile'
 
-      scp_to host, hiera_dir, host_hiera_dir
+      shell "mkdir -p #{hiera_host_dir}"
+      scp_to host, hiera_dir, hiera_host_dir
     end
   end
 end
