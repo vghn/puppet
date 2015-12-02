@@ -15,7 +15,7 @@ describe 'profile::docker' do
   include_examples 'profile::base'
 
   virtual = command('/opt/puppetlabs/bin/facter virtual').stdout.chomp
-  describe package('docker-engine'), :if => virtual != 'docker' do
+  describe package('docker-engine'), if: virtual != 'docker' do
     it { is_expected.to be_installed }
   end
 end
