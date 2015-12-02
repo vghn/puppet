@@ -17,8 +17,5 @@ matrix:
   - rvm: default
     sudo: required
     services: docker
-    env:
-      - BEAKER_debug=yes
-      - BEAKER_set=ubuntu-trusty-x64
-      - PUPPET_INSTALL_TYPE=agent
+    env: BEAKER_debug=yes BEAKER_set=ubuntu-trusty-x64 PUPPET_INSTALL_TYPE=agent
     script: 'bundle exec rake acceptance'
