@@ -1,6 +1,11 @@
 language: ruby
 
-install: 'cd dist/profile && bundle install --without development'
+install: 'cd dist/profile && bundle install --without development --path vendor/bundle'
+
+cache:
+  directories:
+    - dist/profile/vendor/bundle
+    - dist/profile/spec/fixtures/modules
 
 matrix:
   fast_finish: true
@@ -12,10 +17,5 @@ matrix:
   - rvm: default
     sudo: required
     services: docker
-    env: BEAKER_set="ubuntu-trusty-x64"
-    script: 'bundle exec rake acceptance'
-  - rvm: default
-    sudo: required
-    services: docker
-    env: BEAKER_set="debian-jessie-x64"
+    env: BEAKER_debug=yes BEAKER_set=ubuntu-trusty-x64 PUPPET_INSTALL_TYPE=agent
     script: 'bundle exec rake acceptance'

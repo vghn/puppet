@@ -8,21 +8,24 @@ describe 'profile::base' do
           facts
         end
 
-        it { should contain_class('profile::base') }
-        it { should compile.with_all_deps }
+        it { is_expected.to compile.with_all_deps }
+        it { is_expected.to contain_class('profile::base') }
+        it { is_expected.to contain_class('stdlib') }
+        it { is_expected.to contain_class('apt') }
+        it { is_expected.to contain_class('ntp') }
 
         it do
-          should contain_service('puppet')
+          is_expected.to contain_service('puppet')
             .with_ensure('stopped')
             .with_enable('false')
         end
         it do
-          should contain_service('mcollective')
+          is_expected.to contain_service('mcollective')
             .with_ensure('stopped')
             .with_enable('false')
         end
 
-        it { is_expected.to contain_ssh_authorized_key('testkey') }
+        it { is_expected.to contain_ssh_authorized_key('test-key') }
       end
     end
   end

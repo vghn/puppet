@@ -1,9 +1,15 @@
 require 'beaker-rspec/spec_helper'
 require 'beaker-rspec/helpers/serverspec'
+require 'beaker/puppet_install_helper'
+
+# Install Puppet
+run_puppet_install_helper unless ENV['BEAKER_provision'] == 'no'
 
 RSpec.configure do |c|
   proj_root = File.expand_path(File.join(File.dirname(__FILE__), '..'))
-  fixture_modules_dir = File.join(proj_root, 'spec', 'fixtures', 'modules')
+  modules_dir = File.join(proj_root, 'spec', 'fixtures', 'modules')
+  hiera_dir = File.join(proj_root, 'spec', 'fixtures', 'hieradata')
+  hiera_host_dir = '/etc/puppetlabs/code/environments/production'
 
   # Readable test descriptions
   c.formatter = :documentation
@@ -12,11 +18,11 @@ RSpec.configure do |c|
   c.before :suite do
     hosts.each do |host|
       # SCP modules folder (this excludes stuff like spec and test folders)
-      fixture_modules = Dir["#{fixture_modules_dir}/*/"].map do |mod|
+      modules = Dir["#{modules_dir}/*/"].map do |mod|
         File.basename(mod)
       end
-      fixture_modules.each do |module_name|
-        module_dir = "#{fixture_modules_dir}/#{module_name}"
+      modules.each do |module_name|
+        module_dir = "#{modules_dir}/#{module_name}"
         copy_module_to(
           host,
           source: module_dir,
@@ -27,6 +33,9 @@ RSpec.configure do |c|
       # Install this module, this is required because symlinks are not
       # transferred in the step above
       copy_module_to host, source: proj_root, module_name: 'profile'
+
+      shell "mkdir -p #{hiera_host_dir}"
+      scp_to host, hiera_dir, hiera_host_dir
     end
   end
 end

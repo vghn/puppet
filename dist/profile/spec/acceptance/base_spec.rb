@@ -3,10 +3,17 @@ require 'spec_helper_acceptance'
 shared_examples 'profile::base' do
   # Using puppet_apply as a helper
   describe service('puppet') do
-    it { should_not be_running }
+    it { is_expected.not_to be_running }
   end
   describe service('mcollective') do
-    it { should_not be_running }
+    it { is_expected.not_to be_running }
+  end
+  describe service('ntp') do
+    it { is_expected.to be_enabled }
+    it { is_expected.to be_running }
+  end
+  describe user('root') do
+    it { should have_authorized_key 'ssh-rsa ABC test-key' }
   end
 end
 

@@ -5,6 +5,9 @@
 classes:
   - stdlib
   - apt
+  - ntp
 
 ssh_authorized_keys:
-  testkey: {}
+  'test-key':
+    type: 'ssh-rsa'
+    key: 'ABC'

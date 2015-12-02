@@ -1,10 +1,10 @@
 require 'spec_helper_acceptance'
 
-describe 'profile::vm' do
+describe 'profile::docker' do
   # Using puppet_apply as a helper
   it 'should work idempotently with no errors' do
     pp = <<-EOS
-      class { '::profile::vm': }
+      class { '::profile::docker': }
     EOS
 
     # Run it twice and test for idempotency
@@ -13,7 +13,9 @@ describe 'profile::vm' do
   end
 
   include_examples 'profile::base'
-  describe package('vim') do
+
+  virtual = command('/opt/puppetlabs/bin/facter virtual').stdout.chomp
+  describe package('docker-engine'), if: virtual != 'docker' do
     it { is_expected.to be_installed }
   end
 end

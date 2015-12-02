@@ -1,7 +1,7 @@
-/modules/
-/tmp/
+.*.sw?
 /pkg
 /spec/fixtures/*
+!/spec/fixtures/hiera*
 /.rspec_system
 /.vagrant
 /.bundle
@@ -9,6 +9,5 @@
 /Gemfile.lock
 /junit
 /log
-.*.sw?
 .yardoc
 coverage

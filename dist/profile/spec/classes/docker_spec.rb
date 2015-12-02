@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'profile::vm' do
+describe 'profile::docker' do
   context 'supported operating systems' do
     on_supported_os.each do |os, facts|
       context "on #{os}" do
@@ -9,10 +9,8 @@ describe 'profile::vm' do
         end
 
         it { is_expected.to compile.with_all_deps }
-        it { is_expected.to contain_class('profile::vm') }
         it { is_expected.to contain_class('profile::base') }
-
-        it { is_expected.to contain_package('vim') }
+        it { is_expected.to contain_class('docker') }
       end
     end
   end

@@ -25,7 +25,6 @@ mod 'docker',
 # Others
 mod 'saz/limits', '2.3.0'
 mod 'saz/locales', '2.2.2'
-mod 'saz/timezone', '3.3.0'
 mod 'saz/ssh', '2.8.1'
 mod 'saz/sudo', '3.1.0'
 
