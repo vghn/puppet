@@ -16,7 +16,7 @@ fixtures:
       ref: '3.6.1'
     ntp:
       repo: 'puppetlabs/ntp'
-      ref: '4.1.0'
+      ref: '4.1.1'
     stdlib:
       repo: 'puppetlabs/stdlib'
       ref: '4.9.0'
