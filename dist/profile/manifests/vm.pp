@@ -5,6 +5,7 @@ class profile::vm {
   # Ensure essential packages
   ensure_packages([
     'vim',
+    'tmux',
   ])
 }
 
