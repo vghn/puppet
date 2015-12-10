@@ -4,12 +4,11 @@
 #
 # USAGE:
 # git clone https://github.com/vladgh/puppet.git
-# cd puppet
-# bash bin/bootstrap_agent.sh [args]
+# bash puppet/bin/bootstrap_agent.sh [args]
 #
 # Command line arguments:
 # --role=myrole -> declares the role of the node as a trusted fact*
-# --aws -> adds the instance and ami ids as a trusted fact (requires role)
+# --aws         -> adds the instance and ami ids as a trusted fact
 #
 # * Trusted facts info: https://docs.puppetlabs.com/puppet/latest/reference/lang_facts_and_builtin_vars.html#trusted-facts
 
@@ -17,13 +16,11 @@
 set -euo pipefail
 
 # DEFAULTS
-export PUPPET_MASTER='puppet.vladgh.com'
-
-# Parse command line arguments
-# defaults
+PUPPET_MASTER='puppet.vladgh.com'
 ROLE='none'
 AWS=false
-# cli
+
+# Parse command line arguments
 for var in "$@"; do
   if [[ "$var" =~ --role=.* ]]; then
     ROLE=${var//--role=/}
@@ -78,26 +75,19 @@ else
 fi
 
 # Write CSR attributes to file
-if [ "$ROLE" != 'none' ]; then
-  echo 'Creating a CSR Attributes file'
-  # Ensure directory is present
-  [ -d /etc/puppetlabs/puppet ] && mkdir -p /etc/puppetlabs/puppet
-  # Start by writing the role
-  cat > /etc/puppetlabs/puppet/csr_attributes.yaml << YAML
+echo 'Creating a CSR Attributes file'
+# Ensure directory is present
+[ -d /etc/puppetlabs/puppet ] && mkdir -p /etc/puppetlabs/puppet
+# Start by writing the role
+cat > /etc/puppetlabs/puppet/csr_attributes.yaml <<YAML
 extension_requests:
   pp_role: $PP_ROLE
 YAML
-  # Get Instance and AMI IDs
-  if [ "$AWS" = true ]; then
-    # Get AWS instance ID
-    AWS_INSTANCE_ID="$(curl -s http://169.254.169.254/latest/meta-data/instance-id)"
-    # Get AWS image ID
-    AWS_AMI_ID="$(curl -s http://169.254.169.254/latest/meta-data/ami-id)"
-    # Append to the previous file
-    cat >> /etc/puppetlabs/puppet/csr_attributes.yaml << YAML
-  pp_instance_id: $AWS_INSTANCE_ID
-  pp_image_name: $AWS_AMI_ID
+# Get Instance and AMI IDs
+if [ "$AWS" = true ]; then
+  # Append to the previous file
+  cat >> /etc/puppetlabs/puppet/csr_attributes.yaml <<YAML
+  pp_instance_id: $(curl -s http://169.254.169.254/latest/meta-data/instance-id)
+  pp_image_name: $(curl -s http://169.254.169.254/latest/meta-data/ami-id)
 YAML
-  fi
 fi
-
