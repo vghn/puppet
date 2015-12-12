@@ -13,7 +13,6 @@ describe 'profile::vm' do
   end
 
   include_examples 'profile::base'
-  describe package('vim') do
-    it { is_expected.to be_installed }
-  end
+  describe package('vim')  { it { is_expected.to be_installed } }
+  describe package('tmux') { it { is_expected.to be_installed } }
 end

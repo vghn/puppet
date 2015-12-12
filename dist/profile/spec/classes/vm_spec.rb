@@ -13,6 +13,7 @@ describe 'profile::vm' do
         it { is_expected.to contain_class('profile::base') }
 
         it { is_expected.to contain_package('vim') }
+        it { is_expected.to contain_package('tmux') }
       end
     end
   end
