@@ -13,9 +13,12 @@ mod 'concat',
   :tag => '2.0.1'
 
 # Puppet approved modules
-mod 'zack/r10k', '3.1.1'
 mod 'hunner/hiera', '1.3.2'
 mod 'maestrodev/wget', '1.7.1'
+# This can revert to forge syntax when version > 3.1.1 is released
+mod 'r10k',
+  :git => 'https://github.com/acidprime/r10k.git',
+  :ref => 'master'
 # This can revert to forge syntax when v5.x is released
 # Currently there is now support for the new docker repositories
 mod 'docker',
@@ -27,4 +30,3 @@ mod 'saz/limits', '2.3.0'
 mod 'saz/locales', '2.2.2'
 mod 'saz/ssh', '2.8.1'
 mod 'saz/sudo', '3.1.0'
-
