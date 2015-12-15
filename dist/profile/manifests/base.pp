@@ -1,7 +1,9 @@
 # Base Profile
 class profile::base {
   # Include classes
-  hiera_include('classes', [])
+  include ::stdlib
+  include ::apt
+  include ::ntp
 
   # SSH Keys
   if ($::ec2_metadata) {
