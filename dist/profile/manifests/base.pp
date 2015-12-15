@@ -1,11 +1,5 @@
 # Base Profile
 class profile::base {
-  # Disable Puppet services
-  service {['puppet', 'mcollective']:
-    ensure => stopped,
-    enable => false,
-  }
-
   # Include classes
   hiera_include('classes', [])
 

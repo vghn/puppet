@@ -10,6 +10,7 @@ RSpec.configure do |c|
       '../fixtures/hiera.yaml'
     )
   )
+  c.confdir = '/etc/puppetlabs/puppet'
 end
 
 require 'simplecov'
