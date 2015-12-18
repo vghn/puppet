@@ -79,7 +79,6 @@ cd dist/profile
 bundle exec rake test_clean
 ```
 
-## License ##
 ## Contribute
 
 1. Open an issue to discuss proposed changes
