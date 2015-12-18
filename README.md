@@ -38,6 +38,17 @@ Contains Puppet's manifests:
   - `site.pp`: the main manifest
 
 ## Testing
+### Prerequisites
+
+- Vagrant: https://www.vagrantup.com/
+- Docker: https://www.docker.com/
+- RVM: https://rvm.io/
+- GIT: https://git-scm.com/
+
+```
+cd dist/profile
+bundle install --path vendor
+```
 
 ### Unit testing
 ```
