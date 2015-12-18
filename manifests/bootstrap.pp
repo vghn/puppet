@@ -34,16 +34,9 @@ class {'::hiera':
   group     => 'root',
 }
 
-# Install and configure R10K
-# FIXME: Temporary fix until R10K module > 3.1.1 (this is already in master)
-file {'/etc/puppetlabs/r10k':
-  ensure => 'directory',
-  owner  => 'root',
-  group  => 'root',
-  mode   => '0755',
-}
+# Install, configure and run R10K
 class {'::r10k':
-  sources => {
+  sources  => {
     'main' => {
       'remote'  => 'https://github.com/vladgh/puppet.git',
       'basedir' => "${::settings::codedir}/environments",
@@ -54,8 +47,11 @@ class {'::r10k':
   postrun  => ['/bin/bash', '/etc/puppetlabs/r10k/postrun.sh'],
   provider => 'puppet_gem',
   version  => '2.1.1',
-  require  => [
-    File['/etc/puppetlabs/r10k']
-  ],
 }
-
+exec {'r10k deploy environment':
+  command   => 'r10k deploy environment --puppetfile --verbose',
+  path      => ['/opt/puppetlabs/puppet/bin'],
+  logoutput => true,
+  timeout   => 0,
+  require   => Class['r10k::config'],
+}

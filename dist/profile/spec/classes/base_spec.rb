@@ -14,17 +14,6 @@ describe 'profile::base' do
         it { is_expected.to contain_class('apt') }
         it { is_expected.to contain_class('ntp') }
 
-        it do
-          is_expected.to contain_service('puppet')
-            .with_ensure('stopped')
-            .with_enable('false')
-        end
-        it do
-          is_expected.to contain_service('mcollective')
-            .with_ensure('stopped')
-            .with_enable('false')
-        end
-
         it { is_expected.to contain_ssh_authorized_key('test-key') }
       end
     end

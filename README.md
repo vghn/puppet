@@ -37,5 +37,56 @@ Contains Puppet's manifests:
   - `bootstrap.pp`: the bootstrapping manifest
   - `site.pp`: the main manifest
 
-## License ##
+## Testing
+### Prerequisites
+
+- Vagrant: https://www.vagrantup.com/
+- Docker: https://www.docker.com/
+- RVM: https://rvm.io/
+- GIT: https://git-scm.com/
+
+```
+cd dist/profile
+bundle install --path vendor
+```
+
+### Unit testing
+```
+cd dist/profile
+bundle exec rake test
+```
+
+### Acceptance testing
+```
+cd dist/profile
+
+# List nodes
+bundle exec rake beaker_nodes
+
+# Run node for the first time
+bundle exec rake acceptance PUPPET_INSTALL_TYPE=agent BEAKER_destroy=no BEAKER_debug=yes BEAKER_set=ubuntu-trusty-x64
+
+# Subsequent runs
+bundle exec rake acceptance PUPPET_INSTALL_TYPE=agent BEAKER_destroy=no BEAKER_provision=no BEAKER_debug=yes  BEAKER_set=ubuntu-trusty-x64
+
+# Last run (will destroy the machines)
+bundle exec rake acceptance PUPPET_INSTALL_TYPE=agent BEAKER_provision=no BEAKER_debug=yes BEAKER_set=ubuntu-trusty-x64
+```
+
+### Clean-up
+```
+cd dist/profile
+bundle exec rake test_clean
+```
+
+## Contribute
+
+1. Open an issue to discuss proposed changes
+2. Fork the repository
+3. Create your feature branch: `git checkout -b my-new-feature`
+4. Commit your changes: `git commit -am 'Add some feature'`
+5. Push to the branch: `git push origin my-new-feature`
+6. Submit a pull request :D
+
+## License
 Licensed under the Apache License, Version 2.0.

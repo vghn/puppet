@@ -1,13 +1,9 @@
 # Base Profile
 class profile::base {
-  # Disable Puppet services
-  service {['puppet', 'mcollective']:
-    ensure => stopped,
-    enable => false,
-  }
-
   # Include classes
-  hiera_include('classes', [])
+  include ::stdlib
+  include ::apt
+  include ::ntp
 
   # SSH Keys
   if ($::ec2_metadata) {

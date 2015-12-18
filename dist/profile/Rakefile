@@ -63,3 +63,8 @@ task acceptance: [
   :spec_prep,
   :beaker
 ]
+
+desc 'Clean all test files.'
+task test_clean: [
+  :spec_clean
+]
