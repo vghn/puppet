@@ -37,5 +37,36 @@ Contains Puppet's manifests:
   - `bootstrap.pp`: the bootstrapping manifest
   - `site.pp`: the main manifest
 
+## Testing
+
+### Unit testing
+```
+cd dist/profile
+bundle exec rake test
+```
+
+### Acceptance testing
+```
+cd dist/profile
+
+# List nodes
+bundle exec rake beaker_nodes
+
+# Run node for the first time
+bundle exec rake acceptance PUPPET_INSTALL_TYPE=agent BEAKER_destroy=no BEAKER_debug=yes BEAKER_set=ubuntu-trusty-x64
+
+# Subsequent runs
+bundle exec rake acceptance PUPPET_INSTALL_TYPE=agent BEAKER_destroy=no BEAKER_provision=no BEAKER_debug=yes  BEAKER_set=ubuntu-trusty-x64
+
+# Last run (will destroy the machines)
+bundle exec rake acceptance PUPPET_INSTALL_TYPE=agent BEAKER_provision=no BEAKER_debug=yes BEAKER_set=ubuntu-trusty-x64
+```
+
+### Clean-up
+```
+cd dist/profile
+bundle exec rake test_clean
+```
+
 ## License ##
 Licensed under the Apache License, Version 2.0.
