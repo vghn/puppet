@@ -47,7 +47,7 @@ Contains Puppet's manifests:
 
 ```
 cd dist/profile
-bundle install --path vendor
+bundle install
 ```
 
 ### Unit testing
@@ -56,22 +56,35 @@ cd dist/profile
 bundle exec rake test
 ```
 
-### Acceptance testing
-```
-cd dist/profile
+#### Acceptance testing
 
-# List nodes
-bundle exec rake beaker_nodes
+`cd dist/profile`
 
-# Run node for the first time
-bundle exec rake acceptance PUPPET_INSTALL_TYPE=agent BEAKER_destroy=no BEAKER_debug=yes BEAKER_set=ubuntu-trusty-x64
+List nodes:
 
-# Subsequent runs
-bundle exec rake acceptance PUPPET_INSTALL_TYPE=agent BEAKER_destroy=no BEAKER_provision=no BEAKER_debug=yes  BEAKER_set=ubuntu-trusty-x64
+`bundle exec rake beaker_nodes`
 
-# Last run (will destroy the machines)
-bundle exec rake acceptance PUPPET_INSTALL_TYPE=agent BEAKER_provision=no BEAKER_debug=yes BEAKER_set=ubuntu-trusty-x64
-```
+Run node for the first time
+
+`bundle exec rake acceptance PUPPET_INSTALL_TYPE=agent BEAKER_destroy=no`
+
+Subsequent runs
+
+`bundle exec rake acceptance PUPPET_INSTALL_TYPE=agent BEAKER_destroy=no BEAKER_provision=no`
+
+Last run (will destroy the machines)
+
+`bundle exec rake acceptance PUPPET_INSTALL_TYPE=agent BEAKER_provision=no`
+
+The following environment variables can be used to influence how beaker works:
+
+* `BEAKER_color`: set to `no` to disable color output
+* `BEAKER_set`: choose a nodeset from `spec/acceptance/nodesets/*.yml`; defaults to `default`
+* `BEAKER_setfile`: specify a nodeset using a full path
+* `BEAKER_provision`: set to `no` to re-use existing VMs
+* `BEAKER_keyfile`: specify alternate SSH key
+* `BEAKER_debug`: set to any value to enable beaker debug logging
+* `BEAKER_destroy`: set to `no` to keep the VMs after the test run. Set to `onpass` to keep the VMs around only after a test failure.
 
 ### Clean-up
 ```
