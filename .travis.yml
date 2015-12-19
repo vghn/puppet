@@ -1,5 +1,5 @@
 language: ruby
-install: cd dist/profile && bundle install --without development --path vendor/bundle
+install: cd dist/profile && bundle install --without development --path vendor
 cache:
   directories:
   - dist/profile/vendor/bundle
@@ -14,7 +14,7 @@ matrix:
   - rvm: default
     sudo: required
     services: docker
-    env: BEAKER_debug=yes BEAKER_set=ubuntu-trusty-x64 PUPPET_INSTALL_TYPE=agent
+    env: BEAKER_debug=yes PUPPET_INSTALL_TYPE=agent
     script: bundle exec rake acceptance
 notifications:
   slack:
