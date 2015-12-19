@@ -1,9 +1,11 @@
 HOSTS:
   ubuntu-trusty-x64:
     platform: ubuntu-trusty-x64
-    hypervisor: vagrant
-    box: puppetlabs/ubuntu-14.04-64-nocm
-    box_url: https://vagrantcloud.com/puppetlabs/boxes/ubuntu-14.04-64-nocm
+    image: ubuntu:trusty
+    hypervisor: docker
+    docker_container_name: ubuntu-trusty-x64
+    docker_image_commands:
+      - 'locale-gen en_US.UTF-8'
 
 CONFIG:
   type: aio
