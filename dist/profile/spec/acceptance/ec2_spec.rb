@@ -14,6 +14,9 @@ describe 'profile::ec2' do
 
   include_examples 'profile::base'
 
+  describe package('curl') do
+    it { is_expected.to be_installed }
+  end
   describe package('nfs-common') do
     it { is_expected.to be_installed }
   end
@@ -29,9 +32,7 @@ describe 'profile::ec2' do
   describe package('python-pip') do
     it { is_expected.to be_installed }
   end
-  describe command('/opt/puppetlabs/puppet/bin/gem list') do
-    its(:stdout) { is_expected.to contain('aws-sdk') }
-  end
+
   describe package('aws-cfn-bootstrap') do
     it { is_expected.to be_installed.by(:pip) }
   end

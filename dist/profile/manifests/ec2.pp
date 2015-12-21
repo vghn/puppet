@@ -4,16 +4,26 @@ class profile::ec2 {
 
   # Ensure essential packages
   ensure_packages([
+    'curl', # TODO Test
     'nfs-common',
     'mysql-client',
     'python-pip',
   ])
 
-  # AWS SDK for Ruby
-  package {'AWS SDK CLI':
+  # Latest GIT # TODO Test
+  apt::ppa {'ppa:git-core/ppa': package_manage => true}
+  class {'::git':
+    require => [
+      Apt::Ppa['ppa:git-core/ppa'],
+      Class['apt::update']
+      ],
+  }
+
+  # AWS CLI # TODO Test
+  package {'awscli':
     ensure   => present,
-    name     => 'aws-sdk',
-    provider => 'puppet_gem',
+    provider => 'pip',
+    require  => Package['python-pip'],
   }
 
   # AWS CloudFormation scripts

@@ -12,25 +12,25 @@ describe 'profile::ec2' do
         it { is_expected.to contain_class('profile::ec2') }
         it { is_expected.to contain_class('profile::base') }
 
+        it { is_expected.to contain_package('curl') }
         it { is_expected.to contain_package('nfs-common') }
         it { is_expected.to contain_package('mysql-client') }
         it { is_expected.to contain_package('python-pip') }
 
-        unless os == 'debian-8-x86_64'
-          it { is_expected.to contain_package('ruby2.0') }
-          it { is_expected.to contain_package('gdebi-core') }
-        end
+        it { is_expected.to contain_apt__ppa('ppa:git-core/ppa') }
+        it { is_expected.to contain_class('git') }
 
-        it do
-          is_expected.to contain_package('AWS SDK CLI')
-            .with_name('aws-sdk')
-            .with_provider('puppet_gem')
-        end
+        it { is_expected.to contain_package('awscli').with_provider('pip') }
 
         it do
           is_expected.to contain_package('AWS CloudFormation')
             .with_name('aws-cfn-bootstrap')
             .with_provider('pip')
+        end
+
+        unless os == 'debian-8-x86_64'
+          it { is_expected.to contain_package('ruby2.0') }
+          it { is_expected.to contain_package('gdebi-core') }
         end
 
         unless os == 'debian-8-x86_64'
