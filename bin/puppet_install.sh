@@ -111,7 +111,7 @@ extension_requests:
   pp_image_name: <%= $ami_id %>
 <% } -%>
 EPP
-)
+  )
 
   # Render template
   /opt/puppetlabs/bin/puppet epp render -e "$epp_template" \
