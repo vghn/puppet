@@ -1,19 +1,37 @@
 require 'spec_helper_acceptance'
 
-describe 'profile::ec2' do
+describe 'ROLE: ZEUS', node: :zeus do
   # Using puppet_apply as a helper
   it 'should work idempotently with no errors' do
     pp = <<-EOS
-      class { '::profile::ec2': }
-    EOS
+      include ::profile::base
+      include ::profile::ec2
+      include ::profile::docker
+      include ::profile::puppet::master
+EOS
 
     # Run it twice and test for idempotency
     apply_manifest(pp, catch_failures: true)
     apply_manifest(pp, catch_changes: true)
   end
 
-  include_examples 'profile::base'
-
+  describe service('puppet') do
+    it { is_expected.not_to be_running }
+  end
+  describe service('mcollective') do
+    it { is_expected.not_to be_running }
+  end
+  describe service('ntp') do
+    it { is_expected.to be_enabled }
+    it { is_expected.to be_running }
+  end
+  describe user('root') do
+    it { should have_authorized_key 'ssh-rsa ABC test-key' }
+  end
+  virtual = command('/opt/puppetlabs/bin/facter virtual').stdout.chomp
+  describe package('docker-engine'), if: virtual != 'docker' do
+    it { is_expected.to be_installed }
+  end
   describe package('curl') do
     it { is_expected.to be_installed }
   end
@@ -32,7 +50,6 @@ describe 'profile::ec2' do
   describe package('python-pip') do
     it { is_expected.to be_installed }
   end
-
   describe package('aws-cfn-bootstrap') do
     it { is_expected.to be_installed.by(:pip) }
   end

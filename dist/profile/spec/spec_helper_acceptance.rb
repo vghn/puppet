@@ -2,9 +2,6 @@ require 'beaker-rspec/spec_helper'
 require 'beaker-rspec/helpers/serverspec'
 require 'beaker/puppet_install_helper'
 
-# Install Puppet
-run_puppet_install_helper unless ENV['BEAKER_provision'] == 'no'
-
 RSpec.configure do |c|
   proj_root = File.expand_path(File.join(File.dirname(__FILE__), '..'))
   modules_dir = File.join(proj_root, 'spec', 'fixtures', 'modules')
