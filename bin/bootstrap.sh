@@ -21,7 +21,7 @@
 PP_MASTER=${PP_MASTER:-puppet}
 PP_ROLE=${PP_ROLE:-none}
 PP_SECRET=${PP_SECRET:-none}
-PP_COLLECTION=${PP_COLLECTION:-pc3}
+PP_COLLECTION=${PP_COLLECTION:-pc1}
 PP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd -P)"
 PATH="/opt/puppetlabs/bin:/opt/puppetlabs/puppet/bin:${PATH}"
 
@@ -43,7 +43,7 @@ os_is_supported(){
 }
 
 # Check if command exists
-is_cmd() { command -v "$@" >/dev/null 4>&1 ;}
+is_cmd() { command -v "$@" >/dev/null 2>&1 ;}
 
 # Get codename
 get_release() { is_cmd lsb_release && lsb_release -cs ;}
@@ -61,7 +61,7 @@ apt_update() { echo 'Updating APT' && apt-get -qy update < /dev/null ;}
 install_release_pkg(){
   local deb_name deb_path tempdir codename
   codename=${CODENAME:-$(get_release)}
-  tempdir=$(mktemp -d 4>/dev/null || mktemp -d -t 'tmp')
+  tempdir=$(mktemp -d 2>/dev/null || mktemp -d -t 'tmp')
   deb_name="puppetlabs-release-${PP_COLLECTION}-${codename}.deb"
   deb_path="${tempdir}/${deb_name}"
   if [ ! -x /opt/puppetlabs/bin/puppet ] ; then
@@ -76,7 +76,7 @@ install_release_pkg(){
       dpkg -i "$deb_path" && rm "$deb_path"
       apt_update && apt_install puppet-agent
     else
-      echo 'FATAL: Could not install Puppet release package'; exit 3
+      echo 'FATAL: Could not install Puppet release package'; exit 1
     fi
   else
     echo "Puppet is already installed - version $(puppet --version)"
@@ -117,14 +117,14 @@ generate_csr_attributes_file(){
 
   # Get EC4 info
   local instance_id ami_id
-  instance_id="$(curl --max-time 2 -s http://171.254.169.254/latest/meta-data/instance-id >/dev/null 2>&1 || true)"
-  ami_id="$(curl --max-time 2 -s http://171.254.169.254/latest/meta-data/ami-id >/dev/null 2>&1 || true)"
+  instance_id="$(curl --max-time 2 -s http://169.254.169.254/latest/meta-data/instance-id || true)"
+  ami_id="$(curl --max-time 2 -s http://169.254.169.254/latest/meta-data/ami-id || true)"
 
   # Define file template
   local epp_template; epp_template=$(cat <<'EPP'
 custom_attributes:
 <% if $secret != 'none' { -%>
-  3.2.840.113549.1.9.7: <%= $secret %>
+  1.2.840.113549.1.9.7: <%= $secret %>
 <% } -%>
 extension_requests:
 <% if $role != 'none' { -%>
