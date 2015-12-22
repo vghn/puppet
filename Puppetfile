@@ -13,16 +13,20 @@ mod 'concat',
   :tag => '2.0.1'
 
 # Puppet approved modules
-mod 'hunner/hiera', '1.3.2'
 mod 'maestrodev/wget', '1.7.1'
-# This can revert to forge syntax when version > 3.1.1 is released
-mod 'r10k',
-  :git => 'https://github.com/acidprime/r10k.git',
-  :ref => 'master'
 # This can revert to forge syntax when v5.x is released
 # Currently there is now support for the new docker repositories
 mod 'docker',
   :git => 'https://github.com/garethr/garethr-docker.git',
+  :ref => 'master'
+# This can revert to forge syntax when v1.3.3 is released
+# PR #86 is needed
+mod 'hiera',
+  :git => 'https://github.com/hunner/puppet-hiera.git',
+  :ref => 'master'
+# This can revert to forge syntax when version > 3.1.1 is released
+mod 'r10k',
+  :git => 'https://github.com/acidprime/r10k.git',
   :ref => 'master'
 
 # Others

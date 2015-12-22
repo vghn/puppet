@@ -26,9 +26,6 @@ fixtures:
     r10k:
       repo: 'zack/r10k'
       ref: '3.1.1'
-    hiera:
-      repo: 'hunner/hiera'
-      ref: '1.3.2'
     wget:
       repo: 'maestrodev/wget'
       ref: '1.7.1'
@@ -46,6 +43,7 @@ fixtures:
       ref: '3.1.0'
   repositories:
     docker: 'https://github.com/garethr/garethr-docker.git'
+    hiera: 'https://github.com/hunner/puppet-hiera.git'
     concat:
       repo: 'https://github.com/puppetlabs/puppetlabs-concat.git'
       tag: '2.0.1'
