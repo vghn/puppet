@@ -13,11 +13,17 @@ describe 'profile::puppet::master' do
         it { is_expected.to contain_class('hiera') }
         it { is_expected.to contain_class('r10k') }
 
-        it do
-          is_expected.to contain_exec('R10K deploy environment')
-            .with_command('r10k deploy environment --puppetfile --verbose')
-            .with_path(['/opt/puppetlabs/puppet/bin'])
-            .with_logoutput(true)
+        context 'during bootstrap' do
+          let(:facts) { facts.merge(is_bootstrap: 'true') }
+          it do
+            is_expected.to contain_exec('R10K deploy environment')
+              .with_command('r10k deploy environment --puppetfile --verbose')
+              .with_path(['/opt/puppetlabs/puppet/bin', '/usr/bin'])
+              .with_logoutput(true)
+          end
+        end
+        context 'during normal run' do
+          it { is_expected.not_to contain_exec('R10K deploy environment') }
         end
       end
     end

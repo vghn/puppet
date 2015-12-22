@@ -27,11 +27,13 @@ class profile::puppet::master {
     provider => 'puppet_gem',
     version  => '2.1.1',
   }
-  exec {'R10K deploy environment':
-    command   => 'r10k deploy environment --puppetfile --verbose',
-    path      => ['/opt/puppetlabs/puppet/bin'],
-    logoutput => true,
-    timeout   => 0,
-    require   => Class['r10k::config'],
+  if str2bool($::is_bootstrap) {
+    exec {'R10K deploy environment':
+      command   => 'r10k deploy environment --puppetfile --verbose',
+      path      => ['/opt/puppetlabs/puppet/bin', '/usr/bin'],
+      logoutput => true,
+      timeout   => 0,
+      require   => Class['r10k::config'],
+    }
   }
 }
