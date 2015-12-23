@@ -21,6 +21,11 @@ describe 'profile::puppet::agent' do
             .with_ensure('stopped')
             .with_enable('false')
         end
+        it do
+          is_expected.to contain_service('pxp-agent')
+            .with_ensure('stopped')
+            .with_enable('false')
+        end
       end
     end
   end
