@@ -1,0 +1,146 @@
+#!/bin/bash
+# pre-commit git hook
+#
+# Prerequisites:
+#   gem install puppet-lint puppet
+#
+# Install:
+#  /path/to/repo/.git/hooks/pre-commit
+#
+# Authors:
+#  Ronny Roethof
+#  Mattias Geniar <m@ttias.be>
+#  Rob Nelson <rnelson0@gmail.com>
+
+# Add RVM
+# shellcheck disable=1090
+[ -s "${HOME}/.rvm/scripts/rvm" ] && source "${HOME}/.rvm/scripts/rvm"
+[ -d "${HOME}/.rvm" ] && export PATH="$PATH:$HOME/.rvm/bin"
+
+function checkyaml() {
+  ruby -e "require 'yaml'; YAML.load_file('$1')"
+}
+
+# Make sure the necessary tools are installed. If they aren't, just die and
+# stop the commit. Force the use of these tools before a commit is allowed.
+# No commit should ever happen without a puppet-lint check.
+
+path_to_puppet=$(command -v puppet)
+if ! [ -x "$path_to_puppet" ]; then
+  echo "The puppet binary wasn't found."
+  echo "Sorry, I won't allow you to commit without puppet installed."
+  echo "Please install puppet and try again."
+  exit 1
+fi
+
+path_to_puppet_lint=$(command -v puppet-lint)
+if ! [ -x "$path_to_puppet_lint" ]; then
+  echo "The puppet-lint binary wasn't found."
+  echo "Sorry, I won't allow you to commit without puppet-lint installed."
+  echo "Please install puppet-lint and try again."
+  exit 1
+fi
+
+path_to_erb=$(command -v erb)
+if ! [ -x "$path_to_erb" ]; then
+  echo "The erb binary wasn't found. Sorry, I won't allow you to commit without erb installed."
+  echo "Please install erb (Ruby Templating) and try again."
+  exit 1
+fi
+
+path_to_ruby=$(command -v ruby)
+if ! [ -x "$path_to_ruby" ]; then
+  echo "The ruby binary wasn't found."
+  echo "Sorry, I won't allow you to commit without ruby installed."
+  echo "Please install ruby and try again."
+  exit 1
+fi
+
+echo "### Checking puppet syntax, for science! ###"
+# for file in `git diff --name-only --cached | grep -E '\.(pp|erb)'`
+for file in $(git diff --name-only --cached | grep -E '\.(pp)'); do
+  # Only check new/modified files that end in *.pp extension
+  if [[ -f $file && $file == *.pp ]]; then
+    puppet-lint \
+      --no-80chars-check \
+      --no-autoloader_layout-check \
+      --no-nested_classes_or_defines-check \
+      --no-class_inherits_from_params_class-check \
+      --with-filename "$file"
+
+    # Set us up to bail if we receive any syntax errors
+    if [[ $? -ne 0 ]]; then
+      syntax_is_bad=1
+    else
+      echo "OK: $file looks valid"
+    fi
+  fi
+done
+echo ""
+
+echo "### Checking if puppet manifests are valid ###"
+for file in $(git diff --name-only --cached | grep -E '\.(pp)'); do
+  if [[ -f $file ]]; then
+    puppet parser validate "$file"
+    if [[ $? -ne 0 ]]; then
+      echo "ERROR: puppet parser failed at: $file"
+      syntax_is_bad=1
+    else
+      echo "OK: $file looks valid"
+    fi
+  fi
+done
+echo ""
+
+echo "### Checking if ruby template syntax is valid ###"
+for file in $(git diff --name-only --cached | grep -E '\.(erb)'); do
+  if [[ -f $file ]]; then
+    erb -P -x -T '-' "$file" | ruby -c
+    if [[ $? -ne 0 ]]; then
+      echo "ERROR: ruby template parser failed at: $file"
+      syntax_is_bad=1
+    else
+       echo "OK: $file looks valid"
+    fi
+  fi
+done
+echo ""
+
+echo "### Checking if puppet template syntax is valid ###"
+for file in $(git diff --name-only --cached | grep -E '\.(epp)'); do
+  if [[ -f $file ]]; then
+    puppet epp validate "$file"
+    if [[ $? -ne 0 ]]; then
+      echo "ERROR: puppet template parser failed at: $file"
+      syntax_is_bad=1
+    else
+       echo "OK: $file looks valid"
+    fi
+  fi
+done
+echo ""
+
+echo "### Checking if YAML syntax is valid ###"
+for file in $(git diff --name-only --cached | grep -E '\.(yaml)'); do
+  if [[ -f $file ]]; then
+    checkyaml "$file"
+    if [[ $? -ne 0 ]]; then
+      echo "ERROR: YAML syntax validation failed at: $file"
+      syntax_is_bad=1
+    else
+       echo "OK: $file looks valid"
+    fi
+  fi
+done
+echo ""
+
+if [[ $syntax_is_bad -eq 1 ]]; then
+  echo
+  echo "################################################################"
+  echo -e "### \033[31mPlease fix the errors above before committing your code.\033[0m ###"
+  echo "################################################################"
+  echo
+  exit 1
+else
+  echo "Everything looks good."
+fi
