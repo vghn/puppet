@@ -3,7 +3,7 @@ require 'beaker-rspec/helpers/serverspec'
 require 'beaker/puppet_install_helper'
 
 # Include shared examples
-Dir["./spec/acceptance/support/**/*.rb"].sort.each {|f| require f}
+Dir['./spec/acceptance/support/**/*.rb'].sort.each { |f| require f }
 
 RSpec.configure do |c|
   proj_root = File.expand_path(File.join(File.dirname(__FILE__), '..'))

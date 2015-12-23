@@ -20,4 +20,3 @@ describe 'Hera role', if: hosts.map(&:name).include?('hera') do
   it_behaves_like 'profile::docker'
   it_behaves_like 'profile::puppet::master'
 end
-

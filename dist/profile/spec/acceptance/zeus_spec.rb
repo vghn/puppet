@@ -20,4 +20,3 @@ describe 'Zeus role', if: hosts.map(&:name).include?('zeus') do
   it_behaves_like 'profile::docker'
   it_behaves_like 'profile::puppet::master'
 end
-
