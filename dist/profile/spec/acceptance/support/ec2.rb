@@ -21,7 +21,7 @@ shared_examples 'profile::ec2' do
   end
   release = command('/usr/bin/lsb_release -cs').stdout.chomp
   describe file("/etc/apt/sources.list.d/git-core-ppa-#{release}.list") do
-    it { should exist }
+    it { should contain 'http://ppa.launchpad.net/git-core/ppa/ubuntu' }
   end
   describe package('git') do
     it { is_expected.to be_installed }
