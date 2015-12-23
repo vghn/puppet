@@ -64,7 +64,7 @@ List nodes:
 
 `bundle exec rake beaker_nodes`
 
-Run node for the first time
+Run default set for the first time (default creates all nodes)
 
 `bundle exec rake acceptance PUPPET_INSTALL_TYPE=agent BEAKER_destroy=no`
 
