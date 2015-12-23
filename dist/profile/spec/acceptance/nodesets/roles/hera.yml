@@ -1,0 +1,11 @@
+HOSTS:
+  hera:
+    platform: ubuntu-trusty-x64
+    image: ubuntu:trusty
+    hypervisor: docker
+    docker_container_name: hera
+    docker_image_commands:
+      - 'locale-gen en_US.UTF-8 && wget -O /tmp/puppetlabs-release.deb https://apt.puppetlabs.com/puppetlabs-release-pc1-$(lsb_release -cs).deb && dpkg -i /tmp/puppetlabs-release.deb && apt-get update && apt-get -y install puppet-agent'
+
+CONFIG:
+  type: aio

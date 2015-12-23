@@ -4,13 +4,13 @@ class profile::ec2 {
 
   # Ensure essential packages
   ensure_packages([
-    'curl', # TODO Test
+    'curl',
     'nfs-common',
     'mysql-client',
     'python-pip',
   ])
 
-  # Latest GIT # TODO Test
+  # Latest GIT
   apt::ppa {'ppa:git-core/ppa': package_manage => true}
   class {'::git':
     require => [
@@ -19,7 +19,7 @@ class profile::ec2 {
       ],
   }
 
-  # AWS CLI # TODO Test
+  # AWS CLI
   package {'awscli':
     ensure   => present,
     provider => 'pip',

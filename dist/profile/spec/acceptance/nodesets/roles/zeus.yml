@@ -1,7 +1,5 @@
 HOSTS:
   zeus:
-    roles:
-      - zeus
     platform: ubuntu-trusty-x64
     image: ubuntu:trusty
     hypervisor: docker

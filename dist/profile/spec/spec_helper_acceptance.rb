@@ -2,6 +2,9 @@ require 'beaker-rspec/spec_helper'
 require 'beaker-rspec/helpers/serverspec'
 require 'beaker/puppet_install_helper'
 
+# Include shared examples
+Dir["./spec/acceptance/support/**/*.rb"].sort.each {|f| require f}
+
 RSpec.configure do |c|
   proj_root = File.expand_path(File.join(File.dirname(__FILE__), '..'))
   modules_dir = File.join(proj_root, 'spec', 'fixtures', 'modules')
@@ -31,6 +34,7 @@ RSpec.configure do |c|
       # transferred in the step above
       copy_module_to host, source: proj_root, module_name: 'profile'
 
+      # Include Hiera data
       shell "mkdir -p #{hiera_host_dir}"
       scp_to host, hiera_dir, hiera_host_dir
     end
