@@ -8,7 +8,7 @@ class profile::puppet::master {
       '"roles/%{role}"',
       'common',
     ],
-    datadir   => '"%{environmentpath}/%{environment}/data"',
+    datadir   => '"/etc/puppetlabs/code/environments/%{environment}/hieradata"',
     owner     => 'root',
     group     => 'root',
   }
