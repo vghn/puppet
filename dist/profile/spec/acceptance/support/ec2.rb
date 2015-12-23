@@ -38,4 +38,10 @@ shared_examples 'profile::ec2' do
   describe service('codedeploy-agent') do
     it { is_expected.to be_running }
   end
+  describe package('amazon-ssm-agent') do
+    it { is_expected.to be_installed }
+  end
+  describe service('amazon-ssm-agent') do
+    it { is_expected.to be_running }
+  end
 end

@@ -16,6 +16,7 @@ describe 'profile::ec2' do
         it { is_expected.to contain_package('nfs-common') }
         it { is_expected.to contain_package('mysql-client') }
         it { is_expected.to contain_package('python-pip') }
+        it { is_expected.to contain_package('wget') }
 
         it { is_expected.to contain_apt__ppa('ppa:git-core/ppa') }
         it { is_expected.to contain_class('git') }
@@ -28,23 +29,28 @@ describe 'profile::ec2' do
             .with_provider('pip')
         end
 
-        unless os == 'debian-8-x86_64'
-          it { is_expected.to contain_package('ruby2.0') }
-          it { is_expected.to contain_package('gdebi-core') }
+        it { is_expected.to contain_package('ruby2.0') }
+        it { is_expected.to contain_package('gdebi-core') }
+        it { is_expected.to contain_wget__fetch('CodeDeploy Deb') }
+        it do
+          is_expected.to contain_package('CodeDeploy Agent')
+            .with_name('codedeploy-agent')
+            .with_provider('dpkg')
+        end
+        it do
+          is_expected.to contain_service('CodeDeploy Service')
+            .with_name('codedeploy-agent')
         end
 
-        unless os == 'debian-8-x86_64'
-          it { is_expected.to contain_package('wget') }
-          it { is_expected.to contain_wget__fetch('CodeDeploy Deb') }
-          it do
-            is_expected.to contain_package('CodeDeploy Agent')
-              .with_name('codedeploy-agent')
-              .with_provider('dpkg')
-          end
-          it do
-            is_expected.to contain_service('CodeDeploy Service')
-              .with_name('codedeploy-agent')
-          end
+        it { is_expected.to contain_wget__fetch('AWS SSM Agent Deb') }
+        it do
+          is_expected.to contain_package('AWS SSM Agent')
+            .with_name('amazon-ssm-agent')
+            .with_provider('dpkg')
+        end
+        it do
+          is_expected.to contain_service('AWS SSM Agent')
+            .with_name('amazon-ssm-agent')
         end
       end
     end

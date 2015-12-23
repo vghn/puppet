@@ -8,6 +8,7 @@ class profile::ec2 {
     'nfs-common',
     'mysql-client',
     'python-pip',
+    'wget',
   ])
 
   # Latest GIT
@@ -60,6 +61,29 @@ class profile::ec2 {
       enable  => true,
       name    => 'codedeploy-agent',
       require => Package['CodeDeploy Agent'],
+    }
+  }
+
+  #AWS Simple Systems Manager Agent
+  if ($::os['name'] == 'Ubuntu') {
+    wget::fetch {'AWS SSM Agent Deb':
+      source      => 'https://amazon-ssm-us-east-1.s3.amazonaws.com/latest/debian_amd64/amazon-ssm-agent.deb',
+      destination => '/tmp/amazon-ssm-agent.deb',
+    }
+    package {'AWS SSM Agent':
+      ensure   => present,
+      name     => 'amazon-ssm-agent',
+      source   => '/tmp/amazon-ssm-agent.deb',
+      provider => dpkg,
+      require  => [
+        Wget::Fetch['AWS SSM Agent Deb'],
+      ],
+    }
+    service {'AWS SSM Agent':
+      ensure  => running,
+      enable  => true,
+      name    => 'amazon-ssm-agent',
+      require => Package['AWS SSM Agent'],
     }
   }
 }
