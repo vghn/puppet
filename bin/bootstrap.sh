@@ -24,6 +24,7 @@ PP_SECRET=${PP_SECRET:-none}
 PP_COLLECTION=${PP_COLLECTION:-pc1}
 PP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd -P)"
 PATH="/opt/puppetlabs/bin:/opt/puppetlabs/puppet/bin:${PATH}"
+CONFDIR="$(puppet master --configprint confdir)"
 
 # Immediately exit on errors
 set -euo pipefail
@@ -109,10 +110,10 @@ configure_puppet(){
 # Generate certificate request attributes file
 generate_csr_attributes_file(){
   echo 'Generating a CSR Attributes file'
-  local file='/etc/puppetlabs/puppet/csr_attributes.yaml'
+  local file="${CONFDIR}/csr_attributes.yaml"
+  local file_path; file_path=$(dirname "$file")
 
   # Ensure directory is present
-  local file_path; file_path=$(dirname "$file")
   [ -d "$file_path" ] && mkdir -p "$file_path"
 
   # Get EC4 info
@@ -180,4 +181,3 @@ main(){
 
 # Run
 main
-
