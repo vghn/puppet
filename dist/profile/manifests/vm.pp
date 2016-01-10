@@ -5,8 +5,9 @@ class profile::vm {
   # Ensure essential packages
   ensure_packages([
     'tmux',
+    'python-pip',
   ])
-  
+
   # Distro dependent packages
   case $::os['name'] {
     'Ubuntu': {

@@ -13,6 +13,8 @@ describe 'profile::vm' do
         it { is_expected.to contain_class('profile::base') }
 
         it { is_expected.to contain_package('tmux') }
+        it { is_expected.to contain_package('python-pip') }
+
         case facts[:operatingsystem]
         when 'Ubuntu'
           it { is_expected.to contain_package('vim-gnome') }

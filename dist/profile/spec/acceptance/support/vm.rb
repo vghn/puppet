@@ -11,4 +11,5 @@ shared_examples 'profile::vm' do
   end
 
   describe package('tmux') { it { is_expected.to be_installed } }
+  describe package('python-pip') { it { is_expected.to be_installed } }
 end
