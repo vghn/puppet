@@ -1,0 +1,16 @@
+HOSTS:
+  hera:
+    platform: ubuntu-trusty-x64
+    hypervisor: vagrant
+    box: puppetlabs/ubuntu-14.04-64-nocm
+    box_url: https://vagrantcloud.com/puppetlabs/boxes/ubuntu-14.04-64-nocm
+    mount_folders:
+      modules:
+        from: ../../../spec/fixtures/modules
+        to: /etc/puppetlabs/code/environments/production/modules
+      hieradata:
+        from: ../../../spec/fixtures/hieradata
+        to: /etc/puppetlabs/code/environments/production/hieradata
+
+CONFIG:
+  type: aio

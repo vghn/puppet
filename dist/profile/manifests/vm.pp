@@ -4,8 +4,21 @@ class profile::vm {
 
   # Ensure essential packages
   ensure_packages([
-    'vim',
     'tmux',
+    'python-pip',
   ])
-}
 
+  # Distro dependent packages
+  case $::os['name'] {
+    'Ubuntu': {
+      ensure_packages([
+        'vim-gnome',
+      ])
+    }
+    default: {
+      ensure_packages([
+        'vim',
+      ])
+    }
+  }
+}

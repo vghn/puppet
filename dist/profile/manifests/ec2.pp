@@ -4,16 +4,27 @@ class profile::ec2 {
 
   # Ensure essential packages
   ensure_packages([
+    'curl',
     'nfs-common',
     'mysql-client',
     'python-pip',
+    'wget',
   ])
 
-  # AWS SDK for Ruby
-  package {'AWS SDK CLI':
+  # Latest GIT
+  apt::ppa {'ppa:git-core/ppa': package_manage => true}
+  class {'::git':
+    require => [
+      Apt::Ppa['ppa:git-core/ppa'],
+      Class['apt::update']
+      ],
+  }
+
+  # AWS CLI
+  package {'awscli':
     ensure   => present,
-    name     => 'aws-sdk',
-    provider => 'puppet_gem',
+    provider => 'pip',
+    require  => Package['python-pip'],
   }
 
   # AWS CloudFormation scripts
@@ -50,6 +61,29 @@ class profile::ec2 {
       enable  => true,
       name    => 'codedeploy-agent',
       require => Package['CodeDeploy Agent'],
+    }
+  }
+
+  #AWS Simple Systems Manager Agent
+  if ($::os['name'] == 'Ubuntu') {
+    wget::fetch {'AWS SSM Agent Deb':
+      source      => 'https://amazon-ssm-us-east-1.s3.amazonaws.com/latest/debian_amd64/amazon-ssm-agent.deb',
+      destination => '/tmp/amazon-ssm-agent.deb',
+    }
+    package {'AWS SSM Agent':
+      ensure   => present,
+      name     => 'amazon-ssm-agent',
+      source   => '/tmp/amazon-ssm-agent.deb',
+      provider => dpkg,
+      require  => [
+        Wget::Fetch['AWS SSM Agent Deb'],
+      ],
+    }
+    service {'AWS SSM Agent':
+      ensure  => running,
+      enable  => true,
+      name    => 'amazon-ssm-agent',
+      require => Package['AWS SSM Agent'],
     }
   }
 }

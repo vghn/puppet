@@ -1,0 +1,39 @@
+# Puppet Master Class
+class profile::puppet::master {
+  # Hiera config
+  class {'::hiera':
+    hierarchy => [
+      '"nodes/%{::trusted.certname}"',
+      '"%{::trusted.domainname}/%{::trusted.hostname}"',
+      '"roles/%{role}"',
+      'common',
+    ],
+    datadir   => '"/etc/puppetlabs/code/environments/%{environment}/hieradata"',
+    owner     => 'root',
+    group     => 'root',
+  }
+
+  # Install, configure and run R10K
+  class {'::r10k':
+    sources  => {
+      'main' => {
+        'remote'  => 'https://github.com/vladgh/puppet.git',
+        'basedir' => "${::settings::codedir}/environments",
+        'prefix'  => false,
+      },
+    },
+    cachedir => '/opt/puppetlabs/r10k/cache',
+    postrun  => ['/bin/bash', '/etc/puppetlabs/r10k/postrun.sh'],
+    provider => 'puppet_gem',
+    version  => '2.1.1',
+  }
+  if str2bool($::is_bootstrap) {
+    exec {'R10K deploy environment':
+      command   => 'r10k deploy environment --puppetfile --verbose',
+      path      => ['/opt/puppetlabs/puppet/bin', '/usr/bin'],
+      logoutput => true,
+      timeout   => 0,
+      require   => Class['r10k::config'],
+    }
+  }
+}

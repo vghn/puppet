@@ -1,5 +1,6 @@
 # Everything in data except global.yaml
-/data/*
-!/data/common.yaml
+/hieradata/*
+!/hieradata/common.yaml
 
 /tmp
+/modules
