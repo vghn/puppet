@@ -22,15 +22,18 @@ nodes assigned to that environment.
 ### bin/
 Contains various executable scripts.
 
-### data/
-Contains the hiera data files. It's intended to serve as a base only, for
-public data, and it should be overwritten or amended with data from private
-sources.
+### cfn/
+Contains AWS CloudFormation templates.
 
 ### dist/
 Contains organization-specific roles and profiles.
 This directory is specified as a modulepath in environment.conf
 [Designing Puppet – Roles and Profiles.](http://www.craigdunn.org/2012/05/239/)
+
+### hieradata/
+Contains the hiera data files. It's intended to serve as a base only, for
+public data, with sane defaults. It should be overwritten or amended with data
+from private sources.
 
 ### manifests/
 Contains Puppet's manifests:
