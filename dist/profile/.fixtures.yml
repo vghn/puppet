@@ -5,9 +5,18 @@ fixtures:
     apt:
       repo: 'puppetlabs/apt'
       ref: '2.2.1'
+    concat:
+      repo: 'puppetlabs/concat'
+      ref: '1.2.5'
     git:
       repo: 'puppetlabs/git'
       ref: '0.4.0'
+    docker:
+      repo: 'garethr/docker'
+      ref: '5.0.0'
+    hiera:
+      repo: 'hunner/hiera'
+      ref: '1.4.1'
     inifile:
       repo: 'puppetlabs/inifile'
       ref: '1.4.3'
@@ -38,10 +47,6 @@ fixtures:
     sudo:
       repo: 'saz/sudo'
       ref: '3.1.0'
-  repositories:
-    docker: 'https://github.com/garethr/garethr-docker.git'
-    hiera: 'https://github.com/hunner/puppet-hiera.git'
-    r10k: 'https://github.com/acidprime/r10k.git'
-    concat:
-      repo: 'https://github.com/puppetlabs/puppetlabs-concat.git'
-      tag: '2.0.1'
+    r10k:
+      repo: 'zack/r10k'
+      ref: '3.2.0'
