@@ -24,7 +24,6 @@ PP_SECRET=${PP_SECRET:-none}
 PP_COLLECTION=${PP_COLLECTION:-pc1}
 PP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd -P)"
 PATH="/opt/puppetlabs/bin:/opt/puppetlabs/puppet/bin:${PATH}"
-CONFDIR="$(puppet master --configprint confdir)"
 
 # Immediately exit on errors
 set -euo pipefail
@@ -98,19 +97,23 @@ configure_puppet(){
     echo 'Install/update puppet modules'
     r10k puppetfile install \
       --puppetfile "${PP_DIR}/Puppetfile" \
-      --moduledir "${PP_DIR}/modules" \
+      --moduledir '/tmp/modules' \
       --verbose
   elif [[ "$PP_MASTER" != 'puppet' ]]; then
     echo "Set puppet master address - '$PP_MASTER'"
     puppet config set \
       server "$PP_MASTER" --section master
   fi
+
+  # VARs
+  PP_CONFDIR="$(puppet master --configprint confdir)"
 }
 
 # Generate certificate request attributes file
 generate_csr_attributes_file(){
+  [[ "$PP_MASTER" == 'none' ]] && return
   echo 'Generating a CSR Attributes file'
-  local file="${CONFDIR}/csr_attributes.yaml"
+  local file="${PP_CONFDIR}/csr_attributes.yaml"
   local file_path; file_path=$(dirname "$file")
 
   # Ensure directory is present
@@ -150,24 +153,25 @@ EPP
     }" > "$file"
 }
 
+# Apply puppet
+apply_puppet(){
+  [[ "$PP_MASTER" == 'none' ]] || return 1
+  echo 'Applying puppet'
+  FACTER_ROLE="${PP_ROLE}" puppet apply \
+    --modulepath "${PP_DIR}/dist:/tmp/modules"  \
+    "${PP_DIR}/manifests/site.pp"
+}
+
 # Run puppet
 run_puppet(){
-  if [[ "$PP_MASTER" == 'none' ]]; then
-    echo 'Applying puppet'
-    FACTER_ROLE="${PP_ROLE}" puppet apply \
-      --modulepath "${PP_DIR}/dist:${PP_DIR}/modules"  \
-      "${PP_DIR}/manifests/site.pp"
-  elif [[ "$PP_MASTER" != 'puppet' ]]; then
-    echo 'Running puppet'
-    puppet agent \
-      --server "$PP_MASTER" \
-      --waitforcert 5 \
-      --no-daemonize \
-      --onetime \
-      --verbose
-  else
-    echo 'WARNING: No puppet master specified'
-  fi
+  [[ -n "$PP_MASTER" ]] || return 1
+  echo 'Running puppet'
+  puppet agent \
+    --server "$PP_MASTER" \
+    --waitforcert 5 \
+    --no-daemonize \
+    --onetime \
+    --verbose
 }
 
 # Logic
@@ -176,7 +180,7 @@ main(){
   install_release_pkg
   configure_puppet
   generate_csr_attributes_file
-  run_puppet
+  apply_puppet || run_puppet || echo 'WARNING: No puppet master specified'
 }
 
 # Run
