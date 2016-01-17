@@ -17,6 +17,9 @@
 #
 # * Trusted facts info: https://docs.puppetlabs.com/puppet/latest/reference/lang_facts_and_builtin_vars.html#trusted-facts
 
+# Immediately exit on errors
+set -euo pipefail
+
 # DEFAULTS
 PP_MASTER=${PP_MASTER:-puppet}
 PP_ROLE=${PP_ROLE:-none}
@@ -25,9 +28,6 @@ PP_COLLECTION=${PP_COLLECTION:-pc1}
 PP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd -P)"
 PP_COLOR=${PP_COLOR:-true}
 PATH="/opt/puppetlabs/bin:/opt/puppetlabs/puppet/bin:${PATH}"
-
-# Immediately exit on errors
-set -euo pipefail
 
 # Check if root
 is_root(){
