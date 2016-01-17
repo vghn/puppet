@@ -8,17 +8,6 @@ This project is still in a prototype development stage.
 Vlad's Puppet Control Repo.
 
 ## Description
-### Puppetfile
-r10k needs this file to figure out what component modules you want from the
-Forge. The result is a modules directory containing all the modules specified in
-this file, for each environment/branch. The modules directory is listed in
-environment.conf's modulepath.
-
-### environment.conf
-This file can override several settings whenever the Puppet master is serving
-nodes assigned to that environment.
-[Config Files: environment.conf](https://docs.puppetlabs.com/puppet/latest/reference/config_file_environment.html)
-
 ### bin/
 Contains various executable scripts.
 
@@ -35,10 +24,28 @@ Contains the hiera data files. It's intended to serve as a base only, for
 public data, with sane defaults. It should be overwritten or amended with data
 from private sources.
 
+### include/
+Contains various functions that can be sourced in other scripts.
+
 ### manifests/
 Contains Puppet's manifests:
-  - `bootstrap.pp`: the bootstrapping manifest
   - `site.pp`: the main manifest
+
+### Puppetfile
+r10k needs this file to figure out what component modules you want from the
+Forge. The result is a modules directory containing all the modules specified in
+this file, for each environment/branch. The modules directory is listed in
+environment.conf's modulepath.
+
+### environment.conf
+This file can override several settings whenever the Puppet master is serving
+nodes assigned to that environment.
+[Config Files: environment.conf](https://docs.puppetlabs.com/puppet/latest/reference/config_file_environment.html)
+
+### environment.sh
+This file contains global variables. It can be sourced by other scripts.
+
+[Config Files: environment.conf](https://docs.puppetlabs.com/puppet/latest/reference/config_file_environment.html)
 
 ## Testing
 ### Prerequisites
