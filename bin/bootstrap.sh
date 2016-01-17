@@ -23,6 +23,7 @@ PP_ROLE=${PP_ROLE:-none}
 PP_SECRET=${PP_SECRET:-none}
 PP_COLLECTION=${PP_COLLECTION:-pc1}
 PP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd -P)"
+PP_COLOR=${PP_COLOR:-true}
 PATH="/opt/puppetlabs/bin:/opt/puppetlabs/puppet/bin:${PATH}"
 
 # Immediately exit on errors
@@ -158,6 +159,7 @@ apply_puppet(){
   [[ "$PP_MASTER" == 'none' ]] || return 1
   echo 'Applying puppet'
   FACTER_ROLE="${PP_ROLE}" puppet apply \
+    --color="$PP_COLOR" \
     --modulepath "${PP_DIR}/dist:/tmp/modules"  \
     "${PP_DIR}/manifests/site.pp"
 }
@@ -171,6 +173,7 @@ run_puppet(){
     --waitforcert 5 \
     --no-daemonize \
     --onetime \
+    --color="$PP_COLOR" \
     --verbose
 }
 
