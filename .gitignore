@@ -1,3 +1,6 @@
+# Private
+.env
+
 # Everything in data except global.yaml
 /hieradata/*
 !/hieradata/common.yaml
