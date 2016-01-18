@@ -16,14 +16,9 @@ case "$1" in
     bundle exec rake test
     ;;
   deploy)
-    if aws s3 sync "${REPODIR}/cfn/" "${vgh_cfn_stack_s3:?}/" \
+    aws s3 sync "${REPODIR}/cfn/" "${vgh_cfn_stack_s3:?}/" \
       --delete --acl public-read \
-      --exclude "*" --include "*.json"; then
-        echo "Synced ${REPODIR}/cfn/ to ${vgh_cfn_stack_s3}"
-    else
-      echo "FATAL: Could not sync ${REPODIR}/cfn/ to ${vgh_cfn_stack_s3}"
-      exit 1
-    fi
+      --exclude "*" --include "*.json"
     ;;
 esac
 
