@@ -23,6 +23,9 @@ esac
 ## External ip
 external_ip=$(dig +short myip.opendns.com @resolver1.opendns.com || true)
 
+# AWS
+export AWS_DEFAULT_REGION='us-east-1'
+
 ## CloudFormation
 export vgh_stack_name=${vgh_stack_name:-vgh}
 export vgh_stack_file=${vgh_stack_file:-file://./cfn/vgh.json}

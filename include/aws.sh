@@ -5,6 +5,9 @@
 # shellcheck disable=1090
 . "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)/common.sh"
 
+# AWS Region
+export AWS_DEFAULT_REGION="${AWS_DEFAULT_REGION:-us-east-1}"
+
 # NAME: aws_get_metadata
 # DESCRIPTION: AWS MetaData Service
 aws_get_metadata(){
@@ -32,26 +35,16 @@ aws_get_instance_az() {
 }
 
 # NAME: aws_get_instance_region
-# DESCRIPTION: Returns the the AWS region (defaults to us-east-1)
+# DESCRIPTION: Returns the the AWS region
 aws_get_instance_region() {
-  if [ -z "${AWS_DEFAULT_REGION}" ]; then
-    zone=$(aws_get_instance_az)
-    export AWS_DEFAULT_REGION="${zone%?}"
-    echo "${AWS_DEFAULT_REGION:-us-east-1}"
-  else
-    echo "$AWS_DEFAULT_REGION"
-  fi
-}
-
-# AWS CLI Command
-aws_cmd(){
-  /usr/local/bin/aws --region "$(aws_get_instance_region)" "${@}"
+  local zone; zone=$(aws_get_instance_az)
+  echo "${zone%?}"
 }
 
 # NAME: list_all_tags
 # DESCRIPTION: Returns all EC2 tags associated with the current instance
 list_all_tags(){
-  aws_cmd --output text ec2 describe-tags \
+  aws --output text ec2 describe-tags \
     --filters "Name=resource-id,Values=$(aws_get_instance_id)" \
     --query "Tags[*].[join(\`=\`,[Key,Value])]" 2>/dev/null | \
     awk '{print tolower($0)}' | \
@@ -69,7 +62,7 @@ aws_get_tag(){
   local instance_id; instance_id=$(aws_get_instance_id)
   local resource=${2:-$instance_id}
 
-  aws_cmd --output text ec2 describe-tags \
+  aws --output text ec2 describe-tags \
     --filters "Name=resource-id,Values=${resource}" "Name=key,Values=$name" \
     --query "Tags[*].[Value]" 2>/dev/null
 }
@@ -82,7 +75,7 @@ aws_get_tag(){
 #   1) The instance id
 aws_get_instance_state_asg() {
   local instance_id=$1
-  local state; state=$(aws_cmd autoscaling describe-auto-scaling-instances \
+  local state; state=$(aws autoscaling describe-auto-scaling-instances \
     --instance-ids "$instance_id" \
     --query "AutoScalingInstances[?InstanceId == \`$instance_id\`].LifecycleState | [0]" \
     --output text)
@@ -102,7 +95,7 @@ aws_get_instance_state_asg() {
 #   1) The instance id
 aws_get_autoscaling_group_name() {
   local instance_id=$1
-  local autoscaling_name; autoscaling_name=$(aws_cmd autoscaling \
+  local autoscaling_name; autoscaling_name=$(aws autoscaling \
     describe-auto-scaling-instances \
     --instance-ids "$instance_id" \
     --output text \
@@ -143,7 +136,7 @@ aws_autoscaling_enter_standby(){
   fi
 
   echo "Putting instance $instance_id into Standby"
-  aws_cmd autoscaling enter-standby \
+  aws autoscaling enter-standby \
     --instance-ids "$instance_id" \
     --auto-scaling-group-name "$asg_name" \
     --should-decrement-desired-capacity
@@ -187,7 +180,7 @@ aws_autoscaling_exit_standby(){
   fi
 
   echo "Moving instance $instance_id out of Standby"
-  aws_cmd autoscaling exit-standby \
+  aws autoscaling exit-standby \
     --instance-ids "$instance_id" \
     --auto-scaling-group-name "$asg_name"
   if [ $? != 0 ]; then
@@ -215,7 +208,7 @@ aws_deploy_list_running_deployments() {
   local app=$1
   local group=$2
 
-  aws_cmd deploy list-deployments \
+  aws deploy list-deployments \
     --output text \
     --query 'deployments' \
     --application-name "$1" \
@@ -233,7 +226,7 @@ aws_deploy_group_exists() {
   local app=$1
   local group=$2
 
-  aws_cmd deploy get-deployment-group \
+  aws deploy get-deployment-group \
     --query 'deploymentGroupInfo.deploymentGroupId' --output text \
     --application-name "$1" \
     --deployment-group-name "$2" >/dev/null
@@ -279,7 +272,7 @@ aws_deploy_create_deployment(){
     aws_deploy_wait "$@"
 
     echo "Creating deployment for application '${app}', group '${group}'"
-    aws_cmd deploy create-deployment \
+    aws deploy create-deployment \
       --application-name "$app" \
       --s3-location bucket="${bucket}",key="${key}",bundleType="${bundle}" \
       --deployment-group-name "$group" \
@@ -306,7 +299,7 @@ aws_get_private_env(){
     echo "File '${file}' already exists. Replacing"
     sudo rm "$file"
   fi
-  aws_cmd s3 cp "$src" "$file" || echo "Failed to get ${src}"
+  aws s3 cp "$src" "$file" || echo "Failed to get ${src}"
   if [ -s "$file" ]; then
     echo "Setting permissions for ${file}"
     sudo chmod 400 "$file"
@@ -359,7 +352,7 @@ aws_cfn_wait_for_stack(){
   echo "Waiting for $stack to complete ..." >&2
   until [[ $status =~ _(COMPLETE|FAILED)$ ]]; do
     sleep 5
-    status="$(aws_cmd cloudformation describe-stacks --stack-name "$1" --output text --query 'Stacks[0].StackStatus')"
+    status="$(aws cloudformation describe-stacks --stack-name "$1" --output text --query 'Stacks[0].StackStatus')"
     echo " ... $stack - $status" >&2
   done
 
@@ -416,7 +409,7 @@ aws_cf_events() {
   stack="$(basename "$1" .json)"
   shift
   local output
-  if output=$(aws_cmd --color on cloudformation describe-stack-events --stack-name "$stack" --query 'sort_by(StackEvents, &Timestamp)[].{Resource: LogicalResourceId, Type: ResourceType, Status: ResourceStatus}' --output table "$@"); then
+  if output=$(aws --color on cloudformation describe-stack-events --stack-name "$stack" --query 'sort_by(StackEvents, &Timestamp)[].{Resource: LogicalResourceId, Type: ResourceType, Status: ResourceStatus}' --output table "$@"); then
     echo "$output" | uniq -u
   else
     return $?
@@ -427,7 +420,7 @@ aws_cf_events() {
 # DESCRIPTION: Returns the ELB to which the instance is registered.
 aws_get_elb_name() {
   local instance_id; instance_id=$(aws_get_instance_id)
-  if output=$(aws_cmd elb describe-load-balancers --query "LoadBalancerDescriptions[?contains(Instances[].InstanceId, \`${instance_id}\`)].LoadBalancerName" --output text); then
+  if output=$(aws elb describe-load-balancers --query "LoadBalancerDescriptions[?contains(Instances[].InstanceId, \`${instance_id}\`)].LoadBalancerName" --output text); then
     echo "$output"
   else
     return $?
@@ -438,7 +431,7 @@ aws_get_elb_name() {
 # DESCRIPTION: Returns the Elastic Load Balancer health check configuration
 aws_elb_get_health_check() {
   local elb; elb=$(aws_get_elb_name)
-  if output=$(aws_cmd elb describe-load-balancers --load-balancer-names "$elb" --query 'LoadBalancerDescriptions[].HealthCheck | [0]'); then
+  if output=$(aws elb describe-load-balancers --load-balancer-names "$elb" --query 'LoadBalancerDescriptions[].HealthCheck | [0]'); then
     echo "$output"
   else
     return $?
@@ -453,7 +446,7 @@ aws_elb_get_health_check() {
 #      Ex: Target=HTTP:80/,Interval=10,UnhealthyThreshold=5,HealthyThreshold=2,Timeout=5
 aws_elb_configure_health_check() {
   local elb; elb=$(aws_get_elb_name)
-  if output=$(aws_cmd elb configure-health-check --load-balancer-name "$elb" --health-check "$1"); then
+  if output=$(aws elb configure-health-check --load-balancer-name "$elb" --health-check "$1"); then
     echo "$output"
   else
     return $?
@@ -463,7 +456,7 @@ aws_elb_configure_health_check() {
 # NAME: aws_ecs_list_clusters
 # DESCRIPTION: Returns a list of EC2 Container Service Clusters
 aws_ecs_list_clusters(){
-  if output=$(aws_cmd ecs list-clusters --query 'clusterArns[]' --output text); then
+  if output=$(aws ecs list-clusters --query 'clusterArns[]' --output text); then
     echo "$output"
   else
     return $?
