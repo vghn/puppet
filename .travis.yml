@@ -1,6 +1,8 @@
 sudo: false
 language: ruby
-install: cd dist/profile && bundle install --without development system_tests --path vendor
+install:
+  - cd dist/profile && bundle install --without development system_tests --path vendor
+  - pip install awscli
 env: PUPPET_GEM_VERSION="~> 4.0" STRICT_VARIABLES=yes
 script: bundle exec rake test
 cache:
