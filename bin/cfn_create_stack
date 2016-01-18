@@ -14,7 +14,6 @@ aws_cmd cloudformation create-stack \
   --tags "${vgh_stack_tags:?}" \
   --on-failure 'DELETE'
 
-
 if aws_cfn_wait_for_stack "${vgh_stack_name:?}"; then
   echo "FATAL: The stack ${vgh_stack_name:?} failed to create properly" >&2
   exit 1
