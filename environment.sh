@@ -22,7 +22,7 @@ case "${BRANCH}" in
 esac
 
 ## External ip
-external_ip=$(dig +short myip.opendns.com @resolver1.opendns.com)
+external_ip=$(dig +short myip.opendns.com @resolver1.opendns.com || true)
 
 ## CloudFormation
 export vgh_stack_name=${vgh_stack_name:-vgh}
