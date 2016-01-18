@@ -4,14 +4,13 @@
 # Immediately exit on errors
 set -euo pipefail
 
+# Load private environment
+# shellcheck disable=1090
+. "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)/../.env" || true
+
 # Load global environment
 # shellcheck disable=1090
 . "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)/../environment.sh" || true
-
-# Load private environment if it exists, overriding global variables.
-# shellcheck disable=1090
-DOTENV="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)/../.env"
-[[ -s "$DOTENV" ]] && . "$DOTENV"
 
 # FUNCTIONS
 ## Check if root

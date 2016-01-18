@@ -43,9 +43,9 @@ nodes assigned to that environment.
 [Config Files: environment.conf](https://docs.puppetlabs.com/puppet/latest/reference/config_file_environment.html)
 
 ### environment.sh
-This file contains global variables. It can be sourced by other scripts.
-
-[Config Files: environment.conf](https://docs.puppetlabs.com/puppet/latest/reference/config_file_environment.html)
+This file contains global variables. It can be sourced by other scripts. **All
+variables declared here are public**. Any sensitive information should be
+placed in an `.env` file which will overwrite the information here.
 
 ## Testing
 ### Prerequisites
