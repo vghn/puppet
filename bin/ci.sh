@@ -3,7 +3,7 @@
 
 # Load environment
 # shellcheck disable=1090
-. "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)/../include/common.sh"
+. "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)/../include/aws.sh"
 
 case "$1" in
   install)
@@ -16,7 +16,7 @@ case "$1" in
     bundle exec rake test
     ;;
   deploy)
-    aws s3 sync "${REPODIR}/cfn/" "${vgh_cfn_stack_s3:?}/" \
+    aws_cmd s3 sync "${REPODIR}/cfn/" "${vgh_cfn_stack_s3:?}/" \
       --delete --acl public-read \
       --exclude "*" --include "*.json"
     ;;

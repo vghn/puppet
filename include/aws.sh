@@ -34,12 +34,12 @@ aws_get_instance_az() {
 # NAME: aws_get_instance_region
 # DESCRIPTION: Returns the the AWS region (defaults to us-east-1)
 aws_get_instance_region() {
-  if [ -z "${AWS_REGION}" ]; then
+  if [ -z "${AWS_DEFAULT_REGION}" ]; then
     zone=$(aws_get_instance_az)
-    export AWS_REGION="${zone%?}"
-    echo "${AWS_REGION:-us-east-1}"
+    export AWS_DEFAULT_REGION="${zone%?}"
+    echo "${AWS_DEFAULT_REGION:-us-east-1}"
   else
-    echo "$AWS_REGION"
+    echo "$AWS_DEFAULT_REGION"
   fi
 }
 
