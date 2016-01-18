@@ -9,7 +9,7 @@ export PATH="/opt/puppetlabs/bin:/opt/puppetlabs/puppet/bin:/usr/local/bin:${PAT
 export REPODIR=${REPODIR:-$(git rev-parse --show-toplevel)}
 
 ## Git
-export BRANCH; BRANCH=$(git symbolic-ref --short HEAD 2>/dev/null || "$TRAVIS_BRANCH")
+export BRANCH; BRANCH=$(git symbolic-ref --short HEAD 2>/dev/null || echo "$TRAVIS_BRANCH")
 
 case "${BRANCH}" in
   master)
