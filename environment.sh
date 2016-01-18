@@ -11,7 +11,7 @@ export REPODIR=${REPODIR:-$(git rev-parse --show-toplevel)}
 ## Git
 export BRANCH; BRANCH=$(git symbolic-ref --short HEAD 2>/dev/null || true)
 export SHA; SHA=$(git rev-parse --short HEAD 2>/dev/null || true)
-
+echo $BRANCH
 case "${BRANCH}" in
   master)
     export ENV_TYPE='production'
@@ -20,7 +20,7 @@ case "${BRANCH}" in
     export ENV_TYPE="$BRANCH"
     ;;
 esac
-
+echo $ENV_TYPE
 ## External ip
 external_ip=$(dig +short myip.opendns.com @resolver1.opendns.com || true)
 
