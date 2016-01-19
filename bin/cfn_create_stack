@@ -5,7 +5,7 @@
 # shellcheck disable=1090
 . "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)/../include/aws.sh"
 
-aws_cmd cloudformation create-stack \
+aws cloudformation create-stack \
   --stack-name "${vgh_stack_name:?}" \
   --template-body "${vgh_stack_file:?}" \
   --parameters "${vgh_stack_parameters:?}" \
