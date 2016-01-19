@@ -119,40 +119,6 @@
         "ManagedPolicyArns": ["arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole"],
         "Path": "/"
       }
-    },
-
-    "CI": {
-      "Type": "AWS::IAM::User",
-      "Properties": {
-        "Policies": [
-          {
-            "PolicyName": "CIAccess",
-            "PolicyDocument": {
-              "Version": "2012-10-17",
-              "Statement": [
-                {
-                  "Sid": "AllowAccessToCodeDeploy",
-                  "Effect": "Allow",
-                  "Action": ["codedeploy:*"],
-                  "Resource": "arn:aws:codedeploy:*"
-                },
-                {
-                  "Sid": "AllowUploadingDeployments",
-                  "Effect": "Allow",
-                  "Action": ["s3:PutObject"],
-                  "Resource": [{"Fn::Join": ["", ["arn:aws:s3:::", {"Ref": "AssetsBucket"}, "/deploy/*"]]}]
-                }
-              ]
-            }
-          }
-        ]
-      }
-    },
-    "CIAccessKey": {
-      "Type": "AWS::IAM::AccessKey",
-      "Properties": {
-        "UserName": {"Ref": "CI"}
-      }
     }
   },
 
@@ -164,14 +130,6 @@
     "CodeDeployServiceRoleARN": {
       "Description": "The CodeDeploy service role ARN",
       "Value": {"Fn::GetAtt": ["CodeDeployRole", "Arn"]}
-    },
-    "CIAccessKey": {
-      "Description": "The CI Access Key",
-      "Value": {"Ref": "CIAccessKey" }
-    },
-    "CISecretKey": {
-      "Description": "The CI Secret Key",
-      "Value": {"Fn::GetAtt": [ "CIAccessKey", "SecretAccessKey" ]}
     }
   }
 }
