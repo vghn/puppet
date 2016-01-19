@@ -351,9 +351,9 @@ aws_cfn_wait_for_stack(){
 
   echo "Waiting for $stack to complete ..." >&2
   until [[ $status =~ _(COMPLETE|FAILED)$ ]]; do
-    sleep 5
-    status="$(aws cloudformation describe-stacks --stack-name "$1" --output text --query 'Stacks[0].StackStatus')"
+    status="$(aws cloudformation describe-stacks --stack-name "$1" --output text --query 'Stacks[0].StackStatus')" || return 1
     echo " ... $stack - $status" >&2
+    sleep 5
   done
 
   echo "$status"
