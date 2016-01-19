@@ -42,15 +42,23 @@ export vgh_assets_s3path="${vgh_assets_bucket}/${vgh_assets_key_prefix}/${ENV_TY
 export vgh_cfn_stack_s3="s3://${vgh_assets_s3path}/cfn"
 export vgh_cfn_stack_url="https://s3.amazonaws.com/${vgh_assets_s3path}/cfn"
 
-export vgh_stack_parameters="\
-  ParameterKey=KeyName,ParameterValue=${vgh_ec2_key} \
-  ParameterKey=AssetsBucket,ParameterValue=${vgh_assets_bucket} \
-  ParameterKey=EnvType,ParameterValue=${vgh_env_type} \
-  ParameterKey=SSHLocation,ParameterValue=${vgh_ssh_location} \
-  ParameterKey=VPCTemplateKey,ParameterValue=${vgh_cfn_stack_url}/vpc.json \
-  ParameterKey=SGTemplateKey,ParameterValue=${vgh_cfn_stack_url}/iam.json \
-  ParameterKey=IAMTemplateKey,ParameterValue=${vgh_cfn_stack_url}/sec_grp.json"
+export vgh_stack_parameters; vgh_stack_parameters=$(cat <<CFPARAMS
+[
+  { "ParameterKey": "KeyName", "ParameterValue": "${vgh_ec2_key}" },
+  { "ParameterKey": "AssetsBucket", "ParameterValue": "${vgh_assets_bucket}" },
+  { "ParameterKey": "EnvType", "ParameterValue": "${vgh_env_type}" },
+  { "ParameterKey": "SSHLocation", "ParameterValue": "${vgh_ssh_location}" },
+  { "ParameterKey": "VPCTemplateKey", "ParameterValue": "${vgh_cfn_stack_url}/vpc.json" },
+  { "ParameterKey": "SGTemplateKey", "ParameterValue": "${vgh_cfn_stack_url}/sec_grp.json" },
+  { "ParameterKey": "IAMTemplateKey", "ParameterValue": "${vgh_cfn_stack_url}/iam.json" }
+]
+CFPARAMS
+)
 
 export vgh_group_tag=${vgh_group_tag:-vgh}
-export vgh_stack_tags="\
-  Key=Group,Value=${vgh_group_tag}"
+export vgh_stack_tags; vgh_stack_tags=$(cat <<CFTAGS
+[
+  { "Key": "Group", "Value": "${vgh_group_tag}" }
+]
+CFTAGS
+)
