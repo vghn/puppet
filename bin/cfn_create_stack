@@ -10,7 +10,6 @@ aws cloudformation create-stack \
   --template-body "${vgh_stack_file:?}" \
   --parameters "${vgh_stack_parameters:?}" \
   --capabilities "${vgh_stack_capabilities:?}" \
-  --notification-arns "${vgh_notifications_topic_arn:?}" \
   --tags "${vgh_stack_tags:?}" \
   --on-failure 'DELETE'
 

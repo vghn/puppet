@@ -33,7 +33,6 @@ export vgh_env_type=${vgh_env_type:-$ENV_TYPE}
 export vgh_ec2_key=${vgh_ec2_key:-key}
 export vgh_ssh_location="${external_ip}/32"
 export vgh_stack_capabilities=${vgh_stack_capabilities:-CAPABILITY_IAM}
-export vgh_notifications_topic_arn=${vgh_notifications_topic_arn:-arn:aws:sns:us-east-1:12345:Topic}
 
 export vgh_assets_bucket=${vgh_assets_bucket:-vladgh}
 export vgh_assets_key_prefix=${vgh_assets_key_prefix:-puppet}
