@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# Creates CloudFormation stack
+
+# Load environment
+# shellcheck disable=1090
+. "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)/../include/aws.sh"
+
+aws cloudformation create-stack \
+  --stack-name "${vgh_stack_name:?}" \
+  --template-body "${vgh_stack_file:?}" \
+  --parameters "${vgh_stack_parameters:?}" \
+  --capabilities "${vgh_stack_capabilities:?}" \
+  --tags "${vgh_stack_tags:?}" \
+  --on-failure 'DELETE'
+
+if ! aws_cfn_wait_for_stack "${vgh_stack_name:?}"; then
+  echo "FATAL: The stack ${vgh_stack_name:?} failed to create properly" >&2
+  exit 1
+fi

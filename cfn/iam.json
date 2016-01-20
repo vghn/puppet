@@ -1,0 +1,135 @@
+{
+  "Description": "IAM CloudFormation SubStack",
+
+  "Parameters": {
+    "AssetsBucket": {
+      "Type": "String",
+      "Description": "The S3 bucket containing the assets"
+    }
+  },
+
+  "Resources": {
+    "InstanceProfile": {
+      "Type": "AWS::IAM::InstanceProfile",
+      "Properties": {
+        "Path": "/",
+        "Roles": [{"Ref": "InstanceRole"}]
+      }
+    },
+    "InstanceRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Principal": { "Service": [ "ec2.amazonaws.com" ] },
+              "Effect": "Allow",
+              "Action": "sts:AssumeRole"
+            }
+          ]
+        },
+        "Path": "/",
+        "ManagedPolicyArns": ["arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"],
+        "Policies":[
+          {
+            "PolicyName": "InstancePolicies",
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Sid": "AllowScalingOperations",
+                  "Action": [
+                    "ec2:Describe*",
+                    "autoscaling:Describe*",
+                    "autoscaling:EnterStandby",
+                    "autoscaling:ExitStandby",
+                    "elasticloadbalancing:ConfigureHealthCheck",
+                    "elasticloadbalancing:DescribeLoadBalancers"
+                  ],
+                  "Resource": "*",
+                  "Effect": "Allow"
+                },
+                {
+                  "Sid": "AllowLogging",
+                  "Effect": "Allow",
+                  "Action": [
+                      "logs:CreateLogGroup",
+                      "logs:CreateLogStream",
+                      "logs:PutLogEvents",
+                      "logs:DescribeLogStreams"
+                  ],
+                    "Resource": [
+                      "arn:aws:logs:*:*:*"
+                  ]
+                },
+                {
+                  "Sid": "AllowListingOfFolder",
+                  "Action": ["s3:ListBucket"],
+                  "Effect": "Allow",
+                  "Resource": [{"Fn::Join": ["", ["arn:aws:s3:::", {"Ref": "AssetsBucket"}]]}],
+                  "Condition": {
+                    "StringLike": {"s3:prefix": [
+                      "deploy/*",
+                      "private/*",
+                      "backup/*"
+                    ]}
+                  }
+                },
+                {
+                  "Sid": "AllowFullAccessToFolder",
+                  "Effect": "Allow",
+                  "Action": ["s3:*"],
+                  "Resource": [
+                    {"Fn::Join": ["", ["arn:aws:s3:::", {"Ref": "AssetsBucket"}, "/backup/*"]]}
+                  ]
+                },
+                {
+                  "Sid": "AllowReadOnlyAccessToFolder",
+                  "Effect": "Allow",
+                  "Action": ["s3:Get*", "s3:List*"],
+                  "Resource": [
+                    {"Fn::Join": ["", ["arn:aws:s3:::", {"Ref": "AssetsBucket"}, "/deploy/*"]]},
+                    {"Fn::Join": ["", ["arn:aws:s3:::", {"Ref": "AssetsBucket"}, "/private/*"]]}
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+
+    "CodeDeployRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Principal": {
+                "Service": [
+                  "codedeploy.us-east-1.amazonaws.com",
+                  "codedeploy.us-west-2.amazonaws.com"
+                ]
+              },
+              "Effect": "Allow",
+              "Action": "sts:AssumeRole"
+            }
+          ]
+        },
+        "ManagedPolicyArns": ["arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole"],
+        "Path": "/"
+      }
+    }
+  },
+
+  "Outputs": {
+    "InstanceProfile": {
+      "Description": "The Instance Profile",
+      "Value": {"Ref": "InstanceProfile" }
+    },
+    "CodeDeployServiceRoleARN": {
+      "Description": "The CodeDeploy service role ARN",
+      "Value": {"Fn::GetAtt": ["CodeDeployRole", "Arn"]}
+    }
+  }
+}

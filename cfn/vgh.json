@@ -1,0 +1,102 @@
+{
+  "Description": "VGH CloudFormation Stack",
+
+  "Parameters": {
+    "KeyName": {
+      "Type": "AWS::EC2::KeyPair::KeyName",
+      "Description": "Amazon EC2 key pair"
+    },
+    "AssetsBucket": {
+      "Type": "String",
+      "Description": "The S3 bucket containing the assets"
+    },
+    "EnvType": {
+      "Type": "String",
+      "Default" : "production",
+      "Description": "Environment type",
+      "AllowedValues" : ["development", "test", "production"]
+    },
+    "SSHLocation" : {
+      "Type": "String",
+      "Description" : "The IP address range that can be used to SSH to the EC2 instances",
+      "MinLength": "9",
+      "MaxLength": "18",
+      "Default": "0.0.0.0/0",
+      "AllowedPattern": "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,2})",
+      "ConstraintDescription": "must be a valid IP CIDR range of the form x.x.x.x/x."
+    },
+    "VPCTemplateKey": {
+      "Type": "String",
+      "Description": "The key of the template for the VPC nested stack"
+    },
+    "SGTemplateKey": {
+      "Type": "String",
+      "Description": "The key of the template for the SG nested stack"
+    },
+    "IAMTemplateKey": {
+      "Type": "String",
+      "Description": "The key of the template for the IAM nested stack"
+    }
+  },
+
+  "Resources": {
+    "ELB": {
+      "Type": "AWS::ElasticLoadBalancing::LoadBalancer",
+      "Properties": {
+        "SecurityGroups": [{"Fn::GetAtt": ["SG", "Outputs.ELBSecurityGroup"]}],
+        "Subnets": [
+          {"Fn::GetAtt": ["VPC", "Outputs.Subnet1"]},
+          {"Fn::GetAtt": ["VPC", "Outputs.Subnet2"]},
+          {"Fn::GetAtt": ["VPC", "Outputs.Subnet3"]},
+          {"Fn::GetAtt": ["VPC", "Outputs.Subnet4"]}
+        ],
+        "CrossZone": "true",
+        "Listeners": [
+          {"LoadBalancerPort": "80", "InstancePort": "80", "Protocol": "HTTP"}
+        ],
+        "HealthCheck": {
+          "Target": "HTTP:80/",
+          "HealthyThreshold": "2",
+          "UnhealthyThreshold": "6",
+          "Interval": "10",
+          "Timeout": "5"
+        },
+        "ConnectionDrainingPolicy": {"Enabled": "true", "Timeout": "60"}
+      }
+    },
+
+    "VPC": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "TemplateURL": {"Ref": "VPCTemplateKey" }
+      }
+    },
+
+    "SG": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "TemplateURL": {"Ref": "SGTemplateKey" },
+        "Parameters": {
+          "VPCId": {"Fn::GetAtt": ["VPC", "Outputs.VPCId"]},
+          "SSHLocation": {"Ref": "SSHLocation"}
+        }
+      }
+    },
+
+    "IAM": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "TemplateURL": {"Ref": "IAMTemplateKey" },
+        "Parameters": {
+          "AssetsBucket": {"Ref": "AssetsBucket"}
+        }
+      }
+    }
+  },
+  "Outputs": {
+    "URL": {
+      "Description": "URL - The Load Balancer Public DNS",
+      "Value": {"Fn::Join": ["", ["http://", {"Fn::GetAtt": ["ELB", "DNSName"]}]]}
+    }
+  }
+}

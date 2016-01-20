@@ -8,26 +8,13 @@ mod 'puppetlabs/mysql', '3.6.2'
 mod 'puppetlabs/ntp', '4.1.2'
 mod 'puppetlabs/stdlib', '4.10.0'
 mod 'puppetlabs/vcsrepo', '1.3.2'
-mod 'concat',
-  :git => 'https://github.com/puppetlabs/puppetlabs-concat.git',
-  :tag => '2.0.1'
+mod 'puppetlabs/concat', '1.2.5'
 
 # Puppet approved modules
+mod 'garethr/docker', '5.0.0'
+mod 'hunner/hiera', '1.4.1'
 mod 'maestrodev/wget', '1.7.1'
-# This can revert to forge syntax when v5.x is released
-# Currently there is now support for the new docker repositories
-mod 'docker',
-  :git => 'https://github.com/garethr/garethr-docker.git',
-  :ref => 'master'
-# This can revert to forge syntax when v1.3.3 is released
-# PR #86 is needed
-mod 'hiera',
-  :git => 'https://github.com/hunner/puppet-hiera.git',
-  :ref => 'master'
-# This can revert to forge syntax when version > 3.1.1 is released
-mod 'r10k',
-  :git => 'https://github.com/acidprime/r10k.git',
-  :ref => 'master'
+mod 'zack/r10k', '3.2.0'
 
 # Others
 mod 'saz/limits', '2.3.0'
