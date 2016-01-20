@@ -21,7 +21,7 @@ case "${BRANCH}" in
 esac
 
 ## External ip
-external_ip=$(dig +short myip.opendns.com @resolver1.opendns.com || true)
+external_ip=$(dig +short myip.opendns.com @resolver1.opendns.com 2>/dev/null || true)
 
 # AWS
 export AWS_DEFAULT_REGION='us-east-1'
