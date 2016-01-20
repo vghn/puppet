@@ -7,7 +7,7 @@
 
 case "$1" in
   install)
-    pip install --user awscli
+    pip install --user --upgrade awscli
     cd dist/profile || exit
     bundle install --without development system_tests --path vendor
     ;;
