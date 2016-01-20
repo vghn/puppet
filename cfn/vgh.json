@@ -40,6 +40,31 @@
   },
 
   "Resources": {
+    "ELB": {
+      "Type": "AWS::ElasticLoadBalancing::LoadBalancer",
+      "Properties": {
+        "SecurityGroups": [{"Fn::GetAtt": ["SG", "Outputs.ELBSecurityGroup"]}],
+        "Subnets": [
+          {"Fn::GetAtt": ["VPC", "Outputs.Subnet1"]},
+          {"Fn::GetAtt": ["VPC", "Outputs.Subnet2"]},
+          {"Fn::GetAtt": ["VPC", "Outputs.Subnet3"]},
+          {"Fn::GetAtt": ["VPC", "Outputs.Subnet4"]}
+        ],
+        "CrossZone": "true",
+        "Listeners": [
+          {"LoadBalancerPort": "80", "InstancePort": "80", "Protocol": "HTTP"}
+        ],
+        "HealthCheck": {
+          "Target": "HTTP:80/",
+          "HealthyThreshold": "2",
+          "UnhealthyThreshold": "6",
+          "Interval": "10",
+          "Timeout": "5"
+        },
+        "ConnectionDrainingPolicy": {"Enabled": "true", "Timeout": "60"}
+      }
+    },
+
     "VPC": {
       "Type": "AWS::CloudFormation::Stack",
       "Properties": {
@@ -66,6 +91,12 @@
           "AssetsBucket": {"Ref": "AssetsBucket"}
         }
       }
+    }
+  },
+  "Outputs": {
+    "URL": {
+      "Description": "URL - The Load Balancer Public DNS",
+      "Value": {"Fn::Join": ["", ["http://", {"Fn::GetAtt": ["ELB", "DNSName"]}]]}
     }
   }
 }
