@@ -61,3 +61,15 @@ export vgh_stack_tags; vgh_stack_tags=$(cat <<CFTAGS
 ]
 CFTAGS
 )
+
+## AMI
+export vgh_image_key='vgh'
+export vgh_image_user_data="${REPODIR}/include/user_data_image.sh"
+export vgh_image_instance_type='t2.micro'
+export vgh_image_os='trusty'
+vgh_image_prefix='VGH_HERA'
+vgh_image_suffix=$(date +%Y%m%d%H%M%S)
+export vgh_image_name="${vgh_image_prefix}_${vgh_image_suffix}"
+export vgh_image_description='VGH Image - HERA'
+export vgh_image_arch='amd64'
+export vgh_image_virtualization='hvm'

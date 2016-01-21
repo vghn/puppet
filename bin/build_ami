@@ -1,0 +1,74 @@
+#!/usr/bin/env bash
+# Creates an image
+
+# Load environment
+# shellcheck disable=1090
+. "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)/../include/aws.sh"
+
+echo 'Getting official image id'
+qurl="http://cloud-images.ubuntu.com/query/${vgh_image_os:?}/server/released.current.txt"
+official_image_id=$(curl --silent "${qurl}" | awk '-F\t' \
+  '$5 == "ebs-ssd" && $6 == arch && $7 == region && $11 == virt { print $8 }' \
+  arch="${vgh_image_arch:?}" region="$AWS_DEFAULT_REGION" virt="${vgh_image_virtualization:?}")
+
+if [[ "$official_image_id" =~ ^ami-.* ]]; then
+  echo "  ... ${official_image_id}"
+else
+  echo "FATAL: Could not get the official image id (${official_image_id})" >&2
+  exit 1
+fi
+
+echo 'Creating instance'
+instance_id=$(aws ec2 run-instances \
+  --key "${vgh_image_key:?}" \
+  --instance-type "${vgh_image_instance_type:?}" \
+  --image-id "$official_image_id" \
+  --user-data "file://${vgh_image_user_data:?}" \
+  --output text \
+  --query 'Instances[*].InstanceId')
+sleep 5
+
+if [[ "$instance_id" =~ ^i-.* ]]; then
+  echo "  ... ${instance_id}"
+else
+  echo "FATAL: Could not create the EC2 instance (${instance_id})" >&2; exit 1
+fi
+
+echo 'Tagging instance'
+aws ec2 create-tags \
+  --resources "$instance_id" \
+  --tags Key=Group,Value=vgh Key=Name,Value="${vgh_image_prefix:?}"
+
+echo 'Waiting for instance to start'
+aws ec2 wait instance-running --instance-ids "$instance_id"
+echo 'Waiting for instance to bootstrap and power off'
+aws ec2 wait instance-stopped --instance-ids "$instance_id"
+
+echo 'Creating image'
+image_id=$(aws ec2 create-image \
+  --instance-id "$instance_id" \
+  --name "${vgh_image_name:?}" \
+  --description "${vgh_image_description:?}" \
+  --output text --query 'ImageId')
+sleep 5
+
+if [[ "$image_id" =~ ^ami-.* ]]; then
+  echo "  ... ${image_id}"
+else
+  echo "FATAL: Could not create the EC2 image (${image_id})" >&2; exit 1
+fi
+
+echo 'Waiting for image to be available'
+aws ec2 wait image-available --image-ids "$image_id"
+
+echo 'Tagging image'
+aws ec2 create-tags \
+  --resources "$image_id" \
+  --tags Key=Group,Value=vgh Key=Name,Value="$vgh_image_prefix"
+
+echo 'Terminating instances'
+aws ec2 terminate-instances \
+  --instance-ids "$instance_id" \
+  --output text \
+  --query 'TerminatingInstances[*].InstanceId'
+echo "  ... ${instance_id}"
