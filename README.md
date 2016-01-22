@@ -42,8 +42,8 @@ This file can override several settings whenever the Puppet master is serving
 nodes assigned to that environment.
 [Config Files: environment.conf](https://docs.puppetlabs.com/puppet/latest/reference/config_file_environment.html)
 
-### environment.sh
-This file contains global variables. It can be sourced by other scripts. **All
+### defaults.env
+This file contains global variables. **All
 variables declared here are public**. Any sensitive information should be
 placed in an `.env` file which will overwrite the information here.
 
