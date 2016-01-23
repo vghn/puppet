@@ -23,6 +23,9 @@ case "$command" in
       --delete --acl public-read \
       --exclude "*" --include "*.json"
 
+    echo 'Reset working directory'
+    git stash --all
+
     echo "Creating TGZ archive (${CD_ARCHIVE_PATH})"
     tar cvzf "$CD_ARCHIVE_PATH" \
       --exclude-vcs \
