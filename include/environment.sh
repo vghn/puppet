@@ -40,12 +40,12 @@ EXTERNAL_IP=$(dig +short myip.opendns.com @resolver1.opendns.com 2>/dev/null \
   || true)
 
 # CI
-export BUILD=${TRAVIS_BUILD_NUMBER:-0}
-
-# AWS Credentials
-if [[ "${CI:-false}" == true ]]; then
+if [[ "${CI}" == true ]]; then
   export AWS_ACCESS_KEY_ID=$CI_AWS_ACCESS_KEY_ID
   export AWS_SECRET_ACCESS_KEY=$CI_AWS_SECRET_ACCESS_KEY
+  export BUILD=${TRAVIS_BUILD_NUMBER:-0}
+
+  git config --global user.name "TravisCI"
 fi
 
 # AWS S3
