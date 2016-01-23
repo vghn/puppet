@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
 # Paths
-export REPODIR
-REPODIR="$( cd "$( dirname "${BASH_SOURCE[1]}" )" && pwd -P)/../"
-export PATH="/opt/puppetlabs/bin:/opt/puppetlabs/puppet/bin:/usr/local/bin:${PATH}"
+export APPDIR PATH
+APPDIR="$( cd "$( dirname "${BASH_SOURCE[1]}" )" && pwd -P)/.."
+PATH="/opt/puppetlabs/bin:/opt/puppetlabs/puppet/bin:/usr/local/bin:${PATH}"
 
 # Load global environment
 # shellcheck disable=SC1090,SC1091
-. "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)/../defaults.env" || true
+. "${APPDIR}/defaults.env" || true
 
 # Load private environment
 # shellcheck disable=SC1090,SC1091
-. "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)/../.env" || true
+. "${APPDIR}/.env" || true
 
 # Git
 export BRANCH; BRANCH=$(git symbolic-ref --short HEAD 2>/dev/null)
