@@ -49,7 +49,7 @@ export vgh_stack_parameters; vgh_stack_parameters=$(cat <<CFPARAMS
   { "ParameterKey": "KeyName", "ParameterValue": "${VGH_EC2_KEY}" },
   { "ParameterKey": "AssetsBucket", "ParameterValue": "${VGH_ASSETS_BUCKET}" },
   { "ParameterKey": "EnvType", "ParameterValue": "${ENV_TYPE}" },
-  { "ParameterKey": "SSHLocation", "ParameterValue": "${external_ip}/33" },
+  { "ParameterKey": "SSHLocation", "ParameterValue": "${external_ip}/32" },
   { "ParameterKey": "VPCTemplateKey", "ParameterValue": "${vgh_cfn_stack_url}/vpc.json" },
   { "ParameterKey": "SGTemplateKey", "ParameterValue": "${vgh_cfn_stack_url}/sec_grp.json" },
   { "ParameterKey": "IAMTemplateKey", "ParameterValue": "${vgh_cfn_stack_url}/iam.json" }
