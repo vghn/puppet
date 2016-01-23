@@ -16,7 +16,7 @@ case "$1" in
     bundle exec rake test
     ;;
   deploy)
-    aws s3 sync "${REPODIR}/cfn/" "${vgh_cfn_stack_s3:?}/" \
+    aws s3 sync "${APPDIR}/cfn/" "${CFN_STACK_S3}/" \
       --delete --acl public-read \
       --exclude "*" --include "*.json"
     ;;

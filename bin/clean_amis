@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+# Creates an image
+
+# Load environment
+# shellcheck disable=1090
+. "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)/../include/aws.sh"
+
+# VARs
+image_name="${VGH_IMAGE_PREFIX}_$(date +%Y%m%d%H%M%S)"
+
+aws ec2 deregister-image --image-id ami-4fa54026
+aws ec2 describe-images \
+  --owners self \
+  --filters "Name=tag-key,Values=Name" "Name=tag-value,Values=${VGH_IMAGE_PREFIX}" \
+  --output text \
+  --query 'Images[*].{ID:ImageId}'
+aws ec2 describe-images \
+  --owners self \
+  --filters "Name=name,Values=VGH_HERA_*" \
+  --output text \
+  --query 'Images[*].{ID:ImageId}'
+
+exit
+
+echo 'Tagging image'
+aws ec2 create-tags \
+  --resources "$image_id" \
+  --tags Key=Group,Value=vgh Key=Name,Value="$VGH_IMAGE_PREFIX"
+
+echo 'Terminating instances'
+aws ec2 terminate-instances \
+  --instance-ids "$instance_id" \
+  --output text \
+  --query 'TerminatingInstances[*].InstanceId'
+echo "  ... ${instance_id}"

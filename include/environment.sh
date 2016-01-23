@@ -13,13 +13,17 @@ PATH="/opt/puppetlabs/bin:/opt/puppetlabs/puppet/bin:/usr/local/bin:${PATH}"
 . "${APPDIR}/.env" || true
 
 # Git
-export BRANCH; BRANCH=$(git symbolic-ref --short HEAD 2>/dev/null)
+export BRANCH; BRANCH=$(git symbolic-ref --short HEAD 2>/dev/null || true)
 case "${BRANCH}" in
   master)
     export ENV_TYPE='production'
     ;;
   '')
-    export BRANCH=$TRAVIS_BRANCH
+    if [[ -z "$TRAVIS_BRANCH" ]]; then
+      export BRANCH="$TRAVIS_BRANCH"
+    else
+      export BRANCH='development'
+    fi
     export ENV_TYPE="$BRANCH"
     ;;
   *)
@@ -28,36 +32,39 @@ case "${BRANCH}" in
 esac
 
 # External ip
-export external_ip
-external_ip=$(dig +short myip.opendns.com @resolver1.opendns.com 2>/dev/null \
+export EXTERNAL_IP
+EXTERNAL_IP=$(dig +short myip.opendns.com @resolver1.opendns.com 2>/dev/null \
   || true)
 
-# AWS Credentials
+# AWS
 if [[ "${CI:-false}" == true ]]; then
   export AWS_ACCESS_KEY_ID=$CI_AWS_ACCESS_KEY_ID
   export AWS_SECRET_ACCESS_KEY=$CI_AWS_SECRET_ACCESS_KEY
 fi
+export AWS_ASSETS_S3_PREFIX="${VGH_ASSETS_BUCKET}/puppet/${ENV_TYPE}"
 
 # CloudFormation
-export vgh_stack_capabilities=${vgh_stack_capabilities:-CAPABILITY_IAM}
-export vgh_assets_s3path="${VGH_ASSETS_BUCKET}/puppet/${ENV_TYPE}"
-export vgh_cfn_stack_s3="s3://${vgh_assets_s3path}/cfn"
-export vgh_cfn_stack_url="https://s3.amazonaws.com/${vgh_assets_s3path}/cfn"
+export CFN_STACK_NAME="$VGH_STACK_NAME"
+export CFN_STACK_TEMPLATE="file://${APPDIR}/${VGH_STACK_FILE}"
+export CFN_STACK_S3="s3://${AWS_ASSETS_S3_PREFIX}/cfn"
+export CFN_STACK_URL="https://s3.amazonaws.com/${AWS_ASSETS_S3_PREFIX}/cfn"
+export CFN_STACK_CAPABILITIES='CAPABILITY_IAM'
+export CFN_STACK_ON_FAILURE='DELETE'
 
-export vgh_stack_parameters; vgh_stack_parameters=$(cat <<CFPARAMS
+export CFN_STACK_PARAMETERS; CFN_STACK_PARAMETERS=$(cat <<CFPARAMS
 [
   { "ParameterKey": "KeyName", "ParameterValue": "${VGH_EC2_KEY}" },
   { "ParameterKey": "AssetsBucket", "ParameterValue": "${VGH_ASSETS_BUCKET}" },
   { "ParameterKey": "EnvType", "ParameterValue": "${ENV_TYPE}" },
-  { "ParameterKey": "SSHLocation", "ParameterValue": "${external_ip}/32" },
-  { "ParameterKey": "VPCTemplateKey", "ParameterValue": "${vgh_cfn_stack_url}/vpc.json" },
-  { "ParameterKey": "SGTemplateKey", "ParameterValue": "${vgh_cfn_stack_url}/sec_grp.json" },
-  { "ParameterKey": "IAMTemplateKey", "ParameterValue": "${vgh_cfn_stack_url}/iam.json" }
+  { "ParameterKey": "SSHLocation", "ParameterValue": "${EXTERNAL_IP}/32" },
+  { "ParameterKey": "VPCTemplateKey", "ParameterValue": "${CFN_STACK_URL}/vpc.json" },
+  { "ParameterKey": "SGTemplateKey", "ParameterValue": "${CFN_STACK_URL}/sec_grp.json" },
+  { "ParameterKey": "IAMTemplateKey", "ParameterValue": "${CFN_STACK_URL}/iam.json" }
 ]
 CFPARAMS
 )
 
-export vgh_stack_tags; vgh_stack_tags=$(cat <<CFTAGS
+export CFN_STACK_TAGS; CFN_STACK_TAGS=$(cat <<CFTAGS
 [
   { "Key": "Group", "Value": "${VGH_GROUP}" }
 ]

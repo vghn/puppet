@@ -6,7 +6,7 @@
 . "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)/../include/aws.sh"
 
 # VARs
-user_data="${REPODIR}/${VGH_IMAGE_USER_DATA}"
+user_data="${APPDIR}/${VGH_IMAGE_USER_DATA}"
 image_name="${VGH_IMAGE_PREFIX}_$(date +%Y%m%d%H%M%S)"
 qurl="http://cloud-images.ubuntu.com/query/${VGH_IMAGE_OS}/server/released.current.txt"
 
