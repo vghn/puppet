@@ -67,8 +67,8 @@ export CD_S3_PATH="s3://${CD_BUCKET}/${CD_KEY}"
 # AWS CloudFormation
 export CFN_STACK_NAME="$VGH_STACK_NAME"
 export CFN_STACK_TEMPLATE="file://${APPDIR}/${VGH_STACK_FILE}"
-export CFN_STACK_S3="s3://${AWS_ASSETS_KEY_PREFIX}/cfn"
-export CFN_STACK_URL="https://s3.amazonaws.com/${AWS_ASSETS_KEY_PREFIX}/cfn"
+export CFN_STACK_S3="s3://${AWS_ASSETS_BUCKET}/${AWS_ASSETS_KEY_PREFIX}/cfn"
+export CFN_STACK_URL="https://s3.amazonaws.com/${AWS_ASSETS_BUCKET}/${AWS_ASSETS_KEY_PREFIX}/cfn"
 export CFN_STACK_CAPABILITIES='CAPABILITY_IAM'
 export CFN_STACK_ON_FAILURE='DELETE'
 

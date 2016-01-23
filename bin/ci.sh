@@ -18,6 +18,7 @@ case "$command" in
     bundle exec rake test
     ;;
   deploy)
+    echo "Sync CloudFormation templates (${CFN_STACK_S3})"
     aws s3 sync "${APPDIR}/cfn/" "${CFN_STACK_S3}/" \
       --delete --acl public-read \
       --exclude "*" --include "*.json"
