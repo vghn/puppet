@@ -12,6 +12,9 @@ PATH="/opt/puppetlabs/bin:/opt/puppetlabs/puppet/bin:/usr/local/bin:${PATH}"
 # shellcheck disable=SC1090,SC1091
 . "${APPDIR}/.env" || true
 
+# Version
+export VERSION; VERSION="$(cat "${APPDIR}/VERSION")"
+
 # Git
 export BRANCH; BRANCH=$(git symbolic-ref --short HEAD 2>/dev/null || true)
 case "${BRANCH}" in
@@ -36,14 +39,31 @@ export EXTERNAL_IP
 EXTERNAL_IP=$(dig +short myip.opendns.com @resolver1.opendns.com 2>/dev/null \
   || true)
 
-# AWS
+# CI
+export BUILD=${TRAVIS_BUILD_NUMBER:-0}
+
+# AWS Credentials
 if [[ "${CI:-false}" == true ]]; then
   export AWS_ACCESS_KEY_ID=$CI_AWS_ACCESS_KEY_ID
   export AWS_SECRET_ACCESS_KEY=$CI_AWS_SECRET_ACCESS_KEY
 fi
+
+# AWS S3
 export AWS_ASSETS_S3_PREFIX="${VGH_ASSETS_BUCKET}/puppet/${ENV_TYPE}"
 
-# CloudFormation
+# AWS CodeDeploy
+export CD_APP_NAME="$VGH_APPLICATION_NAME"
+export CD_ARCHIVE_BUNDLE='tgz'
+export CD_ARCHIVE="${CD_APP_NAME}-${VERSION}-${BUILD}.${CD_ARCHIVE_BUNDLE}"
+export CD_ARCHIVE_PATH="/tmp/${CD_ARCHIVE}"
+export CD_GROUP_NAME="${ENV_TYPE}"
+export CD_CONFIG='CodeDeployDefault.OneAtATime'
+export CD_BUCKET="${VGH_ASSETS_BUCKET}"
+export CD_KEY_PREFIX="${AWS_ASSETS_S3_PREFIX}/deploy"
+export CD_KEY="${CD_KEY_PREFIX}/${CD_ARCHIVE}"
+export CD_S3_PATH="s3://${CD_BUCKET}/${CD_KEY}"
+
+# AWS CloudFormation
 export CFN_STACK_NAME="$VGH_STACK_NAME"
 export CFN_STACK_TEMPLATE="file://${APPDIR}/${VGH_STACK_FILE}"
 export CFN_STACK_S3="s3://${AWS_ASSETS_S3_PREFIX}/cfn"
