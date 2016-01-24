@@ -5,7 +5,7 @@
 # shellcheck disable=1090
 . "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)/../include/aws.sh"
 
-command="$1"
+command="${1:-none}"
 
 case "$command" in
   install)
@@ -23,13 +23,10 @@ case "$command" in
       --delete --acl public-read \
       --exclude "*" --include "*.json"
 
-    echo 'Reset working directory'
-    git stash --all
-
     echo "Creating TGZ archive (${CD_ARCHIVE_PATH})"
     tar cvzf "$CD_ARCHIVE_PATH" \
       --exclude-vcs \
-      .
+      bin/ include/ .env defaults.env
 
     echo "Uploading archive to S3 (${CD_S3_PATH})"
     aws s3 cp "${CD_ARCHIVE_PATH}" "${CD_S3_PATH}"
@@ -42,7 +39,14 @@ case "$command" in
       "$CD_ARCHIVE_BUNDLE" \
       "$CD_CONFIG"
     ;;
+  none)
+    echo 'No command specified'
+    echo 'You need one of: install, script or deploy' >&2
+    exit 1
+    ;;
   *)
-    echo "Unrecognized command ${command}" >&2; exit 1
+    echo "Unrecognized command ${command}" >&2
+    echo 'You need one of: install, script or deploy' >&2
+    exit 1
     ;;
 esac
