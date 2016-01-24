@@ -22,7 +22,7 @@ case "${BRANCH}" in
     export ENV_TYPE='production'
     ;;
   '')
-    if [[ -z "$TRAVIS_BRANCH" ]]; then
+    if [[ -n "$TRAVIS_BRANCH" ]]; then
       export BRANCH="$TRAVIS_BRANCH"
     else
       export BRANCH='development'
