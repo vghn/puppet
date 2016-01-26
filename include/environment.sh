@@ -93,3 +93,7 @@ export CFN_STACK_TAGS; CFN_STACK_TAGS=$(cat <<CFTAGS
 CFTAGS
 )
 
+# Puppet
+export SSLDIR="${APPDIR}/ssl_ca"
+export CRTDIR="${APPDIR}/ssl_certs"
+
