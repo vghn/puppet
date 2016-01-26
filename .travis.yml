@@ -4,7 +4,7 @@ before_install:
   - openssl aes-256-cbc -K $encrypted_4543e8d896b8_key -iv $encrypted_4543e8d896b8_iv -in .env.enc -out .env -d || true
 install: bin/ci.sh install
 script: bin/ci.sh script
-after_script: bin/ci.sh deploy
+after_success: bin/ci.sh deploy
 env: PUPPET_GEM_VERSION="~> 4.0" STRICT_VARIABLES=yes
 cache:
   directories:
