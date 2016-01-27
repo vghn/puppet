@@ -16,6 +16,15 @@ create_stack(){
     --on-failure "$CFN_STACK_ON_FAILURE"
 }
 
+# Update an existing stack
+update_stack(){
+  aws cloudformation update-stack \
+    --stack-name "$CFN_STACK_NAME" \
+    --template-body "$CFN_STACK_TEMPLATE" \
+    --parameters "$CFN_STACK_PARAMETERS" \
+    --capabilities "$CFN_STACK_CAPABILITIES"
+}
+
 # Deletes an existing stack
 delete_stack(){
   aws cloudformation delete-stack --stack-name "$CFN_STACK_NAME"
