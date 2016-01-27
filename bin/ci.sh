@@ -18,8 +18,7 @@ case "$command" in
     bundle exec rake test
     ;;
   deploy)
-    echo "Pull request: ${PR}"
-    if [[ ${PR} == true ]]; then
+    if [[ ${PR} != false ]]; then
       echo 'This is a pull request; skipping deployment'; exit 0
     fi
     echo "Sync CloudFormation templates (${CFN_STACK_S3})"
