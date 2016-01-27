@@ -43,7 +43,7 @@ EXTERNAL_IP=$(dig +short myip.opendns.com @resolver1.opendns.com 2>/dev/null \
 export CI=${CI:-false}
 export PR=${TRAVIS_PULL_REQUEST:-false}
 export BUILD=${TRAVIS_BUILD_NUMBER:-0}
-if [[ "${CI}" == true ]]; then
+if [[ ${CI} == true ]]; then
   export AWS_ACCESS_KEY_ID=$CI_AWS_ACCESS_KEY_ID
   export AWS_SECRET_ACCESS_KEY=$CI_AWS_SECRET_ACCESS_KEY
 
