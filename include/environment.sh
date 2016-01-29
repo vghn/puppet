@@ -81,7 +81,7 @@ export CFN_STACK_PARAMETERS; CFN_STACK_PARAMETERS=$(cat <<CFPARAMS
   { "ParameterKey": "EnvType", "ParameterValue": "${ENV_TYPE}" },
   { "ParameterKey": "SSHLocation", "ParameterValue": "${EXTERNAL_IP}/32" },
   { "ParameterKey": "VPCTemplateKey", "ParameterValue": "${CFN_STACK_URL}/vpc.json" },
-  { "ParameterKey": "SGTemplateKey", "ParameterValue": "${CFN_STACK_URL}/sec_grp.json" },
+  { "ParameterKey": "SGTemplateKey", "ParameterValue": "${CFN_STACK_URL}/sg.json" },
   { "ParameterKey": "IAMTemplateKey", "ParameterValue": "${CFN_STACK_URL}/iam.json" }
 ]
 CFPARAMS
