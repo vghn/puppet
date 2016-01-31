@@ -17,6 +17,8 @@ mod 'maestrodev/wget', '1.7.1'
 mod 'zack/r10k', '3.2.0'
 
 # Others
+mod 'golja/gnupg'
+mod 'maestrodev/rvm', '1.12.1'
 mod 'saz/limits', '2.3.0'
 mod 'saz/locales', '2.2.2'
 mod 'saz/ssh', '2.8.1'
