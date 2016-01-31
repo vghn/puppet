@@ -41,9 +41,11 @@ wait_for_stack(){
 case "$1" in
   create)
     create_stack
+    wait_for_stack
     ;;
   update)
     update_stack
+    wait_for_stack
     ;;
   delete)
     delete_stack
@@ -52,4 +54,3 @@ case "$1" in
     echo 'USAGE: cfn [create | update | delete]'; exit 1
     ;;
 esac
-wait_for_stack
