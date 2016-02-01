@@ -1,5 +1,6 @@
 # Private
 .env
+ssl_*/
 
 # Everything in data except global.yaml
 /hieradata/*

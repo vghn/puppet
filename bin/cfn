@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+# CloudFormation stack actions
+
+# Load environment
+# shellcheck disable=1090
+. "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)/../include/aws.sh"
+
+# Creates a new stack
+create_stack(){
+  aws cloudformation create-stack \
+    --stack-name "$CFN_STACK_NAME" \
+    --template-body "$CFN_STACK_TEMPLATE" \
+    --parameters "$CFN_STACK_PARAMETERS" \
+    --capabilities "$CFN_STACK_CAPABILITIES" \
+    --tags "$CFN_STACK_TAGS" \
+    --on-failure "$CFN_STACK_ON_FAILURE"
+}
+
+# Update an existing stack
+update_stack(){
+  aws cloudformation update-stack \
+    --stack-name "$CFN_STACK_NAME" \
+    --template-body "$CFN_STACK_TEMPLATE" \
+    --parameters "$CFN_STACK_PARAMETERS" \
+    --capabilities "$CFN_STACK_CAPABILITIES"
+}
+
+# Deletes an existing stack
+delete_stack(){
+  aws cloudformation delete-stack --stack-name "$CFN_STACK_NAME"
+}
+
+# Wait for stack to finish
+wait_for_stack(){
+  if ! aws_cfn_wait_for_stack "$CFN_STACK_NAME"; then
+    echo "FATAL: The stack ${CFN_STACK_NAME} failed" >&2; return 1
+  fi
+}
+
+# Process argument
+case "$1" in
+  create)
+    create_stack
+    wait_for_stack
+    ;;
+  update)
+    update_stack
+    wait_for_stack
+    ;;
+  delete)
+    delete_stack
+    ;;
+  *)
+    echo 'USAGE: cfn [create | update | delete]'; exit 1
+    ;;
+esac

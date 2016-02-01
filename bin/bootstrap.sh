@@ -25,9 +25,9 @@ PP_MASTER=${PP_MASTER:-puppet}
 PP_ROLE=${PP_ROLE:-none}
 PP_SECRET=${PP_SECRET:-none}
 PP_COLLECTION=${PP_COLLECTION:-pc1}
-PP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd -P)"
 PP_COLOR=${PP_COLOR:-true}
 PATH="/opt/puppetlabs/bin:/opt/puppetlabs/puppet/bin:${PATH}"
+PP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd -P)"
 
 # Check if root
 is_root(){

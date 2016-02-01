@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+#
+# Generates Puppet certificates
+
+# Immediately exit on errors
+set -euo pipefail
+
+# Load environment
+# shellcheck disable=1090
+. "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)/../include/common.sh"
+
+create_directories(){
+  local dir="${CRTDIR}/${1}"
+  echo "Create directories for ${name}"
+  mkdir -p {"${dir}/certs","${dir}/private_keys","${dir}/public_keys"}
+}
+
+generate_certificate(){
+  local name="$1"
+  echo "Generate certificate for ${name}"
+  puppet cert --ssldir "$SSLDIR" generate "$name" --verbose
+}
+
+export_certificate(){
+  local name="$1"
+  local dir="${CRTDIR}/${name}"
+  echo "Exporting certificate for ${name}"
+  for cert in crl.pem certs/ca.pem; do
+    cp "${SSLDIR}/${cert}" "${dir}/${cert}"
+  done
+  for cert in "certs/${name}.pem" "private_keys/${name}.pem" "public_keys/${name}.pem"; do
+    mv "${SSLDIR}/${cert}" "${dir}/${cert}"
+  done
+}
+
+# MAIN
+mkdir -p "$SSLDIR"
+for name in "$@"; do
+  create_directories "$name"
+  generate_certificate "$name"
+  export_certificate "$name"
+done
+
