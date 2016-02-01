@@ -44,12 +44,12 @@ class profile::ec2 {
     ])
     wget::fetch {'CodeDeploy Deb':
       source      => 'https://aws-codedeploy-us-east-1.s3.amazonaws.com/latest/codedeploy-agent_all.deb',
-      destination => '/tmp/codedeploy-agent_all.deb',
+      destination => '/usr/local/src/codedeploy-agent_all.deb',
     }
     package {'CodeDeploy Agent':
       ensure   => present,
       name     => 'codedeploy-agent',
-      source   => '/tmp/codedeploy-agent_all.deb',
+      source   => '/usr/local/src/codedeploy-agent_all.deb',
       provider => dpkg,
       require  => [
         Wget::Fetch['CodeDeploy Deb'],
@@ -68,12 +68,12 @@ class profile::ec2 {
   if ($::os['name'] == 'Ubuntu') {
     wget::fetch {'AWS SSM Agent Deb':
       source      => 'https://amazon-ssm-us-east-1.s3.amazonaws.com/latest/debian_amd64/amazon-ssm-agent.deb',
-      destination => '/tmp/amazon-ssm-agent.deb',
+      destination => '/usr/local/src/amazon-ssm-agent.deb',
     }
     package {'AWS SSM Agent':
       ensure   => present,
       name     => 'amazon-ssm-agent',
-      source   => '/tmp/amazon-ssm-agent.deb',
+      source   => '/usr/local/src/amazon-ssm-agent.deb',
       provider => dpkg,
       require  => [
         Wget::Fetch['AWS SSM Agent Deb'],
