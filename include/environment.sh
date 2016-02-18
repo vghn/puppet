@@ -56,8 +56,8 @@ export AWS_ASSETS_KEY_PREFIX="puppet/${ENV_TYPE}"
 
 # AWS CodeDeploy
 export CD_APP_NAME="$VGH_APPLICATION_NAME"
-export CD_ARCHIVE_BUNDLE='tgz'
-export CD_ARCHIVE="${CD_APP_NAME}-${VERSION}-${BUILD}.${CD_ARCHIVE_BUNDLE}"
+export CD_BUNDLE_TYPE='tgz'
+export CD_ARCHIVE="${CD_APP_NAME}-${VERSION}-${BUILD}.${CD_BUNDLE_TYPE}"
 export CD_ARCHIVE_PATH="/tmp/${CD_ARCHIVE}"
 export CD_GROUP_NAME="${ENV_TYPE}"
 export CD_CONFIG='CodeDeployDefault.OneAtATime'
