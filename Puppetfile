@@ -11,9 +11,9 @@ mod 'puppetlabs/stdlib', '4.11.0'
 mod 'puppetlabs/vcsrepo', '1.3.2'
 
 # Puppet approved modules
-mod 'garethr/docker', '5.0.0'
+mod 'garethr/docker', '5.1.0'
 mod 'hunner/hiera', '2.0.1'
-mod 'maestrodev/wget', '1.7.1'
+mod 'maestrodev/wget', '1.7.2'
 mod 'zack/r10k', '3.2.0'
 
 # Others

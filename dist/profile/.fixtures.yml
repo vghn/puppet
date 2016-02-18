@@ -13,7 +13,7 @@ fixtures:
       ref: '0.4.0'
     docker:
       repo: 'garethr/docker'
-      ref: '5.0.0'
+      ref: '5.1.0'
     hiera:
       repo: 'hunner/hiera'
       ref: '2.0.1'
@@ -34,7 +34,7 @@ fixtures:
       ref: '1.3.2'
     wget:
       repo: 'maestrodev/wget'
-      ref: '1.7.1'
+      ref: '1.7.2'
     limits:
       repo: 'saz/limits'
       ref: '2.3.0'
