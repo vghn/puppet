@@ -184,9 +184,6 @@ e_info "AWS EC2 key: ${AWS_EC2_KEY:?}"
 e_info "AWS EC2 instance type: ${AWS_EC2_INSTANCE_TYPE:?}"
 e_info "AWS EC2 image prefix: ${AWS_EC2_IMAGE_PREFIX:?}"
 e_info "AWS EC2 image description: ${AWS_EC2_IMAGE_DESCRIPTION:?}"
-e_info "AWS CloudFormation stack name: ${CFN_STACK_NAME:?}"
-ec2_instance_profile_name="$(vgs_aws_cfn_get_output "$CFN_STACK_NAME" InstanceProfileName)"
-e_info "AWS EC2 instance profile name: ${ec2_instance_profile_name}"
 
 # Process arguments
 e_header 'AWS Image:'
