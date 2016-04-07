@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+# GIT Pre-Push Hook
+# @author Vlad Ghinea
+
+# Immediately exit on errors
+set -euo pipefail
+
+# Load environment
+# shellcheck disable=1090
+. "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)/../../load" || \
+  . "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)/../load" || true
+
+# Upload Hiera Data
+sync_hiera_data(){
+  e_info 'Sync hiera data'
+  aws s3 sync "${APPDIR}/data" "${AWS_ASSETS_S3_PATH}/data" --delete
+}
+
+main(){
+  sync_hiera_data
+}
+
+# Info
+e_header 'INFO:'
+e_info "Application directory: ${APPDIR:?}"
+e_info "AWS S3 Path: ${AWS_ASSETS_S3_PATH:?}"
+
+# Process arguments
+e_header 'AWS Image:'
+main "$@"

@@ -12,7 +12,7 @@ node default {
     }
   } elsif $trusted["authenticated"] == "local" {
     if !empty( $role ) {
-      info("Applying role '${::role}'...")
+      notice("Applying role '${::role}'...")
       include "::role::${::role}"
     } else {
       fail('The \'role\' fact could not be found!')

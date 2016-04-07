@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# R10K Post-Run Hook
+# @author Vlad Ghinea
+
+# Immediately exit on errors
+set -euo pipefail
+
+# Load environment
+# shellcheck disable=1090
+. "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)/../../load" || \
+  . "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)/../load" || true
