@@ -7,8 +7,7 @@ set -euo pipefail
 
 # Load environment
 # shellcheck disable=1090
-. "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)/../../load" || \
-  . "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)/../load" || true
+. "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)/../../environment.sh" || true
 
 # Upload Hiera Data
 sync_hiera_data(){
