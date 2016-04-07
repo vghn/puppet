@@ -54,6 +54,7 @@ CURDIR=$(pwd -P)
 HIERADIR="${CURDIR}/data"
 PUPPETFILE="${CURDIR}/Puppetfile"
 MANIFESTS="${CURDIR}/manifests"
+CSRFILE="${TMPDIR}/csr_attributes.yaml"
 PATH="/opt/puppetlabs/bin:/opt/puppetlabs/puppet/bin:${PATH}"
 
 # LOG
@@ -82,14 +83,13 @@ apt_update() { e_info 'Updating APT' && apt-get -qy update < /dev/null ;}
 # Generate certificate request attributes file
 generate_csr_attributes(){
   e_info 'Generating a CSR Attributes file'
-  csr_file="${TMPDIR}/csr_attributes.yaml"
 
   # Get EC2 info
   instance_id="$(curl --max-time 2 -s http://169.254.169.254/latest/meta-data/instance-id || '')"
   ami_id="$(curl --max-time 2 -s http://169.254.169.254/latest/meta-data/ami-id || '')"
 
   # Define file template
-  cat > "$csr_file" <<EPP
+  cat > "$CSRFILE" <<EPP
 custom_attributes:
   challengePassword: $PP_SECRET
 extension_requests:
@@ -97,9 +97,6 @@ extension_requests:
   pp_instance_id: $instance_id
   pp_image_name: $ami_id
 EPP
-
-  # Set proper permissions
-  chmod 600 "$csr_file"
 }
 
 # Install Puppet release package
@@ -195,15 +192,19 @@ configure_puppet_agent(){
       puppet config set certname "$PP_AGENT_CERTNAME" --section agent
       ;;
   esac
+
+  e_info 'Move the CSR Attributes file to the right place and set permissions'
+  if [[ -s "$CSRFILE" ]]; then
+    chmod 600 "$CSRFILE"
+    mv "$CSRFILE" "$PP_CONFDIR"
+  fi
 }
 
 # Configure agent or master
 configure_puppet(){
   PP_CONFDIR="$(puppet master --configprint confdir)"
   PP_CODEDIR="$(puppet master --configprint codedir)"
-  if [[ -s "$csr_file" ]]; then
-    mv "$csr_file" "$PP_CONFDIR"
-  fi
+
   if [[ "$PP_MASTER" == 'none' ]]; then
     if [[ -s "${PUPPETFILE}" ]]; then
       deploy_r10k
@@ -228,7 +229,6 @@ apply_puppet(){
       puppet apply \
       --detailed-exitcodes \
       --color="$PP_COLOR" \
-      --environment="$PP_ENV" \
       --modulepath modules:dist \
       "$manifest" || exit_code=$?
   fi
