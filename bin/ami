@@ -29,11 +29,6 @@ upload_ami_files(){
   fi
 }
 
-generate_s3_presigned_url(){
-  e_info 'Generate S3 presigned URL'
-  vgs_aws_s3_generate_presigned_url "$ami_archive_bucket" "$ami_archive_key" 300
-}
-
 generate_user_data(){
   local file="${TMPDIR}/${FUNCNAME[0]}"
 cat <<USERDATA > $file
@@ -53,7 +48,7 @@ export SLACK_USER='${SLACK_USER}'
 export SLACK_WEBHOOK='${SLACK_WEBHOOK}'
 export ami_archive_s3_path='${ami_archive_s3_path}'
 export ami_archive='${ami_archive}'
-export ami_archive_s3_url='$(generate_s3_presigned_url)'
+export ami_archive_s3_url='$(vgs_aws_s3_generate_presigned_url "$ami_archive_bucket" "$ami_archive_key" 300)'
 export HOME=/home/ubuntu
 export PATH="/opt/puppetlabs/bin:/opt/puppetlabs/puppet/bin:/usr/local/bin:\${PATH}"
 export BUILDDIR; BUILDDIR="/tmp/ami_build_\$(date +%Y%m%d)"
