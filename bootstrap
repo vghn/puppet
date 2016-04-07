@@ -1,0 +1,284 @@
+#!/usr/bin/env bash
+#
+# Bootstraps puppet
+#
+# USAGE:
+# git clone https://github.com/vladgh/puppet.git
+# bash puppet/bootstrap
+#
+# Environment variables:
+# PP_ENV: [STRING] The environment (default: 'production)
+# PP_MASTER: [String] Can be any of the following
+#   - `puppet`: (default) the address of the puppet master server
+#   - `none`: runs in master-less mode, considering this a control repo; it looks
+#           for a `Puppetfile` (which will install into the default modules/
+#           directory), for a `datadir` containing hiera data (see the function
+#           `configure_hiera` bellow for a hierarchy of files), for a `dist`
+#           directory containing the profile and role modules, and for a
+#           `manifests` directory containing the `site.pp` file.
+#   - This value can also be any other string, in which case the address of the
+#     will assume that value.
+# PP_ROLE: [String] Declares the role of the node as a trusted fact*
+# PP_SECRET: [String] Declares a shared secret as a trusted fact*
+# PP_COLLECTION: [String] The puppet collection (default: 'pc3')
+# PP_CODENAME: [String] The distribution codename (default: `lsb_release -cs`)
+# PP_CONTROL_REPO: [String] The url of the control repo (default:
+#                  `https://github.com/vghn/puppet.git`)
+# PP_COLOR: [String] Use color or not in output (default: 'true';
+#           https://docs.puppetlabs.com/puppet/latest/reference/configuration.html#color)
+# PP_AGENT_CERTNAME: [String] The certificate name for the agent. Can be any of:
+#   - `default`: The certname will be the hostname (default on non-ec2 agents)
+#   - `ec2`: The certname will be the AWS EC2 Instance ID (default on
+#                    AWS agents)
+#   - This value can also be any other string, in which case the certname will
+#     assume that value.
+#
+# * Trusted facts info: https://docs.puppetlabs.com/puppet/latest/reference/lang_facts_and_builtin_vars.html#trusted-facts
+
+# Immediately exit on errors
+set -euo pipefail
+
+# DEFAULTS
+PP_ENV=${PP_ENV:-production}
+PP_MASTER=${PP_MASTER:-puppet}
+PP_ROLE=${PP_ROLE:-}
+PP_SECRET=${PP_SECRET:-}
+PP_COLLECTION=${PP_COLLECTION:-pc1}
+PP_COLOR=${PP_COLOR:-true}
+PP_CONTROL_REPO=${PP_CONTROL_REPO:-'https://github.com/vghn/puppet.git'}
+PP_AGENT_CERTNAME=${PP_AGENT_CERTNAME:-default}
+
+# INTERNALS
+TMPDIR=$(mktemp -d 2>/dev/null || mktemp -d -t 'tmp')
+CURDIR=$(pwd -P)
+HIERADIR="${CURDIR}/data"
+PUPPETFILE="${CURDIR}/Puppetfile"
+MANIFESTS="${CURDIR}/manifests"
+PATH="/opt/puppetlabs/bin:/opt/puppetlabs/puppet/bin:${PATH}"
+
+# LOG
+e_info(){ echo "$*" ;}
+e_warn(){ e_info "WARNING: ${*}" ;}
+e_abort(){ e_info "ERROR: $1"; return "${2:-1}" ;}
+
+# Check if root
+is_root() { [[ $EUID == 0 ]] ;}
+
+# Check if OS supported
+is_supported(){ [[ $(uname) == Linux ]] ;}
+
+# Check if command exists
+is_cmd() { command -v "$@" >/dev/null 2>&1 ;}
+
+# Get codename
+get_release() { is_cmd lsb_release && lsb_release -cs ;}
+
+# Install package
+apt_install(){ e_info "Installing $*"; apt-get -qy install "$@" < /dev/null ;}
+
+# Update APT
+apt_update() { e_info 'Updating APT' && apt-get -qy update < /dev/null ;}
+
+# Generate certificate request attributes file
+generate_csr_attributes(){
+  e_info 'Generating a CSR Attributes file'
+  csr_file="${TMPDIR}/csr_attributes.yaml"
+
+  # Get EC2 info
+  instance_id="$(curl --max-time 2 -s http://169.254.169.254/latest/meta-data/instance-id || '')"
+  ami_id="$(curl --max-time 2 -s http://169.254.169.254/latest/meta-data/ami-id || '')"
+
+  # Define file template
+  cat > "$csr_file" <<EPP
+custom_attributes:
+  challengePassword: $PP_SECRET
+extension_requests:
+  pp_role: $PP_ROLE
+  pp_instance_id: $instance_id
+  pp_image_name: $ami_id
+EPP
+
+  # Set proper permissions
+  chmod 600 "$csr_file"
+}
+
+# Install Puppet release package
+install_puppet_agent(){
+  local deb_name deb_path
+  PP_CODENAME=${PP_CODENAME:-$(get_release)}
+  deb_name="puppetlabs-release-${PP_COLLECTION}-${PP_CODENAME}.deb"
+  deb_path="${TMPDIR}/${deb_name}"
+
+  if [ ! -x /opt/puppetlabs/bin/puppet ] ; then
+    if ! is_cmd wget; then
+      apt_update && apt_install wget
+    fi
+
+    if ! wget -O "$deb_path" "https://apt.puppetlabs.com/${deb_name}"; then
+      e_abort 'Could not download the release package'
+    fi
+
+    if [ -s "$deb_path" ]; then
+      e_info 'Installing Puppet release package'
+      dpkg -i "$deb_path" && rm "$deb_path"
+      apt_update && apt_install puppet-agent
+    else
+      e_abort 'Could not install Puppet release package'
+    fi
+  else
+    e_warn "Puppet is already installed - version $(puppet --version)"
+  fi
+}
+
+# Configure puppet master
+deploy_r10k(){
+  if ! is_cmd r10k; then
+    e_info 'Install R10K gem'
+    puppet resource package r10k ensure=latest provider=puppet_gem
+  fi
+
+  if ! is_cmd git; then
+    e_info 'Install git'
+    puppet resource package git ensure=latest
+  fi
+
+  e_info 'Configure R10K'
+  local r10k_args="--verbose"
+  $PP_COLOR && r10k_args="${r10k_args} --color"
+
+  e_info 'Deploy R10K'
+  eval r10k puppetfile install "$r10k_args"
+}
+
+configure_hiera(){
+  local hiera_config="${PP_CODEDIR}/hiera.yaml"
+  if [[ "$(sed -n '1p' "$hiera_config" 2>/dev/null)" != '# managed by puppet' ]]; then
+    e_info 'Configure Hiera'
+    cat <<HIERA > "$hiera_config"
+---
+:backends:
+  - yaml
+:yaml:
+  :datadir: '${HIERADIR}'
+:hierarchy:
+  - "nodes/%{::trusted.certname}"
+  - "%{::trusted.domainname}/%{::trusted.hostname}"
+  - "roles/%{::trusted.extensions.pp_role}"
+  - "roles/%{role}"
+  - private
+  - common
+HIERA
+  fi
+}
+
+# Configure puppet
+configure_puppet_agent(){
+  e_info "Set puppet master address - '$PP_MASTER'"
+  puppet config set server "$PP_MASTER" --section agent
+
+  e_info "Set puppet master address - '$PP_MASTER'"
+  puppet config set environment "$PP_ENV" --section agent
+
+  e_info "Set puppet certname - '$PP_AGENT_CERTNAME'"
+  case "$PP_AGENT_CERTNAME" in
+    default )
+      e_info 'Leaving the default certname'
+      ;;
+    ec2 )
+      if [[ "$instance_id" =~ ^i-.* ]]; then
+        puppet config set certname "$instance_id" --section agent
+      else
+        e_abort 'The EC2 Instance ID is not correct'
+      fi
+      ;;
+    * )
+      puppet config set certname "$PP_AGENT_CERTNAME" --section agent
+      ;;
+  esac
+}
+
+# Configure agent or master
+configure_puppet(){
+  PP_CONFDIR="$(puppet master --configprint confdir)"
+  PP_CODEDIR="$(puppet master --configprint codedir)"
+  if [[ -s "$csr_file" ]]; then
+    mv "$csr_file" "$PP_CONFDIR"
+  fi
+  if [[ "$PP_MASTER" == 'none' ]]; then
+    if [[ -s "${PUPPETFILE}" ]]; then
+      deploy_r10k
+    fi
+    if [[ -s "${HIERADIR}" ]]; then
+      configure_hiera
+    fi
+  elif [[ "$PP_MASTER" != 'puppet' ]]; then
+    configure_puppet_agent
+  fi
+}
+
+# Apply puppet
+apply_puppet(){
+  local manifest exit_code
+  manifest="${1:-'manifests/site.pp'}"
+  exit_code=0
+
+  if [[ -s "$manifest" ]]; then
+    e_info 'Applying puppet'
+    FACTER_ROLE="${PP_ROLE}" \
+      puppet apply \
+      --detailed-exitcodes \
+      --color="$PP_COLOR" \
+      --environment="$PP_ENV" \
+      --modulepath modules:dist \
+      "$manifest" || exit_code=$?
+  fi
+
+  # Process the exit code
+  if [[ $exit_code == 0 ]]; then
+    e_info 'The run succeeded with no changes or failures'
+  elif [[ $exit_code == 1 ]]; then
+    e_abort 'The run failed'
+  elif [[ $exit_code == 2 ]]; then
+    e_info 'The run succeeded, and some resources were changed'
+  elif [[ $exit_code == 4 ]]; then
+    e_abort 'The run succeeded, and some resources failed'
+  elif [[ $exit_code == 6 ]]; then
+    e_abort 'The run succeeded, and included both changes and failures'
+  else
+    e_abort 'Unknown run exit code'
+  fi
+}
+
+# Run puppet
+run_puppet(){
+  e_info 'Running puppet'
+  puppet agent \
+    --server "$PP_MASTER" \
+    --environment="$PP_ENV" \
+    --waitforcert 5 \
+    --no-daemonize \
+    --onetime \
+    --color="$PP_COLOR" \
+    --verbose
+}
+
+# Logic
+main(){
+  is_root || e_abort 'This script needs to run as root'
+  # is_supported || e_abort 'Only Linux is supported'
+  if [[ "$PP_MASTER" != 'none' ]]; then
+    generate_csr_attributes
+  fi
+  install_puppet_agent
+  configure_puppet
+  if [[ "$PP_MASTER" == 'none' ]]; then
+    apply_puppet "${MANIFESTS}/site.pp"
+  elif [[ -n "$PP_MASTER" ]]; then
+    run_puppet
+  else
+    e_warn 'No puppet master specified'
+  fi
+}
+
+# Run
+main "$@"
