@@ -1,7 +1,16 @@
 {
-  "Description": "VGH CloudFormation Stack",
+  "Description": "VGH Puppet v0.0.1",
 
   "Parameters": {
+    "Version": {
+      "Type": "String",
+      "Description": "Version"
+    },
+    "EnvType": {
+      "Type": "String",
+      "Description": "Environment type",
+      "Default": "production"
+    },
     "KeyName": {
       "Type": "AWS::EC2::KeyPair::KeyName",
       "Description": "Amazon EC2 key pair"
@@ -10,20 +19,51 @@
       "Type": "String",
       "Description": "The S3 bucket containing the assets"
     },
-    "EnvType": {
+    "AMIPrefix": {
       "Type": "String",
-      "Default" : "production",
-      "Description": "Environment type",
-      "AllowedValues" : ["development", "test", "production"]
+      "Description": "The AMI Prefix"
     },
-    "SSHLocation" : {
+    "SSHLocations" : {
+      "Type": "CommaDelimitedList",
+      "Description" : "The IP address ranges that can be used to SSH to the EC2 instances"
+    },
+    "DBEngine": {
+      "Default": "mariadb",
+      "Description": "MySQL engine",
       "Type": "String",
-      "Description" : "The IP address range that can be used to SSH to the EC2 instances",
-      "MinLength": "9",
-      "MaxLength": "18",
-      "Default": "0.0.0.0/0",
-      "AllowedPattern": "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,2})",
-      "ConstraintDescription": "must be a valid IP CIDR range of the form x.x.x.x/x."
+      "AllowedValues": ["MySQL", "mariadb", "postgres"],
+      "ConstraintDescription": "must select a valid database engine"
+    },
+    "DBName": {
+      "Default": "myDatabase",
+      "Description" : "MySQL database name",
+      "Type": "String",
+      "MinLength": "1",
+      "MaxLength": "64",
+      "AllowedPattern" : "[a-zA-Z][a-zA-Z0-9]*",
+      "ConstraintDescription" : "must begin with a letter and contain only alphanumeric characters."
+    },
+    "DBUser": {
+      "NoEcho": "true",
+      "Description" : "Username for MySQL database access",
+      "Type": "String",
+      "MinLength": "1",
+      "MaxLength": "16",
+      "AllowedPattern" : "[a-zA-Z][a-zA-Z0-9]*",
+      "ConstraintDescription" : "must begin with a letter and contain only alphanumeric characters."
+    },
+    "DBPassword": {
+      "NoEcho": "true",
+      "Description" : "Password for MySQL database access",
+      "Type": "String",
+      "MinLength": "8",
+      "MaxLength": "41",
+      "AllowedPattern" : "[a-zA-Z0-9]*",
+      "ConstraintDescription" : "must contain only alphanumeric characters."
+    },
+    "SSLCertificateId": {
+      "Description": "The ARN of the SSL certificate to use",
+      "Type": "String"
     },
     "VPCTemplateKey": {
       "Type": "String",
@@ -36,6 +76,10 @@
     "IAMTemplateKey": {
       "Type": "String",
       "Description": "The key of the template for the IAM nested stack"
+    },
+    "RDSTemplateKey": {
+      "Type": "String",
+      "Description": "The key of the template for the RDS nested stack"
     }
   },
 
@@ -52,10 +96,10 @@
         ],
         "CrossZone": "true",
         "Listeners": [
-          {"LoadBalancerPort": "80", "InstancePort": "80", "Protocol": "HTTP"}
+          {"LoadBalancerPort": "443", "Protocol": "HTTPS", "InstancePort": "80", "InstanceProtocol": "HTTP", "SSLCertificateId": {"Ref": "SSLCertificateId"} }
         ],
         "HealthCheck": {
-          "Target": "HTTP:80/",
+          "Target": "HTTP:51678/v1/metadata",
           "HealthyThreshold": "2",
           "UnhealthyThreshold": "6",
           "Interval": "10",
@@ -65,20 +109,112 @@
       }
     },
 
+    "Zeus": {
+      "Type": "AWS::AutoScaling::AutoScalingGroup",
+      "Properties": {
+        "LaunchConfigurationName": {"Ref": "LaunchZeusInstance"},
+        "VPCZoneIdentifier": [
+          {"Fn::GetAtt": ["VPC", "Outputs.Subnet1"]},
+          {"Fn::GetAtt": ["VPC", "Outputs.Subnet2"]},
+          {"Fn::GetAtt": ["VPC", "Outputs.Subnet3"]},
+          {"Fn::GetAtt": ["VPC", "Outputs.Subnet4"]}
+        ],
+        "MinSize": "0",
+        "MaxSize": "0",
+        "DesiredCapacity": "0",
+        "HealthCheckType": "ELB",
+        "HealthCheckGracePeriod": "600",
+        "Cooldown": "600",
+        "LoadBalancerNames": [ { "Ref": "ELB" } ],
+        "TerminationPolicies" : [ "OldestInstance", "Default" ],
+        "Tags": [
+          {"Key": "Role", "Value": "zeus", "PropagateAtLaunch": "true"},
+          {"Key": "Name", "Value": {"Fn::Join": ["-" , [{"Ref": "AWS::StackName"}, "zeus"]]}, "PropagateAtLaunch": "true"}
+        ]
+      },
+      "UpdatePolicy" : {
+        "AutoScalingRollingUpdate": {
+          "MaxBatchSize": "1",
+          "MinInstancesInService": "1",
+          "PauseTime": "PT10M",
+          "WaitOnResourceSignals": "true"
+        }
+      }
+    },
+    "LaunchZeusInstance": {
+      "Type": "AWS::AutoScaling::LaunchConfiguration",
+      "Properties": {
+        "ImageId": {"Fn::GetAtt": ["AMIInfo", "Id" ]},
+        "InstanceType": "t2.micro",
+        "AssociatePublicIpAddress": "true",
+        "SecurityGroups": [{"Fn::GetAtt": ["SG", "Outputs.InstanceSecurityGroup"]}],
+        "KeyName": {"Ref": "KeyName"},
+        "IamInstanceProfile": {"Fn::GetAtt": ["IAM", "Outputs.InstanceProfile"]},
+        "UserData": {"Fn::Base64": {"Fn::Join": ["" , [
+          "#!/usr/bin/env bash\n",
+          "set -euo pipefail\n",
+          "echo 'User Data Version v", {"Ref": "Version"}, "\n",
+
+          "signal_exit(){\n",
+          "  /usr/local/bin/cfn-signal --exit-code ${1:-0}",
+          "    --resource Zeus",
+          "    --stack ", {"Ref": "AWS::StackName"},
+          "    --region ", {"Ref": "AWS::Region"},
+          "    || true", "\n",
+          "}\n",
+          "trap 'signal_exit $?' EXIT INT TERM\n",
+
+          "echo 'IN_PROGRESS' | tee /var/lib/cloud/instance/status_cfn\n",
+
+          "cat << EOF > /var/lib/cloud/instance/.env\n",
+          "export AWS_DEFAULT_REGION='", {"Ref": "AWS::Region"}, "'\n",
+          "export AWS RDS_DB_ENDPOINT='", {"Fn::GetAtt": ["RDS", "Outputs.DBEndpoint"]}, "'\n",
+          "EOF\n",
+
+          "echo 'SUCCEEDED' | tee /var/lib/cloud/instance/status_cfn"
+        ]]}}
+      }
+    },
+
+    "AMIInfo": {
+      "Type": "Custom::AMIInfo",
+      "Properties": {
+        "ServiceToken": {"Fn::GetAtt" : ["AMIInfoFunction", "Arn"]},
+        "Prefix": {"Ref": "AMIPrefix"},
+        "Region": {"Ref": "AWS::Region"},
+        "Owners": ["self"]
+      }
+    },
+
+    "AMIInfoFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {"Ref": "AssetsBucket"},
+          "S3Key": {"Fn::Join" : ["/", [{"Ref": "EnvType"}, "lambdas/amilookup.zip"]]}
+        },
+        "Role": {"Fn::GetAtt": ["IAM", "Outputs.LambdaExecutionRoleARN"]},
+        "Description" : "Looks up the latest AMI ID",
+        "Handler": "index.handler",
+        "Runtime": "nodejs",
+        "Timeout": "30"
+      }
+    },
+
     "VPC": {
       "Type": "AWS::CloudFormation::Stack",
       "Properties": {
-        "TemplateURL": {"Ref": "VPCTemplateKey" }
+        "TemplateURL": {"Fn::Join" : ["/", ["https://s3.amazonaws.com", {"Ref": "AssetsBucket"}, {"Ref": "EnvType"}, "cfn", {"Ref": "VPCTemplateKey"}]]}
       }
     },
 
     "SG": {
       "Type": "AWS::CloudFormation::Stack",
       "Properties": {
-        "TemplateURL": {"Ref": "SGTemplateKey" },
+        "TemplateURL": {"Fn::Join" : ["/", ["https://s3.amazonaws.com", {"Ref": "AssetsBucket"}, {"Ref": "EnvType"}, "cfn", {"Ref": "SGTemplateKey"}]]},
         "Parameters": {
           "VPCId": {"Fn::GetAtt": ["VPC", "Outputs.VPCId"]},
-          "SSHLocation": {"Ref": "SSHLocation"}
+          "SSHLocations": {"Fn::Join" : [",", {"Ref": "SSHLocations"}]}
         }
       }
     },
@@ -86,17 +222,63 @@
     "IAM": {
       "Type": "AWS::CloudFormation::Stack",
       "Properties": {
-        "TemplateURL": {"Ref": "IAMTemplateKey" },
+        "TemplateURL": {"Fn::Join" : ["/", ["https://s3.amazonaws.com", {"Ref": "AssetsBucket"}, {"Ref": "EnvType"}, "cfn", {"Ref": "IAMTemplateKey"}]]},
         "Parameters": {
           "AssetsBucket": {"Ref": "AssetsBucket"}
         }
       }
+    },
+
+    "RDS": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "TemplateURL": {"Fn::Join" : ["/", ["https://s3.amazonaws.com", {"Ref": "AssetsBucket"}, {"Ref": "EnvType"}, "cfn", {"Ref": "RDSTemplateKey"}]]},
+        "Parameters": {
+          "EnvType": {"Ref": "EnvType"},
+          "Subnets": {"Fn::Join": [",", [
+            {"Fn::GetAtt": ["VPC", "Outputs.Subnet1"]},
+            {"Fn::GetAtt": ["VPC", "Outputs.Subnet2"]},
+            {"Fn::GetAtt": ["VPC", "Outputs.Subnet3"]},
+            {"Fn::GetAtt": ["VPC", "Outputs.Subnet4"]}
+          ]]},
+          "SecurityGroups": {"Fn::GetAtt": ["SG", "Outputs.DBSecurityGroup"]},
+          "DBEngine": {"Ref": "DBEngine"},
+          "DBName": {"Ref": "DBName"},
+          "DBUser": {"Ref": "DBUser"},
+          "DBPassword": {"Ref": "DBPassword"}
+        }
+      }
     }
   },
+
   "Outputs": {
-    "URL": {
+    "LoadBalancerURL": {
       "Description": "URL - The Load Balancer Public DNS",
-      "Value": {"Fn::Join": ["", ["http://", {"Fn::GetAtt": ["ELB", "DNSName"]}]]}
+      "Value": {"Fn::Join": ["", ["https://", {"Fn::GetAtt": ["ELB", "DNSName"]}]]}
+    },
+    "ASGName": {
+      "Description": "The autoscaling group name",
+      "Value": {"Ref": "Zeus"}
+    },
+    "InstanceProfileName": {
+      "Description": "The instance profile name",
+      "Value": {"Fn::GetAtt": ["IAM", "Outputs.InstanceProfileName"]}
+    },
+    "CodeDeployServiceRoleARN": {
+      "Description": "The CodeDeploy service role ARN",
+      "Value": {"Fn::GetAtt": ["IAM", "Outputs.CodeDeployServiceRoleARN"]}
+    },
+    "CIAccessKey": {
+      "Description": "The Access Key",
+      "Value": {"Fn::GetAtt": ["IAM", "Outputs.CIAccessKey"]}
+    },
+    "CISecretKey": {
+      "Description": "The Secret Key",
+      "Value": {"Fn::GetAtt": ["IAM", "Outputs.CISecretKey"]}
+    },
+    "DBEndpoint": {
+      "Description": "The database endpoint",
+      "Value": {"Fn::GetAtt": ["RDS", "Outputs.DBEndpoint"]}
     }
   }
 }

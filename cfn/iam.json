@@ -1,5 +1,5 @@
 {
-  "Description": "IAM CloudFormation SubStack",
+  "Description": "VGH Puppet IAM v0.0.1",
 
   "Parameters": {
     "AssetsBucket": {
@@ -9,6 +9,7 @@
   },
 
   "Resources": {
+
     "InstanceProfile": {
       "Type": "AWS::IAM::InstanceProfile",
       "Properties": {
@@ -29,7 +30,11 @@
           ]
         },
         "Path": "/",
-        "ManagedPolicyArns": ["arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"],
+        "ManagedPolicyArns": [
+          "arn:aws:iam::aws:policy/AWSCodeDeployReadOnlyAccess",
+          "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role",
+          "arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforSSM"
+        ],
         "Policies":[
           {
             "PolicyName": "InstancePolicies",
@@ -63,34 +68,10 @@
                   ]
                 },
                 {
-                  "Sid": "AllowListingOfFolder",
-                  "Action": ["s3:ListBucket"],
+                  "Sid": "AllowS3Access",
                   "Effect": "Allow",
-                  "Resource": [{"Fn::Join": ["", ["arn:aws:s3:::", {"Ref": "AssetsBucket"}]]}],
-                  "Condition": {
-                    "StringLike": {"s3:prefix": [
-                      "deploy/*",
-                      "private/*",
-                      "backup/*"
-                    ]}
-                  }
-                },
-                {
-                  "Sid": "AllowFullAccessToFolder",
-                  "Effect": "Allow",
-                  "Action": ["s3:*"],
-                  "Resource": [
-                    {"Fn::Join": ["", ["arn:aws:s3:::", {"Ref": "AssetsBucket"}, "/backup/*"]]}
-                  ]
-                },
-                {
-                  "Sid": "AllowReadOnlyAccessToFolder",
-                  "Effect": "Allow",
-                  "Action": ["s3:Get*", "s3:List*"],
-                  "Resource": [
-                    {"Fn::Join": ["", ["arn:aws:s3:::", {"Ref": "AssetsBucket"}, "/deploy/*"]]},
-                    {"Fn::Join": ["", ["arn:aws:s3:::", {"Ref": "AssetsBucket"}, "/private/*"]]}
-                  ]
+                  "Action": "*",
+                  "Resource": ["arn:aws:s3:::*"]
                 }
               ]
             }
@@ -108,7 +89,13 @@
               "Principal": {
                 "Service": [
                   "codedeploy.us-east-1.amazonaws.com",
-                  "codedeploy.us-west-2.amazonaws.com"
+                  "codedeploy.us-west-2.amazonaws.com",
+                  "codedeploy.us-west-1.amazonaws.com",
+                  "codedeploy.eu-west-1.amazonaws.com",
+                  "codedeploy.eu-central-1.amazonaws.com",
+                  "codedeploy.ap-southeast-1.amazonaws.com",
+                  "codedeploy.ap-southeast-2.amazonaws.com",
+                  "codedeploy.ap-northeast-1.amazonaws.com"
                 ]
               },
               "Effect": "Allow",
@@ -119,6 +106,95 @@
         "ManagedPolicyArns": ["arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole"],
         "Path": "/"
       }
+    },
+
+    "CIUser": {
+      "Type": "AWS::IAM::User",
+      "Properties": {
+        "ManagedPolicyArns": [
+          "arn:aws:iam::aws:policy/AmazonSSMFullAccess",
+          "arn:aws:iam::aws:policy/AmazonEC2ReadOnlyAccess",
+          "arn:aws:iam::aws:policy/AWSLambdaFullAccess"
+        ],
+        "Policies": [
+          {
+            "PolicyName": "CIPolicies",
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Sid": "AllowPassRole",
+                  "Effect":"Allow",
+                  "Action":"iam:PassRole",
+                  "Resource":{"Fn::GetAtt": ["CodeDeployRole", "Arn"]}
+                },
+                {
+                  "Sid": "AllowAccessToCodeDeploy",
+                  "Effect": "Allow",
+                  "Action": ["codedeploy:*"],
+                  "Resource": "arn:aws:codedeploy:*"
+                },
+                {
+                  "Sid": "AllowS3Access",
+                  "Effect": "Allow",
+                  "Action": "*",
+                  "Resource": ["arn:aws:s3:::*"]
+                },
+                {
+                  "Sid": "AllowCloudFormationValidate",
+                  "Action": [
+                    "cloudformation:Describe*",
+                    "cloudformation:ValidateTemplate"
+                  ],
+                  "Effect": "Allow",
+                  "Resource": "*"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "CIAccessKey": {
+      "Type": "AWS::IAM::AccessKey",
+      "Properties": {
+        "UserName": {"Ref": "CIUser"}
+      }
+    },
+
+    "LambdaExecutionRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [{
+              "Effect": "Allow",
+              "Principal": {"Service": ["lambda.amazonaws.com"]},
+              "Action": ["sts:AssumeRole"]
+          }]
+        },
+        "Path": "/",
+        "Policies": [{
+          "PolicyName": "LambdaPolicies",
+          "PolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [{
+                "Effect": "Allow",
+                "Action": [
+                  "logs:CreateLogGroup",
+                  "logs:CreateLogStream",
+                  "logs:PutLogEvents"
+                ],
+                "Resource": "arn:aws:logs:*:*:*"
+            },
+            {
+                "Effect": "Allow",
+                "Action": ["ec2:DescribeImages"],
+                "Resource": "*"
+            }]
+          }
+        }]
+      }
     }
   },
 
@@ -127,9 +203,25 @@
       "Description": "The Instance Profile",
       "Value": {"Ref": "InstanceProfile" }
     },
+    "InstanceProfileName": {
+      "Description": "The instance profile name",
+      "Value": {"Ref": "InstanceProfile" }
+    },
     "CodeDeployServiceRoleARN": {
       "Description": "The CodeDeploy service role ARN",
       "Value": {"Fn::GetAtt": ["CodeDeployRole", "Arn"]}
+    },
+    "CIAccessKey": {
+      "Description": "The Access Key",
+      "Value": {"Ref": "CIAccessKey" }
+    },
+    "CISecretKey": {
+      "Description": "The Secret Key",
+      "Value": {"Fn::GetAtt": [ "CIAccessKey", "SecretAccessKey" ]}
+    },
+    "LambdaExecutionRoleARN": {
+      "Description": "The Lambda execution role ARN",
+      "Value": {"Fn::GetAtt": ["LambdaExecutionRole", "Arn"]}
     }
   }
 }
