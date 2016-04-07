@@ -2,15 +2,20 @@
 class profile::puppet::master {
   # Hiera config
   class {'::hiera':
-    hierarchy => [
+    datadir            => '"%{::environmentpath}/%{::environment}/data"',
+    hiera_yaml         => "${::settings::codedir}/hiera.yaml",
+    puppet_conf_manage => false,
+    create_symlink     => false,
+    owner              => 'root',
+    group              => 'root',
+    hierarchy          => [
       '"nodes/%{::trusted.certname}"',
       '"%{::trusted.domainname}/%{::trusted.hostname}"',
+      '"roles/%{::trusted.extensions.pp_role}"',
       '"roles/%{role}"',
+      'private',
       'common',
     ],
-    datadir   => '"/etc/puppetlabs/code/environments/%{environment}/hieradata"',
-    owner     => 'root',
-    group     => 'root',
   }
 
   # Install, configure and run R10K
@@ -18,22 +23,13 @@ class profile::puppet::master {
     sources  => {
       'main' => {
         'remote'  => 'https://github.com/vladgh/puppet.git',
-        'basedir' => "${::settings::codedir}/environments",
+        'basedir' => $::settings::environmentpath,
         'prefix'  => false,
       },
     },
     cachedir => '/opt/puppetlabs/r10k/cache',
-    postrun  => ['/bin/bash', '/etc/puppetlabs/r10k/postrun.sh'],
+    postrun  => ['/bin/bash', '-c', "${::settings::environmentpath}/${environment}/hooks/post-run"],
     provider => 'puppet_gem',
-    version  => '2.1.1',
-  }
-  if str2bool($::is_bootstrap) {
-    exec {'R10K deploy environment':
-      command   => 'r10k deploy environment --puppetfile --verbose',
-      path      => ['/opt/puppetlabs/puppet/bin', '/usr/bin'],
-      logoutput => true,
-      timeout   => 0,
-      require   => Class['r10k::config'],
-    }
+    version  => '2.2.0',
   }
 }

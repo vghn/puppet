@@ -13,7 +13,8 @@ group :test do
   gem 'simplecov', require: false
   gem 'simplecov-console', require: false
 
-  gem 'puppet-lint', require: false
+  gem 'puppet-lint', git: 'https://github.com/rodjek/puppet-lint.git',
+                     require: false
   gem 'puppet-lint-absolute_classname-check', require: false
   gem 'puppet-lint-duplicate_class_parameters-check', require: false
   gem 'puppet-lint-classes_and_types_beginning_with_digits-check',
