@@ -1,10 +1,9 @@
 # Private
 .env
 ssl_*/
+/data/*
+!/data/common.yaml
 
-# Everything in data except global.yaml
-/hieradata/*
-!/hieradata/common.yaml
-
+# Other
 /tmp
 /modules
