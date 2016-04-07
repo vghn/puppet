@@ -12,15 +12,19 @@ PATH="/opt/puppetlabs/bin:/opt/puppetlabs/puppet/bin:/usr/local/bin:${PATH}"
 
 # Load VGS Library
 # shellcheck disable=1090,1091
-. /opt/vgs/load 2>/dev/null || . "${HOME}/vgs/load" 2>/dev/null || true
+if [[ -s /opt/vgs/load ]]; then
+  . /opt/vgs/load
+elif [[ -s "${HOME}/vgs/load" ]]; then
+  . "${HOME}/vgs/load"
+fi
 
 # Load AWS environment
 # shellcheck disable=SC1091
-. /var/lib/cloud/instance/.env 2>/dev/null || true
+[[ -s /var/lib/cloud/instance/.env ]] && . /var/lib/cloud/instance/.env
 
 # Load private environment
 # shellcheck disable=SC1090
-. "${APPDIR}/.env" 2>/dev/null || true
+[[ -s "${APPDIR}/.env" ]] && . "${APPDIR}/.env"
 
 # Project
 export PROJECT_NAME="${PROJECT_NAME:-$(basename "${APPDIR}")}"
