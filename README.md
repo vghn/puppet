@@ -1,5 +1,5 @@
 # Puppet Control Repo
-  [![Build Status](https://travis-ci.org/vladgh/puppet.svg?branch=master)](https://travis-ci.org/vladgh/puppet)
+  [![Build Status](https://travis-ci.org/vghn/puppet.svg?branch=master)](https://travis-ci.org/vghn/puppet)
 
 ## Development status ##
 This project is still in a prototype development stage.
@@ -76,31 +76,55 @@ List nodes:
 
 Run default set for the first time (default creates all nodes)
 
-`bundle exec rake acceptance PUPPET_INSTALL_TYPE=agent BEAKER_destroy=no`
+`PUPPET_INSTALL_TYPE=agent ORDERING=manifest BEAKER_destroy=no bundle exec rake acceptance`
 
 Subsequent runs
 
-`bundle exec rake acceptance PUPPET_INSTALL_TYPE=agent BEAKER_destroy=no BEAKER_provision=no`
+`PUPPET_INSTALL_TYPE=agent ORDERING=manifest BEAKER_destroy=no BEAKER_provision=no bundle exec rake acceptance`
 
 Last run (will destroy the machines)
 
-`bundle exec rake acceptance PUPPET_INSTALL_TYPE=agent BEAKER_provision=no`
+`PUPPET_INSTALL_TYPE=agent BEAKER_provision=no bundle exec rake acceptance`
 
 The following environment variables can be used to influence how beaker works:
 
 * `BEAKER_color`: set to `no` to disable color output
-* `BEAKER_set`: choose a nodeset from `spec/acceptance/nodesets/*.yml`; defaults to `default`
+* `BEAKER_set`: choose a nodeset from `spec/acceptance/nodesets/*.yml`
+                defaults to `default`
 * `BEAKER_setfile`: specify a nodeset using a full path
 * `BEAKER_provision`: set to `no` to re-use existing VMs
 * `BEAKER_keyfile`: specify alternate SSH key
 * `BEAKER_debug`: set to any value to enable beaker debug logging
-* `BEAKER_destroy`: set to `no` to keep the VMs after the test run. Set to `onpass` to keep the VMs around only after a test failure.
+* `BEAKER_destroy`: set to `no` to keep the VMs after the test run. Set to
+                    `onpass` to keep the VMs around only after a test failure.
+* ` ORDERING`: How unrelated resources should be ordered when applying a
+               catalog (https://docs.puppetlabs.com/puppet/latest/reference/configuration.html#ordering)
 
 ### Clean-up
 ```
 cd dist/profile
 bundle exec rake test_clean
 ```
+
+### AWS Stack
+
+* Push files to GitHub. The CI server will upload the CloudFormation templates
+and lambda functions to a S3 bucket (prefixed by the branch name).
+
+* First create the AMI (`bin/ami create`). The script will pack the needed
+files, upload them to S3, create a temporary pre-signed URL and create an
+instance. That instance will upgrade itself first, then will install and
+upgrade Python PIP (because Puppet runs pip upgrade every time it runs).
+It also installs the VGS Library. It downloads and extracts the archive from the
+pre-signed URL and runs the bootstrap script.
+
+* The second step is to create the main CloudFormation template. The auto
+scaling groups should be set at 0 at creation so that all other resources are
+created before the instances.
+
+* Increase the number of instances in the CloudFormation template and update it.
+Because they are pre-configured during AMI creation they should only start, and
+the ELB will determine if AWS ECS Agent is listening on the right port.
 
 ## Contribute
 
