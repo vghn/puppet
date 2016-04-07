@@ -2,14 +2,15 @@
 # AWS Lambda tasks
 
 # Load environment
+envfile="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)/../environment.sh"
 # shellcheck disable=1090
-. "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)/../environment.sh"
+[[ -s "$envfile" ]] && . "$envfile"
 
 # Creates zip archives with the lambda functions and upload them to S3
 upload_lambda_archives(){
-  for funcdir in "${AWS_LAMBDAS_PATH}/*"; do
+  for funcdir in ${AWS_LAMBDAS_PATH}/*; do
     local name archive s3path
-    name=$(basename $funcdir)
+    name=$(basename "$funcdir")
     archive="${TMPDIR}/${name}.zip"
     s3path="${AWS_LAMBDAS_S3_PATH}/${name}.zip"
     echo "Creating ${name} function archive (${archive})"

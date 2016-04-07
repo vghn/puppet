@@ -2,8 +2,9 @@
 # AWS EC2 image tasks
 
 # Load environment
+envfile="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)/../environment.sh"
 # shellcheck disable=1090
-. "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)/../environment.sh"
+[[ -s "$envfile" ]] && . "$envfile"
 
 pack_ami_files(){
   ami_archive="ami-${VERSION}.tgz"
