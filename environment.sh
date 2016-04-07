@@ -87,7 +87,7 @@ export AWS_ASSETS_S3_PATH="s3://${AWS_ASSETS_BUCKET}/${AWS_ASSETS_KEY_PREFIX}"
 # CloudFormation
 export CFN_STACKS_PATH="${APPDIR}/cfn"
 export CFN_STACKS_S3_PATH="${AWS_ASSETS_S3_PATH}/cfn"
-export CFN_STACK_NAME='vgh'
+export CFN_STACK_NAME='VGH'
 export CFN_STACK_BODY="${CFN_STACKS_PATH}/${CFN_STACK_NAME}.json"
 export CFN_CMD_ARGS="--stack-name ${CFN_STACK_NAME} --template-body file://${CFN_STACK_BODY}"
 process_cfn_stacks(){
@@ -97,8 +97,8 @@ process_cfn_stacks(){
   local ARGS P T
 
   case "$stack" in
-    vgh)
-      export CFN_STACK_NAME='vgh'
+    VGH)
+      export CFN_STACK_NAME='VGH'
       export CFN_STACK_BODY="${CFN_STACKS_PATH}/vgh.json"
       if [[ "$action" == 'create' ]]; then
         ARGS='--disable-rollback --capabilities CAPABILITY_IAM'
