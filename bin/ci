@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+# Continuous Integration / Continuous Deployment tasks
+
+# Load environment
+# shellcheck disable=1090
+. "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)/../load"
+
+# CI Install
+ci_install(){
+  wget -O- https://raw.githubusercontent.com/vghn/vgs/master/install | sudo bash
+  pip install --user --upgrade pip awscli
+  cd "${APPDIR}/dist/profile" || exit
+  bundle install --without development system_tests --path vendor
+  bundle exec rake spec_prep
+}
+
+ci_test(){
+  bash -c "${APPDIR}/bin/cfn validate"
+  cd "${APPDIR}/dist/profile" || exit
+  bundle exec rake test
+}
+
+ci_deploy(){
+  if [[ ${PR} == false ]]; then
+    bash -c "${APPDIR}/bin/cfn upload"
+    bash -c "${APPDIR}/bin/lambda upload"
+  else
+    echo 'Deployment is not allowed from pull requests' >&2
+  fi
+}
+
+# xVARs
+e_header 'Info:'
+e_info "Application directory: ${APPDIR:?}"
+e_info "Pull request: ${PR:?}"
+
+# Process arguments
+e_header 'CI:'
+case "${1:-}" in
+  install)
+    ci_install
+    ;;
+  test)
+    ci_test
+    ;;
+  deploy)
+    ci_deploy
+    ;;
+  *)
+    e_abort "USAGE: ${BASH_SOURCE[0]} [install | test | deploy]"
+    ;;
+esac
