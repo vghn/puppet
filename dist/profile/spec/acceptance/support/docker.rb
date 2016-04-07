@@ -2,11 +2,26 @@ require 'spec_helper_acceptance'
 
 shared_examples 'profile::docker' do
   virtual = command('/opt/puppetlabs/bin/facter virtual').stdout.chomp
-  describe package('docker-engine') do
-    if virtual != 'docker'
+
+  if virtual != 'docker'
+    describe package('docker-engine') do
       it { is_expected.to be_installed }
-    else
-      it { is_expected.not_to be_installed }
+    end
+    describe service('docker') do
+      it { is_expected.to be_enabled }
+      it { is_expected.to be_running }
+    end
+    describe port(2375) do
+      it { is_expected.to be_listening }
+    end
+    describe file('/var/run/docker.sock') do
+      it { is_expected.to be_socket }
+    end
+    describe file('/usr/local/bin/docker-compose') do
+      it { is_expected.to be_executable }
+    end
+    describe file('/usr/local/bin/docker-machine') do
+      it { is_expected.to be_executable }
     end
   end
 end

@@ -1,13 +1,15 @@
 ---
 # Testing Hiera data
 
-# Classes
-classes:
-  - stdlib
-  - apt
-  - ntp
-
 ssh_authorized_keys:
   'test-key':
     type: 'ssh-rsa'
     key: 'ABC'
+
+aws_cloudwatch_logs:
+  TEST/System/SysLog:
+    path: /var/log/syslog
+
+docker::docker_users: [ubuntu]
+
+ecs_cluster_name: ecs
