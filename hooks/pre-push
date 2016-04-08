@@ -9,6 +9,8 @@
 main(){
   e_info 'Sync hiera data'
   aws s3 sync "${APPDIR}/data" "${AWS_ASSETS_S3_PATH}/data" --delete
+  e_info 'Sync dotenv'
+  aws s3 cp "${APPDIR}/.env" "${AWS_ASSETS_S3_PATH}/.env"
 }
 
 # Info

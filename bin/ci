@@ -6,9 +6,16 @@ envfile="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)/../environment.sh"
 # shellcheck disable=1090
 [[ -s "$envfile" ]] && . "$envfile"
 
+# Download dotenv
+get_dotenv(){
+  e_info 'Get dotenv'
+  aws s3 cp "s3://vladgh/${ENVTYPE}/.env" "${APPDIR}/.env"
+}
+
 # CI Install
 ci_install(){
   pip install --user --upgrade pip awscli
+  get_dotenv
   cd "${APPDIR}/dist/profile" || exit
   bundle install --without development system_tests --path vendor
   bundle exec rake spec_prep
