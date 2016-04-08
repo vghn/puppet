@@ -1,5 +1,6 @@
 sudo: false
 language: ruby
+before_install: wget -O- https://raw.githubusercontent.com/vghn/vgs/master/install | bash
 install: bin/ci install
 script: bin/ci test
 after_success: bin/ci deploy

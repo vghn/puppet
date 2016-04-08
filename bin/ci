@@ -8,7 +8,6 @@ envfile="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)/../environment.sh"
 
 # CI Install
 ci_install(){
-  wget -O- https://raw.githubusercontent.com/vghn/vgs/master/install | sudo bash
   pip install --user --upgrade pip awscli
   cd "${APPDIR}/dist/profile" || exit
   bundle install --without development system_tests --path vendor
