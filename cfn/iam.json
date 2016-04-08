@@ -9,7 +9,6 @@
   },
 
   "Resources": {
-
     "InstanceProfile": {
       "Type": "AWS::IAM::InstanceProfile",
       "Properties": {
@@ -108,60 +107,6 @@
       }
     },
 
-    "CIUser": {
-      "Type": "AWS::IAM::User",
-      "Properties": {
-        "ManagedPolicyArns": [
-          "arn:aws:iam::aws:policy/AmazonSSMFullAccess",
-          "arn:aws:iam::aws:policy/AmazonEC2ReadOnlyAccess",
-          "arn:aws:iam::aws:policy/AWSLambdaFullAccess"
-        ],
-        "Policies": [
-          {
-            "PolicyName": "CIPolicies",
-            "PolicyDocument": {
-              "Version": "2012-10-17",
-              "Statement": [
-                {
-                  "Sid": "AllowPassRole",
-                  "Effect":"Allow",
-                  "Action":"iam:PassRole",
-                  "Resource":{"Fn::GetAtt": ["CodeDeployRole", "Arn"]}
-                },
-                {
-                  "Sid": "AllowAccessToCodeDeploy",
-                  "Effect": "Allow",
-                  "Action": ["codedeploy:*"],
-                  "Resource": "arn:aws:codedeploy:*"
-                },
-                {
-                  "Sid": "AllowS3Access",
-                  "Effect": "Allow",
-                  "Action": "*",
-                  "Resource": ["arn:aws:s3:::*"]
-                },
-                {
-                  "Sid": "AllowCloudFormationValidate",
-                  "Action": [
-                    "cloudformation:Describe*",
-                    "cloudformation:ValidateTemplate"
-                  ],
-                  "Effect": "Allow",
-                  "Resource": "*"
-                }
-              ]
-            }
-          }
-        ]
-      }
-    },
-    "CIAccessKey": {
-      "Type": "AWS::IAM::AccessKey",
-      "Properties": {
-        "UserName": {"Ref": "CIUser"}
-      }
-    },
-
     "LambdaExecutionRole": {
       "Type": "AWS::IAM::Role",
       "Properties": {
@@ -210,14 +155,6 @@
     "CodeDeployServiceRoleARN": {
       "Description": "The CodeDeploy service role ARN",
       "Value": {"Fn::GetAtt": ["CodeDeployRole", "Arn"]}
-    },
-    "CIAccessKey": {
-      "Description": "The Access Key",
-      "Value": {"Ref": "CIAccessKey" }
-    },
-    "CISecretKey": {
-      "Description": "The Secret Key",
-      "Value": {"Fn::GetAtt": [ "CIAccessKey", "SecretAccessKey" ]}
     },
     "LambdaExecutionRoleARN": {
       "Description": "The Lambda execution role ARN",

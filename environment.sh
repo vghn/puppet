@@ -97,7 +97,7 @@ process_cfn_stacks(){
   local ARGS P T
 
   case "$stack" in
-    VGH)
+    vgh)
       export CFN_STACK_NAME='VGH'
       export CFN_STACK_BODY="${CFN_STACKS_PATH}/vgh.json"
       if [[ "$action" == 'create' ]]; then
@@ -124,6 +124,19 @@ process_cfn_stacks(){
       P="$P ParameterKey=RDSTemplateKey,ParameterValue=rds.json"
       T="   Key=Group,Value=${AWS_TAG_GROUP}"
       export CFN_CMD_ARGS="--stack-name ${CFN_STACK_NAME} --template-body file://${CFN_STACK_BODY} ${ARGS} --parameters ${P} --tags ${T}"
+      ;;
+    ci)
+      export CFN_STACK_NAME='CI'
+      export CFN_STACK_BODY="${CFN_STACKS_PATH}/ci.json"
+      if [[ "$action" == 'create' ]]; then
+        ARGS='--disable-rollback --capabilities CAPABILITY_IAM'
+      elif [[ "$action" == 'update' ]]; then
+        ARGS='--capabilities CAPABILITY_IAM'
+      else
+        ARGS=''
+      fi
+      T="Key=Group,Value=${AWS_TAG_GROUP}"
+      export CFN_CMD_ARGS="--stack-name ${CFN_STACK_NAME} --template-body file://${CFN_STACK_BODY} ${ARGS} --tags ${T}"
       ;;
     *)
       ;;
