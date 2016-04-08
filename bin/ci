@@ -9,7 +9,7 @@ envfile="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)/../environment.sh"
 # Download dotenv
 get_dotenv(){
   e_info 'Get dotenv'
-  aws s3 cp "s3://vladgh/${ENVTYPE}/.env" "${APPDIR}/.env"
+  aws s3 cp "${AWS_ASSETS_S3_PATH}/.env" "${APPDIR}/.env"
 }
 
 # CI Install
