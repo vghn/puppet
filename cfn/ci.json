@@ -17,12 +17,6 @@
               "Version": "2012-10-17",
               "Statement": [
                 {
-                  "Sid": "AllowPassRole",
-                  "Effect":"Allow",
-                  "Action":"iam:PassRole",
-                  "Resource":{"Fn::GetAtt": ["CodeDeployRole", "Arn"]}
-                },
-                {
                   "Sid": "AllowAccessToCodeDeploy",
                   "Effect": "Allow",
                   "Action": ["codedeploy:*"],
