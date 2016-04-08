@@ -1,6 +1,6 @@
 language: ruby
 rvm:
-  - 2.1.8
+  - 2.2
 before_install: wget -O- https://raw.githubusercontent.com/vghn/vgs/master/install | bash
 install: bin/ci install
 script: bin/ci test
