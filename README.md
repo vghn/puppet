@@ -106,13 +106,18 @@ cd dist/profile
 bundle exec rake test_clean
 ```
 
-### AWS Stack
+### Infrastructure
 
-* AMI: The script will pack the needed files, upload them to S3, create a temporary pre-signed URL and create an instance. That instance will upgrade itself first, then will install and upgrade Python PIP (because Puppet runs pip upgrade every time it runs). It also installs the VGS Library. It downloads and extracts the archive from the pre-signed URL and runs the bootstrap script.
+* AMI: The script will pack the needed files, upload them to S3, create a temporary pre-signed URL and create an instance. That instance will upgrade itself first, then will install and upgrade Python PIP (use bash for this because Puppet runs pip upgrade every time it runs). It also installs the VGS Library. It downloads and extracts the archive from the pre-signed URL and runs the bootstrap script. The bootstrap script installs the newer Puppet Agent with Puppet 4, configures R10K and Hiera and applies the right manifests. The manifests install ssh keys, essential packages, the latest git from the official repo, CloudWatch Logs, CloudFormation helper scripts, CodeDeploy agent, Simple Systems Manager Agent (for the EC2 run command), RVM with newer Ruby (2.2.1), JQ Json Processor, Docker Engine, Docker Compose, Docker Machine, and AWS the Elastic Container Service Agent. It also updates Hiera and R10K with the latest configuration.
 
 * CloudFormation: First time, the auto scaling groups should be set at 0 at creation so that all other resources are created before the instances. Run `bin/ci deploy` manually to upload the required files. Increase the number of instances in the CloudFormation template and update it. Because they are pre-configured during AMI creation they should only start, and the ELB will determine if AWS ECS Agent is listening on the right port.
 
 * Lambdas: Uploaded during CI deployment and created during CloudFormation create/update commands.
+
+* CI (TravisCI):
+  * CI installs Python PIP with awscli, and downloads a `.env` file from a private bucket. It also installs all the gems required for testing the profile puppet module using bundle, and triggers the task that downloads all other puppet modules.
+  * CI Test: Validates the CloudFormation templates, and the profile puppet module
+  * CI Deploy: Uploads the CloudFormation templates to an S3 bucket, prefixed by the branch name. It also creates a zip with each AWS Lambda function and uploads them to the S3 bucket.
 
 ## Contribute
 
