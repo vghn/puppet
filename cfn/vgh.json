@@ -268,14 +268,6 @@
       "Description": "The CodeDeploy service role ARN",
       "Value": {"Fn::GetAtt": ["IAM", "Outputs.CodeDeployServiceRoleARN"]}
     },
-    "CIAccessKey": {
-      "Description": "The Access Key",
-      "Value": {"Fn::GetAtt": ["IAM", "Outputs.CIAccessKey"]}
-    },
-    "CISecretKey": {
-      "Description": "The Secret Key",
-      "Value": {"Fn::GetAtt": ["IAM", "Outputs.CISecretKey"]}
-    },
     "DBEndpoint": {
       "Description": "The database endpoint",
       "Value": {"Fn::GetAtt": ["RDS", "Outputs.DBEndpoint"]}
