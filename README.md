@@ -119,6 +119,9 @@ bundle exec rake test_clean
   * CI Test: Validates the CloudFormation templates, and the profile puppet module
   * CI Deploy: Uploads the CloudFormation templates to an S3 bucket, prefixed by the branch name. It also creates a zip with each AWS Lambda function and uploads them to the S3 bucket.
 
+* Other:
+  * `.env` has only the private variables. `environment.sh` is where the defaults or composed variables should be.
+
 ## Contribute
 
 1. Open an issue to discuss proposed changes
