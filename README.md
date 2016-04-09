@@ -70,10 +70,6 @@ bundle exec rake test
 
 `cd dist/profile`
 
-List nodes:
-
-`bundle exec rake beaker_nodes`
-
 Run default set for the first time (default creates all nodes)
 
 `PUPPET_INSTALL_TYPE=agent ORDERING=manifest BEAKER_destroy=no bundle exec rake acceptance`
@@ -86,6 +82,9 @@ Last run (will destroy the machines)
 
 `PUPPET_INSTALL_TYPE=agent BEAKER_provision=no bundle exec rake acceptance`
 
+Other commands:
+* List nodes: `bundle exec rake beaker_nodes`
+
 The following environment variables can be used to influence how beaker works:
 
 * `BEAKER_color`: set to `no` to disable color output
@@ -97,8 +96,8 @@ The following environment variables can be used to influence how beaker works:
 * `BEAKER_debug`: set to any value to enable beaker debug logging
 * `BEAKER_destroy`: set to `no` to keep the VMs after the test run. Set to
                     `onpass` to keep the VMs around only after a test failure.
-* ` ORDERING`: How unrelated resources should be ordered when applying a
-               catalog (https://docs.puppetlabs.com/puppet/latest/reference/configuration.html#ordering)
+* `ORDERING`: How unrelated resources should be ordered when applying a
+              catalog (https://docs.puppetlabs.com/puppet/latest/reference/configuration.html#ordering)
 
 ### Clean-up
 ```
@@ -120,7 +119,7 @@ bundle exec rake test_clean
   * CI Deploy: Uploads the CloudFormation templates to an S3 bucket, prefixed by the branch name. It also creates a zip with each AWS Lambda function and uploads them to the S3 bucket.
 
 * Other:
-  * `.env` has only the private variables. `environment.sh` is where the defaults or composed variables should be.
+  * `.env` has the private variables. `environment.sh` has the defaults and/or composed variables.
 
 ## Contribute
 
