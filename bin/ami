@@ -12,7 +12,7 @@ pack_ami_files(){
   e_info "Creating AMI archive (${ami_archive_path})"
   if ! tar cvzf "$ami_archive_path" \
     data/ dist/profile/manifests dist/role/manifests manifests/ \
-    .env bootstrap environment.sh Puppetfile \
+    .env bootstrap environment.conf environment.sh Puppetfile \
     LICENSE README.md VERSION;
   then
     e_abort "Could not create ${ami_archive_path}"
@@ -34,7 +34,7 @@ generate_user_data(){
 cat <<USERDATA > $file
 #!/usr/bin/env bash
 set -euo pipefail
-IFS=$'\n\t'
+IFS=\$'\\n\\t'
 
 # Report status
 echo 'IN_PROGRESS' | tee /var/lib/cloud/instance/status_ami
