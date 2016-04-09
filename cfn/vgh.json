@@ -135,7 +135,7 @@
       "UpdatePolicy" : {
         "AutoScalingRollingUpdate": {
           "MaxBatchSize": "1",
-          "MinInstancesInService": "1",
+          "MinInstancesInService": "0",
           "PauseTime": "PT10M",
           "WaitOnResourceSignals": "true"
         }
@@ -153,7 +153,9 @@
         "UserData": {"Fn::Base64": {"Fn::Join": ["" , [
           "#!/usr/bin/env bash\n",
           "set -euo pipefail\n",
-          "echo 'User Data Version v", {"Ref": "Version"}, "\n",
+          "IFS=$'\\n\\t'", "\n",
+
+          "echo 'User Data Version v", {"Ref": "Version"}, "'\n",
 
           "signal_exit(){\n",
           "  /usr/local/bin/cfn-signal --exit-code ${1:-0}",
@@ -175,8 +177,8 @@
           "mkdir -p /etc/puppetlabs/facter/facts.d\n",
           "cat << EOF > /etc/puppetlabs/facter/facts.d/.env.aws\n",
           "---\n",
-          "aws_ecs_cluster='", {"Ref": "ECSCluster"}, "'\n",
-          "aws_rds_db_endpoint='", {"Fn::GetAtt": ["RDS", "Outputs.DBEndpoint"]}, "'\n",
+          "aws_ecs_cluster: ", {"Ref": "ECSCluster"}, "\n",
+          "aws_rds_db_endpoint: ", {"Fn::GetAtt": ["RDS", "Outputs.DBEndpoint"]}, "\n",
           "EOF\n",
 
           "bash /opt/puppet_vgh/bootstrap\n",
