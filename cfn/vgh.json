@@ -88,12 +88,7 @@
       "Type": "AWS::ElasticLoadBalancing::LoadBalancer",
       "Properties": {
         "SecurityGroups": [{"Fn::GetAtt": ["SG", "Outputs.ELBSecurityGroup"]}],
-        "Subnets": [
-          {"Fn::GetAtt": ["VPC", "Outputs.Subnet1"]},
-          {"Fn::GetAtt": ["VPC", "Outputs.Subnet2"]},
-          {"Fn::GetAtt": ["VPC", "Outputs.Subnet3"]},
-          {"Fn::GetAtt": ["VPC", "Outputs.Subnet4"]}
-        ],
+        "Subnets": {"Fn::GetAtt": ["VPC", "Outputs.Subnets"]},
         "CrossZone": "true",
         "Listeners": [
           {"LoadBalancerPort": "443", "Protocol": "HTTPS", "InstancePort": "80", "InstanceProtocol": "HTTP", "SSLCertificateId": {"Ref": "SSLCertificateId"} }
@@ -113,13 +108,8 @@
       "Type": "AWS::AutoScaling::AutoScalingGroup",
       "Properties": {
         "LaunchConfigurationName": {"Ref": "LaunchZeusInstance"},
-        "VPCZoneIdentifier": [
-          {"Fn::GetAtt": ["VPC", "Outputs.Subnet1"]},
-          {"Fn::GetAtt": ["VPC", "Outputs.Subnet2"]},
-          {"Fn::GetAtt": ["VPC", "Outputs.Subnet3"]},
-          {"Fn::GetAtt": ["VPC", "Outputs.Subnet4"]}
-        ],
-        "MinSize": "1",
+        "VPCZoneIdentifier": {"Fn::GetAtt": ["VPC", "Outputs.Subnets"]},
+        "MinSize": "0",
         "MaxSize": "1",
         "DesiredCapacity": "1",
         "HealthCheckType": "ELB",
@@ -180,8 +170,6 @@
           "aws_ecs_cluster: ", {"Ref": "ECSCluster"}, "\n",
           "aws_rds_db_endpoint: ", {"Fn::GetAtt": ["RDS", "Outputs.DBEndpoint"]}, "\n",
           "EOF\n",
-
-          "bash /opt/puppet_vgh/bootstrap\n",
 
           "echo 'SUCCEEDED' | tee /var/lib/cloud/instance/status_cfn"
         ]]}}
@@ -251,12 +239,7 @@
         "TemplateURL": {"Fn::Join" : ["/", ["https://s3.amazonaws.com", {"Ref": "AssetsBucket"}, {"Ref": "EnvType"}, "cfn", {"Ref": "RDSTemplateKey"}]]},
         "Parameters": {
           "EnvType": {"Ref": "EnvType"},
-          "Subnets": {"Fn::Join": [",", [
-            {"Fn::GetAtt": ["VPC", "Outputs.Subnet1"]},
-            {"Fn::GetAtt": ["VPC", "Outputs.Subnet2"]},
-            {"Fn::GetAtt": ["VPC", "Outputs.Subnet3"]},
-            {"Fn::GetAtt": ["VPC", "Outputs.Subnet4"]}
-          ]]},
+          "SubnetIDs": {"Fn::GetAtt": ["VPC", "Outputs.Subnets"]},
           "SecurityGroups": {"Fn::GetAtt": ["SG", "Outputs.DBSecurityGroup"]},
           "DBEngine": {"Ref": "DBEngine"},
           "DBName": {"Ref": "DBName"},

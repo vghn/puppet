@@ -7,13 +7,13 @@
       "Description": "Environment type",
       "Default": "production"
     },
-    "Subnets": {
-      "Type": "CommaDelimitedList",
-      "Description": "The subnets list"
+    "SubnetIDs": {
+      "Type": "List<AWS::EC2::Subnet::Id>",
+      "Description": "The subnet ids list"
     },
     "SecurityGroups": {
-      "Type": "CommaDelimitedList",
-      "Description": "The name of the security group"
+      "Type": "List<AWS::EC2::SecurityGroup::Id>",
+      "Description": "A list of the security group ids"
     },
     "DBEngine": {
       "Default": "mariadb",
@@ -73,7 +73,7 @@
       "Type" : "AWS::RDS::DBSubnetGroup",
       "Properties" : {
         "DBSubnetGroupDescription" : "DB Subnet Group",
-        "SubnetIds": {"Ref": "Subnets"}
+        "SubnetIds": {"Ref": "SubnetIDs"}
       }
     }
   },

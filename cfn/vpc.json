@@ -176,9 +176,14 @@
 
   "Outputs": {
     "VPCId":   {"Description": "The VPC ID", "Value": {"Ref": "VPC"}},
-    "Subnet1": {"Description": "Subnet1 ID", "Value": {"Ref": "Subnet1"}},
-    "Subnet2": {"Description": "Subnet2 ID", "Value": {"Ref": "Subnet2"}},
-    "Subnet3": {"Description": "Subnet3 ID", "Value": {"Ref": "Subnet3"}},
-    "Subnet4": {"Description": "Subnet4 ID", "Value": {"Ref": "Subnet4"}}
+    "Subnets": {
+      "Description": "Subnets IDs list",
+      "Value": {"Fn::Join": [ ",", [
+        {"Ref": "Subnet1"},
+        {"Ref": "Subnet2"},
+        {"Ref": "Subnet3"},
+        {"Ref": "Subnet4"}
+      ]]}
+    }
   }
 }
