@@ -26,8 +26,7 @@ class profile::docker {
     }
 
     # AWS ECS
-    if $::ec2_metadata {
-      $cluster_name = hiera('ecs_cluster_name', 'default')
+    if ($::ec2_metadata and $::aws_ecs_cluster) {
       file { '/var/log/ecs':
         ensure => 'directory',
       } ->
@@ -54,7 +53,7 @@ class profile::docker {
           'ECS_LOGFILE=/log/ecs-agent.log',
           'ECS_LOGLEVEL=info',
           'ECS_DATADIR=/data',
-          "ECS_CLUSTER=${cluster_name}",
+          "ECS_CLUSTER=${::aws_ecs_cluster}",
         ],
         pull_on_start => true,
         require       => Service['docker'],

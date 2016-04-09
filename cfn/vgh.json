@@ -119,9 +119,9 @@
           {"Fn::GetAtt": ["VPC", "Outputs.Subnet3"]},
           {"Fn::GetAtt": ["VPC", "Outputs.Subnet4"]}
         ],
-        "MinSize": "0",
-        "MaxSize": "0",
-        "DesiredCapacity": "0",
+        "MinSize": "1",
+        "MaxSize": "1",
+        "DesiredCapacity": "1",
         "HealthCheckType": "ELB",
         "HealthCheckGracePeriod": "600",
         "Cooldown": "600",
@@ -168,12 +168,26 @@
 
           "cat << EOF > /var/lib/cloud/instance/.env\n",
           "export AWS_DEFAULT_REGION='", {"Ref": "AWS::Region"}, "'\n",
+          "export AWS ECS_CLUSTER='", {"Ref": "ECSCluster"}, "'\n",
           "export AWS RDS_DB_ENDPOINT='", {"Fn::GetAtt": ["RDS", "Outputs.DBEndpoint"]}, "'\n",
           "EOF\n",
+
+          "mkdir -p /etc/puppetlabs/facter/facts.d\n",
+          "cat << EOF > /etc/puppetlabs/facter/facts.d/.env.aws\n",
+          "---\n",
+          "aws_ecs_cluster='", {"Ref": "ECSCluster"}, "'\n",
+          "aws_rds_db_endpoint='", {"Fn::GetAtt": ["RDS", "Outputs.DBEndpoint"]}, "'\n",
+          "EOF\n",
+
+          "bash /opt/puppet_vgh/bootstrap\n",
 
           "echo 'SUCCEEDED' | tee /var/lib/cloud/instance/status_cfn"
         ]]}}
       }
+    },
+
+    "ECSCluster": {
+      "Type": "AWS::ECS::Cluster"
     },
 
     "AMIInfo": {
@@ -271,6 +285,9 @@
     "DBEndpoint": {
       "Description": "The database endpoint",
       "Value": {"Fn::GetAtt": ["RDS", "Outputs.DBEndpoint"]}
+    },
+    "ECSCluster" : {
+      "Value": {"Ref": "ECSCluster"}
     }
   }
 }

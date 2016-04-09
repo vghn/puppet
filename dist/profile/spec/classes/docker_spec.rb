@@ -6,7 +6,10 @@ describe 'profile::docker' do
       context "on #{os}" do
         let(:facts) do
           facts.merge(
-            ec2_metadata: { placement: { :'availability-zone' => 'us-east-1' } }
+            ec2_metadata: {
+              placement: { :'availability-zone' => 'us-east-1' }
+            },
+            aws_ecs_cluster: 'default'
           )
         end
 

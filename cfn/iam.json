@@ -113,9 +113,9 @@
         "AssumeRolePolicyDocument": {
           "Version": "2012-10-17",
           "Statement": [{
-              "Effect": "Allow",
-              "Principal": {"Service": ["lambda.amazonaws.com"]},
-              "Action": ["sts:AssumeRole"]
+            "Effect": "Allow",
+            "Principal": {"Service": ["lambda.amazonaws.com"]},
+            "Action": ["sts:AssumeRole"]
           }]
         },
         "Path": "/",
@@ -124,21 +124,35 @@
           "PolicyDocument": {
             "Version": "2012-10-17",
             "Statement": [{
-                "Effect": "Allow",
-                "Action": [
-                  "logs:CreateLogGroup",
-                  "logs:CreateLogStream",
-                  "logs:PutLogEvents"
-                ],
-                "Resource": "arn:aws:logs:*:*:*"
-            },
-            {
-                "Effect": "Allow",
-                "Action": ["ec2:DescribeImages"],
-                "Resource": "*"
+              "Effect": "Allow",
+              "Action": [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+              ],
+              "Resource": "arn:aws:logs:*:*:*"
+            },{
+              "Effect": "Allow",
+              "Action": ["ec2:DescribeImages"],
+              "Resource": "*"
             }]
           }
         }]
+      }
+    },
+
+    "ECSServiceRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [{
+            "Effect": "Allow",
+            "Principal": {"Service": ["ecs.amazonaws.com"]},
+            "Action": ["sts:AssumeRole"]
+          }]
+        },
+        "ManagedPolicyArns": ["arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceRole"],
+        "Path": "/"
       }
     }
   },
