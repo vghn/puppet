@@ -51,7 +51,6 @@
     },
 
     "DBSecurityGroup": {
-      "DependsOn": ["InstanceSecurityGroup"],
       "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
         "GroupDescription": "RDS Firewall",
