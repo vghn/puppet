@@ -28,6 +28,7 @@ fi
 
 # Project
 export PROJECT_NAME="${PROJECT_NAME:-$(basename "${APPDIR}")}"
+export PROJECT_PATH="${PROJECT_PATH:-/opt/${PROJECT_NAME}}"
 
 # Version
 export VERSION_FILE="${APPDIR}/VERSION"
@@ -72,10 +73,43 @@ elif [[ ${TRAVIS:-false} == true ]]; then
   git config --global user.name "TravisCI"
 fi
 
+# Trusted IPs
+export TRUSTED_IPS="${TRUSTED_IPS:-"$(vgs_get_external_ip)/32"}"
+
+# Slack Incoming Web Hook URL
+export SLACK_CHANNEL="${SLACK_CHANNEL:-general}"
+export SLACK_USER="${SLACK_USER:-Bot}"
+export SLACK_WEBHOOK="${SLACK_WEBHOOK:-'https://hooks.slack.com/services/ChangeMe'}"
+
+# AWS
+export AWS_ACCOUNT_NUMBER="${AWS_ACCOUNT_NUMBER:-}"
+export AWS_DEFAULT_REGION="${AWS_DEFAULT_REGION:-us-east-1}"
+
 # AWS S3
 export AWS_ASSETS_BUCKET="${AWS_ASSETS_BUCKET:-$PROJECT_NAME}"
 export AWS_ASSETS_KEY_PREFIX="$ENVTYPE"
 export AWS_ASSETS_S3_PATH="s3://${AWS_ASSETS_BUCKET}/${AWS_ASSETS_KEY_PREFIX}"
+
+# AWS EC2
+export AWS_EC2_KEY="${AWS_EC2_KEY:-key}"
+export AWS_EC2_IMAGE_PREFIX="${AWS_EC2_IMAGE_PREFIX:-AMI}"
+export AWS_EC2_IMAGE_DESCRIPTION="${AWS_EC2_IMAGE_DESCRIPTION:-AMI}"
+export AWS_EC2_INSTANCE_TYPE="${AWS_EC2_INSTANCE_TYPE:-t2.micro}"
+
+# AWS TAGs
+export AWS_TAG_GROUP="${AWS_TAG_GROUP:MyGroup}"
+
+# AWS RDS
+export AWS_RDS_DB_ENGINE="${AWS_RDS_DB_ENGINE:-MySQL}"
+export AWS_RDS_DB_NAME="${AWS_RDS_DB_NAME:-db}"
+export AWS_RDS_DB_USER="${AWS_RDS_DB_USER:-admin}"
+export AWS_RDS_DB_PASS="${AWS_RDS_DB_PASS:-ChangeMe}"
+
+# AWS SNS
+export AWS_SNS_NOTIFICATIONS="${AWS_SNS_NOTIFICATIONS:-"arn:aws:sns:${AWS_DEFAULT_REGION}:${AWS_ACCOUNT_NUMBER}:NotifyMe"}"
+
+# AWS SSL
+export AWS_SSL_ARN="${AWS_SSL_ARN:-}"
 
 # CloudFormation
 export CFN_STACKS_PATH="${APPDIR}/cfn"
