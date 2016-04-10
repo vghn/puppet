@@ -4,6 +4,10 @@
 set -euo pipefail
 IFS=$'\n\t'
 
+# Project
+export PROJECT_NAME='puppet_vgh'
+export PROJECT_PATH='/opt'
+
 # Paths
 export APPDIR TMPDIR PATH
 APPDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
@@ -12,7 +16,7 @@ PATH="/opt/puppetlabs/bin:/opt/puppetlabs/puppet/bin:/usr/local/bin:${PATH}"
 
 # Load VGS Library
 # shellcheck disable=1090,1091
-. /opt/vgs/load || . "${HOME}/vgs/load" || true
+. /opt/vgs/load 2>/dev/null || . "${HOME}/vgs/load" 2>/dev/null || true
 
 # Load libraries
 # shellcheck disable=1090
@@ -25,10 +29,6 @@ for file in ${APPDIR}/lib/*.sh; do . "$file"; done
 # Load private environment
 # shellcheck disable=SC1090
 [[ -s "${APPDIR}/.env" ]] && . "${APPDIR}/.env"
-
-# Project
-export PROJECT_NAME="${PROJECT_NAME:-$(basename "${APPDIR}")}"
-export PROJECT_PATH="${PROJECT_PATH:-/opt/${PROJECT_NAME}}"
 
 # Version
 export VERSION_FILE="${APPDIR}/VERSION"
