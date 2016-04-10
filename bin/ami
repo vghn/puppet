@@ -2,32 +2,8 @@
 # AWS EC2 image tasks
 
 # Load environment
-envfile="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)/../environment.sh"
 # shellcheck disable=1090
-[[ -s "$envfile" ]] && . "$envfile"
-
-pack_ami_files(){
-  ami_archive="ami-${VERSION}.tgz"
-  ami_archive_path="${TMPDIR}/${ami_archive}"
-  e_info "Creating AMI archive (${ami_archive_path})"
-  if ! tar cvzf "$ami_archive_path" \
-    data/ dist/profile/manifests dist/role/manifests manifests/ \
-    .env bootstrap environment.conf environment.sh Puppetfile \
-    LICENSE README.md VERSION;
-  then
-    e_abort "Could not create ${ami_archive_path}"
-  fi
-}
-
-upload_ami_files(){
-  ami_archive_bucket="$AWS_ASSETS_BUCKET"
-  ami_archive_key="${AWS_ASSETS_KEY_PREFIX}/ami/${ami_archive}"
-  ami_archive_s3_path="s3://${ami_archive_bucket}/${ami_archive_key}"
-  echo "Uploading AMI archive to S3 (${ami_archive_s3_path})"
-  if ! aws s3 cp "$ami_archive_path" "${ami_archive_s3_path}"; then
-    e_abort "Could not uplaod ${ami_archive_path} to ${ami_archive_s3_path}"
-  fi
-}
+. "$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd -P)/env.sh"
 
 generate_user_data(){
   local file="${TMPDIR}/${FUNCNAME[0]}"
@@ -46,7 +22,7 @@ export PP_ENV=${ENVTYPE:-production}
 export SLACK_CHANNEL='${SLACK_CHANNEL}'
 export SLACK_USER='${SLACK_USER}'
 export SLACK_WEBHOOK='${SLACK_WEBHOOK}'
-export ami_archive_s3_url='$(vgs_aws_s3_generate_presigned_url "$ami_archive_bucket" "$ami_archive_key" 300)'
+export ami_archive_s3_url='$(vgs_aws_s3_generate_presigned_url "$AWS_ASSETS_BUCKET" "$APP_ARCHIVE_S3_KEY_LATEST" 300)'
 export HOME=/home/ubuntu
 export PATH="/opt/puppetlabs/bin:/opt/puppetlabs/puppet/bin:/usr/local/bin:\${PATH}"
 export BUILDDIR; BUILDDIR="/tmp/ami_build_\$(date +%Y%m%d)"
@@ -145,8 +121,6 @@ clean_up(){
 }
 
 create_ami(){
-  pack_ami_files && upload_ami_files
-
   create_instance && tag_instance
   e_info 'Waiting for instance to start'
   aws ec2 wait instance-running --instance-ids "$instance_id"
@@ -177,6 +151,8 @@ e_info "AWS EC2 key: ${AWS_EC2_KEY:?}"
 e_info "AWS EC2 instance type: ${AWS_EC2_INSTANCE_TYPE:?}"
 e_info "AWS EC2 image prefix: ${AWS_EC2_IMAGE_PREFIX:?}"
 e_info "AWS EC2 image description: ${AWS_EC2_IMAGE_DESCRIPTION:?}"
+e_info "AWS Assets bucket: ${AWS_ASSETS_BUCKET:?}"
+e_info "App archive S3 key: ${APP_ARCHIVE_S3_KEY:?}"
 
 # Process arguments
 e_header 'AWS Image:'

@@ -1,0 +1,87 @@
+#!/usr/bin/env bash
+# Puppet Master Tasks
+# @author Vlad Ghinea
+
+# Load environment
+# shellcheck disable=1090
+. "$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd -P)/env.sh"
+
+# Clean-up path (mostly get rid of RVM)
+PATH=/opt/puppetlabs/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+# Get puppet configuration value
+get_ppt_cfg(){
+  puppet config print --environment "$ENVTYPE" "$@"
+}
+
+# Deploy R10k environments
+r10k_deploy(){
+  r10k deploy environment --puppetfile --verbose
+}
+
+# Retrieve Hiera Data
+get_hiera_data(){
+  envpath=$(get_ppt_cfg environmentpath)
+
+  for env in ${envpath}/*; do
+    envname=$(basename "$env")
+
+    e_info "Sync hiera data for the '${envname}' environment"
+    if ! aws s3 sync \
+      --delete \
+      "s3://${AWS_ASSETS_BUCKET}/${envname}/data" "${envpath}/data"
+    then
+      e_warn 'Could not get private hiera data'
+    fi
+  done
+}
+
+# Apply puppet
+puppet_apply(){
+  local exit_code=0
+
+  echo 'Apply Puppet manifest'
+  (
+    # Clean-up path (mostly get rid of RVM)
+    FACTER_ROLE=zeus puppet apply \
+      --environment "$ENVTYPE" \
+      --verbose \
+      --detailed-exitcodes \
+      "$(get_ppt_cfg manifest)/site.pp"
+  ) || exit_code=$?
+
+  # Process the exit code
+  if [[ $exit_code == 0 ]]; then
+    e_info 'The run succeeded with no changes or failures'
+  elif [[ $exit_code == 1 ]]; then
+    e_abort 'The run failed'
+  elif [[ $exit_code == 2 ]]; then
+    e_info 'The run succeeded, and some resources were changed'
+  elif [[ $exit_code == 4 ]]; then
+    e_abort 'The run succeeded, and some resources failed'
+  elif [[ $exit_code == 6 ]]; then
+    e_abort 'The run succeeded, and included both changes and failures'
+  else
+    e_abort 'Unknown run exit code'
+  fi
+}
+
+# xVARs
+e_header 'INFO:'
+e_info "Environment: ${ENVTYPE:?}"
+
+# Process arguments
+e_header 'Puppet Master:'
+case "${1:-}" in
+  apply)
+    # Deploy R10K environments
+    r10k_deploy
+    # Get Hiera data
+    get_hiera_data
+    # Apply puppet main manifest twice
+    puppet_apply || puppet_apply
+    ;;
+  *)
+    e_abort "USAGE: ${BASH_SOURCE[0]} [apply]"
+    ;;
+esac

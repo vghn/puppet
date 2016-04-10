@@ -202,8 +202,8 @@ configure_puppet_agent(){
 
 # Configure agent or master
 configure_puppet(){
-  PP_CONFDIR="$(puppet master --configprint confdir)"
-  PP_CODEDIR="$(puppet master --configprint codedir)"
+  PP_CONFDIR="$(puppet config print confdir)"
+  PP_CODEDIR="$(puppet config print codedir)"
 
   if [[ "$PP_MASTER" == 'none' ]]; then
     if [[ -s "${PUPPETFILE}" ]]; then
@@ -218,7 +218,7 @@ configure_puppet(){
 }
 
 # Apply puppet
-apply_puppet(){
+puppet_apply(){
   local manifest exit_code
   manifest="${1:-'manifests/site.pp'}"
   exit_code=0

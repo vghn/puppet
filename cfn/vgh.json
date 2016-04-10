@@ -158,14 +158,8 @@
 
           "echo 'IN_PROGRESS' | tee /var/lib/cloud/instance/status_cfn\n",
 
-          "cat << EOF > /var/lib/cloud/instance/.env\n",
-          "export AWS_DEFAULT_REGION='", {"Ref": "AWS::Region"}, "'\n",
-          "export AWS ECS_CLUSTER='", {"Ref": "ECSCluster"}, "'\n",
-          "export AWS RDS_DB_ENDPOINT='", {"Fn::GetAtt": ["RDS", "Outputs.DBEndpoint"]}, "'\n",
-          "EOF\n",
-
           "mkdir -p /etc/puppetlabs/facter/facts.d\n",
-          "cat << EOF > /etc/puppetlabs/facter/facts.d/.env.aws\n",
+          "cat << EOF > /etc/puppetlabs/facter/facts.d/aws.env\n",
           "---\n",
           "aws_ecs_cluster: ", {"Ref": "ECSCluster"}, "\n",
           "aws_rds_db_endpoint: ", {"Fn::GetAtt": ["RDS", "Outputs.DBEndpoint"]}, "\n",

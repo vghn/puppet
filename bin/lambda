@@ -2,9 +2,8 @@
 # AWS Lambda tasks
 
 # Load environment
-envfile="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)/../environment.sh"
 # shellcheck disable=1090
-[[ -s "$envfile" ]] && . "$envfile"
+. "$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd -P)/env.sh"
 
 # Creates zip archives with the lambda functions and upload them to S3
 upload_lambda_archives(){

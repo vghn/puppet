@@ -15,7 +15,10 @@
 
 # Load environment
 # shellcheck disable=1090
-. "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)/../../environment.sh" || true
+. "$(cd "$(dirname "${BASH_SOURCE[0]}")/../../" && pwd -P)/env.sh"
+
+# RVM does not like strict variable
+set +o nounset
 
 # Add RVM
 # shellcheck disable=1090

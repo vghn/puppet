@@ -12,11 +12,11 @@ PATH="/opt/puppetlabs/bin:/opt/puppetlabs/puppet/bin:/usr/local/bin:${PATH}"
 
 # Load VGS Library
 # shellcheck disable=1090,1091
-if [[ -s /opt/vgs/load ]]; then
-  . /opt/vgs/load
-elif [[ -s "${HOME}/vgs/load" ]]; then
-  . "${HOME}/vgs/load"
-fi
+. /opt/vgs/load || . "${HOME}/vgs/load" || true
+
+# Load libraries
+# shellcheck disable=1090
+for file in ${APPDIR}/lib/*.sh; do . "$file"; done
 
 # Load AWS environment
 # shellcheck disable=SC1091
@@ -63,13 +63,14 @@ fi
 # CI
 export CI=${CI:-false}
 export PR=false
+export BUILD=0
 if [[ ${CIRCLECI:-false} == true ]]; then
-  export PR=${CIRCLE_PR_NUMBER:-false}
-  export BUILD=${CIRCLE_BUILD_NUM:-0}
+  export PR=${CIRCLE_PR_NUMBER}
+  export BUILD=${CIRCLE_BUILD_NUM}
   git config --global user.name "CircleCI"
 elif [[ ${TRAVIS:-false} == true ]]; then
-  export PR=${TRAVIS_PULL_REQUEST:-false}
-  export BUILD=${TRAVIS_BUILD_NUMBER:-0}
+  export PR=${TRAVIS_PULL_REQUEST}
+  export BUILD=${TRAVIS_BUILD_NUMBER}
   git config --global user.name "TravisCI"
 fi
 
@@ -87,8 +88,17 @@ export AWS_DEFAULT_REGION="${AWS_DEFAULT_REGION:-us-east-1}"
 
 # AWS S3
 export AWS_ASSETS_BUCKET="${AWS_ASSETS_BUCKET:-$PROJECT_NAME}"
-export AWS_ASSETS_KEY_PREFIX="$ENVTYPE"
+export AWS_ASSETS_KEY_PREFIX="${PROJECT_NAME}/${ENVTYPE}"
 export AWS_ASSETS_S3_PATH="s3://${AWS_ASSETS_BUCKET}/${AWS_ASSETS_KEY_PREFIX}"
+
+# APP Files
+export APP_ARCHIVE="puppet_vgh-${VERSION}-${BUILD}.tgz"
+export APP_ARCHIVE_S3_KEY="${AWS_ASSETS_KEY_PREFIX}/app/${APP_ARCHIVE}"
+export APP_ARCHIVE_S3_PATH="s3://${AWS_ASSETS_BUCKET}/${APP_ARCHIVE_S3_KEY}"
+export APP_ARCHIVE_LATEST="puppet_vgh.tgz"
+export APP_ARCHIVE_S3_KEY_LATEST="${AWS_ASSETS_KEY_PREFIX}/app/${APP_ARCHIVE_LATEST}"
+export APP_ARCHIVE_S3_PATH_LATEST="s3://${AWS_ASSETS_BUCKET}/${APP_ARCHIVE_S3_KEY_LATEST}"
+export PRIVATE_DATA_S3_PATH="${AWS_ASSETS_S3_PATH}/private"
 
 # AWS EC2
 export AWS_EC2_KEY="${AWS_EC2_KEY:-key}"

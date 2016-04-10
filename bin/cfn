@@ -2,9 +2,8 @@
 # AWS CloudFormation tasks
 
 # Load environment
-envfile="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)/../environment.sh"
 # shellcheck disable=1090
-[[ -s "$envfile" ]] && . "$envfile"
+. "$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd -P)/env.sh"
 
 # Creates a new stack
 create_stack(){

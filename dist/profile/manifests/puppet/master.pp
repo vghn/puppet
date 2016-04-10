@@ -28,7 +28,7 @@ class profile::puppet::master {
       },
     },
     cachedir => '/opt/puppetlabs/r10k/cache',
-    postrun  => ['/bin/bash', '-c', "${::settings::environmentpath}/${environment}/hooks/post-run"],
+    postrun  => ['/bin/bash', '-c', "${::settings::environmentpath}/${environment}/bin/r10k-post-run"],
     provider => 'puppet_gem',
     version  => '2.2.0',
   }
