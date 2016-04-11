@@ -272,7 +272,7 @@ main(){
   install_puppet_agent
   configure_puppet
   if [[ "$PP_MASTER" == 'none' ]]; then
-    apply_puppet "${MANIFESTS}/site.pp"
+    puppet_apply "${MANIFESTS}/site.pp"
   elif [[ -n "$PP_MASTER" ]]; then
     run_puppet
   else
