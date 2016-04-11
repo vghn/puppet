@@ -2,17 +2,17 @@
 class profile::puppet::master {
   # Hiera config
   class {'::hiera':
-    datadir            => '"%{::environmentpath}/%{::environment}/data"',
+    datadir            => "${::settings::environmentpath}/%{::environment}/data",
     hiera_yaml         => "${::settings::codedir}/hiera.yaml",
     puppet_conf_manage => false,
     create_symlink     => false,
     owner              => 'root',
     group              => 'root',
     hierarchy          => [
-      '"nodes/%{::trusted.certname}"',
-      '"%{::trusted.domainname}/%{::trusted.hostname}"',
-      '"roles/%{::trusted.extensions.pp_role}"',
-      '"roles/%{role}"',
+      'nodes/%{::trusted.certname}',
+      '%{::trusted.domainname}/%{::trusted.hostname}',
+      'roles/%{::trusted.extensions.pp_role}',
+      'roles/%{role}',
       'private',
       'common',
     ],
