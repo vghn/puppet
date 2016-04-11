@@ -179,7 +179,7 @@ done
 echo ""
 
 echo "### Checking if bash syntax is valid ###"
-for file in $(git diff --name-only --cached | grep -E '\.(sh)'); do
+for file in $(git diff --name-only --cached | grep -E '\.sh$'); do
   if [[ -f $file ]]; then
     shellcheck "$file"
     if [[ $? -ne 0 ]]; then

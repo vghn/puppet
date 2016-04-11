@@ -162,8 +162,12 @@
           "cat << EOF > /etc/puppetlabs/facter/facts.d/aws.env\n",
           "---\n",
           "aws_ecs_cluster: ", {"Ref": "ECSCluster"}, "\n",
+          "aws_assets_bucket: ", {"Ref": "AssetsBucket"}, "\n",
           "aws_rds_db_endpoint: ", {"Fn::GetAtt": ["RDS", "Outputs.DBEndpoint"]}, "\n",
           "EOF\n",
+
+          "echo 'Update puppet master'\n",
+          "/usr/local/bin/puppet_vgh_master_update\n",
 
           "echo 'SUCCEEDED' | tee /var/lib/cloud/instance/status_cfn"
         ]]}}

@@ -10,8 +10,8 @@ package_app_files(){
 
   e_info "Creating application archive (${app_archive_path})"
   if ! tar cvzf "$app_archive_path" \
-    bin/ data/ dist/profile/manifests dist/role/manifests manifests/ \
-    .env bootstrap env.sh environment.conf Puppetfile \
+    bin/ data/ dist/profile/{manifests,templates} dist/role/manifests \
+    manifests/ .env bootstrap env.sh environment.conf Puppetfile \
     LICENSE README.md VERSION;
   then
     e_abort "Could not create ${app_archive_path}"

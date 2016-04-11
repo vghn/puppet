@@ -32,4 +32,14 @@ class profile::puppet::master {
     provider => 'puppet_gem',
     version  => '2.2.0',
   }
+
+  ensure_resource('file', '/usr/local/bin/puppet_vgh_master_update',
+    {
+      ensure  => present,
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0555',
+      content => template('profile/puppet_vgh_master_update.sh.erb'),
+    }
+  )
 }

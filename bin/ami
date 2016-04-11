@@ -22,7 +22,7 @@ export PP_ENV=${ENVTYPE:-production}
 export SLACK_CHANNEL='${SLACK_CHANNEL}'
 export SLACK_USER='${SLACK_USER}'
 export SLACK_WEBHOOK='${SLACK_WEBHOOK}'
-export ami_archive_s3_url='$(vgs_aws_s3_generate_presigned_url "$AWS_ASSETS_BUCKET" "$APP_ARCHIVE_S3_KEY_LATEST" 300)'
+export app_archive_s3_url='$(vgs_aws_s3_generate_presigned_url "$AWS_ASSETS_BUCKET" "$APP_ARCHIVE_S3_KEY_LATEST" 300)'
 export HOME=/home/ubuntu
 export PATH="/opt/puppetlabs/bin:/opt/puppetlabs/puppet/bin:/usr/local/bin:\${PATH}"
 export BUILDDIR; BUILDDIR="/tmp/ami_build_\$(date +%Y%m%d)"
@@ -65,7 +65,7 @@ mkdir -p "\${BUILDDIR}"
 cd "\${BUILDDIR}" || exit
 
 echo 'Get AMI build files'
-curl "\$ami_archive_s3_url" | tar xvz
+curl "\$app_archive_s3_url" | tar xvz
 
 echo 'Bootstrap Puppet'
 bash bootstrap

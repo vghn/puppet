@@ -1,18 +1,21 @@
 #!/usr/bin/env bash
-# Puppet Master Tasks
+# Update Puppet Master
+# This file is managed by Puppet
 # @author Vlad Ghinea
 
-# Load environment
-# shellcheck disable=1090
-. "$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd -P)/env.sh"
-
-# Clean-up path (mostly get rid of RVM)
+# VARs
 PATH=/opt/puppetlabs/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+environment=${1:-production}
+role=${2:-none}
+project_name=<%= scope.function_hiera(['project_name']) %>
+project_path=<%= scope.function_hiera(['project_path']) %>
+assets_bucket=<%= @aws_assets_bucket %>
+environmentpath=$(puppet config print environmentpath)
+manifest="$(puppet config print manifest)/site.pp"
 
-# Get puppet configuration value
-get_ppt_cfg(){
-  puppet config print --environment "$ENVTYPE" "$@"
-}
+# Load VGS Library
+# shellcheck disable=1090,1091
+. /opt/vgs/load 2>/dev/null || . "${HOME}/vgs/load" 2>/dev/null || true
 
 # Deploy R10k environments
 r10k_deploy(){
@@ -21,15 +24,14 @@ r10k_deploy(){
 
 # Retrieve Hiera Data
 get_hiera_data(){
-  envpath=$(get_ppt_cfg environmentpath)
+  for env in ${environmentpath}/*; do
+    environmentname=$(basename "$env")
 
-  for env in ${envpath}/*; do
-    envname=$(basename "$env")
-
-    e_info "Sync hiera data for the '${envname}' environment"
+    e_info "Sync hiera data for the '${environmentname}' environment"
     if ! aws s3 sync \
       --delete \
-      "s3://${AWS_ASSETS_BUCKET}/${envname}/data" "${envpath}/data"
+      "s3://${assets_bucket}/${project_name}/${environmentname}/data" \
+      "${environmentpath}/${environmentname}/data"
     then
       e_warn 'Could not get private hiera data'
     fi
@@ -43,11 +45,11 @@ puppet_apply(){
   echo 'Apply Puppet manifest'
   (
     # Clean-up path (mostly get rid of RVM)
-    FACTER_ROLE=zeus puppet apply \
-      --environment "$ENVTYPE" \
+    FACTER_ROLE=${role} puppet apply \
+      --environment "$environment" \
       --verbose \
       --detailed-exitcodes \
-      "$(get_ppt_cfg manifest)/site.pp"
+      "$manifest"
   ) || exit_code=$?
 
   # Process the exit code
@@ -66,22 +68,10 @@ puppet_apply(){
   fi
 }
 
-# xVARs
-e_header 'INFO:'
-e_info "Environment: ${ENVTYPE:?}"
+main(){
+  r10k_deploy
+  get_hiera_data
+  puppet_apply
+}
 
-# Process arguments
-e_header 'Puppet Master:'
-case "${1:-}" in
-  apply)
-    # Deploy R10K environments
-    r10k_deploy
-    # Get Hiera data
-    get_hiera_data
-    # Apply puppet main manifest twice
-    puppet_apply || puppet_apply
-    ;;
-  *)
-    e_abort "USAGE: ${BASH_SOURCE[0]} [apply]"
-    ;;
-esac
+main "$@"
