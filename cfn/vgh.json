@@ -167,7 +167,7 @@
           "EOF\n",
 
           "echo 'Update puppet master'\n",
-          "/usr/local/bin/puppet_vgh_master_update\n",
+          "/usr/local/bin/puppet_vgh_master_update ", {"Ref": "EnvType"}, " zeus\n",
 
           "echo 'SUCCEEDED' | tee /var/lib/cloud/instance/status_cfn"
         ]]}}

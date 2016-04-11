@@ -7,8 +7,8 @@
 PATH=/opt/puppetlabs/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 environment=${1:-production}
 role=${2:-none}
-project_name=<%= scope.function_hiera(['project_name']) %>
-project_path=<%= scope.function_hiera(['project_path']) %>
+project_name=<%= scope().call_function('hiera',['project_name']) %>
+project_name=<%= scope().call_function('hiera',['project_path']) %>
 assets_bucket=<%= @aws_assets_bucket %>
 environmentpath=$(puppet config print environmentpath)
 manifest="$(puppet config print manifest)/site.pp"

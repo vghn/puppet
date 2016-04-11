@@ -10,6 +10,9 @@ aws_cloudwatch_logs:
   TEST/System/SysLog:
     path: /var/log/syslog
 
+project_name: my_project
+project_path: /opt
+
 docker::docker_users: [ubuntu]
 
 ecs_cluster_name: ecs
