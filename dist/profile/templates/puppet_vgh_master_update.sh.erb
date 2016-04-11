@@ -3,19 +3,26 @@
 # This file is managed by Puppet
 # @author Vlad Ghinea
 
-# VARs
-PATH=/opt/puppetlabs/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+# Bash strict mode
+set -euo pipefail
+IFS=$'\n\t'
+
+# Arguments
 environment=${1:-production}
 role=${2:-none}
+
+# VARs
 project_name=<%= scope().call_function('hiera',['project_name']) %>
-project_name=<%= scope().call_function('hiera',['project_path']) %>
+project_path=<%= scope().call_function('hiera',['project_path']) %>
 assets_bucket=<%= @aws_assets_bucket %>
-environmentpath=$(puppet config print environmentpath)
-manifest="$(puppet config print manifest)/site.pp"
 
 # Load VGS Library
 # shellcheck disable=1090,1091
 . /opt/vgs/load 2>/dev/null || . "${HOME}/vgs/load" 2>/dev/null || true
+
+# Use Puppets gems and paths
+unset GEM_HOME GEM_PATH
+PATH=/opt/puppetlabs/bin:/opt/puppetlabs/puppet/bin:/usr/local/bin:${PATH}
 
 # Deploy R10k environments
 r10k_deploy(){
@@ -24,6 +31,8 @@ r10k_deploy(){
 
 # Retrieve Hiera Data
 get_hiera_data(){
+  environmentpath=$(puppet config print environmentpath)
+
   for env in ${environmentpath}/*; do
     environmentname=$(basename "$env")
 
@@ -31,7 +40,7 @@ get_hiera_data(){
     if ! aws s3 sync \
       --delete \
       "s3://${assets_bucket}/${project_name}/${environmentname}/data" \
-      "${environmentpath}/${environmentname}/data"
+      "${environmentpath}/${environmentname}/private/data"
     then
       e_warn 'Could not get private hiera data'
     fi
@@ -40,17 +49,16 @@ get_hiera_data(){
 
 # Apply puppet
 puppet_apply(){
+  manifest="$(puppet config print manifest)/site.pp"
   local exit_code=0
 
   echo 'Apply Puppet manifest'
-  (
-    # Clean-up path (mostly get rid of RVM)
-    FACTER_ROLE=${role} puppet apply \
-      --environment "$environment" \
-      --verbose \
-      --detailed-exitcodes \
-      "$manifest"
-  ) || exit_code=$?
+  FACTER_ROLE=${role} puppet apply \
+    --environment "$environment" \
+    --verbose \
+    --detailed-exitcodes \
+    "$manifest" \
+  || exit_code=$?
 
   # Process the exit code
   if [[ $exit_code == 0 ]]; then
