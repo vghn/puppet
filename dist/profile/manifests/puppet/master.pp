@@ -31,6 +31,15 @@ class profile::puppet::master {
     postrun  => ['/bin/bash', '-c', "${::settings::environmentpath}/${environment}/bin/r10k-post-run"],
     provider => 'puppet_gem',
     version  => '2.2.0',
+    notify   => Exec['R10K deploy environment'],
+  }
+
+  exec {'R10K deploy environment':
+    command     => 'r10k deploy environment --puppetfile --verbose',
+    path        => ['/opt/puppetlabs/puppet/bin', '/usr/bin'],
+    refreshonly => true,
+    logoutput   => true,
+    timeout     => 600,
   }
 
   ensure_resource('file', '/usr/local/bin/puppet_vgh_master_update',
