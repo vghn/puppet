@@ -177,7 +177,7 @@
           "echo 'IN_PROGRESS' | tee /var/lib/cloud/instance/status_cfn\n",
 
           "mkdir -p /etc/puppetlabs/facter/facts.d\n",
-          "cat << EOF > /etc/puppetlabs/facter/facts.d/aws.env\n",
+          "cat << EOF > /etc/puppetlabs/facter/facts.d/aws.env.yaml\n",
           "---\n",
           "aws_cfn_name: ", {"Ref": "AWS::StackName"}, "\n",
           "aws_cfn_env_type: ", {"Ref": "EnvType"}, "\n",
