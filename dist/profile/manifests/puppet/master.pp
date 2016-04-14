@@ -23,10 +23,12 @@ class profile::puppet::master {
   }
 
   # Install, configure and run R10K
+  $control_repo = hiera('control_repo', '')
+  $r10k_version = hiera('r10k_version', 'latest')
   class {'::r10k':
     sources  => {
       'main' => {
-        'remote'  => 'https://github.com/vladgh/puppet.git',
+        'remote'  => $control_repo,
         'basedir' => $::settings::environmentpath,
         'prefix'  => false,
       },
@@ -34,7 +36,7 @@ class profile::puppet::master {
     cachedir => '/opt/puppetlabs/r10k/cache',
     postrun  => ['/bin/bash', '-c', "${::settings::environmentpath}/${environment}/bin/r10k-post-run"],
     provider => 'puppet_gem',
-    version  => '2.2.0',
+    version  => $r10k_version,
     notify   => Exec['R10K deploy environment'],
   }
 
