@@ -27,7 +27,7 @@ class profile::docker {
 
     # AWS ECS
     if $::ec2_metadata {
-      if  $::aws_ecs_cluster {
+      if  $::aws_cfn_ecs_cluster {
         file { '/var/log/ecs':
           ensure => 'directory',
         } ->
@@ -54,7 +54,7 @@ class profile::docker {
             'ECS_LOGFILE=/log/ecs-agent.log',
             'ECS_LOGLEVEL=info',
             'ECS_DATADIR=/data',
-            "ECS_CLUSTER=${::aws_ecs_cluster}",
+            "ECS_CLUSTER=${::aws_cfn_ecs_cluster}",
           ],
           pull_on_start => true,
           require       => Service['docker'],

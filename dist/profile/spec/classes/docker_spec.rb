@@ -32,7 +32,7 @@ describe 'profile::docker' do
               ec2_metadata: {
                 placement: { :'availability-zone' => 'us-east-1' }
               },
-              aws_ecs_cluster: 'default'
+              aws_cfn_ecs_cluster: 'default'
             )
           end
           it { is_expected.to contain_file('/var/log/ecs') }
