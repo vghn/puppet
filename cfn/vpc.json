@@ -9,6 +9,13 @@
         "Subnet2": "10.1.2.0/24",
         "Subnet3": "10.1.3.0/24",
         "Subnet4": "10.1.4.0/24"
+      },
+      "us-west-2": {
+        "VPC":     "10.2.0.0/16",
+        "Subnet1": "10.2.1.0/24",
+        "Subnet2": "10.2.2.0/24",
+        "Subnet3": "10.2.3.0/24",
+        "Subnet4": "10.2.4.0/24"
       }
     }
   },
@@ -175,15 +182,10 @@
   },
 
   "Outputs": {
-    "VPCId":   {"Description": "The VPC ID", "Value": {"Ref": "VPC"}},
-    "Subnets": {
-      "Description": "Subnets IDs list",
-      "Value": {"Fn::Join": [ ",", [
-        {"Ref": "Subnet1"},
-        {"Ref": "Subnet2"},
-        {"Ref": "Subnet3"},
-        {"Ref": "Subnet4"}
-      ]]}
-    }
+    "VPCId":   { "Description": "The VPC ID", "Value": {"Ref": "VPC"} },
+    "Subnet1": { "Description": "Subnet1 ID", "Value": {"Ref": "Subnet1"} },
+    "Subnet2": { "Description": "Subnet2 ID", "Value": {"Ref": "Subnet2"} },
+    "Subnet3": { "Description": "Subnet3 ID", "Value": {"Ref": "Subnet3"} },
+    "Subnet4": { "Description": "Subnet4 ID", "Value": {"Ref": "Subnet4"} }
   }
 }

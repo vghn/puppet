@@ -16,56 +16,26 @@ IFS=\$'\\n\\t'
 echo 'IN_PROGRESS' | tee /var/lib/cloud/instance/status_ami
 
 # VARs
+export IS_AMI=true
 export PP_ROLE=zeus
 export PP_MASTER=none
 export PP_ENV=${ENVTYPE:-production}
-export SLACK_CHANNEL='${SLACK_CHANNEL}'
-export SLACK_USER='${SLACK_USER}'
-export SLACK_WEBHOOK='${SLACK_WEBHOOK}'
-export app_archive_s3_url='$(vgs_aws_s3_generate_presigned_url "$AWS_ASSETS_BUCKET" "$APP_ARCHIVE_S3_KEY_LATEST" 300)'
+export PP_HIERA_S3_PATH="s3://${AWS_ASSETS_BUCKET}/${PROJECT_NAME}"
+export SLACK_CHANNEL=${SLACK_CHANNEL}
+export SLACK_USER=${SLACK_USER}
+export SLACK_WEBHOOK=${SLACK_WEBHOOK}
+export PROJECT_DIR=${PROJECT_PATH}/${PROJECT_NAME}
+export PROJECT_S3_URL='$(vgs_aws_s3_generate_presigned_url "$AWS_ASSETS_BUCKET" "$APP_ARCHIVE_S3_KEY_LATEST" 300)'
 export HOME=/home/ubuntu
 export PATH="/opt/puppetlabs/bin:/opt/puppetlabs/puppet/bin:/usr/local/bin:\${PATH}"
-export BUILDDIR; BUILDDIR="/tmp/ami_build_\$(date +%Y%m%d)"
 export DEBIAN_FRONTEND=noninteractive
 
-# Trap exit
-notify_slack(){
-  local exit_code date title color text
-  exit_code=\${1:-0}
-  date=\$(TZ=US/Central date)
-  if [[ \$exit_code == 0 ]]; then
-    title='SUCCESS'
-    color='#00FF00'
-  else
-    title='FAILED'
-    color='#ff0000'
-  fi
-  text="AMI Bootstrap exited with \${exit_code} on \$(hostname) @ \${date}"
-  curl -s -X POST --data-urlencode "payload={\"channel\": \"#\${SLACK_CHANNEL}\", \"username\": \"\${SLACK_USER}\", \"icon_emoji\": \":taurus:\", \"attachments\": [{\"title\": \"\${title}\", \"text\": \"\${text}\", \"color\": \"\${color}\"}]}" "\$SLACK_WEBHOOK"
-  echo; echo "\$title: \$text"; exit "\$exit_code"
-}
-trap 'notify_slack \$?' EXIT INT TERM
-
-echo 'Upgrading system'
-apt-get -qy update < /dev/null && apt-get -qy upgrade < /dev/null
-
-echo 'Ensure Python PIP exists'
-command -v pip >/dev/null 2>&1 || apt-get -qy install python-pip < /dev/null
-
-echo 'Upgrade PIP and ensure AWS-CLI exists'
-# Fix https://bugs.launchpad.net/ubuntu/+source/python-pip/+bug/1306991
-pip install --upgrade pip setuptools awscli
-
-echo 'Install VGS Library'
-mkdir -p /opt/vgs
-curl https://s3.amazonaws.com/vghn/vgs.tgz | tar xvz -C /opt/vgs
-
-echo 'Create build directory'
-mkdir -p "\${BUILDDIR}"
-cd "\${BUILDDIR}" || exit
+echo 'Create project directory'
+mkdir -p "\$PROJECT_DIR"
+cd "\$PROJECT_DIR" || exit
 
 echo 'Get AMI build files'
-curl "\$app_archive_s3_url" | tar xvz
+curl -sSL "\$PROJECT_S3_URL" | tar xvz
 
 echo 'Bootstrap Puppet'
 bash bootstrap
@@ -153,6 +123,7 @@ e_info "AWS EC2 image prefix: ${AWS_EC2_IMAGE_PREFIX:?}"
 e_info "AWS EC2 image description: ${AWS_EC2_IMAGE_DESCRIPTION:?}"
 e_info "AWS Assets bucket: ${AWS_ASSETS_BUCKET:?}"
 e_info "App archive S3 key: ${APP_ARCHIVE_S3_KEY:?}"
+
 
 # Process arguments
 e_header 'AWS Image:'

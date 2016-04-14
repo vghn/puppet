@@ -67,10 +67,19 @@
                   ]
                 },
                 {
-                  "Sid": "AllowS3Access",
+                  "Sid": "AllowS3ListAllBucket",
+                  "Effect": "Allow",
+                  "Action": "s3:ListAllMyBuckets",
+                  "Resource": "arn:aws:s3:::*"
+                },
+                {
+                  "Sid": "AllowS3AccessBucket",
                   "Effect": "Allow",
                   "Action": "*",
-                  "Resource": ["arn:aws:s3:::*"]
+                  "Resource": [
+                    {"Fn::Join" : [":", ["arn:aws:s3::", {"Ref": "AssetsBucket"}]]},
+                    {"Fn::Join" : [":", ["arn:aws:s3::", {"Ref": "AssetsBucket"}, "/*"]]}
+                  ]
                 }
               ]
             }
@@ -154,6 +163,63 @@
         "ManagedPolicyArns": ["arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceRole"],
         "Path": "/"
       }
+    },
+
+    "CIUser": {
+      "Type": "AWS::IAM::User",
+      "Properties": {
+        "ManagedPolicyArns": [
+          "arn:aws:iam::aws:policy/AmazonSSMFullAccess",
+          "arn:aws:iam::aws:policy/AmazonEC2ReadOnlyAccess",
+          "arn:aws:iam::aws:policy/AWSLambdaFullAccess"
+        ],
+        "Policies": [
+          {
+            "PolicyName": "CIPolicies",
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Sid": "AllowS3ListAllBucket",
+                  "Effect": "Allow",
+                  "Action": "s3:ListAllMyBuckets",
+                  "Resource": "arn:aws:s3:::*"
+                },
+                {
+                  "Sid": "AllowS3AccessBucket",
+                  "Effect": "Allow",
+                  "Action": "*",
+                  "Resource": [
+                    {"Fn::Join" : [":", ["arn:aws:s3::", {"Ref": "AssetsBucket"}]]},
+                    {"Fn::Join" : [":", ["arn:aws:s3::", {"Ref": "AssetsBucket"}, "/*"]]}
+                  ]
+                },
+                {
+                  "Sid": "AllowAccessToCodeDeploy",
+                  "Effect": "Allow",
+                  "Action": ["codedeploy:*"],
+                  "Resource": "arn:aws:codedeploy:*"
+                },
+                {
+                  "Sid": "AllowCloudFormationValidate",
+                  "Action": [
+                    "cloudformation:Describe*",
+                    "cloudformation:ValidateTemplate"
+                  ],
+                  "Effect": "Allow",
+                  "Resource": "*"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "CIAccessKey": {
+      "Type": "AWS::IAM::AccessKey",
+      "Properties": {
+        "UserName": {"Ref": "CIUser"}
+      }
     }
   },
 
@@ -173,6 +239,14 @@
     "LambdaExecutionRoleARN": {
       "Description": "The Lambda execution role ARN",
       "Value": {"Fn::GetAtt": ["LambdaExecutionRole", "Arn"]}
+    },
+    "CIAccessKey": {
+      "Description": "The Access Key",
+      "Value": {"Ref": "CIAccessKey" }
+    },
+    "CISecretKey": {
+      "Description": "The Secret Key",
+      "Value": {"Fn::GetAtt": [ "CIAccessKey", "SecretAccessKey" ]}
     }
   }
 }

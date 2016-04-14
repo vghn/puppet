@@ -8,24 +8,37 @@
 #
 # Environment variables:
 # PP_ENV: [STRING] The environment (default: 'production)
+#
 # PP_MASTER: [String] Can be any of the following
 #   - `puppet`: (default) the address of the puppet master server
 #   - `none`: runs in master-less mode, considering this a control repo; it looks
-#           for a `Puppetfile` (which will install into the default modules/
-#           directory), for a `datadir` containing hiera data (see the function
-#           `configure_hiera` bellow for a hierarchy of files), for a `dist`
-#           directory containing the profile and role modules, and for a
-#           `manifests` directory containing the `site.pp` file.
+#             for a `Puppetfile` (which will install into the default modules/
+#             directory), for a `datadir` containing hiera data (see the function
+#             `configure_hiera` bellow for a hierarchy of files), for a `dist`
+#             directory containing the profile and role modules, and for a
+#             `manifests` directory containing the `site.pp` file.
 #   - This value can also be any other string, in which case the address of the
 #     will assume that value.
+#
 # PP_ROLE: [String] Declares the role of the node as a trusted fact*
+#
+# PP_PROJECT: [String] Declares the project name as a trusted fact*
+#
 # PP_SECRET: [String] Declares a shared secret as a trusted fact*
+#
+# PP_HIERA_S3_PATH: [String] Declares an S3 Path to private hiera data.
+#                   Ex: `s3://mybucket/myprefix`
+#
 # PP_COLLECTION: [String] The puppet collection (default: 'pc3')
+#
 # PP_CODENAME: [String] The distribution codename (default: `lsb_release -cs`)
+#
 # PP_CONTROL_REPO: [String] The url of the control repo (default:
 #                  `https://github.com/vghn/puppet.git`)
+#
 # PP_COLOR: [String] Use color or not in output (default: 'true';
 #           https://docs.puppetlabs.com/puppet/latest/reference/configuration.html#color)
+#
 # PP_AGENT_CERTNAME: [String] The certificate name for the agent. Can be any of:
 #   - `default`: The certname will be the hostname (default on non-ec2 agents)
 #   - `ec2`: The certname will be the AWS EC2 Instance ID (default on
@@ -33,29 +46,67 @@
 #   - This value can also be any other string, in which case the certname will
 #     assume that value.
 #
+# IS_AMI: [Boolean] If true, a few more tasks are performed: upgrading the
+#         system, install Python PIP and AWS-CLI as well as the VGS Library
+#
 # * Trusted facts info: https://docs.puppetlabs.com/puppet/latest/reference/lang_facts_and_builtin_vars.html#trusted-facts
 
-# Immediately exit on errors
+# Bash strict mode
 set -euo pipefail
+IFS=$'\n\t'
 
 # DEFAULTS
 PP_ENV=${PP_ENV:-production}
 PP_MASTER=${PP_MASTER:-puppet}
 PP_ROLE=${PP_ROLE:-}
+PP_PROJECT=${PP_PROJECT:-}
 PP_SECRET=${PP_SECRET:-}
 PP_COLLECTION=${PP_COLLECTION:-pc1}
 PP_COLOR=${PP_COLOR:-true}
 PP_CONTROL_REPO=${PP_CONTROL_REPO:-'https://github.com/vghn/puppet.git'}
 PP_AGENT_CERTNAME=${PP_AGENT_CERTNAME:-default}
+PP_HIERA_S3_PATH=${PP_HIERA_S3_PATH:-}
+SLACK_CHANNEL=${SLACK_CHANNEL:-}
+SLACK_USER=${SLACK_USER:-}
+SLACK_WEBHOOK=${SLACK_WEBHOOK:-}
+IS_AMI=${IS_AMI:-false}
 
 # INTERNALS
 TMPDIR=$(mktemp -d 2>/dev/null || mktemp -d -t 'tmp')
-CURDIR=$(pwd -P)
-HIERADIR="${CURDIR}/data"
-PUPPETFILE="${CURDIR}/Puppetfile"
-MANIFESTS="${CURDIR}/manifests"
 CSRFILE="${TMPDIR}/csr_attributes.yaml"
-PATH="/opt/puppetlabs/bin:/opt/puppetlabs/puppet/bin:${PATH}"
+LOCALDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
+PATH="/opt/puppetlabs/bin:/opt/puppetlabs/puppet/bin:/usr/local/bin:${PATH}"
+unset GEM_HOME GEM_PATH
+
+# Facts
+export FACTER_ROLE="${PP_ROLE}"
+export FACTER_PROJECT="${PP_PROJECT}"
+
+# Trap exit and notify Slack
+notify_slack(){
+  local exit_code date title color text
+  exit_code=${1:-0}
+  date=$(TZ=US/Central date)
+
+  if [[ $exit_code == 0 ]]; then
+    title='SUCCESS'
+    color='#00FF00'
+  else
+    title='FAILED'
+    color='#ff0000'
+  fi
+  text="AMI Bootstrap exited with ${exit_code} on $(hostname) @ ${date}"
+
+  if [[ -n "$SLACK_CHANNEL" ]] && \
+    [[ -n "$SLACK_USER" ]] && \
+    [[ -n "$SLACK_WEBHOOK" ]]
+  then
+    curl -s -X POST --data-urlencode "payload={\"channel\": \"#${SLACK_CHANNEL}\", \"username\": \"${SLACK_USER}\", \"icon_emoji\": \":taurus:\", \"attachments\": [{\"title\": \"${title}\", \"text\": \"${text}\", \"color\": \"${color}\"}]}" "${SLACK_WEBHOOK}"
+  fi
+
+  echo; echo "$title: $text"; exit "$exit_code"
+}
+trap 'notify_slack $?' EXIT INT TERM
 
 # LOG
 e_info(){ echo "$*" ;}
@@ -80,23 +131,62 @@ apt_install(){ e_info "Installing $*"; apt-get -qy install "$@" < /dev/null ;}
 # Update APT
 apt_update() { e_info 'Updating APT' && apt-get -qy update < /dev/null ;}
 
+# Sanity checks
+sanity_checks(){
+  is_root || e_abort 'This script needs to run as root'
+}
+
+# Upgrade system
+upgrade_system(){
+  e_info 'Upgrading system'
+  apt-get -qy update < /dev/null && apt-get -qy upgrade < /dev/null
+}
+
+# Install CURL
+ensure_curl(){
+  e_info 'Ensure CURL exists'
+  is_cmd curl || apt-get -qy install curl < /dev/null
+}
+
+# Install Python PIP and awscli
+ensure_pip(){
+  e_info 'Ensure Python PIP exists'
+  is_cmd pip || apt-get -qy install python-pip < /dev/null
+  # Fix https://bugs.launchpad.net/ubuntu/+source/python-pip/+bug/1306991
+  pip install --upgrade pip setuptools
+}
+
+# Install AWS-CLI
+ensure_awscli(){
+  e_info 'Ensure AWS-CLI exists'
+  pip install --upgrade pip setuptools awscli
+}
+
+# Install VGS Library
+ensure_vgs(){
+  e_info 'Install VGS Library'
+  mkdir -p /opt/vgs
+  curl -sSL https://s3.amazonaws.com/vghn/vgs.tgz | tar xvz -C /opt/vgs
+}
+
 # Generate certificate request attributes file
 generate_csr_attributes(){
   e_info 'Generating a CSR Attributes file'
 
   # Get EC2 info
-  instance_id="$(curl --max-time 2 -s http://169.254.169.254/latest/meta-data/instance-id || '')"
-  ami_id="$(curl --max-time 2 -s http://169.254.169.254/latest/meta-data/ami-id || '')"
+  instance_id="$(curl --max-time 2 -s http://169.254.169.254/latest/meta-data/instance-id || echo '')"
+  ami_id="$(curl --max-time 2 -s http://169.254.169.254/latest/meta-data/ami-id || echo '')"
 
   # Define file template
-  cat > "$CSRFILE" <<EPP
+  cat > "$CSRFILE" <<CSR
 custom_attributes:
   challengePassword: $PP_SECRET
 extension_requests:
   pp_role: $PP_ROLE
+  pp_project: $PP_PROJECT
   pp_instance_id: $instance_id
   pp_image_name: $ami_id
-EPP
+CSR
 }
 
 # Install Puppet release package
@@ -139,32 +229,39 @@ deploy_r10k(){
     puppet resource package git ensure=latest
   fi
 
-  e_info 'Configure R10K'
-  local r10k_args="--verbose"
-  $PP_COLOR && r10k_args="${r10k_args} --color"
-
-  e_info 'Deploy R10K'
-  eval r10k puppetfile install "$r10k_args"
+  if [[ -s /etc/puppetlabs/r10k/r10k.yaml ]]; then
+    e_info 'Deploy R10K'
+    r10k deploy environment --puppetfile --verbose
+  elif [[ -s "${LOCALDIR}/Puppetfile" ]]; then
+    e_info 'Install R10K Puppetfile'
+    r10k puppetfile install --verbose
+  else
+    e_warn 'No R10K environment or Puppetfile found!'
+  fi
 }
 
 configure_hiera(){
   local hiera_config="${PP_CODEDIR}/hiera.yaml"
   if [[ "$(sed -n '1p' "$hiera_config" 2>/dev/null)" != '# managed by puppet' ]]; then
     e_info 'Configure Hiera'
-    cat <<HIERA > "$hiera_config"
+    cat <<HIERACFG > "$hiera_config"
 ---
 :backends:
   - yaml
 :yaml:
-  :datadir: '${HIERADIR}'
+  :datadir: '${LOCALDIR}/data'
 :hierarchy:
   - "nodes/%{::trusted.certname}"
   - "%{::trusted.domainname}/%{::trusted.hostname}"
   - "roles/%{::trusted.extensions.pp_role}"
   - "roles/%{role}"
+  - "projects/%{::trusted.extensions.pp_project}"
+  - "projects/%{::project}"
+  - "virtual/%{::virtual}"
+  - "osfamily/%{::osfamily}"
   - private
   - common
-HIERA
+HIERACFG
   fi
 }
 
@@ -200,38 +297,76 @@ configure_puppet_agent(){
   fi
 }
 
+# Retrieve Hiera Data
+get_hiera_data(){
+  local name
+  for env in ${PP_ENVDIR}/*; do
+    name=$(basename "$env")
+
+    e_info "Sync hiera data for the '${name}' environment"
+    if ! aws s3 sync \
+      --delete \
+      "${PP_HIERA_S3_PATH}/${name}/private/data" \
+      "${PP_ENVDIR}/${name}/data"
+    then
+      e_warn 'Could not get hiera data'
+    fi
+  done
+}
+
 # Configure agent or master
 configure_puppet(){
   PP_CONFDIR="$(puppet config print confdir)"
   PP_CODEDIR="$(puppet config print codedir)"
+  PP_ENVDIR=$(puppet config print environmentpath)
 
   if [[ "$PP_MASTER" == 'none' ]]; then
-    if [[ -s "${PUPPETFILE}" ]]; then
-      deploy_r10k
+    if [[ -s "${LOCALDIR}/Puppetfile" ]]; then
+      ( cd "$LOCALDIR"; deploy_r10k)
     fi
-    if [[ -s "${HIERADIR}" ]]; then
+    if [[ -s "${LOCALDIR}/data" ]]; then
       configure_hiera
     fi
-  elif [[ "$PP_MASTER" != 'puppet' ]]; then
+    if [[ -n "$PP_HIERA_S3_PATH" ]]; then
+      get_hiera_data;
+    fi
+  elif [[ -n "$PP_MASTER" ]]; then
     configure_puppet_agent
   fi
 }
 
 # Apply puppet
-puppet_apply(){
-  local manifest exit_code
-  manifest="${1:-'manifests/site.pp'}"
+apply_puppet(){
+  local exit_code manifest modulepath
+
   exit_code=0
 
-  if [[ -s "$manifest" ]]; then
-    e_info 'Applying puppet'
-    FACTER_ROLE="${PP_ROLE}" \
-      puppet apply \
-      --detailed-exitcodes \
-      --color="$PP_COLOR" \
-      --modulepath modules:dist \
-      "$manifest" || exit_code=$?
+  if [[ -s "${LOCALDIR}/manifests/site.pp" ]]; then
+    manifest="${LOCALDIR}/manifests/site.pp"
+  elif [[ -s "${PP_ENVDIR}/${PP_ENV}/manifests/site.pp" ]]; then
+    manifest="${PP_ENVDIR}/${PP_ENV}/manifests/site.pp"
+  else
+    e_abort 'Could not find site.pp'
   fi
+
+  if [[ -d "${LOCALDIR}/modules" ]] &&  [[ -d "${LOCALDIR}/dist" ]]; then
+    modulepath="${LOCALDIR}/modules:${LOCALDIR}/dist"
+  elif [[ -s "${PP_ENVDIR}/${PP_ENV}/modules" ]] && [[ -s "${PP_ENVDIR}/${PP_ENV}/dist" ]]; then
+    modulepath="${PP_ENVDIR}/${PP_ENV}/modules:${PP_ENVDIR}/${PP_ENV}/dist"
+  else
+    e_abort 'Could not create modulepath'
+  fi
+
+  e_info 'Applying puppet'
+  puppet apply \
+  --verbose \
+  --report \
+  --show_diff \
+  --summarize \
+  --detailed-exitcodes \
+  --color="$PP_COLOR" \
+  --modulepath "$modulepath" \
+  "$manifest" || exit_code=$?
 
   # Process the exit code
   if [[ $exit_code == 0 ]]; then
@@ -264,15 +399,23 @@ run_puppet(){
 
 # Logic
 main(){
-  is_root || e_abort 'This script needs to run as root'
-  # is_supported || e_abort 'Only Linux is supported'
-  if [[ "$PP_MASTER" != 'none' ]]; then
-    generate_csr_attributes
+  sanity_checks
+  ensure_curl
+
+  if [[ "$IS_AMI" == true ]]; then
+    upgrade_system
+    ensure_pip
+    ensure_awscli
+    ensure_vgs
   fi
+
+  if [[ "$PP_MASTER" != 'none' ]]; then generate_csr_attributes; fi
+
   install_puppet_agent
   configure_puppet
+
   if [[ "$PP_MASTER" == 'none' ]]; then
-    puppet_apply "${MANIFESTS}/site.pp"
+    apply_puppet
   elif [[ -n "$PP_MASTER" ]]; then
     run_puppet
   else

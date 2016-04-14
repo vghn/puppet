@@ -9,11 +9,11 @@
     },
     "SubnetIDs": {
       "Type": "List<AWS::EC2::Subnet::Id>",
-      "Description": "The subnet ids list"
+      "Description": "The list of subnet ids"
     },
     "SecurityGroups": {
       "Type": "List<AWS::EC2::SecurityGroup::Id>",
-      "Description": "A list of the security group ids"
+      "Description": "A list of security group ids"
     },
     "DBEngine": {
       "Default": "mariadb",

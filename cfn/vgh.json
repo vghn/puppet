@@ -19,6 +19,14 @@
       "Type": "String",
       "Description": "The S3 bucket containing the assets"
     },
+    "AssetsKeyPrefix": {
+      "Type": "String",
+      "Description": "The S3 assets key prefix"
+    },
+    "AppS3Path": {
+      "Type": "String",
+      "Description": "The S3 path of the archive containing the project"
+    },
     "AMIPrefix": {
       "Type": "String",
       "Description": "The AMI Prefix"
@@ -88,7 +96,12 @@
       "Type": "AWS::ElasticLoadBalancing::LoadBalancer",
       "Properties": {
         "SecurityGroups": [{"Fn::GetAtt": ["SG", "Outputs.ELBSecurityGroup"]}],
-        "Subnets": {"Fn::GetAtt": ["VPC", "Outputs.Subnets"]},
+        "Subnets": [
+          {"Fn::GetAtt": ["VPC", "Outputs.Subnet1"]},
+          {"Fn::GetAtt": ["VPC", "Outputs.Subnet2"]},
+          {"Fn::GetAtt": ["VPC", "Outputs.Subnet3"]},
+          {"Fn::GetAtt": ["VPC", "Outputs.Subnet4"]}
+        ],
         "CrossZone": "true",
         "Listeners": [
           {"LoadBalancerPort": "443", "Protocol": "HTTPS", "InstancePort": "80", "InstanceProtocol": "HTTP", "SSLCertificateId": {"Ref": "SSLCertificateId"} }
@@ -108,10 +121,15 @@
       "Type": "AWS::AutoScaling::AutoScalingGroup",
       "Properties": {
         "LaunchConfigurationName": {"Ref": "LaunchZeusInstance"},
-        "VPCZoneIdentifier": {"Fn::GetAtt": ["VPC", "Outputs.Subnets"]},
+        "VPCZoneIdentifier": [
+          {"Fn::GetAtt": ["VPC", "Outputs.Subnet1"]},
+          {"Fn::GetAtt": ["VPC", "Outputs.Subnet2"]},
+          {"Fn::GetAtt": ["VPC", "Outputs.Subnet3"]},
+          {"Fn::GetAtt": ["VPC", "Outputs.Subnet4"]}
+        ],
         "MinSize": "0",
         "MaxSize": "1",
-        "DesiredCapacity": "1",
+        "DesiredCapacity": "0",
         "HealthCheckType": "ELB",
         "HealthCheckGracePeriod": "600",
         "Cooldown": "600",
@@ -134,11 +152,11 @@
     "LaunchZeusInstance": {
       "Type": "AWS::AutoScaling::LaunchConfiguration",
       "Properties": {
-        "ImageId": {"Fn::GetAtt": ["AMIInfo", "Id" ]},
         "InstanceType": "t2.micro",
-        "AssociatePublicIpAddress": "true",
-        "SecurityGroups": [{"Fn::GetAtt": ["SG", "Outputs.InstanceSecurityGroup"]}],
         "KeyName": {"Ref": "KeyName"},
+        "AssociatePublicIpAddress": "true",
+        "ImageId": {"Fn::GetAtt": ["AMIInfo", "Id" ]},
+        "SecurityGroups": [{"Fn::GetAtt": ["SG", "Outputs.InstanceSecurityGroup"]}],
         "IamInstanceProfile": {"Fn::GetAtt": ["IAM", "Outputs.InstanceProfile"]},
         "UserData": {"Fn::Base64": {"Fn::Join": ["" , [
           "#!/usr/bin/env bash\n",
@@ -161,13 +179,24 @@
           "mkdir -p /etc/puppetlabs/facter/facts.d\n",
           "cat << EOF > /etc/puppetlabs/facter/facts.d/aws.env\n",
           "---\n",
-          "aws_ecs_cluster: ", {"Ref": "ECSCluster"}, "\n",
-          "aws_assets_bucket: ", {"Ref": "AssetsBucket"}, "\n",
-          "aws_rds_db_endpoint: ", {"Fn::GetAtt": ["RDS", "Outputs.DBEndpoint"]}, "\n",
+          "aws_cfn_name: ", {"Ref": "AWS::StackName"}, "\n",
+          "aws_cfn_env_type: ", {"Ref": "EnvType"}, "\n",
+          "aws_cfn_ecs_cluster: ", {"Ref": "ECSCluster"}, "\n",
+          "aws_cfn_assets_bucket: ", {"Ref": "AssetsBucket"}, "\n",
+          "aws_cfn_assets_key_prefix: ", {"Ref": "AssetsKeyPrefix"}, "\n",
+          "aws_cfn_rds_db_endpoint: ", {"Fn::GetAtt": ["RDS", "Outputs.DBEndpoint"]}, "\n",
           "EOF\n",
 
-          "echo 'Update puppet master'\n",
-          "/usr/local/bin/puppet_vgh_master_update ", {"Ref": "EnvType"}, " zeus\n",
+          "echo 'Get latest app archive'\n",
+          "aws s3 cp ", {"Ref": "AppS3Path"}, " /usr/local/src/\n",
+          "mkdir -p /opt/puppet_vgh\n",
+          "tar xvzf /usr/local/src/puppet_vgh.tgz -C /opt/puppet_vgh\n",
+
+          "echo 'Run latest bootstrap script'\n",
+          "export PP_ROLE=zeus", "\n",
+          "export PP_MASTER=none", "\n",
+          "export PP_ENV=", {"Ref": "EnvType"}, "\n",
+          "bash /opt/puppet_vgh/bootstrap\n",
 
           "echo 'SUCCEEDED' | tee /var/lib/cloud/instance/status_cfn"
         ]]}}
@@ -193,12 +222,12 @@
       "Properties": {
         "Code": {
           "S3Bucket": {"Ref": "AssetsBucket"},
-          "S3Key": {"Fn::Join" : ["/", [{"Ref": "EnvType"}, "lambdas/amilookup.zip"]]}
+          "S3Key": {"Fn::Join" : ["/", [{"Ref": "AssetsKeyPrefix"}, "lambdas/amilookup.zip"]]}
         },
         "Role": {"Fn::GetAtt": ["IAM", "Outputs.LambdaExecutionRoleARN"]},
         "Description" : "Looks up the latest AMI ID",
         "Handler": "index.handler",
-        "Runtime": "nodejs",
+        "Runtime": "nodejs4.3",
         "Timeout": "30"
       }
     },
@@ -206,14 +235,14 @@
     "VPC": {
       "Type": "AWS::CloudFormation::Stack",
       "Properties": {
-        "TemplateURL": {"Fn::Join" : ["/", ["https://s3.amazonaws.com", {"Ref": "AssetsBucket"}, {"Ref": "EnvType"}, "cfn", {"Ref": "VPCTemplateKey"}]]}
+        "TemplateURL": {"Fn::Join" : ["/", ["https://s3.amazonaws.com", {"Ref": "AssetsBucket"}, {"Ref": "AssetsKeyPrefix"}, "cfn", {"Ref": "VPCTemplateKey"}]]}
       }
     },
 
     "SG": {
       "Type": "AWS::CloudFormation::Stack",
       "Properties": {
-        "TemplateURL": {"Fn::Join" : ["/", ["https://s3.amazonaws.com", {"Ref": "AssetsBucket"}, {"Ref": "EnvType"}, "cfn", {"Ref": "SGTemplateKey"}]]},
+        "TemplateURL": {"Fn::Join" : ["/", ["https://s3.amazonaws.com", {"Ref": "AssetsBucket"}, {"Ref": "AssetsKeyPrefix"}, "cfn", {"Ref": "SGTemplateKey"}]]},
         "Parameters": {
           "VPCId": {"Fn::GetAtt": ["VPC", "Outputs.VPCId"]},
           "SSHLocations": {"Fn::Join" : [",", {"Ref": "SSHLocations"}]}
@@ -224,7 +253,7 @@
     "IAM": {
       "Type": "AWS::CloudFormation::Stack",
       "Properties": {
-        "TemplateURL": {"Fn::Join" : ["/", ["https://s3.amazonaws.com", {"Ref": "AssetsBucket"}, {"Ref": "EnvType"}, "cfn", {"Ref": "IAMTemplateKey"}]]},
+        "TemplateURL": {"Fn::Join" : ["/", ["https://s3.amazonaws.com", {"Ref": "AssetsBucket"}, {"Ref": "AssetsKeyPrefix"}, "cfn", {"Ref": "IAMTemplateKey"}]]},
         "Parameters": {
           "AssetsBucket": {"Ref": "AssetsBucket"}
         }
@@ -234,10 +263,15 @@
     "RDS": {
       "Type": "AWS::CloudFormation::Stack",
       "Properties": {
-        "TemplateURL": {"Fn::Join" : ["/", ["https://s3.amazonaws.com", {"Ref": "AssetsBucket"}, {"Ref": "EnvType"}, "cfn", {"Ref": "RDSTemplateKey"}]]},
+        "TemplateURL": {"Fn::Join" : ["/", ["https://s3.amazonaws.com", {"Ref": "AssetsBucket"}, {"Ref": "AssetsKeyPrefix"}, "cfn", {"Ref": "RDSTemplateKey"}]]},
         "Parameters": {
           "EnvType": {"Ref": "EnvType"},
-          "SubnetIDs": {"Fn::GetAtt": ["VPC", "Outputs.Subnets"]},
+          "SubnetIDs": {"Fn::Join": [",", [
+            {"Fn::GetAtt": ["VPC", "Outputs.Subnet1"]},
+            {"Fn::GetAtt": ["VPC", "Outputs.Subnet2"]},
+            {"Fn::GetAtt": ["VPC", "Outputs.Subnet3"]},
+            {"Fn::GetAtt": ["VPC", "Outputs.Subnet4"]}
+          ]]},
           "SecurityGroups": {"Fn::GetAtt": ["SG", "Outputs.DBSecurityGroup"]},
           "DBEngine": {"Ref": "DBEngine"},
           "DBName": {"Ref": "DBName"},
@@ -264,10 +298,6 @@
     "CodeDeployServiceRoleARN": {
       "Description": "The CodeDeploy service role ARN",
       "Value": {"Fn::GetAtt": ["IAM", "Outputs.CodeDeployServiceRoleARN"]}
-    },
-    "DBEndpoint": {
-      "Description": "The database endpoint",
-      "Value": {"Fn::GetAtt": ["RDS", "Outputs.DBEndpoint"]}
     },
     "ECSCluster" : {
       "Value": {"Ref": "ECSCluster"}

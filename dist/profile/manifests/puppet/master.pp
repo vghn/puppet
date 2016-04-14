@@ -13,6 +13,10 @@ class profile::puppet::master {
       '%{::trusted.domainname}/%{::trusted.hostname}',
       'roles/%{::trusted.extensions.pp_role}',
       'roles/%{role}',
+      'projects/%{::trusted.extensions.pp_project}',
+      'projects/%{::project}',
+      'virtual/%{::virtual}',
+      'osfamily/%{::osfamily}',
       'private',
       'common',
     ],
@@ -41,14 +45,4 @@ class profile::puppet::master {
     logoutput   => true,
     timeout     => 600,
   }
-
-  ensure_resource('file', '/usr/local/bin/puppet_vgh_master_update',
-    {
-      ensure  => present,
-      owner   => 'root',
-      group   => 'root',
-      mode    => '0555',
-      content => template('profile/puppet_vgh_master_update.sh.erb'),
-    }
-  )
 }

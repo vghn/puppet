@@ -66,7 +66,7 @@ upload_cfn_templates(){
 usage(){
   echo "USAGE: ${BASH_SOURCE[0]} [COMMAND] [STACK]" >&2
   echo "COMMANDS: create | update | delete | validate | upload" >&2
-  echo "STACKS: vgh, ci" >&2
+  echo "STACKS: vgh" >&2
   return 1
 }
 

@@ -148,6 +148,8 @@ process_cfn_stacks(){
       P="$P ParameterKey=EnvType,ParameterValue=${ENVTYPE}"
       P="$P ParameterKey=KeyName,ParameterValue=${AWS_EC2_KEY}"
       P="$P ParameterKey=AssetsBucket,ParameterValue=${AWS_ASSETS_BUCKET}"
+      P="$P ParameterKey=AssetsKeyPrefix,ParameterValue=${AWS_ASSETS_KEY_PREFIX}"
+      P="$P ParameterKey=AppS3Path,ParameterValue=${APP_ARCHIVE_S3_PATH_LATEST}"
       P="$P ParameterKey=AMIPrefix,ParameterValue=${AWS_EC2_IMAGE_PREFIX}_*"
       P="$P 'ParameterKey=SSHLocations,ParameterValue=\"${TRUSTED_IPS}\"'"
       P="$P ParameterKey=DBEngine,ParameterValue=${AWS_RDS_DB_ENGINE}"
@@ -155,25 +157,13 @@ process_cfn_stacks(){
       P="$P ParameterKey=DBUser,ParameterValue=${AWS_RDS_DB_USER}"
       P="$P ParameterKey=DBPassword,ParameterValue=${AWS_RDS_DB_PASS}"
       P="$P ParameterKey=SSLCertificateId,ParameterValue=${AWS_SSL_ARN}"
+      P="$P ParameterKey=AssetsKeyPrefix,ParameterValue=${AWS_ASSETS_KEY_PREFIX}"
       P="$P ParameterKey=VPCTemplateKey,ParameterValue=vpc.json"
       P="$P ParameterKey=SGTemplateKey,ParameterValue=sg.json"
       P="$P ParameterKey=IAMTemplateKey,ParameterValue=iam.json"
       P="$P ParameterKey=RDSTemplateKey,ParameterValue=rds.json"
       T="   Key=Group,Value=${AWS_TAG_GROUP}"
       export CFN_CMD_ARGS="--stack-name ${CFN_STACK_NAME} --template-body file://${CFN_STACK_BODY} ${ARGS} --parameters ${P} --tags ${T}"
-      ;;
-    ci)
-      export CFN_STACK_NAME='CI'
-      export CFN_STACK_BODY="${CFN_STACKS_PATH}/ci.json"
-      if [[ "$action" == 'create' ]]; then
-        ARGS='--disable-rollback --capabilities CAPABILITY_IAM'
-      elif [[ "$action" == 'update' ]]; then
-        ARGS='--capabilities CAPABILITY_IAM'
-      else
-        ARGS=''
-      fi
-      T="Key=Group,Value=${AWS_TAG_GROUP}"
-      export CFN_CMD_ARGS="--stack-name ${CFN_STACK_NAME} --template-body file://${CFN_STACK_BODY} ${ARGS} --tags ${T}"
       ;;
     *)
       ;;
