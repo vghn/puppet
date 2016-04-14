@@ -18,6 +18,7 @@ echo 'IN_PROGRESS' | tee /var/lib/cloud/instance/status_ami
 # VARs
 export IS_AMI=true
 export PP_ROLE=zeus
+export PP_PROJECT=${PROJECT_NAME}
 export PP_MASTER=none
 export PP_ENV=${ENVTYPE:-production}
 export PP_HIERA_S3_PATH="s3://${AWS_ASSETS_BUCKET}/${PROJECT_NAME}"

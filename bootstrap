@@ -95,7 +95,7 @@ notify_slack(){
     title='FAILED'
     color='#ff0000'
   fi
-  text="AMI Bootstrap exited with ${exit_code} on $(hostname) @ ${date}"
+  text="Bootstrap exited with ${exit_code} on $(hostname) @ ${date}"
 
   if [[ -n "$SLACK_CHANNEL" ]] && \
     [[ -n "$SLACK_USER" ]] && \
