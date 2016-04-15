@@ -41,10 +41,10 @@ class profile::puppet::master {
   }
 
   exec {'R10K deploy environment':
-    command     => 'r10k deploy environment --puppetfile --verbose',
-    path        => ['/opt/puppetlabs/puppet/bin', '/usr/bin'],
-    refreshonly => true,
-    logoutput   => true,
-    timeout     => 600,
+    command   => '/opt/puppetlabs/puppet/bin/r10k deploy environment --puppetfile --verbose',
+    creates   => "${::settings::environmentpath}/production/Puppetfile",
+    logoutput => true,
+    timeout   => 600,
+    require   => Package['r10k'],
   }
 }

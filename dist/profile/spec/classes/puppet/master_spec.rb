@@ -14,8 +14,7 @@ describe 'profile::puppet::master' do
         it do
           is_expected
             .to contain_exec('R10K deploy environment')
-            .with_command('r10k deploy environment --puppetfile --verbose')
-            .with_refreshonly(true)
+            .with_command('/opt/puppetlabs/puppet/bin/r10k deploy environment --puppetfile --verbose') # rubocop:disable Metrics/LineLength
         end
       end
     end
