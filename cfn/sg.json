@@ -49,6 +49,12 @@
         "GroupId": {"Fn::GetAtt": ["ELBSecurityGroup", "GroupId"]}, "IpProtocol": "tcp", "FromPort": "443", "ToPort": "443", "CidrIp": "0.0.0.0/0"
       }
     },
+    "ELBSecurityGroupAllowPuppet": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {"Fn::GetAtt": ["ELBSecurityGroup", "GroupId"]}, "IpProtocol": "tcp", "FromPort": "8140", "ToPort": "8140", "CidrIp": "0.0.0.0/0"
+      }
+    },
 
     "DBSecurityGroup": {
       "Type": "AWS::EC2::SecurityGroup",

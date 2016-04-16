@@ -31,9 +31,9 @@
       "Type": "String",
       "Description": "The AMI Prefix"
     },
-    "SSHLocations" : {
+    "SSHLocations": {
       "Type": "CommaDelimitedList",
-      "Description" : "The IP address ranges that can be used to SSH to the EC2 instances"
+      "Description": "The IP address ranges that can be used to SSH to the EC2 instances"
     },
     "DBEngine": {
       "Default": "mariadb",
@@ -44,30 +44,30 @@
     },
     "DBName": {
       "Default": "myDatabase",
-      "Description" : "MySQL database name",
+      "Description": "MySQL database name",
       "Type": "String",
       "MinLength": "1",
       "MaxLength": "64",
-      "AllowedPattern" : "[a-zA-Z][a-zA-Z0-9]*",
-      "ConstraintDescription" : "must begin with a letter and contain only alphanumeric characters."
+      "AllowedPattern": "[a-zA-Z][a-zA-Z0-9]*",
+      "ConstraintDescription": "must begin with a letter and contain only alphanumeric characters."
     },
     "DBUser": {
       "NoEcho": "true",
-      "Description" : "Username for MySQL database access",
+      "Description": "Username for MySQL database access",
       "Type": "String",
       "MinLength": "1",
       "MaxLength": "16",
-      "AllowedPattern" : "[a-zA-Z][a-zA-Z0-9]*",
-      "ConstraintDescription" : "must begin with a letter and contain only alphanumeric characters."
+      "AllowedPattern": "[a-zA-Z][a-zA-Z0-9]*",
+      "ConstraintDescription": "must begin with a letter and contain only alphanumeric characters."
     },
     "DBPassword": {
       "NoEcho": "true",
-      "Description" : "Password for MySQL database access",
+      "Description": "Password for MySQL database access",
       "Type": "String",
       "MinLength": "8",
       "MaxLength": "41",
-      "AllowedPattern" : "[a-zA-Z0-9]*",
-      "ConstraintDescription" : "must contain only alphanumeric characters."
+      "AllowedPattern": "[a-zA-Z0-9]*",
+      "ConstraintDescription": "must contain only alphanumeric characters."
     },
     "SSLCertificateId": {
       "Description": "The ARN of the SSL certificate to use",
@@ -104,7 +104,8 @@
         ],
         "CrossZone": "true",
         "Listeners": [
-          {"LoadBalancerPort": "443", "Protocol": "HTTPS", "InstancePort": "80", "InstanceProtocol": "HTTP", "SSLCertificateId": {"Ref": "SSLCertificateId"} }
+          {"LoadBalancerPort": "443", "Protocol": "HTTPS", "InstancePort": "80", "InstanceProtocol": "HTTP", "SSLCertificateId": {"Ref": "SSLCertificateId"}},
+          {"LoadBalancerPort": "8140", "Protocol": "TCP", "InstancePort": "8140", "InstanceProtocol": "TCP"}
         ],
         "HealthCheck": {
           "Target": "HTTP:51678/v1/metadata",
@@ -129,18 +130,18 @@
         ],
         "MinSize": "0",
         "MaxSize": "1",
-        "DesiredCapacity": "0",
+        "DesiredCapacity": "1",
         "HealthCheckType": "ELB",
         "HealthCheckGracePeriod": "600",
         "Cooldown": "600",
         "LoadBalancerNames": [ { "Ref": "ELB" } ],
-        "TerminationPolicies" : [ "OldestInstance", "Default" ],
+        "TerminationPolicies": [ "OldestInstance", "Default" ],
         "Tags": [
           {"Key": "Role", "Value": "zeus", "PropagateAtLaunch": "true"},
-          {"Key": "Name", "Value": {"Fn::Join": ["-" , [{"Ref": "AWS::StackName"}, "zeus"]]}, "PropagateAtLaunch": "true"}
+          {"Key": "Name", "Value": {"Fn::Join": ["-" , [{"Ref": "AWS::StackName"}, "Zeus"]]}, "PropagateAtLaunch": "true"}
         ]
       },
-      "UpdatePolicy" : {
+      "UpdatePolicy": {
         "AutoScalingRollingUpdate": {
           "MaxBatchSize": "1",
           "MinInstancesInService": "0",
@@ -206,11 +207,67 @@
     "ECSCluster": {
       "Type": "AWS::ECS::Cluster"
     },
+    "ECSTaskDefinition": {
+      "Type": "AWS::ECS::TaskDefinition",
+      "Properties": {
+        "ContainerDefinitions": [
+          {
+            "Name": "PuppetServer",
+            "Image": "vladgh/puppetserver",
+            "Cpu": "512",
+            "Memory": "512",
+            "Essential": "true",
+            "PortMappings": [
+              {"ContainerPort": "8140", "HostPort": "8140"}
+            ],
+            "Hostname": "puppet.vladgh.com",
+            "MountPoints": [
+              {
+                "SourceVolume": "PuppetServerCode",
+                "ContainerPath": "/etc/puppetlabs/code"
+              },{
+                "SourceVolume": "PuppetConfig",
+                "ContainerPath": "/etc/puppetlabs/puppet"
+              }
+            ],
+            "Environment": [
+              {"Name": "JAVA_ARGS", "Value": "-Xms256m -Xmx512m"}
+            ]
+          }
+        ],
+        "Volumes": [
+          {
+            "Name": "PuppetServerCode",
+            "Host": {"SourcePath": "/etc/puppetlabs/code"}
+          },{
+            "Name": "PuppetConfig",
+            "Host": {"SourcePath": "/etc/puppetlabs/puppet"}
+          }
+        ]
+      }
+    },
+    "ECSService": {
+      "Type": "AWS::ECS::Service",
+      "DependsOn": ["Zeus"],
+      "Properties": {
+        "Cluster": {"Ref": "ECSCluster"},
+        "DesiredCount": "1",
+        "LoadBalancers": [
+          {
+            "ContainerName": "PuppetServer",
+            "ContainerPort": "8140",
+            "LoadBalancerName": {"Ref": "ELB"}
+          }
+        ],
+        "Role": {"Fn::GetAtt": ["IAM", "Outputs.ECSServiceRole"]},
+        "TaskDefinition": {"Ref": "ECSTaskDefinition"}
+      }
+    },
 
     "AMIInfo": {
       "Type": "Custom::AMIInfo",
       "Properties": {
-        "ServiceToken": {"Fn::GetAtt" : ["AMIInfoFunction", "Arn"]},
+        "ServiceToken": {"Fn::GetAtt": ["AMIInfoFunction", "Arn"]},
         "Prefix": {"Ref": "AMIPrefix"},
         "Region": {"Ref": "AWS::Region"},
         "Owners": ["self"]
@@ -222,10 +279,10 @@
       "Properties": {
         "Code": {
           "S3Bucket": {"Ref": "AssetsBucket"},
-          "S3Key": {"Fn::Join" : ["/", [{"Ref": "AssetsKeyPrefix"}, "lambdas/amilookup.zip"]]}
+          "S3Key": {"Fn::Join": ["/", [{"Ref": "AssetsKeyPrefix"}, "lambdas/amilookup.zip"]]}
         },
-        "Role": {"Fn::GetAtt": ["IAM", "Outputs.LambdaExecutionRoleARN"]},
-        "Description" : "Looks up the latest AMI ID",
+        "Role": {"Fn::GetAtt": ["IAM", "Outputs.LambdaExecutionRole"]},
+        "Description": "Looks up the latest AMI ID",
         "Handler": "index.handler",
         "Runtime": "nodejs4.3",
         "Timeout": "30"
@@ -235,17 +292,17 @@
     "VPC": {
       "Type": "AWS::CloudFormation::Stack",
       "Properties": {
-        "TemplateURL": {"Fn::Join" : ["/", ["https://s3.amazonaws.com", {"Ref": "AssetsBucket"}, {"Ref": "AssetsKeyPrefix"}, "cfn", {"Ref": "VPCTemplateKey"}]]}
+        "TemplateURL": {"Fn::Join": ["/", ["https://s3.amazonaws.com", {"Ref": "AssetsBucket"}, {"Ref": "AssetsKeyPrefix"}, "cfn", {"Ref": "VPCTemplateKey"}]]}
       }
     },
 
     "SG": {
       "Type": "AWS::CloudFormation::Stack",
       "Properties": {
-        "TemplateURL": {"Fn::Join" : ["/", ["https://s3.amazonaws.com", {"Ref": "AssetsBucket"}, {"Ref": "AssetsKeyPrefix"}, "cfn", {"Ref": "SGTemplateKey"}]]},
+        "TemplateURL": {"Fn::Join": ["/", ["https://s3.amazonaws.com", {"Ref": "AssetsBucket"}, {"Ref": "AssetsKeyPrefix"}, "cfn", {"Ref": "SGTemplateKey"}]]},
         "Parameters": {
           "VPCId": {"Fn::GetAtt": ["VPC", "Outputs.VPCId"]},
-          "SSHLocations": {"Fn::Join" : [",", {"Ref": "SSHLocations"}]}
+          "SSHLocations": {"Fn::Join": [",", {"Ref": "SSHLocations"}]}
         }
       }
     },
@@ -253,7 +310,7 @@
     "IAM": {
       "Type": "AWS::CloudFormation::Stack",
       "Properties": {
-        "TemplateURL": {"Fn::Join" : ["/", ["https://s3.amazonaws.com", {"Ref": "AssetsBucket"}, {"Ref": "AssetsKeyPrefix"}, "cfn", {"Ref": "IAMTemplateKey"}]]},
+        "TemplateURL": {"Fn::Join": ["/", ["https://s3.amazonaws.com", {"Ref": "AssetsBucket"}, {"Ref": "AssetsKeyPrefix"}, "cfn", {"Ref": "IAMTemplateKey"}]]},
         "Parameters": {
           "AssetsBucket": {"Ref": "AssetsBucket"}
         }
@@ -263,7 +320,7 @@
     "RDS": {
       "Type": "AWS::CloudFormation::Stack",
       "Properties": {
-        "TemplateURL": {"Fn::Join" : ["/", ["https://s3.amazonaws.com", {"Ref": "AssetsBucket"}, {"Ref": "AssetsKeyPrefix"}, "cfn", {"Ref": "RDSTemplateKey"}]]},
+        "TemplateURL": {"Fn::Join": ["/", ["https://s3.amazonaws.com", {"Ref": "AssetsBucket"}, {"Ref": "AssetsKeyPrefix"}, "cfn", {"Ref": "RDSTemplateKey"}]]},
         "Parameters": {
           "EnvType": {"Ref": "EnvType"},
           "SubnetIDs": {"Fn::Join": [",", [
@@ -295,12 +352,26 @@
       "Description": "The instance profile name",
       "Value": {"Fn::GetAtt": ["IAM", "Outputs.InstanceProfileName"]}
     },
-    "CodeDeployServiceRoleARN": {
+    "CodeDeployServiceRole": {
       "Description": "The CodeDeploy service role ARN",
-      "Value": {"Fn::GetAtt": ["IAM", "Outputs.CodeDeployServiceRoleARN"]}
+      "Value": {"Fn::GetAtt": ["IAM", "Outputs.CodeDeployServiceRole"]}
     },
-    "ECSCluster" : {
+    "LambdaExecutionRole": {
+      "Description": "The CodeDeploy service role ARN",
+      "Value": {"Fn::GetAtt": ["IAM", "Outputs.LambdaExecutionRole"]}
+    },
+    "ECSCluster": {
       "Value": {"Ref": "ECSCluster"}
+    },
+    "ECSTaskDefinition": {
+      "Value": {"Ref": "ECSTaskDefinition"}
+    },
+    "ECSService": {
+      "Value": {"Ref": "ECSService"}
+    },
+    "ECSServiceRole": {
+      "Description": "The CodeDeploy service role ARN",
+      "Value": {"Fn::GetAtt": ["IAM", "Outputs.ECSServiceRole"]}
     }
   }
 }

@@ -21,3 +21,6 @@ e_info "AWS S3 Path: ${PRIVATE_DATA_S3_PATH:?}"
 # Process arguments
 e_header 'Push private data:'
 push_private_data "$@"
+
+# Git Push
+e_header 'GIT Push:'

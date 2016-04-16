@@ -171,7 +171,8 @@
         "ManagedPolicyArns": [
           "arn:aws:iam::aws:policy/AmazonSSMFullAccess",
           "arn:aws:iam::aws:policy/AmazonEC2ReadOnlyAccess",
-          "arn:aws:iam::aws:policy/AWSLambdaFullAccess"
+          "arn:aws:iam::aws:policy/AWSLambdaFullAccess",
+          "arn:aws:iam::aws:policy/AmazonEC2ContainerServiceFullAccess"
         ],
         "Policies": [
           {
@@ -232,13 +233,17 @@
       "Description": "The instance profile name",
       "Value": {"Ref": "InstanceProfile" }
     },
-    "CodeDeployServiceRoleARN": {
+    "CodeDeployServiceRole": {
       "Description": "The CodeDeploy service role ARN",
       "Value": {"Fn::GetAtt": ["CodeDeployRole", "Arn"]}
     },
-    "LambdaExecutionRoleARN": {
+    "LambdaExecutionRole": {
       "Description": "The Lambda execution role ARN",
       "Value": {"Fn::GetAtt": ["LambdaExecutionRole", "Arn"]}
+    },
+    "ECSServiceRole": {
+      "Description": "The Lambda execution role ARN",
+      "Value": {"Fn::GetAtt": ["ECSServiceRole", "Arn"]}
     },
     "CIAccessKey": {
       "Description": "The Access Key",
