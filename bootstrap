@@ -270,7 +270,7 @@ configure_puppet_agent(){
   e_info "Set puppet master address - '$PP_MASTER'"
   puppet config set server "$PP_MASTER" --section agent
 
-  e_info "Set puppet master address - '$PP_MASTER'"
+  e_info "Set puppet environment - '$PP_ENV'"
   puppet config set environment "$PP_ENV" --section agent
 
   e_info "Set puppet certname - '$PP_AGENT_CERTNAME'"
@@ -390,7 +390,7 @@ run_puppet(){
   puppet agent \
     --server "$PP_MASTER" \
     --environment="$PP_ENV" \
-    --waitforcert 5 \
+    --waitforcert 10 \
     --no-daemonize \
     --onetime \
     --color="$PP_COLOR" \
