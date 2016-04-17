@@ -12,13 +12,15 @@ upload_lambda_archives(){
     name=$(basename "$funcdir")
     archive="${TMPDIR}/${name}.zip"
     s3path="${AWS_LAMBDAS_S3_PATH}/${name}.zip"
-    echo "Creating ${name} function archive (${archive})"
+    e_info "Creating ${name} function archive (${archive})"
     (
       cd "$funcdir" || exit
       zip -r "$archive" .
     )
-    echo "Uploading ${archive} function archive to S3 (${s3path})"
+    e_info "Uploading ${archive} function archive to S3 (${s3path})"
     aws s3 cp "$archive" "$s3path"
+    e_info "Cleaning-up ${archive}"
+    rm "$archive" || true
   done
 }
 

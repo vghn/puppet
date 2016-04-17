@@ -49,6 +49,12 @@ update_app(){
   download_private_data
 }
 
+# Clean-up
+clean_app(){
+  e_info "Cleaning-up ${app_archive_path}"
+  rm "$app_archive_path" || true
+}
+
 # xVARs
 e_header 'INFO:'
 e_info "Application directory: ${APPDIR:?}"
@@ -66,7 +72,7 @@ e_info "Private data S3 path: ${PRIVATE_DATA_S3_PATH:?}"
 e_header 'Application:'
 case "${1:-}" in
   upload)
-    package_app_files && upload_app_archive
+    package_app_files && upload_app_archive && clean_app
     ;;
   download)
     download_private_data
