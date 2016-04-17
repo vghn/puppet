@@ -25,7 +25,7 @@ export PP_HIERA_S3_PATH="s3://${AWS_ASSETS_BUCKET}/${PROJECT_NAME}"
 export SLACK_CHANNEL=${SLACK_CHANNEL}
 export SLACK_USER=${SLACK_USER}
 export SLACK_WEBHOOK=${SLACK_WEBHOOK}
-export PROJECT_DIR=${PROJECT_PATH}/${PROJECT_NAME}
+export PROJECT_DIR=${PROJECT_DIR}
 export PROJECT_S3_URL='$(vgs_aws_s3_generate_presigned_url "$AWS_ASSETS_BUCKET" "$APP_ARCHIVE_S3_KEY_LATEST" 300)'
 export HOME=/home/ubuntu
 export PATH="/opt/puppetlabs/bin:/opt/puppetlabs/puppet/bin:/usr/local/bin:\${PATH}"
@@ -109,21 +109,21 @@ create_ami(){
 # xVARs
 e_header 'INFO:'
 e_info "Application directory: ${APPDIR:?}"
-e_info "Project directory: ${PROJECT_PATH:?}"
-e_info "Project name: ${PROJECT_NAME:?}"
 e_info "Temporary directory: ${TMPDIR:?}"
-e_info "Slack channel: ${SLACK_CHANNEL:?}"
-e_info "Slack user: ${SLACK_USER:?}"
-e_info "Slack webhook: ${SLACK_WEBHOOK:?}"
-e_info "Environment: ${ENVTYPE:?}"
+e_info "Project directory: ${PROJECT_DIR:?}"
+e_info "Project name: ${PROJECT_NAME:?}"
 e_info "Version: ${VERSION:?}"
 e_info "Group: ${AWS_TAG_GROUP:?}"
 e_info "AWS EC2 key: ${AWS_EC2_KEY:?}"
 e_info "AWS EC2 instance type: ${AWS_EC2_INSTANCE_TYPE:?}"
 e_info "AWS EC2 image prefix: ${AWS_EC2_IMAGE_PREFIX:?}"
 e_info "AWS EC2 image description: ${AWS_EC2_IMAGE_DESCRIPTION:?}"
-e_info "AWS Assets bucket: ${AWS_ASSETS_BUCKET:?}"
-e_info "App archive S3 key: ${APP_ARCHIVE_S3_KEY:?}"
+e_info "AWS S3 Assets bucket: ${AWS_ASSETS_BUCKET:?}"
+e_info "AWS S3 app archive key: ${APP_ARCHIVE_S3_KEY:?}"
+e_info "Slack channel: ${SLACK_CHANNEL:?}"
+e_info "Slack user: ${SLACK_USER:?}"
+e_info "Slack webhook: ${SLACK_WEBHOOK:?}"
+e_info "Environment: ${ENVTYPE:?}"
 
 
 # Process arguments

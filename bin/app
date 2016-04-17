@@ -5,6 +5,19 @@
 # shellcheck disable=1090
 . "$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd -P)/env.sh"
 
+# Download private data
+download_private_data(){
+  e_info 'Get dotenv'
+  aws s3 cp "${PRIVATE_DATA_S3_PATH}/.env" "${APPDIR}/.env"
+  e_info 'Sync hiera data'
+  aws s3 sync  --delete "${PRIVATE_DATA_S3_PATH}/data/" "${APPDIR}/data/"
+  if [[ "$CI" != "true" ]]; then
+    e_info 'Sync Certificate Authority data'
+    aws s3 sync --delete "${PRIVATE_DATA_S3_PATH}/ca/" "${APPDIR}/ca/"
+  fi
+}
+
+# Archive app files
 package_app_files(){
   app_archive_path="${TMPDIR}/${APP_ARCHIVE}"
 
@@ -18,6 +31,7 @@ package_app_files(){
   fi
 }
 
+# Upload archive to S3
 upload_app_archive(){
   echo "Uploading app archive to S3 (${APP_ARCHIVE_S3_PATH})"
   if ! aws s3 cp "$app_archive_path" "$APP_ARCHIVE_S3_PATH"; then
@@ -30,22 +44,35 @@ upload_app_archive(){
   fi
 }
 
+# Update app
+update_app(){
+  download_private_data
+}
+
 # xVARs
 e_header 'INFO:'
 e_info "Application directory: ${APPDIR:?}"
 e_info "Temporary directory: ${TMPDIR:?}"
 e_info "Version: ${VERSION:?}"
+e_info "Is CI: ${CI:?}"
 e_info "AWS Assets bucket: ${AWS_ASSETS_BUCKET:?}"
 e_info "App archive name: ${APP_ARCHIVE:?}"
 e_info "App archive S3 key: ${APP_ARCHIVE_S3_KEY:?}"
 e_info "App archive S3 path: ${APP_ARCHIVE_S3_PATH:?}"
 e_info "App archive S3 path: ${APP_ARCHIVE_S3_PATH_LATEST:?}"
+e_info "Private data S3 path: ${PRIVATE_DATA_S3_PATH:?}"
 
 # Process arguments
 e_header 'Application:'
 case "${1:-}" in
   upload)
     package_app_files && upload_app_archive
+    ;;
+  download)
+    download_private_data
+    ;;
+  download)
+    update_app
     ;;
   *)
     e_abort "USAGE: ${BASH_SOURCE[0]} [upload]"

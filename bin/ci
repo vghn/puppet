@@ -5,18 +5,10 @@
 # shellcheck disable=1090
 . "$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd -P)/env.sh"
 
-# Download dotenv
-get_private_data(){
-  e_info 'Get dotenv'
-  aws s3 cp "${PRIVATE_DATA_S3_PATH}/.env" "${APPDIR}/.env"
-  e_info 'Sync hiera data'
-  aws s3 sync  --delete "${PRIVATE_DATA_S3_PATH}/data" "${APPDIR}/data"
-}
-
 # CI Install
 ci_install(){
   pip install --user --upgrade pip awscli
-  get_private_data
+  bash -c "${APPDIR}/bin/app download"
   cd "${APPDIR}/dist/profile" || exit
   bundle install --without development system_tests --path vendor
   bundle exec rake spec_prep

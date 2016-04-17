@@ -1,0 +1,54 @@
+#!/opt/puppetlabs/puppet/bin/ruby
+
+require 'yaml'
+require 'openssl'
+require 'aws-sdk'
+
+# VARs
+secret, instance_id, image_name, project, role = nil
+
+# Read CSR
+csr = OpenSSL::X509::Request.new(STDIN.read)
+
+# Get a list of custom attributes
+atts = csr.attributes
+
+# Do not sign if there aren't any custom csr attributes
+exit 1 if atts.empty?
+
+# Get secret password
+secret = atts.select { |att| att.oid == "challengePassword" }
+         .first.value.value.first.value
+
+# Get extension requests
+exts = atts.select { |att| att.oid == "extReq" }
+       .first.value.value.first.value
+
+# Read each extension request
+exts.each {|ext|
+  id, resp = ext.value[0].value, ext.value[1].value.gsub(/([\x00-\x1f])/, '')
+  instance_id = resp if id == "1.3.6.1.4.1.34380.1.1.2"
+  image_name = resp  if id == "1.3.6.1.4.1.34380.1.1.3"
+  project = resp     if id == "1.3.6.1.4.1.34380.1.1.7"
+  role = resp        if id == "1.3.6.1.4.1.34380.1.1.13"
+}
+
+# Load CSR Sign Config
+cfg = YAML.load_file("#{File.expand_path(File.dirname(__FILE__))}/csr_sign.yaml")
+
+# Sign if password matches
+exit 0 if secret == cfg['challengePassword']
+
+# Load AWS SDK
+ec2 = Aws::EC2::Resource.new(region: 'us-east-1')
+
+# Sign if its a known instance
+instances_pool = ec2.instances.map(&:id)
+exit 0 if instances_pool.include?(instance_id)
+
+# Sign if the base image is known
+ami_pool = ec2.images(owners: ['self']).map(&:id)
+exit 0 if ami_pool.include?(image_name)
+
+# Just don't
+exit 1

@@ -25,7 +25,11 @@
     },
     "AppS3Path": {
       "Type": "String",
-      "Description": "The S3 path of the archive containing the project"
+      "Description": "The S3 path of the archive containing the app"
+    },
+    "AppPath": {
+      "Type": "String",
+      "Description": "The local path for the app"
     },
     "AMIPrefix": {
       "Type": "String",
@@ -128,7 +132,7 @@
           {"Fn::GetAtt": ["VPC", "Outputs.Subnet3"]},
           {"Fn::GetAtt": ["VPC", "Outputs.Subnet4"]}
         ],
-        "MinSize": "0",
+        "MinSize": "1",
         "MaxSize": "1",
         "DesiredCapacity": "1",
         "HealthCheckType": "ELB",
@@ -140,14 +144,6 @@
           {"Key": "Role", "Value": "zeus", "PropagateAtLaunch": "true"},
           {"Key": "Name", "Value": {"Fn::Join": ["-" , [{"Ref": "AWS::StackName"}, "Zeus"]]}, "PropagateAtLaunch": "true"}
         ]
-      },
-      "UpdatePolicy": {
-        "AutoScalingRollingUpdate": {
-          "MaxBatchSize": "1",
-          "MinInstancesInService": "0",
-          "PauseTime": "PT10M",
-          "WaitOnResourceSignals": "true"
-        }
       }
     },
     "LaunchZeusInstance": {
@@ -189,15 +185,16 @@
           "EOF\n",
 
           "echo 'Get latest app archive'\n",
-          "aws s3 cp ", {"Ref": "AppS3Path"}, " /usr/local/src/\n",
-          "mkdir -p /opt/puppet_vgh\n",
-          "tar xvzf /usr/local/src/puppet_vgh.tgz -C /opt/puppet_vgh\n",
+          "tgzfile=\"$(mktemp -d)/vpm.tgz\"\n",
+          "aws s3 cp ", {"Ref": "AppS3Path"}, " $tgzfile\n",
+          "mkdir -p ", {"Ref": "AppPath"}, "\n",
+          "tar xvzf $tgzfile -C ", {"Ref": "AppPath"}, "\n",
 
           "echo 'Run latest bootstrap script'\n",
           "export PP_ROLE=zeus", "\n",
           "export PP_MASTER=none", "\n",
           "export PP_ENV=", {"Ref": "EnvType"}, "\n",
-          "bash /opt/puppet_vgh/bootstrap\n",
+          "bash ", {"Ref": "AppPath"}, "/bootstrap\n",
 
           "echo 'SUCCEEDED' | tee /var/lib/cloud/instance/status_cfn"
         ]]}}
@@ -226,8 +223,8 @@
                 "SourceVolume": "PuppetServerCode",
                 "ContainerPath": "/etc/puppetlabs/code"
               },{
-                "SourceVolume": "PuppetConfig",
-                "ContainerPath": "/etc/puppetlabs/puppet"
+                "SourceVolume": "PuppetCA",
+                "ContainerPath": "/etc/puppetlabs/puppet/ssl/ca"
               }
             ],
             "Environment": [
@@ -240,8 +237,8 @@
             "Name": "PuppetServerCode",
             "Host": {"SourcePath": "/etc/puppetlabs/code"}
           },{
-            "Name": "PuppetConfig",
-            "Host": {"SourcePath": "/etc/puppetlabs/puppet"}
+            "Name": "PuppetCA",
+            "Host": {"SourcePath": "/etc/puppetlabs/puppet/ssl/ca"}
           }
         ]
       }

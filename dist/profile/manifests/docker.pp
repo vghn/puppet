@@ -10,10 +10,11 @@ class profile::docker {
     }
 
     # Docker Compose
+    $docker_compose_version = hiera('docker_compose_version')
     class {'::docker::compose': version => '1.6.2'}
 
     # Docker Machine
-    $docker_machine_version = '0.6.0'
+    $docker_machine_version = hiera('docker_machine_version')
     wget::fetch {'Docker-Machine Binary':
       source      => "https://github.com/docker/machine/releases/download/v${docker_machine_version}/docker-machine-${::kernel}-${::os['hardware']}",
       destination => '/usr/local/bin/docker-machine',

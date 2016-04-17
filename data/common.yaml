@@ -1,2 +1,10 @@
 ---
 # Global Hiera data
+
+# Control repo
+control_repo: 'https://github.com/vghn/puppet.git'
+
+# Software versions
+r10k_version:           '2.2.1'
+docker_compose_version: '1.7.0'
+docker_machine_version: '0.7.0'

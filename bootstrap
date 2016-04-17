@@ -400,10 +400,10 @@ run_puppet(){
 # Logic
 main(){
   sanity_checks
-  ensure_curl
 
   if [[ "$IS_AMI" == true ]]; then
     upgrade_system
+    ensure_curl
     ensure_pip
     ensure_awscli
     ensure_vgs

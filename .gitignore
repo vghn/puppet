@@ -1,6 +1,5 @@
 # Private
 .env
-ssl_*/
 /data/*
 !/data/common.yaml
 
