@@ -71,10 +71,10 @@ case "${1:-}" in
   download)
     download_private_data
     ;;
-  download)
+  update)
     update_app
     ;;
   *)
-    e_abort "USAGE: ${BASH_SOURCE[0]} [upload]"
+    e_abort "USAGE: ${BASH_SOURCE[0]} [upload | download | update]"
     ;;
 esac
