@@ -7,15 +7,23 @@
 
 # CI Install
 ci_install(){
+  e_info 'Ensure latest Python PIP and AWS-CLI'
   pip install --user --upgrade pip awscli
+
   bash -c "${APPDIR}/bin/app download"
+
+  e_info 'Install required testing gems'
   cd "${APPDIR}/dist/profile" || exit
   bundle install --without development system_tests --path vendor
+
+  e_info 'Install required puppet module'
   bundle exec rake spec_prep
 }
 
 ci_test(){
   bash -c "${APPDIR}/bin/cfn validate"
+
+  e_info 'Running tests'
   cd "${APPDIR}/dist/profile" || exit
   bundle exec rake test
 }
