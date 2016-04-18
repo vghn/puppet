@@ -77,8 +77,8 @@
                   "Effect": "Allow",
                   "Action": "*",
                   "Resource": [
-                    {"Fn::Join" : [":", ["arn:aws:s3::", {"Ref": "AssetsBucket"}]]},
-                    {"Fn::Join" : [":", ["arn:aws:s3::", {"Ref": "AssetsBucket"}, "/*"]]}
+                    {"Fn::Join" : ["", ["arn:aws:s3:::", {"Ref": "AssetsBucket"}]]},
+                    {"Fn::Join" : ["", ["arn:aws:s3:::", {"Ref": "AssetsBucket"}, "/*"]]}
                   ]
                 }
               ]
