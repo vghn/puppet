@@ -17,7 +17,7 @@ PATH="/opt/puppetlabs/bin:/opt/puppetlabs/puppet/bin:/usr/local/bin:${PATH}"
 
 # Load VGS Library
 # shellcheck disable=1090,1091
-. /opt/vgs/load 2>/dev/null || . "${HOME}/vgs/load" 2>/dev/null || true
+. /opt/vgs/load 2>/dev/null || . ~/vgs/load 2>/dev/null || true
 
 # Load libraries
 # shellcheck disable=1090
