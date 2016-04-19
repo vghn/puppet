@@ -39,11 +39,37 @@ class profile::puppet::master {
     notify   => Exec['R10K deploy environment'],
   }
 
+  # Deploy R10K environment
   exec {'R10K deploy environment':
     command   => '/opt/puppetlabs/puppet/bin/r10k deploy environment --puppetfile --verbose',
     creates   => "${::settings::environmentpath}/production/Puppetfile",
     logoutput => true,
     timeout   => 600,
     require   => Package['r10k'],
+  }
+
+  # Sync SSL Dir to AWS S3
+  $ca_s3path = hiera('ca_s3path', undef)
+  if  $ca_s3path {
+    include ::docker
+    exec {'puppet_ssl_dir':
+      command => "/bin/mkdir -p ${::settings::ssldir}",
+      unless  => "/usr/bin/test -d ${::settings::ssldir}",
+    } ->
+    docker::run {'ca-s3-sync':
+      image         => 'vladgh/s3sync:latest',
+      detach        => true,
+      restart       => 'on-failure:10',
+      volumes       => [
+        "${::settings::ssldir}:/watch",
+      ],
+      env           => [
+        "S3PATH=${ca_s3path}",
+      ],
+      pull_on_start => true,
+      require       => Service['docker'],
+    }
+  } else {
+    docker::image {'vladgh/s3sync:latest': }
   }
 }

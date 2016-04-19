@@ -16,6 +16,12 @@ describe 'profile::puppet::master' do
             .to contain_exec('R10K deploy environment')
             .with_command('/opt/puppetlabs/puppet/bin/r10k deploy environment --puppetfile --verbose') # rubocop:disable Metrics/LineLength
         end
+
+        it { is_expected.to contain_docker__run('ca-s3-sync') }
+        it do
+          is_expected.to contain_exec('puppet_ssl_dir')
+            .that_comes_before('Docker::Run[ca-s3-sync]')
+        end
       end
     end
   end

@@ -184,17 +184,11 @@
           "aws_cfn_rds_db_endpoint: ", {"Fn::GetAtt": ["RDS", "Outputs.DBEndpoint"]}, "\n",
           "EOF\n",
 
-          "echo 'Get latest app archive'\n",
-          "tgzfile=\"$(mktemp -d)/vpm.tgz\"\n",
-          "aws s3 cp ", {"Ref": "AppS3Path"}, " $tgzfile\n",
-          "mkdir -p ", {"Ref": "AppPath"}, "\n",
-          "tar xvzf $tgzfile -C ", {"Ref": "AppPath"}, "\n",
-
-          "echo 'Run latest bootstrap script'\n",
-          "export PP_ROLE=zeus", "\n",
-          "export PP_MASTER=none", "\n",
-          "export PP_ENV=", {"Ref": "EnvType"}, "\n",
-          "bash ", {"Ref": "AppPath"}, "/bootstrap\n",
+          "echo 'Redeploy environment'\n",
+          "(\n",
+          "  __rvm_unload || true\n",
+          "  r10k deploy environment --puppetfile --verbose\n",
+          ")\n",
 
           "echo 'SUCCEEDED' | tee /var/lib/cloud/instance/status_cfn"
         ]]}}

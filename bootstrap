@@ -318,7 +318,7 @@ get_hiera_data(){
 configure_puppet(){
   PP_CONFDIR="$(puppet config print confdir)"
   PP_CODEDIR="$(puppet config print codedir)"
-  PP_ENVDIR=$(puppet config print environmentpath)
+  PP_ENVDIR="$(puppet config print environmentpath)"
 
   if [[ "$PP_MASTER" == 'none' ]]; then
     if [[ -s "${LOCALDIR}/Puppetfile" ]]; then

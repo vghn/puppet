@@ -14,6 +14,7 @@ docker::docker_users: [ubuntu]
 ecs_cluster_name: ecs
 
 control_repo: 'https://github.com/vghn/puppet.git'
+ca_s3path: 's3://bucket/key'
 
 r10k_version:           '2.2.1'
 docker_compose_version: '1.7.0'
