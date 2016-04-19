@@ -63,6 +63,7 @@ PP_COLOR=${PP_COLOR:-true}
 PP_CONTROL_REPO=${PP_CONTROL_REPO:-'https://github.com/vghn/puppet.git'}
 PP_AGENT_CERTNAME=${PP_AGENT_CERTNAME:-default}
 PP_HIERA_S3_PATH=${PP_HIERA_S3_PATH:-}
+PP_CA_S3_PATH=${PP_CA_S3_PATH:-}
 SLACK_CHANNEL=${SLACK_CHANNEL:-}
 SLACK_USER=${SLACK_USER:-}
 SLACK_WEBHOOK=${SLACK_WEBHOOK:-}
@@ -76,6 +77,7 @@ PATH="/opt/puppetlabs/bin:/opt/puppetlabs/puppet/bin:/usr/local/bin:${PATH}"
 # Facts
 export FACTER_ROLE="${PP_ROLE}"
 export FACTER_PROJECT="${PP_PROJECT}"
+export FACTER_CA_S3_PATH="${PP_CA_S3_PATH}"
 
 # Trap exit and notify Slack
 notify_slack(){

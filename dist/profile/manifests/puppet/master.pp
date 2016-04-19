@@ -49,8 +49,7 @@ class profile::puppet::master {
   }
 
   # Sync SSL Dir to AWS S3
-  $ca_s3path = hiera('ca_s3path', undef)
-  if  $ca_s3path {
+  if  $::ca_s3_path {
     include ::docker
     exec {'puppet_ssl_dir':
       command => "/bin/mkdir -p ${::settings::ssldir}",
@@ -64,7 +63,7 @@ class profile::puppet::master {
         "${::settings::ssldir}:/watch",
       ],
       env           => [
-        "S3PATH=${ca_s3path}",
+        "S3PATH=${::ca_s3_path}",
       ],
       pull_on_start => true,
       require       => Service['docker'],
