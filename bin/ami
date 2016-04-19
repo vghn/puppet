@@ -9,8 +9,6 @@ generate_user_data(){
   local file="${TMPDIR}/${FUNCNAME[0]}"
 cat <<USERDATA > $file
 #!/usr/bin/env bash
-set -euo pipefail
-IFS=\$'\\n\\t'
 
 # Report status
 echo 'IN_PROGRESS' | tee /var/lib/cloud/instance/status_ami
@@ -109,7 +107,7 @@ e_info "AWS EC2 instance type: ${AWS_EC2_INSTANCE_TYPE:?}"
 e_info "AWS EC2 image prefix: ${AWS_EC2_IMAGE_PREFIX:?}"
 e_info "AWS EC2 image description: ${AWS_EC2_IMAGE_DESCRIPTION:?}"
 e_info "AWS S3 Assets bucket: ${AWS_ASSETS_BUCKET:?}"
-e_info "AWS S3 app archive key: ${APP_ARCHIVE_S3_KEY:?}"
+e_info "AWS S3 latest app archive key: ${APP_ARCHIVE_S3_KEY_LATEST:?}"
 e_info "Temporary directory: ${TMPDIR:?}"
 
 # Process arguments
