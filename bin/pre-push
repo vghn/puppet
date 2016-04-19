@@ -10,7 +10,7 @@ push_private_data(){
   e_info 'Sync dotenv'
   aws s3 cp "${APPDIR}/.env" "${PRIVATE_DATA_S3_PATH}/.env"
   e_info 'Sync hiera data'
-  aws s3 sync --delete "${APPDIR}/data/" "${PRIVATE_DATA_S3_PATH}/data/"
+  aws s3 sync --delete "${APPDIR}/hieradata/" "${PRIVATE_DATA_S3_PATH}/hieradata/"
 }
 
 # Info

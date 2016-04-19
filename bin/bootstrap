@@ -256,7 +256,7 @@ configure_hiera(){
 :backends:
   - yaml
 :yaml:
-  :datadir: '${LOCALDIR}/data'
+  :datadir: '${LOCALDIR}/hieradata'
 :hierarchy:
   - "nodes/%{::trusted.certname}"
   - "%{::trusted.domainname}/%{::trusted.hostname}"
@@ -313,8 +313,8 @@ get_hiera_data(){
     e_info "Sync hiera data for the '${name}' environment"
     if ! aws s3 sync \
       --delete \
-      "${PP_HIERA_S3_PATH}/${name}/private/data" \
-      "${PP_ENVDIR}/${name}/data"
+      "${PP_HIERA_S3_PATH}/${name}/private/hieradata" \
+      "${PP_ENVDIR}/${name}/hieradata"
     then
       e_warn 'Could not get hiera data'
     fi
@@ -334,7 +334,7 @@ configure_puppet(){
       deploy_r10k
       )
     fi
-    if [[ -s "${LOCALDIR}/data" ]]; then
+    if [[ -s "${LOCALDIR}/hieradata" ]]; then
       configure_hiera
     fi
     if [[ -n "$PP_HIERA_S3_PATH" ]]; then

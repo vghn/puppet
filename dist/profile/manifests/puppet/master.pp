@@ -1,8 +1,9 @@
 # Puppet Master Class
 class profile::puppet::master {
   # Hiera config
+  $hiera_data_dir = "${::settings::environmentpath}/%{::environment}/hieradata"
   class {'::hiera':
-    datadir            => "${::settings::environmentpath}/%{::environment}/data",
+    datadir            => $hiera_data_dir,
     hiera_yaml         => "${::settings::codedir}/hiera.yaml",
     puppet_conf_manage => false,
     create_symlink     => false,
