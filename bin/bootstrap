@@ -46,14 +46,11 @@
 #   - This value can also be any other string, in which case the certname will
 #     assume that value.
 #
-# IS_AMI: [Boolean] If true, a few more tasks are performed: upgrading the
-#         system, install Python PIP and AWS-CLI as well as the VGS Library
-#
 # * Trusted facts info: https://docs.puppetlabs.com/puppet/latest/reference/lang_facts_and_builtin_vars.html#trusted-facts
 
-# Bash strict mode
-set -euo pipefail
-IFS=$'\n\t'
+# Load environment
+# shellcheck disable=1090
+. "$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd -P)/env.sh"
 
 # DEFAULTS
 PP_ENV=${PP_ENV:-production}
@@ -69,14 +66,12 @@ PP_HIERA_S3_PATH=${PP_HIERA_S3_PATH:-}
 SLACK_CHANNEL=${SLACK_CHANNEL:-}
 SLACK_USER=${SLACK_USER:-}
 SLACK_WEBHOOK=${SLACK_WEBHOOK:-}
-IS_AMI=${IS_AMI:-false}
 
 # INTERNALS
 TMPDIR=$(mktemp -d 2>/dev/null || mktemp -d -t 'tmp')
 CSRFILE="${TMPDIR}/csr_attributes.yaml"
-LOCALDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
+LOCALDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd -P)"
 PATH="/opt/puppetlabs/bin:/opt/puppetlabs/puppet/bin:/usr/local/bin:${PATH}"
-unset GEM_HOME GEM_PATH
 
 # Facts
 export FACTER_ROLE="${PP_ROLE}"
@@ -115,6 +110,16 @@ e_abort(){ e_info "ERROR: $1"; return "${2:-1}" ;}
 
 # Check if root
 is_root() { [[ $EUID == 0 ]] ;}
+
+# Check if the instance is launching as an image
+is_ami(){
+  [[ "$(cat /var/lib/cloud/instance/status_ami 2>/dev/null)" == 'IN_PROGRESS' ]]
+}
+
+# Check if the instance is launching as part of an auto-scaling group
+is_asg(){
+  [[ "$(cat /var/lib/cloud/instance/status_cfn 2>/dev/null)" == 'IN_PROGRESS' ]]
+}
 
 # Check if OS supported
 is_supported(){ [[ $(uname) == Linux ]] ;}
@@ -159,7 +164,7 @@ ensure_pip(){
 # Install AWS-CLI
 ensure_awscli(){
   e_info 'Ensure AWS-CLI exists'
-  pip install --upgrade pip setuptools awscli
+  pip install --upgrade awscli
 }
 
 # Install VGS Library
@@ -322,7 +327,10 @@ configure_puppet(){
 
   if [[ "$PP_MASTER" == 'none' ]]; then
     if [[ -s "${LOCALDIR}/Puppetfile" ]]; then
-      ( cd "$LOCALDIR"; deploy_r10k)
+      (
+      cd "$LOCALDIR" || return
+      deploy_r10k
+      )
     fi
     if [[ -s "${LOCALDIR}/data" ]]; then
       configure_hiera
@@ -401,12 +409,17 @@ run_puppet(){
 main(){
   sanity_checks
 
-  if [[ "$IS_AMI" == true ]]; then
+  if is_ami; then
     upgrade_system
     ensure_curl
     ensure_pip
     ensure_awscli
     ensure_vgs
+  else
+    # Disable RVM
+    if [[ $(type rvm 2>/dev/null | head -1) =~ 'rvm is ' ]]; then
+      __rvm_unload 2>/dev/null || true
+    fi
   fi
 
   if [[ "$PP_MASTER" != 'none' ]]; then generate_csr_attributes; fi

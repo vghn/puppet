@@ -1,16 +1,20 @@
 # AMI Profile
 class profile::ec2 {
   # Check if server is an EC2 instance
-  unless $::ec2_metadata { fail('This profile is intended for EC2 instances!') }
+  unless $::ec2_metadata {
+    warning('This profile is intended for EC2 instances!')
+  }
   unless $::operatingsystem == 'Ubuntu' {
-    fail('Only Ubuntu is supported on EC2 instances!')
+    warning('Only Ubuntu is supported on EC2 instances!')
   }
 
   # Get AWS Region
-  $region = regsubst(
-    $::ec2_metadata['placement']['availability-zone'],
-    '^(\w+)\-(\w+)\-(\d)\w','\1-\2-\3'
-  )
+  if $::ec2_metadata {
+    $az = $::ec2_metadata['placement']['availability-zone']
+    $region = regsubst($az, '^(\w+)\-(\w+)\-(\d)\w','\1-\2-\3')
+  } else {
+    $region = 'us-east-1'
+  }
 
   # Latest GIT
   include ::apt
@@ -88,15 +92,17 @@ class profile::ec2 {
   # Ruby Version Manager
   class { '::rvm': }
   # Binaries available at https://rvm.io/binaries
-  rvm_system_ruby {'ruby-2.2.1':
+  $rvm_system_ruby = hiera('rvm_system_ruby')
+  rvm_system_ruby {$rvm_system_ruby:
     ensure      => 'present',
     default_use => true,
     build_opts  => ['--binary'];
   }
 
   # JQ JSON Processor
+  $jq_version = hiera('jq_version')
   wget::fetch {'JQ JSON Processor':
-    source      => 'https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64',
+    source      => "https://github.com/stedolan/jq/releases/download/jq-${jq_version}/jq-linux64",
     destination => '/usr/local/bin/jq',
   }
   file {'/usr/local/bin/jq':

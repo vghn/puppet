@@ -11,11 +11,13 @@ aws_cloudwatch_logs:
 project_name: my_project
 project_path: /opt
 docker::docker_users: [ubuntu]
-ecs_cluster_name: ecs
 
 control_repo: 'https://github.com/vghn/puppet.git'
 ca_s3path: 's3://bucket/key'
 
-r10k_version:           '2.2.1'
+# Software versions
+jq_version:             '1.5'
+r10k_version:           '2.2.2'
+rvm_system_ruby:        'ruby-2.2.1'
 docker_compose_version: '1.7.0'
 docker_machine_version: '0.7.0'

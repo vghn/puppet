@@ -23,14 +23,6 @@
       "Type": "String",
       "Description": "The S3 assets key prefix"
     },
-    "AppS3Path": {
-      "Type": "String",
-      "Description": "The S3 path of the archive containing the app"
-    },
-    "AppPath": {
-      "Type": "String",
-      "Description": "The local path for the app"
-    },
     "AMIPrefix": {
       "Type": "String",
       "Description": "The AMI Prefix"
@@ -160,7 +152,14 @@
           "set -euo pipefail\n",
           "IFS=$'\\n\\t'", "\n",
 
+          "echo 'IN_PROGRESS' | tee /var/lib/cloud/instance/status_cfn\n",
           "echo 'User Data Version v", {"Ref": "Version"}, "'\n",
+
+          "echo 'VARs'\n",
+          "export PP_ROLE=zeus\n",
+          "export PP_PROJECT=vpm\n",
+          "export PP_MASTER=none\n",
+          "export PP_ENV=", {"Ref": "EnvType"}, "\n",
 
           "signal_exit(){\n",
           "  /usr/local/bin/cfn-signal --exit-code ${1:-0}",
@@ -171,8 +170,7 @@
           "}\n",
           "trap 'signal_exit $?' EXIT INT TERM\n",
 
-          "echo 'IN_PROGRESS' | tee /var/lib/cloud/instance/status_cfn\n",
-
+          "echo 'Write facts'\n",
           "mkdir -p /etc/puppetlabs/facter/facts.d\n",
           "cat << EOF > /etc/puppetlabs/facter/facts.d/aws.env.yaml\n",
           "---\n",
@@ -184,11 +182,15 @@
           "aws_cfn_rds_db_endpoint: ", {"Fn::GetAtt": ["RDS", "Outputs.DBEndpoint"]}, "\n",
           "EOF\n",
 
-          "echo 'Redeploy environment'\n",
-          "(\n",
-          "  __rvm_unload || true\n",
-          "  r10k deploy environment --puppetfile --verbose\n",
-          ")\n",
+          "echo 'Get latest app'\n",
+          "aws s3 cp s3://", {"Ref": "AssetsBucket"}, "/", {"Ref": "AssetsKeyPrefix"}, "/app/vpm.tgz /usr/local/src/\n",
+
+          "echo 'Extract latest app'\n",
+          "mkdir -p /opt/vpm && cd /opt/vpm\n",
+          "tar zxvf /usr/local/src/vpm.tgz\n",
+
+          "echo 'Re-run bootstrap'\n",
+          "bin/bash bootstrap\n",
 
           "echo 'SUCCEEDED' | tee /var/lib/cloud/instance/status_cfn"
         ]]}}
