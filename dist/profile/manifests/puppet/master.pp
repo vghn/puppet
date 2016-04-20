@@ -72,5 +72,6 @@ class profile::puppet::master {
     }
   } else {
     docker::image {'vladgh/s3sync:latest': }
+    docker::image {'vladgh/puppetserver:latest': }
   }
 }

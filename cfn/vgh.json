@@ -206,7 +206,7 @@
         "ContainerDefinitions": [
           {
             "Name": "PuppetServer",
-            "Image": "vladgh/puppetserver",
+            "Image": "vladgh/puppetserver:latest",
             "Cpu": "512",
             "Memory": "512",
             "Essential": "true",
@@ -234,7 +234,7 @@
             "Host": {"SourcePath": "/etc/puppetlabs/code"}
           },{
             "Name": "PuppetCA",
-            "Host": {"SourcePath": "/etc/puppetlabs/puppet/ssl/ca"}
+            "Host": {"SourcePath": "/opt/ca_vpm"}
           }
         ]
       }
