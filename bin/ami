@@ -21,6 +21,11 @@ export PP_ENV=${ENVTYPE}
 export BUILD_DIR="${TMPDIR}/ami_build"
 export APP_S3_URL='$(vgs_aws_s3_generate_presigned_url "$AWS_ASSETS_BUCKET" "$APP_ARCHIVE_S3_KEY_LATEST" 300)'
 
+echo 'Install VGS Library'
+if [[ -d /opt/vgs ]]; then rm -fr /opt/vgs; fi
+mkdir -p /opt/vgs
+curl https://s3.amazonaws.com/vghn/vgs.tgz | tar xvz -C /opt/vgs
+
 echo 'Create project directory'
 mkdir -p "\$BUILD_DIR" && cd "\$BUILD_DIR"
 

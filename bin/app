@@ -10,11 +10,7 @@ download_private_data(){
   e_info 'Get dotenv'
   aws s3 cp "${PRIVATE_DATA_S3_PATH}/.env" "${APPDIR}/.env"
   e_info 'Sync hiera data'
-  aws s3 sync  --delete "${PRIVATE_DATA_S3_PATH}/hieradata/" "${APPDIR}/hieradata/"
-  if [[ "$CI" != "true" ]]; then
-    e_info 'Sync Certificate Authority data'
-    aws s3 sync --delete "${PRIVATE_DATA_S3_PATH}/ca/" "${APPDIR}/ca/"
-  fi
+  aws s3 sync  --delete "$PP_HIERA_S3_PATH" "${APPDIR}/hieradata/"
 }
 
 # Archive app files

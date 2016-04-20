@@ -48,9 +48,28 @@
 #
 # * Trusted facts info: https://docs.puppetlabs.com/puppet/latest/reference/lang_facts_and_builtin_vars.html#trusted-facts
 
+# Install/Update VGS Library
+ensure_vgs(){
+  echo 'Install/Update VGS Library'
+  local installdir
+  if [[ $EUID == 0 ]]; then installdir=/opt/vgs; else installdir=~/vgs; fi
+
+  if ! command -v curl >/dev/null 2>&1; then
+    echo 'Installing curl'
+    apt-get -qy install curl < /dev/null
+  fi
+
+  echo 'Remove any existing installations'
+  if [[ -d "$installdir" ]]; then rm -fr "$installdir"; fi
+  mkdir -p "$installdir"
+
+  echo 'Downloading VGS library'
+  curl -sSL https://s3.amazonaws.com/vghn/vgs.tgz | tar xvz -C "$installdir"
+}
+
 # Load environment
 # shellcheck disable=1090
-. "$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd -P)/env.sh"
+ensure_vgs && . "$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd -P)/env.sh"
 
 # DEFAULTS
 PP_ENV=${PP_ENV:-production}
@@ -103,15 +122,12 @@ notify_slack(){
 
   echo; echo "$title: $text"; exit "$exit_code"
 }
-trap 'notify_slack $?' EXIT INT TERM
+trap 'notify_slack $?' EXIT TERM INT
 
-# LOG
-e_info(){ echo "$*" ;}
-e_warn(){ e_info "WARNING: ${*}" ;}
-e_abort(){ e_info "ERROR: $1"; return "${2:-1}" ;}
-
-# Check if root
-is_root() { [[ $EUID == 0 ]] ;}
+# Sanity checks
+sanity_checks(){
+  is_root || e_abort 'This script needs to run as root'
+}
 
 # Check if the instance is launching as an image
 is_ami(){
@@ -121,38 +137,6 @@ is_ami(){
 # Check if the instance is launching as part of an auto-scaling group
 is_asg(){
   [[ "$(cat /var/lib/cloud/instance/status_cfn 2>/dev/null)" == 'IN_PROGRESS' ]]
-}
-
-# Check if OS supported
-is_supported(){ [[ $(uname) == Linux ]] ;}
-
-# Check if command exists
-is_cmd() { command -v "$@" >/dev/null 2>&1 ;}
-
-# Get codename
-get_release() { is_cmd lsb_release && lsb_release -cs ;}
-
-# Install package
-apt_install(){ e_info "Installing $*"; apt-get -qy install "$@" < /dev/null ;}
-
-# Update APT
-apt_update() { e_info 'Updating APT' && apt-get -qy update < /dev/null ;}
-
-# Sanity checks
-sanity_checks(){
-  is_root || e_abort 'This script needs to run as root'
-}
-
-# Upgrade system
-upgrade_system(){
-  e_info 'Upgrading system'
-  apt-get -qy update < /dev/null && apt-get -qy upgrade < /dev/null
-}
-
-# Install CURL
-ensure_curl(){
-  e_info 'Ensure CURL exists'
-  is_cmd curl || apt-get -qy install curl < /dev/null
 }
 
 # Install Python PIP and awscli
@@ -167,13 +151,6 @@ ensure_pip(){
 ensure_awscli(){
   e_info 'Ensure AWS-CLI exists'
   pip install --upgrade awscli
-}
-
-# Install VGS Library
-ensure_vgs(){
-  e_info 'Install VGS Library'
-  mkdir -p /opt/vgs
-  curl -sSL https://s3.amazonaws.com/vghn/vgs.tgz | tar xvz -C /opt/vgs
 }
 
 # Generate certificate request attributes file
@@ -198,17 +175,15 @@ CSR
 
 # Install Puppet release package
 install_puppet_agent(){
-  local deb_name deb_path
-  PP_CODENAME=${PP_CODENAME:-$(get_release)}
+  local deb_name deb_path apt_url
+  PP_CODENAME=${PP_CODENAME:-$(get_dist)}
   deb_name="puppetlabs-release-${PP_COLLECTION}-${PP_CODENAME}.deb"
   deb_path="${TMPDIR}/${deb_name}"
+  apt_url='https://apt.puppetlabs.com'
 
   if [ ! -x /opt/puppetlabs/bin/puppet ] ; then
-    if ! is_cmd wget; then
-      apt_update && apt_install wget
-    fi
-
-    if ! wget -O "$deb_path" "https://apt.puppetlabs.com/${deb_name}"; then
+    e_info 'Downloading Puppet release package'
+    if !  curl -sSL -o "$deb_path" "${apt_url}/${deb_name}"; then "$installdir"
       e_abort 'Could not download the release package'
     fi
 
@@ -412,11 +387,9 @@ main(){
   sanity_checks
 
   if is_ami; then
-    upgrade_system
-    ensure_curl
+    apt_upgrade
     ensure_pip
     ensure_awscli
-    ensure_vgs
   else
     # Disable RVM
     if [[ $(type rvm 2>/dev/null | head -1) =~ 'rvm is ' ]]; then
