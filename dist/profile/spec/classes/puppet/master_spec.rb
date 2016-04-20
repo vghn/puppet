@@ -6,8 +6,7 @@ describe 'profile::puppet::master' do
       context "on #{os}" do
         let(:facts) do
           facts.merge(
-            aws_assets_bucket: 'my_bucket',
-            ca_s3_path: 's3://bucket/ca'
+            aws_assets_bucket: 'my_bucket'
           )
         end
 
@@ -22,11 +21,21 @@ describe 'profile::puppet::master' do
             .with_command('/opt/puppetlabs/puppet/bin/r10k deploy environment --puppetfile --verbose') # rubocop:disable Metrics/LineLength
         end
 
-        it { is_expected.to contain_docker__run('ca-s3-sync') }
-        it do
-          is_expected.to contain_exec('puppet_ssl_dir')
-            .that_comes_before('Docker::Run[ca-s3-sync]')
+        context 'inside CloudFormation user data' do
+          let(:facts) do
+            facts.merge(
+              ca_s3_path:   's3://bucket/ca',
+              aws_cfn_name: 'mystack'
+            )
+          end
+          it do
+            is_expected.to contain_exec('ca_vpm_dir')
+              .that_comes_before('Docker::Run[ca-s3-sync]')
+          end
+          it { is_expected.to contain_docker__run('ca-s3-sync') }
         end
+
+        it { is_expected.to contain_docker__image('vladgh/s3sync:latest') }
       end
     end
   end
