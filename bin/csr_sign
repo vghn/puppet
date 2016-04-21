@@ -50,5 +50,5 @@ exit 0 if instances_pool.include?(instance_id)
 ami_pool = ec2.images(owners: ['self']).map(&:id)
 exit 0 if ami_pool.include?(image_name)
 
-# Just don't
+# JUST DON'T
 exit 1
