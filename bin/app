@@ -10,7 +10,9 @@ download_private_data(){
   e_info 'Get dotenv'
   aws s3 cp "${PRIVATE_DATA_S3_PATH}/.env" "${APPDIR}/.env"
   e_info 'Sync hiera data'
-  aws s3 sync  --delete "$PP_HIERA_S3_PATH" "${APPDIR}/hieradata/"
+  aws s3 sync --delete "$PP_HIERA_S3_PATH" "${APPDIR}/hieradata/"
+  e_info 'Get CSR sign configuration'
+  aws s3 cp "${PRIVATE_DATA_S3_PATH}/csr/sign.yaml" "${APPDIR}/csr/sign.yaml"
 }
 
 # Archive app files
