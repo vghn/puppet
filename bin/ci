@@ -40,9 +40,10 @@ send_ec2_run_command(){
   e_info "Found ids: ${ids}, for group ${role}"
 
   e_info "Sending ec2 run command"
+  # shellcheck disable=2086
   command_id=$(aws ssm send-command \
     --document-name "AWS-RunShellScript" \
-    --instance-ids "$ids" \
+    --instance-ids $ids \
     --parameters $'{"commands":["( __rvm_unload; /opt/puppetlabs/puppet/bin/r10k deploy environment --puppetfile --verbose)"]}' \
     --comment "Deploy R10K environment" \
     --timeout-seconds 600 \
