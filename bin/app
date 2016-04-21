@@ -7,12 +7,8 @@
 
 # Download private data
 download_private_data(){
-  e_info 'Get dotenv'
-  aws s3 cp "${PRIVATE_DATA_S3_PATH}/.env" "${APPDIR}/.env"
   e_info 'Sync hiera data'
   aws s3 sync --delete "$PP_HIERA_S3_PATH" "${APPDIR}/hieradata/"
-  e_info 'Get CSR sign configuration'
-  aws s3 cp "${PRIVATE_DATA_S3_PATH}/csr/sign.yaml" "${APPDIR}/csr/sign.yaml"
 }
 
 # Archive app files
@@ -21,9 +17,8 @@ package_app_files(){
 
   e_info "Creating application archive (${app_archive_path})"
   if ! tar cvzf "$app_archive_path" \
-    bin/  csr/ dist/profile/manifests dist/role/manifests hieradata/ \
-    manifests/ lib/ .env env.sh environment.conf Puppetfile LICENSE README.md \
-    VERSION;
+    bin/ dist/profile/manifests dist/role/manifests hieradata/ manifests/ lib/ \
+    env.sh environment.conf Puppetfile LICENSE README.md VERSION;
   then
     e_abort "Could not create ${app_archive_path}"
   fi

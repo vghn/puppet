@@ -23,9 +23,13 @@
       "Type": "String",
       "Description": "The S3 assets key prefix"
     },
-    "CAS3Path": {
+    "CASSLS3Path": {
       "Type": "String",
       "Description": "The S3 path to the certificates backup"
+    },
+    "ZeusAMIId": {
+      "Type": "String",
+      "Description": "The AMI Id for the Zeus ASG"
     },
     "AMIPrefix": {
       "Type": "String",
@@ -156,7 +160,7 @@
         "InstanceType": "t2.micro",
         "KeyName": {"Ref": "KeyName"},
         "AssociatePublicIpAddress": "true",
-        "ImageId": {"Fn::GetAtt": ["AMIInfo", "Id" ]},
+        "ImageId": {"Ref": "ZeusAMIId"},
         "SecurityGroups": [{"Fn::GetAtt": ["SG", "Outputs.InstanceSecurityGroup"]}],
         "IamInstanceProfile": {"Fn::GetAtt": ["IAM", "Outputs.InstanceProfile"]},
         "UserData": {"Fn::Base64": {"Fn::Join": ["" , [
@@ -166,12 +170,6 @@
 
           "echo 'IN_PROGRESS' | tee /var/lib/cloud/instance/status_cfn\n",
           "echo 'User Data Version v", {"Ref": "Version"}, "'\n",
-
-          "echo 'VARs'\n",
-          "export PP_ROLE=zeus\n",
-          "export PP_PROJECT=vpm\n",
-          "export PP_MASTER=none\n",
-          "export ENVTYPE=", {"Ref": "EnvType"}, "\n",
 
           "signal_exit(){\n",
           "  /usr/local/bin/cfn-signal --exit-code ${1:-0}",
@@ -194,15 +192,11 @@
           "aws_cfn_rds_db_endpoint: ", {"Fn::GetAtt": ["RDS", "Outputs.DBEndpoint"]}, "\n",
           "EOF\n",
 
-          "echo 'Get latest app'\n",
-          "aws s3 cp s3://", {"Ref": "AssetsBucket"}, "/", {"Ref": "AssetsKeyPrefix"}, "/app/vpm.tgz /usr/local/src/\n",
+          "echo 'Redeploy R10K'\n",
+          "/opt/puppetlabs/puppet/bin/r10k deploy environment --puppetfile --verbose\n",
 
-          "echo 'Extract latest app'\n",
-          "mkdir -p /opt/vpm && cd /opt/vpm\n",
-          "tar zxvf /usr/local/src/vpm.tgz\n",
-
-          "echo 'Re-run bootstrap'\n",
-          "bash bin/bootstrap\n",
+          "echo 'Waiting for the ECS Agent'\n",
+          "until curl -s http://localhost:51678/v1/metadata >/dev/null 2>&1; do sleep 1; done\n",
 
           "echo 'SUCCEEDED' | tee /var/lib/cloud/instance/status_cfn"
         ]]}}
@@ -225,14 +219,14 @@
             "PortMappings": [
               {"ContainerPort": "8140", "HostPort": "8140"}
             ],
-            "Hostname": "puppet.vladgh.com",
+            "Hostname": "puppet.ghn.me",
             "MountPoints": [
               {
                 "SourceVolume": "PuppetServerCode",
                 "ContainerPath": "/etc/puppetlabs/code"
               },{
                 "SourceVolume": "PuppetCA",
-                "ContainerPath": "/etc/puppetlabs/puppet/ssl/ca"
+                "ContainerPath": "/etc/puppetlabs/puppet/ssl"
               },{
                 "SourceVolume": "PuppetCSR",
                 "ContainerPath": "/etc/puppetlabs/csr"
@@ -255,7 +249,7 @@
               }
             ],
             "Environment": [
-              {"Name": "S3PATH", "Value": {"Ref": "CAS3Path"}}
+              {"Name": "S3PATH", "Value": {"Ref": "CASSLS3Path"}}
             ]
           }
         ],
@@ -265,10 +259,10 @@
             "Host": {"SourcePath": "/etc/puppetlabs/code"}
           },{
             "Name": "PuppetCA",
-            "Host": {"SourcePath": "/opt/ca_vpm"}
+            "Host": {"SourcePath": "/etc/puppetlabs/puppet/ssl"}
           },{
             "Name": "PuppetCSR",
-            "Host": {"SourcePath": "/opt/vpm/csr"}
+            "Host": {"SourcePath": "/etc/puppetlabs/csr"}
           }
         ]
       }

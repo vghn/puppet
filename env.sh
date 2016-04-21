@@ -23,13 +23,8 @@ PATH="/opt/puppetlabs/bin:/opt/puppetlabs/puppet/bin:/usr/local/bin:${PATH}"
 # shellcheck disable=1090
 for file in ${APPDIR}/lib/*.sh; do . "$file"; done
 
-# Load AWS environment
-# shellcheck disable=SC1091
-[[ -s /var/lib/cloud/instance/.env ]] && . /var/lib/cloud/instance/.env
-
 # Load private environment
-# shellcheck disable=SC1090
-[[ -s "${APPDIR}/.env" ]] && . "${APPDIR}/.env"
+eval "$(vgs_parse_yaml "${APPDIR}/hieradata/private.yaml")"
 
 # Version
 export VERSION_FILE="${APPDIR}/VERSION"
@@ -105,7 +100,7 @@ export APP_ARCHIVE_S3_KEY_LATEST="${AWS_ASSETS_KEY_PREFIX}/app/${APP_ARCHIVE_LAT
 export APP_ARCHIVE_S3_PATH_LATEST="s3://${AWS_ASSETS_BUCKET}/${APP_ARCHIVE_S3_KEY_LATEST}"
 export PRIVATE_DATA_S3_PATH="${AWS_ASSETS_S3_PATH}/private"
 export PP_HIERA_S3_PATH="${PRIVATE_DATA_S3_PATH}/hieradata"
-export PP_CA_S3_PATH="s3://${AWS_ASSETS_BUCKET}/${PROJECT_NAME}/ca"
+export PP_CA_S3_PATH="s3://${AWS_ASSETS_BUCKET}/${PROJECT_NAME}/ssl"
 
 # AWS EC2
 export AWS_EC2_KEY="${AWS_EC2_KEY:-key}"
@@ -156,8 +151,9 @@ process_cfn_stacks(){
       P="$P ParameterKey=KeyName,ParameterValue=${AWS_EC2_KEY}"
       P="$P ParameterKey=AssetsBucket,ParameterValue=${AWS_ASSETS_BUCKET}"
       P="$P ParameterKey=AssetsKeyPrefix,ParameterValue=${AWS_ASSETS_KEY_PREFIX}"
-      P="$P ParameterKey=CAS3Path,ParameterValue=${PP_CA_S3_PATH}"
+      P="$P ParameterKey=CASSLS3Path,ParameterValue=${PP_CA_S3_PATH}"
       P="$P ParameterKey=AMIPrefix,ParameterValue=${AWS_EC2_IMAGE_PREFIX}_*"
+      P="$P ParameterKey=ZeusAMIId,ParameterValue=$(vgs_aws_ec2_get_latest_ami_id "$AWS_EC2_IMAGE_PREFIX")"
       P="$P 'ParameterKey=SSHLocations,ParameterValue=\"${TRUSTED_IPS}\"'"
       P="$P ParameterKey=DBEngine,ParameterValue=${AWS_RDS_DB_ENGINE}"
       P="$P ParameterKey=DBName,ParameterValue=${AWS_RDS_DB_NAME}"
