@@ -34,7 +34,7 @@ exts.each {|ext|
 }
 
 # Load CSR Sign Config
-cfg = YAML.load_file("#{File.expand_path(File.dirname(__FILE__))}/csr_sign.yaml")
+cfg = YAML.load_file("#{File.expand_path(File.dirname(__FILE__))}/sign.yaml")
 
 # Sign if password matches
 exit 0 if secret == cfg['challengePassword']

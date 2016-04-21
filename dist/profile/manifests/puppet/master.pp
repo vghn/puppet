@@ -57,14 +57,6 @@ class profile::puppet::master {
       command => "/bin/mkdir -p ${ca_vpm_dir}",
       unless  => "/usr/bin/test -d ${ca_vpm_dir}",
     } ->
-    file {"${ca_vpm_dir}/csr_sign":
-      ensure => 'link',
-      target => '/opt/vpm/bin/csr_sign',
-    } ->
-    file {"${ca_vpm_dir}/csr_sign.yaml":
-      ensure => 'link',
-      target => '/opt/vpm/hieradata/csr_sign.yaml',
-    } ->
     docker::run {'ca-s3-sync':
       image         => 'vladgh/s3sync:latest',
       detach        => true,

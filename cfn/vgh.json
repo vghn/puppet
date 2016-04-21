@@ -229,6 +229,9 @@
               },{
                 "SourceVolume": "PuppetCA",
                 "ContainerPath": "/etc/puppetlabs/puppet/ssl/ca"
+              },{
+                "SourceVolume": "PuppetCSR",
+                "ContainerPath": "/etc/puppetlabs/csr"
               }
             ],
             "Environment": [
@@ -243,6 +246,9 @@
           },{
             "Name": "PuppetCA",
             "Host": {"SourcePath": "/opt/ca_vpm"}
+          },{
+            "Name": "PuppetCSR",
+            "Host": {"SourcePath": "/opt/vpm/csr"}
           }
         ]
       }
