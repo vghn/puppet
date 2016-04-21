@@ -13,7 +13,7 @@ class profile::puppet::master {
       'nodes/%{::trusted.certname}',
       '%{::trusted.domainname}/%{::trusted.hostname}',
       'roles/%{::trusted.extensions.pp_role}',
-      'roles/%{role}',
+      'roles/%{::role}',
       'projects/%{::trusted.extensions.pp_project}',
       'projects/%{::project}',
       'virtual/%{::virtual}',
