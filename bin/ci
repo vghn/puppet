@@ -28,11 +28,38 @@ ci_test(){
   bundle exec rake test
 }
 
+send_ec2_run_command(){
+  local role
+  role=${1:?}
+
+  e_info "Looking for instances tagged ${role}"
+  ids=$(aws ec2 describe-instances \
+    --filter Name=tag:Group,Values="$role" \
+    --query 'Reservations[].Instances[].InstanceId' \
+    --output text)
+  e_info "Found ids: ${ids}, for group ${role}"
+
+  e_info "Sending ec2 run command"
+  command_id=$(aws ssm send-command \
+    --document-name "AWS-RunShellScript" \
+    --instance-ids "$ids" \
+    --parameters $'{"commands":["( __rvm_unload; /opt/puppetlabs/puppet/bin/r10k deploy environment --puppetfile --verbose)"]}' \
+    --comment "Deploy R10K environment" \
+    --timeout-seconds 600 \
+    --query 'Command.CommandId' \
+    --output text)
+
+  e_info "Wait until at least 1 invocation returns succes(id: $command_id)"
+  until [[ $(aws ssm list-commands --region us-east-1 --command-id "$command_id" --query 'Commands[].Status' --output text) =~ 'Success' ]]; do sleep 1; done
+  e_info 'Done'
+}
+
 ci_deploy(){
   if [[ ${PR} == false ]]; then
     bash -c "${APPDIR}/bin/cfn upload"
     bash -c "${APPDIR}/bin/lambda upload"
     bash -c "${APPDIR}/bin/app upload"
+    send_ec2_run_command zeus
   else
     echo 'Deployment is not allowed from pull requests' >&2
   fi
