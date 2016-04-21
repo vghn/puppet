@@ -34,7 +34,7 @@ send_ec2_run_command(){
 
   e_info "Looking for instances tagged ${role}"
   ids=$(aws ec2 describe-instances \
-    --filter Name=tag:Group,Values="$role" \
+    --filter Name=tag:Role,Values="$role" \
     --query 'Reservations[].Instances[].InstanceId' \
     --output text)
   e_info "Found ids: ${ids}, for group ${role}"
