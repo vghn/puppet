@@ -34,7 +34,7 @@ send_ec2_run_command(){
 
   e_info "Looking for instances tagged ${role}"
   ids=$(aws ec2 describe-instances \
-    --filter Name=tag:Role,Values="$role" \
+    --filter Name=tag:Role,Values="$role" Name=instance-state-name,Values=running \
     --query 'Reservations[].Instances[].InstanceId' \
     --output text)
   e_info "Found ids: ${ids}, for group ${role}"
@@ -44,7 +44,7 @@ send_ec2_run_command(){
   command_id=$(aws ssm send-command \
     --document-name "AWS-RunShellScript" \
     --instance-ids $ids \
-    --parameters $'{"commands":["( __rvm_unload; /opt/puppetlabs/puppet/bin/r10k deploy environment --puppetfile --verbose)"]}' \
+    --parameters $'{"commands":["/opt/puppetlabs/puppet/bin/r10k deploy environment --puppetfile --verbose"]}' \
     --comment "Deploy R10K environment" \
     --timeout-seconds 600 \
     --query 'Command.CommandId' \
