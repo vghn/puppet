@@ -156,6 +156,7 @@ process_cfn_stacks(){
       P="$P ParameterKey=KeyName,ParameterValue=${AWS_EC2_KEY}"
       P="$P ParameterKey=AssetsBucket,ParameterValue=${AWS_ASSETS_BUCKET}"
       P="$P ParameterKey=AssetsKeyPrefix,ParameterValue=${AWS_ASSETS_KEY_PREFIX}"
+      P="$P ParameterKey=CAS3Path,ParameterValue=${PP_CA_S3_PATH}"
       P="$P ParameterKey=AMIPrefix,ParameterValue=${AWS_EC2_IMAGE_PREFIX}_*"
       P="$P 'ParameterKey=SSHLocations,ParameterValue=\"${TRUSTED_IPS}\"'"
       P="$P ParameterKey=DBEngine,ParameterValue=${AWS_RDS_DB_ENGINE}"

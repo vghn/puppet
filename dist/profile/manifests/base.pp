@@ -17,12 +17,8 @@ class profile::base {
   ])
 
   # SSH Keys
-  if ($::ec2_metadata) {
-    if ($::operatingsystem == 'Ubuntu') {
-      $user = 'ubuntu'
-    } else {
-      $user = 'root'
-    }
+  if ($::ec2_metadata and $::operatingsystem == 'Ubuntu') {
+    $user = 'ubuntu'
   } else {
     $user = 'root'
   }

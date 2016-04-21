@@ -4,9 +4,7 @@ describe 'profile::docker' do
   context 'supported operating systems' do
     on_supported_os.each do |os, facts|
       context "on #{os}" do
-        let(:facts) do
-          facts
-        end
+        let(:facts) { facts }
 
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to contain_class('profile::docker') }
@@ -26,22 +24,7 @@ describe 'profile::docker' do
             .that_requires('Wget::Fetch[Docker-Machine Binary]')
         end
 
-        context 'on EC2 w/ cluster' do
-          let(:facts) do
-            facts.merge(
-              ec2_metadata: {
-                placement: { :'availability-zone' => 'us-east-1' }
-              },
-              aws_cfn_ecs_cluster: 'default'
-            )
-          end
-          it { is_expected.to contain_file('/var/log/ecs') }
-          it { is_expected.to contain_file('/var/lib/ecs') }
-          it { is_expected.to contain_file('/var/lib/ecs/data') }
-          it { is_expected.to contain_docker__run('ecs-agent') }
-        end
-
-        context 'on EC2 w/o cluster' do
+        context 'on EC2' do
           let(:facts) do
             facts.merge(
               ec2_metadata: {
@@ -49,11 +32,10 @@ describe 'profile::docker' do
               }
             )
           end
-
-          it { is_expected.to contain_docker__image('amazon/amazon-ecs-agent') }
-          it do
-            is_expected.to contain_file('/usr/local/bin/update_docker_image.sh')
-          end
+          it { is_expected.to contain_file('/var/log/ecs') }
+          it { is_expected.to contain_file('/var/lib/ecs') }
+          it { is_expected.to contain_file('/var/lib/ecs/data') }
+          it { is_expected.to contain_docker__run('ecs-agent') }
         end
       end
     end

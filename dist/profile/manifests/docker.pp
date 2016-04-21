@@ -11,7 +11,7 @@ class profile::docker {
 
     # Docker Compose
     $docker_compose_version = hiera('docker_compose_version')
-    class {'::docker::compose': version => '1.6.2'}
+    class {'::docker::compose': version => $docker_compose_version}
 
     # Docker Machine
     $docker_machine_version = hiera('docker_machine_version')
@@ -27,41 +27,38 @@ class profile::docker {
     }
 
     # AWS ECS
+    $aws_cfn_ecs_cluster = hiera('aws_cfn_ecs_cluster', 'default')
     if $::ec2_metadata {
-      if  $::aws_cfn_ecs_cluster {
-        file { '/var/log/ecs':
-          ensure => 'directory',
-        } ->
-        file { '/var/lib/ecs':
-          ensure => 'directory',
-        } ->
-        file { '/var/lib/ecs/data':
-          ensure => 'directory',
-        } ->
-        docker::run {'ecs-agent':
-          image         => 'amazon/amazon-ecs-agent:latest',
-          privileged    => true,
-          detach        => true,
-          restart       => 'on-failure:10',
-          volumes       => [
-            '/var/run/docker.sock:/var/run/docker.sock',
-            '/var/log/ecs/:/log:Z',
-            '/var/lib/ecs/data:/data:Z',
-            '/sys/fs/cgroup:/sys/fs/cgroup:ro',
-            '/var/run/docker/execdriver/native:/var/lib/docker/execdriver/native:ro',
-          ],
-          ports         => '51678:51678',
-          env           => [
-            'ECS_LOGFILE=/log/ecs-agent.log',
-            'ECS_LOGLEVEL=info',
-            'ECS_DATADIR=/data',
-            "ECS_CLUSTER=${::aws_cfn_ecs_cluster}",
-          ],
-          pull_on_start => true,
-          require       => Service['docker'],
-        }
-      } else {
-        docker::image {'amazon/amazon-ecs-agent': }
+      file { '/var/log/ecs':
+        ensure => 'directory',
+      } ->
+      file { '/var/lib/ecs':
+        ensure => 'directory',
+      } ->
+      file { '/var/lib/ecs/data':
+        ensure => 'directory',
+      } ->
+      docker::run {'ecs-agent':
+        image         => 'amazon/amazon-ecs-agent:latest',
+        privileged    => true,
+        detach        => true,
+        restart       => 'always',
+        volumes       => [
+          '/var/run/docker.sock:/var/run/docker.sock',
+          '/var/log/ecs/:/log:Z',
+          '/var/lib/ecs/data:/data:Z',
+          '/sys/fs/cgroup:/sys/fs/cgroup:ro',
+          '/var/run/docker/execdriver/native:/var/lib/docker/execdriver/native:ro',
+        ],
+        ports         => '51678:51678',
+        env           => [
+          'ECS_LOGFILE=/log/ecs-agent.log',
+          'ECS_LOGLEVEL=info',
+          'ECS_DATADIR=/data',
+          "ECS_CLUSTER=${aws_cfn_ecs_cluster}",
+        ],
+        pull_on_start => true,
+        require       => Service['docker'],
       }
     }
   }

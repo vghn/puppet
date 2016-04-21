@@ -23,6 +23,10 @@
       "Type": "String",
       "Description": "The S3 assets key prefix"
     },
+    "CAS3Path": {
+      "Type": "String",
+      "Description": "The S3 path to the certificates backup"
+    },
     "AMIPrefix": {
       "Type": "String",
       "Description": "The AMI Prefix"
@@ -234,8 +238,24 @@
                 "ContainerPath": "/etc/puppetlabs/csr"
               }
             ],
+            "Links": ["PuppetCASync"],
             "Environment": [
               {"Name": "JAVA_ARGS", "Value": "-Xms256m -Xmx512m"}
+            ]
+          },{
+            "Name": "PuppetCASync",
+            "Image": "vladgh/s3sync:latest",
+            "Cpu": "64",
+            "Memory": "64",
+            "Essential": "true",
+            "MountPoints": [
+              {
+                "SourceVolume": "PuppetCA",
+                "ContainerPath": "/watch"
+              }
+            ],
+            "Environment": [
+              {"Name": "S3PATH", "Value": {"Ref": "CAS3Path"}}
             ]
           }
         ],

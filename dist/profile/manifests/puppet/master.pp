@@ -48,30 +48,4 @@ class profile::puppet::master {
     timeout   => 600,
     require   => Package['r10k'],
   }
-
-  # Sync SSL Dir to AWS S3
-  if ( $::ca_s3_path and $::aws_cfn_name ) {
-    $ca_vpm_dir = '/opt/ca_vpm'
-    include ::docker
-    exec {'ca_vpm_dir':
-      command => "/bin/mkdir -p ${ca_vpm_dir}",
-      unless  => "/usr/bin/test -d ${ca_vpm_dir}",
-    } ->
-    docker::run {'ca-s3-sync':
-      image         => 'vladgh/s3sync:latest',
-      detach        => true,
-      restart       => 'on-failure:10',
-      volumes       => [
-        "${ca_vpm_dir}:/watch",
-      ],
-      env           => [
-        "S3PATH=${::ca_s3_path}",
-      ],
-      pull_on_start => true,
-      require       => Service['docker'],
-    }
-  } else {
-    docker::image {'vladgh/s3sync:latest': }
-    docker::image {'vladgh/puppetserver:latest': }
-  }
 }

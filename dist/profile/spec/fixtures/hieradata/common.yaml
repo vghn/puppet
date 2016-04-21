@@ -8,9 +8,9 @@ ssh_authorized_keys:
 aws_cloudwatch_logs:
   TEST/System/SysLog:
     path: /var/log/syslog
-project_name: my_project
-project_path: /opt
+
 docker::docker_users: [ubuntu]
+aws_cfn_ecs_cluster: 'myCluster'
 
 control_repo: 'https://github.com/vghn/puppet.git'
 ca_s3path: 's3://bucket/key'

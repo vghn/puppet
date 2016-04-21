@@ -20,22 +20,6 @@ describe 'profile::puppet::master' do
             .to contain_exec('R10K deploy environment')
             .with_command('/opt/puppetlabs/puppet/bin/r10k deploy environment --puppetfile --verbose') # rubocop:disable Metrics/LineLength
         end
-
-        context 'inside CloudFormation user data' do
-          let(:facts) do
-            facts.merge(
-              ca_s3_path:   's3://bucket/ca',
-              aws_cfn_name: 'mystack'
-            )
-          end
-          it do
-            is_expected.to contain_exec('ca_vpm_dir')
-              .that_comes_before('Docker::Run[ca-s3-sync]')
-          end
-          it { is_expected.to contain_docker__run('ca-s3-sync') }
-        end
-
-        it { is_expected.to contain_docker__image('vladgh/s3sync:latest') }
       end
     end
   end
