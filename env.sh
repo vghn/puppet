@@ -37,7 +37,7 @@ export CHANGELOG_FILE="${APPDIR}/CHANGELOG.md"
 export VERSION; VERSION=$(cat "$VERSION_FILE")
 
 # Detect environment
-GIT_BRANCH=$(git symbolic-ref --short HEAD 2>/dev/null || echo 'master')
+GIT_BRANCH=$(git symbolic-ref --short HEAD 2>/dev/null || echo '')
 GIT_SHA1=$(git rev-parse --short HEAD 2>/dev/null || echo '0')
 TRAVIS_BRANCH="${TRAVIS_BRANCH:-}"
 DEPLOYMENT_GROUP_NAME="${DEPLOYMENT_GROUP_NAME:-}"
@@ -76,6 +76,9 @@ elif [[ ${TRAVIS:-false} == true ]]; then
   git config --global user.name "TravisCI"
 fi
 
+# Full version
+export FULL_VERSION=${VERSION}-${BUILD}
+
 # Trusted IPs
 export TRUSTED_IPS="${TRUSTED_IPS:-"$(vgs_get_external_ip)/32"}"
 
@@ -94,7 +97,7 @@ export AWS_ASSETS_KEY_PREFIX="${PROJECT_NAME}/${ENVTYPE}"
 export AWS_ASSETS_S3_PATH="s3://${AWS_ASSETS_BUCKET}/${AWS_ASSETS_KEY_PREFIX}"
 
 # APP Files
-export APP_ARCHIVE="${PROJECT_NAME}-${VERSION}-${BUILD}.tgz"
+export APP_ARCHIVE="${PROJECT_NAME}-${FULL_VERSION}.tgz"
 export APP_ARCHIVE_LATEST="${PROJECT_NAME}.tgz"
 export APP_ARCHIVE_S3_KEY="${AWS_ASSETS_KEY_PREFIX}/app/${APP_ARCHIVE}"
 export APP_ARCHIVE_S3_PATH="s3://${AWS_ASSETS_BUCKET}/${APP_ARCHIVE_S3_KEY}"
@@ -148,7 +151,7 @@ process_cfn_stacks(){
       else
         ARGS=''
       fi
-      P="   ParameterKey=Version,ParameterValue=${VERSION}-${BUILD}"
+      P="   ParameterKey=Version,ParameterValue=${FULL_VERSION}"
       P="$P ParameterKey=EnvType,ParameterValue=${ENVTYPE}"
       P="$P ParameterKey=KeyName,ParameterValue=${AWS_EC2_KEY}"
       P="$P ParameterKey=AssetsBucket,ParameterValue=${AWS_ASSETS_BUCKET}"
@@ -176,7 +179,7 @@ process_cfn_stacks(){
 export AWS_CD_APP_NAME="$PROJECT_NAME"
 export AWS_CD_BUCKET="$AWS_ASSETS_BUCKET"
 export AWS_CD_BUNDLE_TYPE='tgz'
-export AWS_CD_ARCHIVE="${AWS_CD_APP_NAME}-${VERSION}-${BUILD:-0}.${AWS_CD_BUNDLE_TYPE}"
+export AWS_CD_ARCHIVE="${AWS_CD_APP_NAME}-${FULL_VERSION}.${AWS_CD_BUNDLE_TYPE}"
 export AWS_CD_S3_KEY_PREFIX="${AWS_ASSETS_KEY_PREFIX}/deploy"
 export AWS_CD_S3_KEY="${AWS_CD_S3_KEY_PREFIX}/${AWS_CD_ARCHIVE}"
 export AWS_CD_S3_PATH="s3://${AWS_CD_BUCKET}/${AWS_CD_S3_KEY}"
