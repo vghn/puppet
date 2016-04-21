@@ -17,7 +17,7 @@ echo 'IN_PROGRESS' | tee /var/lib/cloud/instance/status_ami
 export PP_ROLE=zeus
 export PP_MASTER=none
 export PP_PROJECT=${PROJECT_NAME}
-export PP_ENV=${ENVTYPE}
+export ENVTYPE=${ENVTYPE}
 export BUILD_DIR="${TMPDIR}/ami_build"
 export APP_S3_URL='$(vgs_aws_s3_generate_presigned_url "$AWS_ASSETS_BUCKET" "$APP_ARCHIVE_S3_KEY_LATEST" 300)'
 

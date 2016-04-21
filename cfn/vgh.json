@@ -167,7 +167,7 @@
           "export PP_ROLE=zeus\n",
           "export PP_PROJECT=vpm\n",
           "export PP_MASTER=none\n",
-          "export PP_ENV=", {"Ref": "EnvType"}, "\n",
+          "export ENVTYPE=", {"Ref": "EnvType"}, "\n",
 
           "signal_exit(){\n",
           "  /usr/local/bin/cfn-signal --exit-code ${1:-0}",

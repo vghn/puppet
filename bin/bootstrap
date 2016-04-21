@@ -7,7 +7,7 @@
 # bash puppet/bootstrap
 #
 # Environment variables:
-# PP_ENV: [STRING] The environment (default: 'production)
+# ENVTYPE: [STRING] The environment (default: 'production)
 #
 # PP_MASTER: [String] Can be any of the following
 #   - `puppet`: (default) the address of the puppet master server
@@ -72,7 +72,7 @@ ensure_vgs(){
 ensure_vgs && . "$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd -P)/env.sh"
 
 # DEFAULTS
-PP_ENV=${PP_ENV:-production}
+ENVTYPE=${ENVTYPE:-production}
 PP_MASTER=${PP_MASTER:-puppet}
 PP_ROLE=${PP_ROLE:-}
 PP_PROJECT=${PP_PROJECT:-}
@@ -273,8 +273,8 @@ configure_puppet_agent(){
   e_info "Set puppet master address - '$PP_MASTER'"
   puppet config set server "$PP_MASTER" --section agent
 
-  e_info "Set puppet environment - '$PP_ENV'"
-  puppet config set environment "$PP_ENV" --section agent
+  e_info "Set puppet environment - '$ENVTYPE'"
+  puppet config set environment "$ENVTYPE" --section agent
 
   e_info "Set puppet certname - '$PP_AGENT_CERTNAME'"
   case "$PP_AGENT_CERTNAME" in
@@ -322,16 +322,16 @@ apply_puppet(){
 
   if [[ -s "${LOCALDIR}/manifests/site.pp" ]]; then
     manifest="${LOCALDIR}/manifests/site.pp"
-  elif [[ -s "${PP_ENVDIR}/${PP_ENV}/manifests/site.pp" ]]; then
-    manifest="${PP_ENVDIR}/${PP_ENV}/manifests/site.pp"
+  elif [[ -s "${PP_ENVDIR}/${ENVTYPE}/manifests/site.pp" ]]; then
+    manifest="${PP_ENVDIR}/${ENVTYPE}/manifests/site.pp"
   else
     e_abort 'Could not find site.pp'
   fi
 
   if [[ -d "${LOCALDIR}/modules" ]] &&  [[ -d "${LOCALDIR}/dist" ]]; then
     modulepath="${LOCALDIR}/modules:${LOCALDIR}/dist"
-  elif [[ -s "${PP_ENVDIR}/${PP_ENV}/modules" ]] && [[ -s "${PP_ENVDIR}/${PP_ENV}/dist" ]]; then
-    modulepath="${PP_ENVDIR}/${PP_ENV}/modules:${PP_ENVDIR}/${PP_ENV}/dist"
+  elif [[ -s "${PP_ENVDIR}/${ENVTYPE}/modules" ]] && [[ -s "${PP_ENVDIR}/${ENVTYPE}/dist" ]]; then
+    modulepath="${PP_ENVDIR}/${ENVTYPE}/modules:${PP_ENVDIR}/${ENVTYPE}/dist"
   else
     e_abort 'Could not create modulepath'
   fi
@@ -368,7 +368,7 @@ run_puppet(){
   e_info 'Running puppet'
   puppet agent \
     --server "$PP_MASTER" \
-    --environment="$PP_ENV" \
+    --environment="$ENVTYPE" \
     --waitforcert 10 \
     --no-daemonize \
     --onetime \
