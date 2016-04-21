@@ -37,7 +37,8 @@ export CHANGELOG_FILE="${APPDIR}/CHANGELOG.md"
 export VERSION; VERSION=$(cat "$VERSION_FILE")
 
 # Detect environment
-GIT_BRANCH=$(git symbolic-ref --short HEAD 2>/dev/null || echo '')
+GIT_BRANCH=$(git symbolic-ref --short HEAD 2>/dev/null || echo 'master')
+GIT_SHA1=$(git rev-parse --short HEAD 2>/dev/null || echo '0')
 TRAVIS_BRANCH="${TRAVIS_BRANCH:-}"
 DEPLOYMENT_GROUP_NAME="${DEPLOYMENT_GROUP_NAME:-}"
 
@@ -64,7 +65,7 @@ fi
 # CI
 export CI=${CI:-false}
 export PR=false
-export BUILD=0
+export BUILD=${GIT_SHA1:-0}
 if [[ ${CIRCLECI:-false} == true ]]; then
   export PR=${CIRCLE_PR_NUMBER}
   export BUILD=${CIRCLE_BUILD_NUM}
@@ -147,7 +148,7 @@ process_cfn_stacks(){
       else
         ARGS=''
       fi
-      P="   ParameterKey=Version,ParameterValue=${VERSION}"
+      P="   ParameterKey=Version,ParameterValue=${VERSION}-${BUILD}"
       P="$P ParameterKey=EnvType,ParameterValue=${ENVTYPE}"
       P="$P ParameterKey=KeyName,ParameterValue=${AWS_EC2_KEY}"
       P="$P ParameterKey=AssetsBucket,ParameterValue=${AWS_ASSETS_BUCKET}"

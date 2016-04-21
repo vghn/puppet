@@ -124,9 +124,9 @@
           {"Fn::GetAtt": ["VPC", "Outputs.Subnet3"]},
           {"Fn::GetAtt": ["VPC", "Outputs.Subnet4"]}
         ],
-        "MinSize": "1",
+        "MinSize": "0",
         "MaxSize": "1",
-        "DesiredCapacity": "1",
+        "DesiredCapacity": "0",
         "HealthCheckType": "ELB",
         "HealthCheckGracePeriod": "600",
         "Cooldown": "600",
@@ -136,6 +136,14 @@
           {"Key": "Role", "Value": "zeus", "PropagateAtLaunch": "true"},
           {"Key": "Name", "Value": {"Fn::Join": ["-" , [{"Ref": "AWS::StackName"}, "Zeus"]]}, "PropagateAtLaunch": "true"}
         ]
+      },
+      "UpdatePolicy" : {
+        "AutoScalingRollingUpdate": {
+          "MaxBatchSize": "1",
+          "MinInstancesInService": "0",
+          "PauseTime": "PT10M",
+          "WaitOnResourceSignals": "true"
+        }
       }
     },
     "LaunchZeusInstance": {
@@ -172,7 +180,7 @@
 
           "echo 'Write facts'\n",
           "mkdir -p /etc/puppetlabs/facter/facts.d\n",
-          "cat << EOF > /etc/puppetlabs/facter/facts.d/aws.env.yaml\n",
+          "cat << EOF > /etc/puppetlabs/facter/facts.d/aws-env.yaml\n",
           "---\n",
           "aws_cfn_name: ", {"Ref": "AWS::StackName"}, "\n",
           "aws_cfn_env_type: ", {"Ref": "EnvType"}, "\n",
@@ -190,7 +198,7 @@
           "tar zxvf /usr/local/src/vpm.tgz\n",
 
           "echo 'Re-run bootstrap'\n",
-          "bin/bash bootstrap\n",
+          "bash bin/bootstrap\n",
 
           "echo 'SUCCEEDED' | tee /var/lib/cloud/instance/status_cfn"
         ]]}}
@@ -261,6 +269,7 @@
       "Type": "Custom::AMIInfo",
       "Properties": {
         "ServiceToken": {"Fn::GetAtt": ["AMIInfoFunction", "Arn"]},
+        "Version": {"Ref": "Version"},
         "Prefix": {"Ref": "AMIPrefix"},
         "Region": {"Ref": "AWS::Region"},
         "Owners": ["self"]

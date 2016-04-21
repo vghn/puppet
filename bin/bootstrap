@@ -222,7 +222,25 @@ deploy_r10k(){
   fi
 }
 
+# Retrieve Hiera Data
+get_hiera_data(){
+  local name
+  for env in ${PP_ENVDIR}/*; do
+    name=$(basename "$env")
+
+    e_info "Sync hiera data for the '${name}' environment"
+    if ! aws s3 sync \
+      --delete \
+      "$PP_HIERA_S3_PATH" \
+      "${PP_ENVDIR}/${name}/hieradata"
+    then
+      e_warn 'Could not get hiera data'
+    fi
+  done
+}
+
 configure_hiera(){
+  [[ -s "${LOCALDIR}/hieradata" ]] || return
   local hiera_config="${PP_CODEDIR}/hiera.yaml"
   if [[ "$(sed -n '1p' "$hiera_config" 2>/dev/null)" != '# managed by puppet' ]]; then
     e_info 'Configure Hiera'
@@ -244,6 +262,9 @@ configure_hiera(){
   - private
   - common
 HIERACFG
+  fi
+  if [[ -n "$PP_HIERA_S3_PATH" ]]; then
+    get_hiera_data;
   fi
 }
 
@@ -279,23 +300,6 @@ configure_puppet_agent(){
   fi
 }
 
-# Retrieve Hiera Data
-get_hiera_data(){
-  local name
-  for env in ${PP_ENVDIR}/*; do
-    name=$(basename "$env")
-
-    e_info "Sync hiera data for the '${name}' environment"
-    if ! aws s3 sync \
-      --delete \
-      "${PP_HIERA_S3_PATH}/${name}/private/hieradata" \
-      "${PP_ENVDIR}/${name}/hieradata"
-    then
-      e_warn 'Could not get hiera data'
-    fi
-  done
-}
-
 # Configure agent or master
 configure_puppet(){
   PP_CONFDIR="$(puppet config print confdir)"
@@ -303,18 +307,8 @@ configure_puppet(){
   PP_ENVDIR="$(puppet config print environmentpath)"
 
   if [[ "$PP_MASTER" == 'none' ]]; then
-    if [[ -s "${LOCALDIR}/Puppetfile" ]]; then
-      (
-      cd "$LOCALDIR" || return
-      deploy_r10k
-      )
-    fi
-    if [[ -s "${LOCALDIR}/hieradata" ]]; then
-      configure_hiera
-    fi
-    if [[ -n "$PP_HIERA_S3_PATH" ]]; then
-      get_hiera_data;
-    fi
+    deploy_r10k
+    configure_hiera
   elif [[ -n "$PP_MASTER" ]]; then
     configure_puppet_agent
   fi
@@ -393,7 +387,9 @@ main(){
   else
     # Disable RVM
     if [[ $(type rvm 2>/dev/null | head -1) =~ 'rvm is ' ]]; then
-      __rvm_unload 2>/dev/null || true
+      if ! __rvm_unload 2>/dev/null; then
+        unset GEM_HOME GEM_PATH
+      fi
     fi
   fi
 
