@@ -54,7 +54,7 @@ elif [[ -n "${CIRCLE_BRANCH:-}" ]]; then
 elif [[ -n "${DEPLOYMENT_GROUP_NAME:-}" ]]; then
   ENVTYPE="$DEPLOYMENT_GROUP_NAME"
 else
-  ENVTYPE=${ENVTYPE:-development}
+  ENVTYPE=${ENVTYPE:-production}
 fi
 
 ## Rename 'master' to 'production'
