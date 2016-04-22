@@ -10,7 +10,7 @@ ci_install(){
   e_info 'Ensure latest Python PIP and AWS-CLI'
   pip install --user --upgrade pip awscli
 
-  bash -c "${APPDIR}/bin/app download"
+  bash -c "${APPDIR}/bin/app download-private"
 
   e_info 'Install required testing gems'
   cd "${APPDIR}/dist/profile" || exit

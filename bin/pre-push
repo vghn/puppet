@@ -6,19 +6,7 @@
 # shellcheck disable=1090
 . "$(cd "$(dirname "${BASH_SOURCE[0]}")/../../" && pwd -P)/env.sh"
 
-push_private_data(){
-  e_info 'Sync hiera data'
-  aws s3 sync --delete "${APPDIR}/hieradata/" "${PRIVATE_DATA_S3_PATH}/hieradata/"
-}
-
-# Info
-e_header 'INFO:'
-e_info "Application directory: ${APPDIR:?}"
-e_info "AWS S3 Path: ${PRIVATE_DATA_S3_PATH:?}"
-
-# Process arguments
-e_header 'Push private data:'
-push_private_data "$@"
+bash -c "${APPDIR}/bin/app upload-private"
 
 # Git Push
 e_header 'GIT Push:'

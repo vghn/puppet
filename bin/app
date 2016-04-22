@@ -8,7 +8,13 @@
 # Download private data
 download_private_data(){
   e_info 'Sync hiera data'
-  aws s3 sync --delete "$PP_HIERA_S3_PATH" "${APPDIR}/hieradata/"
+  aws s3 sync --delete "$PP_HIERA_S3_PATH" "${APPDIR}/hieradata"
+}
+
+# Download private data
+upload_private_data(){
+  e_info 'Sync hiera data'
+  aws s3 sync --delete "${APPDIR}/hieradata" "$PP_HIERA_S3_PATH"
 }
 
 # Archive app files
@@ -59,7 +65,7 @@ e_info "App archive name: ${APP_ARCHIVE:?}"
 e_info "App archive S3 key: ${APP_ARCHIVE_S3_KEY:?}"
 e_info "App archive S3 path: ${APP_ARCHIVE_S3_PATH:?}"
 e_info "App archive S3 path: ${APP_ARCHIVE_S3_PATH_LATEST:?}"
-e_info "Private data S3 path: ${PRIVATE_DATA_S3_PATH:?}"
+e_info "Hiera data S3 path: ${PP_HIERA_S3_PATH:?}"
 
 # Process arguments
 e_header 'Application:'
@@ -67,13 +73,16 @@ case "${1:-}" in
   upload)
     package_app_files && upload_app_archive && clean_app
     ;;
-  download)
+  upload-private)
+    upload_private_data
+    ;;
+  download-private)
     download_private_data
     ;;
   update)
     update_app
     ;;
   *)
-    e_abort "USAGE: ${BASH_SOURCE[0]} [upload | download | update]"
+    e_abort "USAGE: ${BASH_SOURCE[0]} [upload | upload-private | download | update]"
     ;;
 esac
