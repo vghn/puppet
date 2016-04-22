@@ -224,19 +224,14 @@ deploy_r10k(){
 
 # Retrieve Hiera Data
 get_hiera_data(){
-  local name
-  for env in ${PP_ENVDIR}/*; do
-    name=$(basename "$env")
-
-    e_info "Sync hiera data for the '${name}' environment"
-    if ! aws s3 sync \
-      --delete \
-      "$PP_HIERA_S3_PATH" \
-      "${PP_ENVDIR}/${name}/hieradata"
-    then
-      e_warn 'Could not get hiera data'
-    fi
-  done
+  e_info "Sync hiera data for the '${ENVTYPE}' environment"
+  if ! aws s3 sync \
+    --delete \
+    "$PP_HIERA_S3_PATH" \
+    "${PP_ENVDIR}/${ENVTYPE}/hieradata"
+  then
+    e_warn 'Could not get hiera data'
+  fi
 }
 
 configure_hiera(){
@@ -262,9 +257,6 @@ configure_hiera(){
   - private
   - common
 HIERACFG
-  fi
-  if [[ -n "$PP_HIERA_S3_PATH" ]]; then
-    get_hiera_data;
   fi
 }
 

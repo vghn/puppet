@@ -37,7 +37,11 @@ send_ec2_run_command(){
     --filter Name=tag:Role,Values="$role" Name=instance-state-name,Values=running \
     --query 'Reservations[].Instances[].InstanceId' \
     --output text)
-  e_info "Found ids: ${ids}, for group ${role}"
+  if [[ -n "$ids" ]]; then
+    e_info "Found ids: ${ids}, for group ${role}"
+  else
+    e_warn 'Did not find any instances!'; return
+  fi
 
   e_info "Sending ec2 run command"
   # shellcheck disable=2086
@@ -50,9 +54,13 @@ send_ec2_run_command(){
     --query 'Command.CommandId' \
     --output text)
 
-  e_info "Wait until at least 1 invocation returns succes(id: $command_id)"
-  until [[ $(aws ssm list-commands --region us-east-1 --command-id "$command_id" --query 'Commands[].Status' --output text) =~ 'Success' ]]; do sleep 1; done
-  e_info 'Done'
+  if [[ -n "$command_id" ]]; then
+    e_info "Wait until at least 1 invocation returns succes(id: $command_id)"
+    until [[ $(aws ssm list-commands --region us-east-1 --command-id "$command_id" --query 'Commands[].Status' --output text) =~ 'Success' ]]; do sleep 1; done
+    e_info 'Done'
+  else
+    e_abort 'Could not send command'
+  fi
 }
 
 ci_deploy(){
@@ -60,7 +68,7 @@ ci_deploy(){
     bash -c "${APPDIR}/bin/cfn upload"
     bash -c "${APPDIR}/bin/lambda upload"
     bash -c "${APPDIR}/bin/app upload"
-    send_ec2_run_command zeus
+    send_ec2_run_command "$AWS_TAG_ROLE"
   else
     echo 'Deployment is not allowed from pull requests' >&2
   fi
@@ -69,6 +77,7 @@ ci_deploy(){
 # xVARs
 e_header 'Info:'
 e_info "Application directory: ${APPDIR:?}"
+e_info "AWS Role Tag: ${AWS_TAG_ROLE:?}"
 e_info "Pull request: ${PR:?}"
 
 # Process arguments
