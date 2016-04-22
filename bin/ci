@@ -69,7 +69,6 @@ ci_deploy(){
 # xVARs
 e_header 'Info:'
 e_info "Application directory: ${APPDIR:?}"
-e_info "Private data S3 path: ${PRIVATE_DATA_S3_PATH:?}"
 e_info "Pull request: ${PR:?}"
 
 # Process arguments
