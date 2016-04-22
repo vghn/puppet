@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+# Bash strict mode
+set -euo pipefail
+IFS=$'\n\t'
+
+# VARs
+S3_PATH='s3://vladgh/vpm'
+ENVIRONMENTPATH=$(/opt/puppetlabs/bin/puppet config print environmentpath)
+AZ=$(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone)
+REGION="${AZ%?}"
+
+# Download Private Hieradata
+for envdir in ${ENVIRONMENTPATH}/*; do
+  [[ -d $envdir ]] || break
+  env=$(basename "$envdir")
+  /usr/local/bin/aws --region "$REGION" s3 sync --delete \
+    "${S3_PATH}/${env}/hieradata" "${envdir}/hieradata/" || break
+done

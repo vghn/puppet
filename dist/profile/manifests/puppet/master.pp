@@ -23,6 +23,16 @@ class profile::puppet::master {
     ],
   }
 
+  # Install post run hook
+  file {'R10k Post Run Hook':
+    ensure  => present,
+    path    => '/usr/local/bin/r10k-post-run',
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0555',
+    content => template('profile/r10k-post-run.sh.erb'),
+  }
+
   # Install, configure and run R10K
   $control_repo = hiera('control_repo')
   $r10k_version = hiera('r10k_version', 'latest')
@@ -34,10 +44,12 @@ class profile::puppet::master {
         'prefix'  => false,
       },
     },
+    postrun  => ['/usr/local/bin/r10k-post-run'],
     cachedir => '/opt/puppetlabs/r10k/cache',
     provider => 'puppet_gem',
     version  => $r10k_version,
     notify   => Exec['R10K deploy environment'],
+    require  => File['R10k Post Run Hook'],
   }
 
   # Deploy R10K environment
@@ -47,5 +59,17 @@ class profile::puppet::master {
     logoutput => true,
     timeout   => 600,
     require   => Package['r10k'],
+  }
+
+  file {'/etc/puppetlabs/csr':
+    ensure => 'directory',
+  } ->
+  file {'CSR Sign':
+    ensure  => present,
+    path    => '/etc/puppetlabs/csr/sign',
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0555',
+    content => template('profile/sign.sh.erb'),
   }
 }

@@ -13,7 +13,6 @@ docker::docker_users: [ubuntu]
 aws_cfn_ecs_cluster: 'myCluster'
 
 control_repo: 'https://github.com/vghn/puppet.git'
-ca_s3path: 's3://bucket/key'
 
 # Software versions
 jq_version:             '1.5'

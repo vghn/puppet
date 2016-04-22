@@ -20,6 +20,23 @@ describe 'profile::puppet::master' do
             .to contain_exec('R10K deploy environment')
             .with_command('/opt/puppetlabs/puppet/bin/r10k deploy environment --puppetfile --verbose') # rubocop:disable Metrics/LineLength
         end
+
+        it do
+          is_expected
+            .to contain_file('R10k Post Run Hook')
+            .with_path('/usr/local/bin/r10k-post-run')
+            .with_owner('root')
+            .with_mode('0555')
+        end
+
+        it { is_expected.to contain_file('/etc/puppetlabs/csr') }
+        it do
+          is_expected
+            .to contain_file('CSR Sign')
+            .with_path('/etc/puppetlabs/csr/sign')
+            .with_owner('root')
+            .with_mode('0555')
+        end
       end
     end
   end
