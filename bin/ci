@@ -26,6 +26,9 @@ ci_before_install(){
 # CI Install
 ci_install(){
   cd "${APPDIR}/dist/profile" || return 1
+  pwd
+  ls -lah
+  cat Gemfile
   e_info 'Install required testing gems'
   bundle install --without development system_tests --path vendor
 
