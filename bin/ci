@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 # Continuous Integration / Continuous Deployment tasks
 
-# CI Before Install
-ci_before_install(){
+# CI Pre-Install Steps
+ci_pre_install(){
+  # Check if already installed
+  if [[ $(cat /tmp/status_ci 2>&1) == 'INSTALLED' ]]; then return; fi
+
   # Load environment
   # shellcheck disable=1090
   . "$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd -P)/env.sh"
@@ -21,6 +24,9 @@ ci_before_install(){
   # Re-Load environment
   # shellcheck disable=1090
   . "$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd -P)/env.sh"
+
+  # Report status
+  echo 'INSTALLED' | tee /tmp/status_ci
 }
 
 # CI Install
@@ -39,7 +45,8 @@ ci_test(){
   bash -c "${APPDIR}/bin/cfn validate"
 
   e_info 'Running tests'
-  cd "${APPDIR}/dist/profile" || exit
+  cd "${APPDIR}/dist/profile" || return 1
+  export BUNDLE_GEMFILE=$PWD/Gemfile
   bundle exec rake test
 }
 
@@ -91,8 +98,8 @@ ci_deploy(){
   fi
 }
 
-# Pre install
-ci_before_install
+# Pre-install steps
+ci_pre_install
 
 # xVARs
 e_header 'Info:'
