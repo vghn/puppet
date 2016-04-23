@@ -17,7 +17,7 @@ ci_pre_load(){
   echo 'Install VGS Library'
   if [[ -d ~/vgs ]]; then rm -fr ~/vgs; fi
   mkdir -p ~/vgs
-  curl https://s3.amazonaws.com/vghn/vgs.tgz | tar xvz -C ~/vgs
+  curl -sSL https://s3.amazonaws.com/vghn/vgs.tgz | tar xvz -C ~/vgs
 
   echo 'Ensure latest Python PIP and AWS-CLI'
   pip install --user --upgrade pip awscli
