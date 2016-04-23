@@ -1,15 +1,16 @@
 #!/usr/bin/env bash
 # Continuous Integration / Continuous Deployment tasks
 
-# CI Pre-Install Steps
-ci_pre_install(){
-  # Check if already installed
-  if [[ $(cat /tmp/status_ci 2>&1) == 'INSTALLED' ]]; then return; fi
-
+# CI Pre-Load Steps
+ci_pre_load(){
   # Load environment
   # shellcheck disable=1090
   . "$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd -P)/env.sh"
 
+  # Check if already installed
+  if [[ $(cat /tmp/status_ci 2>&1) == 'INSTALLED' ]]; then return; fi
+
+  # If not install essentials
   echo 'Install VGS Library'
   if [[ -d ~/vgs ]]; then rm -fr ~/vgs; fi
   mkdir -p ~/vgs
@@ -98,8 +99,8 @@ ci_deploy(){
   fi
 }
 
-# Pre-install steps
-ci_pre_install
+# Pre-load steps
+ci_pre_load
 
 # xVARs
 e_header 'Info:'
