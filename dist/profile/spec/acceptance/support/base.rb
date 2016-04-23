@@ -24,5 +24,4 @@ shared_examples 'profile::base' do
   describe user('ubuntu') do
     it { is_expected.to have_authorized_key 'ssh-rsa' }
   end
-
 end

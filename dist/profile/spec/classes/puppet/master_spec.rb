@@ -26,7 +26,7 @@ describe 'profile::puppet::master' do
             .to contain_file('R10k Post Run Hook')
             .with_path('/usr/local/bin/r10k-post-run')
             .with_owner('root')
-            .with_mode('0555')
+            .with_mode('0755')
         end
 
         it { is_expected.to contain_file('/etc/puppetlabs/csr') }
