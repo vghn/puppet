@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 # Continuous Integration / Continuous Deployment tasks
 
-# Load environment
-# shellcheck disable=1090
-. "$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd -P)/env.sh"
-
 # CI Before Install
 ci_before_install(){
+  # Load environment
+  # shellcheck disable=1090
+  . "$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd -P)/env.sh"
+
   echo 'Install VGS Library'
   if [[ -d ~/vgs ]]; then rm -fr ~/vgs; fi
   mkdir -p ~/vgs
@@ -90,6 +90,9 @@ ci_deploy(){
   fi
 }
 
+# Pre install
+ci_before_install
+
 # xVARs
 e_header 'Info:'
 e_info "Application directory: ${APPDIR:?}"
@@ -99,9 +102,6 @@ e_info "Pull request: ${PR:?}"
 # Process arguments
 e_header 'CI:'
 case "${1:-}" in
-  before_install)
-    ci_before_install
-    ;;
   install)
     ci_install
     ;;

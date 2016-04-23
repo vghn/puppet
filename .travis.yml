@@ -1,7 +1,6 @@
 language: ruby
 rvm:
   - 2.2
-before_install: bin/ci before_install
 install: bin/ci install
 script: bin/ci test
 after_success: bin/ci deploy
