@@ -26,14 +26,14 @@ ensure_vgs(){
   local installdir
   if [[ $EUID == 0 ]]; then installdir=/opt/vgs; else installdir=~/vgs; fi
 
-  echo 'Remove any existing installations'
+  echo '- Remove any existing installations'
   if [[ -d "$installdir" ]]; then rm -fr "$installdir"; fi
   mkdir -p "$installdir"
 
-  echo 'Downloading VGS library'
+  echo '- Downloading VGS library'
   curl -sSL https://s3.amazonaws.com/vghn/vgs.tgz | tar xz -C "$installdir"
 
-  echo 'Load VGS Library'
+  echo '- Load VGS Library'
   # shellcheck disable=1090
   . "${installdir}/load"
 }
