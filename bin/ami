@@ -24,11 +24,6 @@ export BUILD_DIR="${TMPDIR}/ami_build"
 export APP_S3_URL='$(vgs_aws_s3_generate_presigned_url "$AWS_ASSETS_BUCKET" "$APP_ARCHIVE_S3_KEY_LATEST" 300)'
 export HOME=/root
 
-echo 'Install VGS Library'
-if [[ -d /opt/vgs ]]; then rm -fr /opt/vgs; fi
-mkdir -p /opt/vgs
-curl https://s3.amazonaws.com/vghn/vgs.tgz | tar xvz -C /opt/vgs
-
 echo 'Create project directory'
 mkdir -p "\$BUILD_DIR" && cd "\$BUILD_DIR"
 
@@ -37,9 +32,6 @@ curl -sSL "\$APP_S3_URL" | tar xvz
 
 echo 'Bootstrap Puppet'
 bash bin/bootstrap
-
-echo 'Run tests inside rvm if present'
-( set +u; source /etc/profile && bundle install && bundle exec rake spec )
 
 # Report status
 echo 'SUCCEEDED' | tee /var/lib/cloud/instance/status_ami

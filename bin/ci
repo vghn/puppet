@@ -1,40 +1,18 @@
 #!/usr/bin/env bash
 # Continuous Integration / Continuous Deployment tasks
 
-# CI Pre-Load Steps
-ci_pre_load(){
-  # Load environment
-  # shellcheck disable=1090
-  . "$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd -P)/env.sh"
+# Load environment
+# shellcheck disable=1090
+. "$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd -P)/env.sh"
 
-  # Check if CI
-  if [[ "$CI" == 'false' ]]; then return; fi
-
-  # Check if already installed
-  if [[ $(cat /tmp/status_ci 2>&1) == 'INSTALLED' ]]; then return; fi
-
-  # If not install essentials
-  echo 'Install VGS Library'
-  if [[ -d ~/vgs ]]; then rm -fr ~/vgs; fi
-  mkdir -p ~/vgs
-  curl -sSL https://s3.amazonaws.com/vghn/vgs.tgz | tar xvz -C ~/vgs
-
+# CI Install
+ci_install(){
   echo 'Ensure latest Python PIP and AWS-CLI'
   pip install --user --upgrade pip awscli
 
   echo 'Sync hiera data'
   aws s3 sync --delete "$PP_HIERA_S3_PATH" "${APPDIR}/hieradata" || true
 
-  # Re-Load environment
-  # shellcheck disable=1090
-  . "$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd -P)/env.sh"
-
-  # Report status
-  echo 'INSTALLED' | tee /tmp/status_ci
-}
-
-# CI Install
-ci_install(){
   cd "${APPDIR}/dist/profile" || return 1
   export BUNDLE_GEMFILE=$PWD/Gemfile
   e_info 'Install required testing gems'
@@ -101,9 +79,6 @@ ci_deploy(){
     echo 'Deployment is not allowed from pull requests' >&2
   fi
 }
-
-# Pre-load steps
-ci_pre_load
 
 # xVARs
 e_header 'Info:'

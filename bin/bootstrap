@@ -48,28 +48,9 @@
 #
 # * Trusted facts info: https://docs.puppetlabs.com/puppet/latest/reference/lang_facts_and_builtin_vars.html#trusted-facts
 
-# Install/Update VGS Library
-ensure_vgs(){
-  echo 'Install/Update VGS Library'
-  local installdir
-  if [[ $EUID == 0 ]]; then installdir=/opt/vgs; else installdir=~/vgs; fi
-
-  if ! command -v curl >/dev/null 2>&1; then
-    echo 'Installing curl'
-    apt-get -qy install curl < /dev/null
-  fi
-
-  echo 'Remove any existing installations'
-  if [[ -d "$installdir" ]]; then rm -fr "$installdir"; fi
-  mkdir -p "$installdir"
-
-  echo 'Downloading VGS library'
-  curl -sSL https://s3.amazonaws.com/vghn/vgs.tgz | tar xvz -C "$installdir"
-}
-
 # Load environment
 # shellcheck disable=1090
-ensure_vgs && . "$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd -P)/env.sh"
+. "$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd -P)/env.sh"
 
 # DEFAULTS
 ENVTYPE=${ENVTYPE:-production}
@@ -106,10 +87,10 @@ notify_slack(){
 
   if [[ $exit_code == 0 ]]; then
     title='SUCCESS'
-    color='#00FF00'
+    color='#3ca553'
   else
     title='FAILED'
-    color='#ff0000'
+    color='#ce0814'
   fi
   text="Bootstrap exited with ${exit_code} on $(hostname) @ ${date}"
 
@@ -122,7 +103,6 @@ notify_slack(){
 
   echo; echo "$title: $text"; exit "$exit_code"
 }
-trap 'notify_slack $?' EXIT TERM INT
 
 # Sanity checks
 sanity_checks(){
@@ -183,7 +163,7 @@ install_puppet_agent(){
 
   if [ ! -x /opt/puppetlabs/bin/puppet ] ; then
     e_info 'Downloading Puppet release package'
-    if !  curl -sSL -o "$deb_path" "${apt_url}/${deb_name}"; then "$installdir"
+    if !  curl -sSL -o "$deb_path" "${apt_url}/${deb_name}"; then
       e_abort 'Could not download the release package'
     fi
 
@@ -368,6 +348,13 @@ run_puppet(){
     --verbose
 }
 
+# Run tests
+run_tests(){
+  echo 'Run tests inside rvm if present'
+  # shellcheck disable=1091
+  ( set +u; source /etc/profile && bundle install && bundle exec rake spec )
+}
+
 # Logic
 main(){
   sanity_checks
@@ -400,4 +387,5 @@ main(){
 }
 
 # Run
+trap 'notify_slack $?' EXIT TERM INT
 main "$@"

@@ -15,9 +15,26 @@ APPDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
 TMPDIR=$(mktemp -d 2>/dev/null || mktemp -d -t 'tmp')
 PATH="/opt/puppetlabs/bin:/opt/puppetlabs/puppet/bin:/usr/local/bin:${PATH}"
 
-# Load VGS Library
+# Load VGS Library (install if needed)
+ensure_vgs(){
+  if ! command -v curl >/dev/null 2>&1; then
+    echo 'Installing curl'
+    apt-get -qy install curl < /dev/null
+  fi
+
+  echo 'Install/Update VGS Library'
+  local installdir
+  if [[ $EUID == 0 ]]; then installdir=/opt/vgs; else installdir=~/vgs; fi
+
+  echo 'Remove any existing installations'
+  if [[ -d "$installdir" ]]; then rm -fr "$installdir"; fi
+  mkdir -p "$installdir"
+
+  echo 'Downloading VGS library'
+  curl -sSL https://s3.amazonaws.com/vghn/vgs.tgz | tar xz -C "$installdir"
+}
 # shellcheck disable=1090,1091
-. /opt/vgs/load 2>/dev/null || . ~/vgs/load 2>/dev/null || true
+. /opt/vgs/load 2>/dev/null || . ~/vgs/load 2>/dev/null || ensure_vgs || true
 
 # Load libraries
 # shellcheck disable=1090
