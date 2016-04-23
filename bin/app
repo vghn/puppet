@@ -21,10 +21,12 @@ upload_private_data(){
 package_app_files(){
   app_archive_path="${TMPDIR}/${APP_ARCHIVE}"
 
+  # Only pack essential files
   e_info "Creating application archive (${app_archive_path})"
   if ! tar cvzf "$app_archive_path" \
-    bin/ dist/profile/{manifests,templates} dist/role/manifests hieradata/ \
-    manifests/ lib/ env.sh environment.conf Puppetfile \
+    bin/ dist/profile/{manifests,templates} dist/profile/spec/acceptance/support \
+    dist/role/manifests hieradata/ lib/ manifests/ spec/ .rspec env.sh \
+    environment.conf Gemfile Puppetfile Rakefile \
     LICENSE README.md VERSION;
   then
     e_abort "Could not create ${app_archive_path}"
