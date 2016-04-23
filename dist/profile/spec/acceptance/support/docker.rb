@@ -22,10 +22,7 @@ shared_examples 'profile::docker' do
       it { is_expected.to be_executable }
     end
     describe docker_container('ecs-agent') do
-      it { should be_running }
-    end
-    describe port(51678) do
-      it { is_expected.to be_listening }
+      it { should exist }
     end
   end
 end
