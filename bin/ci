@@ -7,6 +7,9 @@ ci_pre_load(){
   # shellcheck disable=1090
   . "$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd -P)/env.sh"
 
+  # Check if CI
+  if [[ "$CI" == 'false' ]]; then return; fi
+
   # Check if already installed
   if [[ $(cat /tmp/status_ci 2>&1) == 'INSTALLED' ]]; then return; fi
 
