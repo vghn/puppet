@@ -5,21 +5,35 @@
 # shellcheck disable=1090
 . "$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd -P)/env.sh"
 
-# CI Install
-ci_install(){
-  e_info 'Ensure latest Python PIP and AWS-CLI'
+# CI Before Install
+ci_before_install(){
+  echo 'Install VGS Library'
+  if [[ -d ~/vgs ]]; then rm -fr ~/vgs; fi
+  mkdir -p ~/vgs
+  curl https://s3.amazonaws.com/vghn/vgs.tgz | tar xvz -C ~/vgs
+
+  echo 'Ensure latest Python PIP and AWS-CLI'
   pip install --user --upgrade pip awscli
 
-  bash -c "${APPDIR}/bin/app download-private"
+  echo 'Sync hiera data'
+  aws s3 sync --delete "$PP_HIERA_S3_PATH" "${APPDIR}/hieradata" || true
 
+  # Re-Load environment
+  # shellcheck disable=1090
+  . "$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd -P)/env.sh"
+}
+
+# CI Install
+ci_install(){
+  cd "${APPDIR}/dist/profile" || return 1
   e_info 'Install required testing gems'
-  cd "${APPDIR}/dist/profile" || exit
   bundle install --without development system_tests --path vendor
 
   e_info 'Install required puppet module'
   bundle exec rake spec_prep
 }
 
+# CI Test
 ci_test(){
   bash -c "${APPDIR}/bin/cfn validate"
 
@@ -28,6 +42,7 @@ ci_test(){
   bundle exec rake test
 }
 
+# EC2 Run Command
 send_ec2_run_command(){
   local role
   role=${1:?}
@@ -63,6 +78,7 @@ send_ec2_run_command(){
   fi
 }
 
+# CI Deploy
 ci_deploy(){
   if [[ ${PR} == false ]]; then
     bash -c "${APPDIR}/bin/cfn upload"
@@ -83,6 +99,9 @@ e_info "Pull request: ${PR:?}"
 # Process arguments
 e_header 'CI:'
 case "${1:-}" in
+  before_install)
+    ci_before_install
+    ;;
   install)
     ci_install
     ;;

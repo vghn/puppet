@@ -1,7 +1,7 @@
 language: ruby
 rvm:
   - 2.2
-before_install: wget -O- https://raw.githubusercontent.com/vghn/vgs/master/install | bash
+before_install: bin/ci_before_install
 install: bin/ci install
 script: bin/ci test
 after_success: bin/ci deploy
