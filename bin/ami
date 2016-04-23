@@ -22,6 +22,7 @@ export PP_PROJECT=${PROJECT_NAME}
 export ENVTYPE=${ENVTYPE}
 export BUILD_DIR="${TMPDIR}/ami_build"
 export APP_S3_URL='$(vgs_aws_s3_generate_presigned_url "$AWS_ASSETS_BUCKET" "$APP_ARCHIVE_S3_KEY_LATEST" 300)'
+export HOME=/root
 
 echo 'Install VGS Library'
 if [[ -d /opt/vgs ]]; then rm -fr /opt/vgs; fi

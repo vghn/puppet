@@ -29,7 +29,7 @@ class profile::puppet::master {
     path    => '/usr/local/bin/r10k-post-run',
     owner   => 'root',
     group   => 'root',
-    mode    => '0555',
+    mode    => '0755',
     content => template('profile/r10k-post-run.sh.erb'),
   }
 
