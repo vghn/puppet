@@ -32,6 +32,10 @@ ensure_vgs(){
 
   echo 'Downloading VGS library'
   curl -sSL https://s3.amazonaws.com/vghn/vgs.tgz | tar xz -C "$installdir"
+
+  echo 'Load VGS Library'
+  # shellcheck disable=1090
+  . "${installdir}/load"
 }
 # shellcheck disable=1090,1091
 . /opt/vgs/load 2>/dev/null || . ~/vgs/load 2>/dev/null || ensure_vgs || true
