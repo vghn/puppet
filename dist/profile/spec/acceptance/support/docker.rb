@@ -1,5 +1,3 @@
-require 'spec_helper_acceptance'
-
 shared_examples 'profile::docker' do
   virtual = command('/opt/puppetlabs/bin/facter virtual').stdout.chomp
 
@@ -22,6 +20,12 @@ shared_examples 'profile::docker' do
     end
     describe file('/usr/local/bin/docker-machine') do
       it { is_expected.to be_executable }
+    end
+    describe docker_container('ecs-agent') do
+      it { should be_running }
+    end
+    describe port(51678) do
+      it { is_expected.to be_listening }
     end
   end
 end

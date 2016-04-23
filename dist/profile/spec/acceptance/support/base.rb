@@ -1,5 +1,3 @@
-require 'spec_helper_acceptance'
-
 shared_examples 'profile::base' do
   describe package('curl') do
     it { is_expected.to be_installed }
@@ -24,6 +22,7 @@ shared_examples 'profile::base' do
   end
 
   describe user('ubuntu') do
-    it { is_expected.to have_authorized_key 'ssh-rsa ABC test-key' }
+    it { is_expected.to have_authorized_key 'ssh-rsa' }
   end
+
 end

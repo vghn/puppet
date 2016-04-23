@@ -1,15 +1,4 @@
-require 'spec_helper_acceptance'
-
 shared_examples 'profile::ec2' do
-  before :each do
-    allow(ENV).to receive(:[]).with('AWS_ACCESS_KEY_ID')
-      .and_return('asdf')
-    allow(ENV).to receive(:[]).with('AWS_SECRET_ACCESS_KEY')
-      .and_return('secret')
-    allow(ENV).to receive(:[]).with('AWS_DEFAULT_REGION')
-      .and_return('AWS_DEFAULT_REGION')
-  end
-
   release = command('/usr/bin/lsb_release -cs').stdout.chomp
   describe file("/etc/apt/sources.list.d/git-core-ppa-#{release}.list") do
     it { is_expected.to contain 'http://ppa.launchpad.net/git-core/ppa/ubuntu' }

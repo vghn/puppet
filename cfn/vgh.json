@@ -134,7 +134,7 @@
         ],
         "MinSize": "0",
         "MaxSize": "1",
-        "DesiredCapacity": "1",
+        "DesiredCapacity": "0",
         "HealthCheckType": "ELB",
         "HealthCheckGracePeriod": "600",
         "Cooldown": "600",
