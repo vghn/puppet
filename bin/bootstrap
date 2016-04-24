@@ -8,7 +8,6 @@
 #
 # Environment variables:
 # ENVTYPE: [STRING] The environment (default: 'production)
-#
 # PP_MASTER: [String] Can be any of the following
 #   - `puppet`: (default) the address of the puppet master server
 #   - `none`: runs in master-less mode, considering this a control repo; it looks
@@ -19,32 +18,29 @@
 #             `manifests` directory containing the `site.pp` file.
 #   - This value can also be any other string, in which case the address of the
 #     will assume that value.
-#
 # PP_ROLE: [String] Declares the role of the node as a trusted fact*
-#
 # PP_PROJECT: [String] Declares the project name as a trusted fact*
-#
 # PP_SECRET: [String] Declares a shared secret as a trusted fact*
-#
-# PP_HIERA_S3_PATH: [String] Declares an S3 Path to private hiera data.
-#                   Ex: `s3://mybucket/myprefix`
-#
 # PP_COLLECTION: [String] The puppet collection (default: 'pc3')
-#
 # PP_CODENAME: [String] The distribution codename (default: `lsb_release -cs`)
-#
-# PP_CONTROL_REPO: [String] The url of the control repo (default:
-#                  `https://github.com/vghn/puppet.git`)
-#
 # PP_COLOR: [String] Use color or not in output (default: 'true';
 #           https://docs.puppetlabs.com/puppet/latest/reference/configuration.html#color)
-#
+# PP_CONTROL_REPO: [String] The url of the control repo (default:
+#                  `https://github.com/vghn/puppet.git`)
 # PP_AGENT_CERTNAME: [String] The certificate name for the agent. Can be any of:
 #   - `default`: The certname will be the hostname (default on non-ec2 agents)
 #   - `ec2`: The certname will be the AWS EC2 Instance ID (default on
 #                    AWS agents)
 #   - This value can also be any other string, in which case the certname will
 #     assume that value.
+# PP_HIERA_S3_PATH: [String] Declares an S3 Path to private hiera data.
+#                   Ex: `s3://mybucket/myprefix`
+#
+# Optional Slack environment variables; if defined exit status will be send to
+# the specified webhook:
+# SLACK_WEBHOOK: [String] The Slack webhook to post to
+# SLACK_CHANNEL: [String] The Slack channel to post to
+# SLACK_USER: [String] The Slack to post as
 #
 # * Trusted facts info: https://docs.puppetlabs.com/puppet/latest/reference/lang_facts_and_builtin_vars.html#trusted-facts
 
@@ -59,14 +55,14 @@ PP_ROLE=${PP_ROLE:-}
 PP_PROJECT=${PP_PROJECT:-}
 PP_SECRET=${PP_SECRET:-}
 PP_COLLECTION=${PP_COLLECTION:-pc1}
+PP_CODENAME=${PP_CODENAME:-$(get_dist)}
 PP_COLOR=${PP_COLOR:-true}
 PP_CONTROL_REPO=${PP_CONTROL_REPO:-'https://github.com/vghn/puppet.git'}
 PP_AGENT_CERTNAME=${PP_AGENT_CERTNAME:-default}
 PP_HIERA_S3_PATH=${PP_HIERA_S3_PATH:-}
-PP_CA_S3_PATH=${PP_CA_S3_PATH:-}
+SLACK_WEBHOOK=${SLACK_WEBHOOK:-}
 SLACK_CHANNEL=${SLACK_CHANNEL:-}
 SLACK_USER=${SLACK_USER:-}
-SLACK_WEBHOOK=${SLACK_WEBHOOK:-}
 
 # INTERNALS
 TMPDIR=$(mktemp -d 2>/dev/null || mktemp -d -t 'tmp')
@@ -77,7 +73,6 @@ PATH="/opt/puppetlabs/bin:/opt/puppetlabs/puppet/bin:/usr/local/bin:${PATH}"
 # Facts
 export FACTER_ROLE="${PP_ROLE}"
 export FACTER_PROJECT="${PP_PROJECT}"
-export FACTER_CA_S3_PATH="${PP_CA_S3_PATH}"
 
 # Trap exit and notify Slack
 notify_slack(){
@@ -156,7 +151,6 @@ CSR
 # Install Puppet release package
 install_puppet_agent(){
   local deb_name deb_path apt_url
-  PP_CODENAME=${PP_CODENAME:-$(get_dist)}
   deb_name="puppetlabs-release-${PP_COLLECTION}-${PP_CODENAME}.deb"
   deb_path="${TMPDIR}/${deb_name}"
   apt_url='https://apt.puppetlabs.com'
@@ -357,6 +351,7 @@ run_tests(){
 
 # Logic
 main(){
+  trap 'notify_slack $?' EXIT TERM INT
   sanity_checks
 
   if is_ami; then
@@ -391,5 +386,4 @@ main(){
 }
 
 # Run
-trap 'notify_slack $?' EXIT TERM INT
 main "$@"
