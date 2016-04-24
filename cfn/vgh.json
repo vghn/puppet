@@ -272,7 +272,7 @@
       "DependsOn": ["Zeus"],
       "Properties": {
         "Cluster": {"Ref": "ECSCluster"},
-        "DesiredCount": "1",
+        "DesiredCount": "0",
         "LoadBalancers": [
           {
             "ContainerName": "PuppetServer",

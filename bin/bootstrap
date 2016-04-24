@@ -384,6 +384,10 @@ main(){
   else
     e_warn 'No puppet master specified'
   fi
+
+  if is_ami; then
+    run_tests
+  fi
 }
 
 # Run
