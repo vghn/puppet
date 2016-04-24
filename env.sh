@@ -40,10 +40,6 @@ ensure_vgs(){
 # shellcheck disable=1090,1091
 . /opt/vgs/load 2>/dev/null || . ~/vgs/load 2>/dev/null || ensure_vgs || true
 
-# Load libraries
-# shellcheck disable=1090
-for file in ${APPDIR}/lib/*.sh; do . "$file"; done
-
 # Load private environment
 eval "$(vgs_parse_yaml "${APPDIR}/hieradata/private.yaml")"
 

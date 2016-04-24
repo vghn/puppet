@@ -25,7 +25,7 @@ package_app_files(){
   e_info "Creating application archive (${app_archive_path})"
   if ! tar cvzf "$app_archive_path" \
     bin/ dist/profile/{manifests,templates} dist/profile/spec/acceptance/support \
-    dist/role/manifests hieradata/ lib/ manifests/ spec/ .rspec env.sh \
+    dist/role/manifests hieradata/ manifests/ spec/ .rspec env.sh \
     environment.conf Gemfile Puppetfile Rakefile \
     LICENSE README.md VERSION;
   then
