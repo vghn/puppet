@@ -1,7 +1,14 @@
 # Puppet Master Class
 class profile::puppet::master {
-  # Hiera config
+
+  # VARs
   $hiera_data_dir = "${::settings::environmentpath}/%{::environment}/hieradata"
+  $csr_config     = "${hiera_data_dir}/hieradata/roles/${real_role}"
+  $csr_log        = '/tmp/csr_sign.log'
+  $control_repo   = hiera('control_repo')
+  $r10k_version   = hiera('r10k_version', 'latest')
+
+  # Hiera config
   class {'::hiera':
     datadir            => $hiera_data_dir,
     hiera_yaml         => "${::settings::codedir}/hiera.yaml",
@@ -34,8 +41,6 @@ class profile::puppet::master {
   }
 
   # Install, configure and run R10K
-  $control_repo = hiera('control_repo')
-  $r10k_version = hiera('r10k_version', 'latest')
   class {'::r10k':
     sources  => {
       'main' => {

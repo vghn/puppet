@@ -3,12 +3,19 @@
 require 'yaml'
 require 'openssl'
 require 'aws-sdk'
+require 'logger'
+
+# Log
+logger = Logger.new('<%= @csr_log %>')
+
+# Configuration
+cfg = YAML.load_file('<%= @csr_config %>')
+
+# Load AWS SDK
+ec2 = Aws::EC2::Resource.new(region: 'us-east-1')
 
 # VARs
 secret, instance_id, image_name, project, role = nil
-
-# Read the challenge password from hiera
-challengePassword = `/opt/puppetlabs/puppet/bin/hiera challengePassword ::environment=<%= @environment %> ::role=<%= @role %>`.strip
 
 # Read CSR
 csr = OpenSSL::X509::Request.new(STDIN.read)
@@ -20,8 +27,8 @@ atts = csr.attributes
 exit 1 if atts.empty?
 
 # Get secret password
-secret = atts.select { |att| att.oid == "challengePassword" }
-         .first.value.value.first.value.strip
+pp_secret = atts.select { |att| att.oid == "challengePassword" }
+            .first.value.value.first.value.strip rescue nil
 
 # Get extension requests
 exts = atts.select { |att| att.oid == "extReq" }
@@ -39,10 +46,8 @@ exts.each {|ext|
 }
 
 # Sign if password matches
-exit 0 if secret == challengePassword
-
-# Load AWS SDK
-ec2 = Aws::EC2::Resource.new(region: 'us-east-1')
+authorized_secret = cfg['CA'][project]['challengePassword'] rescue nil
+exit 0 if (pp_secret == authorized_secret && !authorized_secret.nil?)
 
 # Sign if its a known instance
 instances_pool = ec2.instances.map(&:id)
