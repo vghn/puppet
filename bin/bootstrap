@@ -310,6 +310,7 @@ apply_puppet(){
   --summarize \
   --detailed-exitcodes \
   --color="$PP_COLOR" \
+  --environment="${ENVTYPE}" \
   --modulepath "$modulepath" \
   "$manifest" || exit_code=$?
 
