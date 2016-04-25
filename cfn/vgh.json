@@ -134,7 +134,7 @@
         ],
         "MinSize": "0",
         "MaxSize": "1",
-        "DesiredCapacity": "0",
+        "DesiredCapacity": "1",
         "HealthCheckType": "ELB",
         "HealthCheckGracePeriod": "600",
         "Cooldown": "600",
@@ -272,7 +272,11 @@
       "DependsOn": ["Zeus"],
       "Properties": {
         "Cluster": {"Ref": "ECSCluster"},
-        "DesiredCount": "0",
+        "DesiredCount": "1",
+        "DeploymentConfiguration": {
+          "MaximumPercent" : "100",
+          "MinimumHealthyPercent" : "0"
+        },
         "LoadBalancers": [
           {
             "ContainerName": "PuppetServer",
