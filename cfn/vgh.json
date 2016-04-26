@@ -259,7 +259,7 @@
             "Host": {"SourcePath": "/etc/puppetlabs/code"}
           },{
             "Name": "PuppetCA",
-            "Host": {"SourcePath": "/etc/puppetlabs/puppet/ssl"}
+            "Host": {"SourcePath": "/etc/puppetlabs/vcrt"}
           },{
             "Name": "PuppetCSR",
             "Host": {"SourcePath": "/etc/puppetlabs/csr"}
