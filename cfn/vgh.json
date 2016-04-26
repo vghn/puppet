@@ -205,7 +205,7 @@
           "  pp_role: zeus\n",
           "  pp_project: vpm\n",
           "  pp_instance_id: $(curl -s http://169.254.169.254/latest/meta-data/instance-id)\n",
-          "  pp_instance_id: $(curl -s http://169.254.169.254/latest/meta-data/ami-id)\n",
+          "  pp_image_name: $(curl -s http://169.254.169.254/latest/meta-data/ami-id)\n",
           "EOF\n",
           "chmod 600 /etc/puppetlabs/puppet/csr_attributes.yaml\n",
 

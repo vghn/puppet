@@ -28,6 +28,7 @@ if atts.empty?
   logger.warn 'The CSR has no attributes'
   exit 1
 end
+
 # Get secret password
 pp_secret = atts.select { |att| att.oid == "challengePassword" }
             .first.value.value.first.value.strip rescue nil
