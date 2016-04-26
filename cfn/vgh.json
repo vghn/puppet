@@ -226,7 +226,7 @@
           "  -e ECS_CLUSTER=", {"Ref": "ECSCluster"},
           "  amazon/amazon-ecs-agent:latest\n",
 
-          "echo 'Wait for puppet master to start\n",
+          "echo 'Wait for puppet master to start'\n",
           "until [[ \"$(curl --insecure --silent https://puppet.vladgh.com:8140/puppet-ca/v1/certificate/ca)\" =~ '-----BEGIN CERTIFICATE-----' ]]; then sleep 1; fi\n",
 
           "echo 'Run puppet agent for the first time'\n",
