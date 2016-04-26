@@ -134,7 +134,7 @@
         ],
         "MinSize": "0",
         "MaxSize": "1",
-        "DesiredCapacity": "1",
+        "DesiredCapacity": "0",
         "HealthCheckType": "ELB",
         "HealthCheckGracePeriod": "600",
         "Cooldown": "600",
@@ -194,6 +194,23 @@
 
           "echo 'Redeploy R10K'\n",
           "/opt/puppetlabs/puppet/bin/r10k deploy environment --puppetfile --verbose\n",
+
+          "echo 'Remove old Puppet Certificates'\n",
+          "rm -r /etc/puppetlabs/puppet/ssl\n",
+
+          "echo 'Create new CSR attributes file'\n",
+          "cat << EOF > /etc/puppetlabs/puppet/csr_attributes.yaml\n",
+          "---\n",
+          "extension_requests:\n",
+          "  pp_role: zeus\n",
+          "  pp_project: vpm\n",
+          "  pp_instance_id: $(curl -s http://169.254.169.254/latest/meta-data/instance-id)\n",
+          "  pp_instance_id: $(curl -s http://169.254.169.254/latest/meta-data/ami-id)\n",
+          "EOF\n",
+          "chmod 600 /etc/puppetlabs/puppet/csr_attributes.yaml\n",
+
+          "echo 'Remove old Puppet Certificates'\n",
+          "/opt/puppetlabs/bin/puppet agent --onetime --no-daemonize --logdest syslog\n",
 
           "echo 'Waiting for the ECS Agent'\n",
           "until curl -s http://localhost:51678/v1/metadata >/dev/null 2>&1; do sleep 1; done\n",
@@ -272,7 +289,7 @@
       "DependsOn": ["Zeus"],
       "Properties": {
         "Cluster": {"Ref": "ECSCluster"},
-        "DesiredCount": "1",
+        "DesiredCount": "0",
         "DeploymentConfiguration": {
           "MaximumPercent" : "100",
           "MinimumHealthyPercent" : "0"

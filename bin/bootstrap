@@ -152,12 +152,12 @@ generate_csr_attributes(){
   # Define file template
   cat > "$CSRFILE" <<CSR
 custom_attributes:
-  challengePassword: $PP_SECRET
+  challengePassword: ${PP_SECRET}
 extension_requests:
-  pp_role: $PP_ROLE
-  pp_project: $PP_PROJECT
-  pp_instance_id: $instance_id
-  pp_image_name: $ami_id
+  pp_role: ${PP_ROLE}
+  pp_project: ${PP_PROJECT}
+  pp_instance_id: ${instance_id}
+  pp_image_name: ${ami_id}
 CSR
 }
 
@@ -398,9 +398,10 @@ main(){
     apt_upgrade
     ensure_pip
     ensure_awscli
+  else
+    generate_csr_attributes
   fi
 
-  generate_csr_attributes
   install_puppet_agent
   configure_puppet
 
