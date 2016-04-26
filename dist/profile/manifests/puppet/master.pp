@@ -3,7 +3,7 @@ class profile::puppet::master {
 
   # VARs
   $hiera_data_dir = "${::settings::environmentpath}/%{::environment}/hieradata"
-  $csr_config     = "${hiera_data_dir}/hieradata/roles/${real_role}"
+  $csr_config     = "${hiera_data_dir}/hieradata/roles/${::real_role}"
   $csr_log        = '/tmp/csr_sign.log'
   $control_repo   = hiera('control_repo')
   $r10k_version   = hiera('r10k_version', 'latest')
