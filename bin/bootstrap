@@ -132,6 +132,15 @@ generate_uuid(){
   uuid=${uuid:-$(/usr/bin/uuidgen)}
 }
 
+# Disable RVM
+disable_rvm(){
+  if [[ $(type rvm 2>/dev/null | head -1) =~ 'rvm is ' ]]; then
+    if ! __rvm_unload 2>/dev/null; then
+      unset GEM_HOME GEM_PATH
+    fi
+  fi
+}
+
 # Generate certificate request attributes file
 generate_csr_attributes(){
   e_info 'Generating a CSR Attributes file'
@@ -383,22 +392,15 @@ run_tests(){
 main(){
   trap 'notify_slack $?' EXIT TERM INT
   sanity_checks
+  disable_rvm
 
   if is_ami; then
     apt_upgrade
     ensure_pip
     ensure_awscli
-  else
-    # Disable RVM
-    if [[ $(type rvm 2>/dev/null | head -1) =~ 'rvm is ' ]]; then
-      if ! __rvm_unload 2>/dev/null; then
-        unset GEM_HOME GEM_PATH
-      fi
-    fi
   fi
 
-  if [[ "$PP_MASTER" != 'true' ]]; then generate_csr_attributes; fi
-
+  generate_csr_attributes
   install_puppet_agent
   configure_puppet
 
