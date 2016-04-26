@@ -108,7 +108,7 @@ export AWS_ASSETS_BUCKET="${AWS_ASSETS_BUCKET:-$PROJECT_NAME}"
 export AWS_ASSETS_KEY_PREFIX="${PROJECT_NAME}/${ENVTYPE}"
 export AWS_ASSETS_S3_PATH="s3://${AWS_ASSETS_BUCKET}/${AWS_ASSETS_KEY_PREFIX}"
 export PP_HIERA_S3_PATH="${AWS_ASSETS_S3_PATH}/hieradata"
-export PP_CA_S3_PATH="s3://${AWS_ASSETS_BUCKET}/${PROJECT_NAME}/ssl"
+export PP_VCRT_PATH="s3://${AWS_ASSETS_BUCKET}/${PROJECT_NAME}/vcrt"
 
 # APP Files
 export APP_ARCHIVE="${PROJECT_NAME}-${FULL_VERSION}.tgz"
@@ -168,7 +168,7 @@ process_cfn_stacks(){
       P="$P ParameterKey=KeyName,ParameterValue=${AWS_EC2_KEY}"
       P="$P ParameterKey=AssetsBucket,ParameterValue=${AWS_ASSETS_BUCKET}"
       P="$P ParameterKey=AssetsKeyPrefix,ParameterValue=${AWS_ASSETS_KEY_PREFIX}"
-      P="$P ParameterKey=CASSLS3Path,ParameterValue=${PP_CA_S3_PATH}"
+      P="$P ParameterKey=CASSLS3Path,ParameterValue=${PP_VCRT_PATH}"
       P="$P ParameterKey=AMIPrefix,ParameterValue=${AWS_EC2_IMAGE_PREFIX}_*"
       P="$P ParameterKey=ZeusAMIId,ParameterValue=$(vgs_aws_ec2_get_latest_ami_id "$AWS_EC2_IMAGE_PREFIX")"
       P="$P 'ParameterKey=SSHLocations,ParameterValue=\"${TRUSTED_IPS}\"'"
