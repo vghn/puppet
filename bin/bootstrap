@@ -8,16 +8,7 @@
 #
 # Environment variables:
 # ENVTYPE: [STRING] The environment (default: 'production)
-# PP_MASTER: [String] Can be any of the following
-#   - `puppet`: (default) the address of the puppet master server
-#   - `none`: runs in master-less mode, considering this a control repo; it looks
-#             for a `Puppetfile` (which will install into the default modules/
-#             directory), for a `datadir` containing hiera data (see the function
-#             `configure_hiera` bellow for a hierarchy of files), for a `dist`
-#             directory containing the profile and role modules, and for a
-#             `manifests` directory containing the `site.pp` file.
-#   - This value can also be any other string, in which case the address of the
-#     will assume that value.
+# PP_SERVER: [String] The URL of the Puppet Server
 # PP_ROLE: [String] Declares the role of the node as a trusted fact*
 # PP_PROJECT: [String] Declares the project name as a trusted fact*
 # PP_SECRET: [String] Declares a shared secret as a trusted fact*
@@ -25,16 +16,23 @@
 # PP_CODENAME: [String] The distribution codename (default: `lsb_release -cs`)
 # PP_COLOR: [String] Use color or not in output (default: 'true';
 #           https://docs.puppetlabs.com/puppet/latest/reference/configuration.html#color)
-# PP_CONTROL_REPO: [String] The url of the control repo (default:
-#                  `https://github.com/vghn/puppet.git`)
+# PP_MASTER: [Boolean] Whether this instance is a Puppet master or not; if true,
+#            the script looks for a `Puppetfile` (which will install into the
+#            default modules/ directory), for a `datadir` containing hiera data
+#            (see the function `configure_hiera` bellow for a hierarchy of
+#            files), for a `dist` directory containing the profile and role
+#            modules, and for a `manifests` directory containing the `site.pp`
+#            file.
 # PP_AGENT_CERTNAME: [String] The certificate name for the agent. Can be any of:
-#   - `default`: The certname will be the hostname (default on non-ec2 agents)
-#   - `ec2`: The certname will be the AWS EC2 Instance ID (default on
-#                    AWS agents)
+#   - `ec2id`: The certname will be the hostname (default on non-ec2 agents)
+#   - `uuid`:  The certname will be the AWS EC2 Instance ID (default on
+#              AWS agents)
 #   - This value can also be any other string, in which case the certname will
 #     assume that value.
 # PP_HIERA_S3_PATH: [String] Declares an S3 Path to private hiera data.
-#                   Ex: `s3://mybucket/myprefix`
+#                   Ex: `s3://mybucket/myprefix`.If it exists and the instance
+#                   has the correct credentials, it will override the existing
+#                   hieradata
 #
 # Optional Slack environment variables; if defined exit status will be send to
 # the specified webhook:
@@ -50,15 +48,15 @@
 
 # DEFAULTS
 ENVTYPE=${ENVTYPE:-production}
-PP_MASTER=${PP_MASTER:-puppet}
+PP_SERVER=${PP_SERVER:-puppet}
 PP_ROLE=${PP_ROLE:-}
 PP_PROJECT=${PP_PROJECT:-}
 PP_SECRET=${PP_SECRET:-}
 PP_COLLECTION=${PP_COLLECTION:-pc1}
 PP_CODENAME=${PP_CODENAME:-$(get_dist)}
 PP_COLOR=${PP_COLOR:-true}
-PP_CONTROL_REPO=${PP_CONTROL_REPO:-'https://github.com/vghn/puppet.git'}
-PP_AGENT_CERTNAME=${PP_AGENT_CERTNAME:-default}
+PP_MASTER=${PP_MASTER:-false}
+PP_AGENT_CERTNAME=${PP_AGENT_CERTNAME:-}
 PP_HIERA_S3_PATH=${PP_HIERA_S3_PATH:-}
 SLACK_WEBHOOK=${SLACK_WEBHOOK:-}
 SLACK_CHANNEL=${SLACK_CHANNEL:-}
@@ -128,6 +126,12 @@ ensure_awscli(){
   pip install --upgrade awscli
 }
 
+# Generate UUID
+generate_uuid(){
+  is_cmd uuidgen || apt-get -qy install uuid-runtime < /dev/null
+  uuid=${uuid:-$(/usr/bin/uuidgen)}
+}
+
 # Generate certificate request attributes file
 generate_csr_attributes(){
   e_info 'Generating a CSR Attributes file'
@@ -146,6 +150,15 @@ extension_requests:
   pp_instance_id: $instance_id
   pp_image_name: $ami_id
 CSR
+}
+
+# Move the CSR Attributes file to the right place and set permissions
+configure_csr_attributes(){
+  e_info 'Configure the CSR Attributes file'
+  if [[ -s "$CSRFILE" ]]; then
+    chmod 600 "$CSRFILE"
+    mv "$CSRFILE" "$PP_CONFDIR"
+  fi
 }
 
 # Install Puppet release package
@@ -208,6 +221,7 @@ get_hiera_data(){
   fi
 }
 
+# Configure hiera
 configure_hiera(){
   [[ -s "${LOCALDIR}/hieradata" ]] || return
   local hiera_config="${PP_CODEDIR}/hiera.yaml"
@@ -234,36 +248,47 @@ HIERACFG
   fi
 }
 
-# Configure puppet
-configure_puppet_agent(){
-  e_info "Set puppet master address - '$PP_MASTER'"
-  puppet config set server "$PP_MASTER" --section agent
+# Configure puppet server address
+configure_puppet_server(){
+  if [[ "$PP_SERVER" != 'puppet' ]]; then
+    e_info "Set puppet server address - '$PP_SERVER'"
+    puppet config set server "$PP_SERVER" --section main
+  fi
+}
 
-  e_info "Set puppet environment - '$ENVTYPE'"
-  puppet config set environment "$ENVTYPE" --section agent
+# Configure puppet environment
+configure_puppet_environment(){
+  if [[ "$ENVTYPE" != 'production' ]]; then
+    e_info "Set puppet environment - '$ENVTYPE'"
+    mkdir -p "${PP_ENVDIR}/${ENVTYPE}"
+    puppet config set environment "$ENVTYPE" --section main
+  fi
+}
 
-  e_info "Set puppet certname - '$PP_AGENT_CERTNAME'"
+# Configure puppet certname
+configure_puppet_certname(){
   case "$PP_AGENT_CERTNAME" in
-    default )
-      e_info 'Leaving the default certname'
-      ;;
     ec2 )
       if [[ "$instance_id" =~ ^i-.* ]]; then
-        puppet config set certname "$instance_id" --section agent
+        certname="$instance_id"
       else
         e_abort 'The EC2 Instance ID is not correct'
       fi
       ;;
+    uuid )
+      generate_uuid
+      certname="$uuid"
+      ;;
+    '' )
+      certname="$PP_CERTNAME" # Use default value
+      ;;
     * )
-      puppet config set certname "$PP_AGENT_CERTNAME" --section agent
+      certname="$PP_AGENT_CERTNAME" # Use  specified value
       ;;
   esac
 
-  e_info 'Move the CSR Attributes file to the right place and set permissions'
-  if [[ -s "$CSRFILE" ]]; then
-    chmod 600 "$CSRFILE"
-    mv "$CSRFILE" "$PP_CONFDIR"
-  fi
+  e_info "Set puppet certname - '${certname}'"
+  puppet config set certname "$certname" --section main
 }
 
 # Configure agent or master
@@ -271,13 +296,17 @@ configure_puppet(){
   PP_CONFDIR="$(puppet config print confdir)"
   PP_CODEDIR="$(puppet config print codedir)"
   PP_ENVDIR="$(puppet config print environmentpath)"
+  PP_CERTNAME="$(puppet config print certname)"
 
-  if [[ "$PP_MASTER" == 'none' ]]; then
+  if [[ "$PP_MASTER" == 'true' ]]; then
     deploy_r10k
     configure_hiera
-  elif [[ -n "$PP_MASTER" ]]; then
-    configure_puppet_agent
   fi
+
+  configure_puppet_server
+  configure_puppet_environment
+  configure_puppet_certname
+  configure_csr_attributes
 }
 
 # Apply puppet
@@ -300,10 +329,6 @@ apply_puppet(){
     modulepath="${PP_ENVDIR}/${ENVTYPE}/modules:${PP_ENVDIR}/${ENVTYPE}/dist"
   else
     e_abort 'Could not create modulepath'
-  fi
-
-  if [[ ! -d "${PP_ENVDIR}/${ENVTYPE}" ]]; then
-    mkdir -p "${PP_ENVDIR}/${ENVTYPE}"
   fi
 
   e_info 'Applying puppet'
@@ -338,7 +363,7 @@ apply_puppet(){
 run_puppet(){
   e_info 'Running puppet'
   puppet agent \
-    --server "$PP_MASTER" \
+    --server "$PP_SERVER" \
     --environment="$ENVTYPE" \
     --waitforcert 10 \
     --no-daemonize \
@@ -372,17 +397,15 @@ main(){
     fi
   fi
 
-  if [[ "$PP_MASTER" != 'none' ]]; then generate_csr_attributes; fi
+  if [[ "$PP_MASTER" != 'true' ]]; then generate_csr_attributes; fi
 
   install_puppet_agent
   configure_puppet
 
-  if [[ "$PP_MASTER" == 'none' ]]; then
+  if [[ "$PP_MASTER" == 'true' ]]; then
     apply_puppet
-  elif [[ -n "$PP_MASTER" ]]; then
-    run_puppet
   else
-    e_warn 'No puppet master specified'
+    run_puppet
   fi
 
   if is_ami; then
