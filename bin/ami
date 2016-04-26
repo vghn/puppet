@@ -17,7 +17,8 @@ echo 'IN_PROGRESS' | tee /var/lib/cloud/instance/status_ami
 
 # VARs
 export PP_ROLE=zeus
-export PP_MASTER=none
+export PP_MASTER=true
+export PP_SERVER=puppet.ghn.me
 export PP_PROJECT=${PROJECT_NAME}
 export ENVTYPE=${ENVTYPE}
 export BUILD_DIR="${TMPDIR}/ami_build"
