@@ -209,8 +209,8 @@
           "EOF\n",
           "chmod 600 /etc/puppetlabs/puppet/csr_attributes.yaml\n",
 
-          "echo 'Remove old Puppet Certificates'\n",
-          "/opt/puppetlabs/bin/puppet agent --onetime --no-daemonize --logdest syslog\n",
+          "echo 'Run puppet agent for the first time'\n",
+          "/opt/puppetlabs/bin/puppet agent --onetime --no-daemonize --verbose --logdest syslog || true\n",
 
           "echo 'Waiting for the ECS Agent'\n",
           "until curl -s http://localhost:51678/v1/metadata >/dev/null 2>&1; do sleep 1; done\n",
