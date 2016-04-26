@@ -24,8 +24,10 @@ csr = OpenSSL::X509::Request.new(STDIN.read)
 atts = csr.attributes
 
 # Do not sign if there aren't any custom csr attributes
-exit 1 if atts.empty?
-
+if atts.empty?
+  logger.warn 'The CSR has no attributes'
+  exit 1
+end
 # Get secret password
 pp_secret = atts.select { |att| att.oid == "challengePassword" }
             .first.value.value.first.value.strip rescue nil
@@ -47,15 +49,24 @@ exts.each {|ext|
 
 # Sign if password matches
 authorized_secret = cfg['CA'][project]['challengePassword'] rescue nil
-exit 0 if (pp_secret == authorized_secret && !authorized_secret.nil?)
+if (pp_secret == authorized_secret && !authorized_secret.nil?)
+  logger.info 'Node authorized based on the provided secret'
+  exit 0
+end
 
 # Sign if its a known instance
 instances_pool = ec2.instances.map(&:id)
-exit 0 if instances_pool.include?(instance_id)
+if instances_pool.include?(instance_id)
+  logger.info 'Node authorized based on instance id'
+  exit 0
+end
 
 # Sign if the base image is known
 ami_pool = ec2.images(owners: ['self']).map(&:id)
-exit 0 if ami_pool.include?(image_name)
+if ami_pool.include?(image_name)
+  logger.info 'Node authorized based on image id'
+  exit 0
+end
 
 # JUST DON'T
 exit 1
