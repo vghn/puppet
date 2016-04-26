@@ -10,6 +10,9 @@ aws_cloudwatch_logs:
     path: /var/log/syslog
 
 docker::docker_users: [ubuntu]
+docker::images::images:
+  amazon/amazon-ecs-agent:
+    image_tag: 'latest'
 
 control_repo: 'https://github.com/vghn/puppet.git'
 

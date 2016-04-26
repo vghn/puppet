@@ -209,9 +209,6 @@
           "EOF\n",
           "chmod 600 /etc/puppetlabs/puppet/csr_attributes.yaml\n",
 
-          "echo 'Run puppet agent for the first time'\n",
-          "/opt/puppetlabs/bin/puppet agent --onetime --no-daemonize --verbose --logdest syslog || true\n",
-
           "echo 'Start the ECS Agent'\n",
           "docker run --name ecs-agent",
           "  --privileged",
@@ -228,6 +225,12 @@
           "  -e ECS_DATADIR=/data",
           "  -e ECS_CLUSTER=", {"Ref": "ECSCluster"},
           "  amazon/amazon-ecs-agent:latest\n",
+
+          "echo 'Wait for puppet master to start\n",
+          "until [[ \"$(curl --insecure --silent https://puppet.vladgh.com:8140/puppet-ca/v1/certificate/ca)\" =~ '-----BEGIN CERTIFICATE-----' ]]; then sleep 1; fi\n",
+
+          "echo 'Run puppet agent for the first time'\n",
+          "/opt/puppetlabs/bin/puppet agent --onetime --no-daemonize --verbose --logdest syslog || true\n",
 
           "echo 'SUCCEEDED' | tee /var/lib/cloud/instance/status_cfn"
         ]]}}

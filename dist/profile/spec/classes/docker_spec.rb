@@ -10,6 +10,7 @@ describe 'profile::docker' do
         it { is_expected.to contain_class('profile::docker') }
 
         it { is_expected.to contain_class('docker') }
+        it { is_expected.to contain_class('docker::images') }
         it { is_expected.to contain_class('docker::compose') }
 
         it { is_expected.to contain_package('docker') }
