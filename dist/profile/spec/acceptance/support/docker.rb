@@ -21,8 +21,5 @@ shared_examples 'profile::docker' do
     describe file('/usr/local/bin/docker-machine') do
       it { is_expected.to be_executable }
     end
-    describe docker_container('ecs-agent') do
-      it { should exist }
-    end
   end
 end

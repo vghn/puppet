@@ -10,7 +10,6 @@ aws_cloudwatch_logs:
     path: /var/log/syslog
 
 docker::docker_users: [ubuntu]
-aws_cfn_ecs_cluster: 'myCluster'
 
 control_repo: 'https://github.com/vghn/puppet.git'
 

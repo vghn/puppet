@@ -35,7 +35,6 @@ describe 'profile::docker' do
           it { is_expected.to contain_file('/var/log/ecs') }
           it { is_expected.to contain_file('/var/lib/ecs') }
           it { is_expected.to contain_file('/var/lib/ecs/data') }
-          it { is_expected.to contain_docker__run('ecs-agent') }
         end
       end
     end
