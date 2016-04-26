@@ -190,7 +190,7 @@ deploy_r10k(){
     r10k deploy environment --puppetfile --verbose
   elif [[ -s "${LOCALDIR}/Puppetfile" ]]; then
     e_info 'Install R10K Puppetfile'
-    r10k puppetfile install --verbose
+    ( cd "${LOCALDIR}" && r10k puppetfile install --verbose )
   else
     e_warn 'No R10K environment or Puppetfile found!'
   fi
@@ -296,10 +296,14 @@ apply_puppet(){
 
   if [[ -d "${LOCALDIR}/modules" ]] &&  [[ -d "${LOCALDIR}/dist" ]]; then
     modulepath="${LOCALDIR}/modules:${LOCALDIR}/dist"
-  elif [[ -s "${PP_ENVDIR}/${ENVTYPE}/modules" ]] && [[ -s "${PP_ENVDIR}/${ENVTYPE}/dist" ]]; then
+  elif [[ -d "${PP_ENVDIR}/${ENVTYPE}/modules" ]] && [[ -d "${PP_ENVDIR}/${ENVTYPE}/dist" ]]; then
     modulepath="${PP_ENVDIR}/${ENVTYPE}/modules:${PP_ENVDIR}/${ENVTYPE}/dist"
   else
     e_abort 'Could not create modulepath'
+  fi
+
+  if [[ ! -d "${PP_ENVDIR}/${ENVTYPE}" ]]; then
+    mkdir -p "${PP_ENVDIR}/${ENVTYPE}"
   fi
 
   e_info 'Applying puppet'
