@@ -12,7 +12,7 @@ node default {
   }
 
   if !empty( $real_role ) {
-    include "::role::${::role}"
+    include "::role::${real_role}"
   } else {
     fail('The \'pp_role\' or the \'role\' fact could not be found!')
   }
