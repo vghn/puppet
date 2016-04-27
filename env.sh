@@ -91,6 +91,9 @@ fi
 # Full version
 export FULL_VERSION=${VERSION}-${BUILD}
 
+# Puppet
+export PUPPET_MASTER="${PUPPET_MASTER:-puppet.ghn.me}"
+
 # Trusted IPs
 export TRUSTED_IPS="${TRUSTED_IPS:-"$(vgs_get_external_ip)/32"}"
 
@@ -168,6 +171,7 @@ process_cfn_stacks(){
       P="$P ParameterKey=KeyName,ParameterValue=${AWS_EC2_KEY}"
       P="$P ParameterKey=AssetsBucket,ParameterValue=${AWS_ASSETS_BUCKET}"
       P="$P ParameterKey=AssetsKeyPrefix,ParameterValue=${AWS_ASSETS_KEY_PREFIX}"
+      P="$P ParameterKey=PuppetMaster,ParameterValue=${PUPPET_MASTER}"
       P="$P ParameterKey=CASSLS3Path,ParameterValue=${PP_VCRT_PATH}"
       P="$P ParameterKey=AMIPrefix,ParameterValue=${AWS_EC2_IMAGE_PREFIX}_*"
       P="$P ParameterKey=ZeusAMIId,ParameterValue=$(vgs_aws_ec2_get_latest_ami_id "$AWS_EC2_IMAGE_PREFIX")"
