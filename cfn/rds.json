@@ -1,0 +1,87 @@
+{
+  "Description": "VGH Puppet RDS v0.0.1",
+
+  "Parameters": {
+    "EnvType": {
+      "Type": "String",
+      "Description": "Environment type",
+      "Default": "production"
+    },
+    "SubnetIDs": {
+      "Type": "List<AWS::EC2::Subnet::Id>",
+      "Description": "The list of subnet ids"
+    },
+    "SecurityGroups": {
+      "Type": "List<AWS::EC2::SecurityGroup::Id>",
+      "Description": "A list of security group ids"
+    },
+    "DBEngine": {
+      "Default": "mariadb",
+      "Description": "MySQL engine",
+      "Type": "String",
+      "AllowedValues": ["MySQL", "mariadb", "postgres"],
+      "ConstraintDescription": "must select a valid database engine"
+    },
+    "DBName": {
+      "Default": "myDatabase",
+      "Description" : "MySQL database name",
+      "Type": "String",
+      "MinLength": "1",
+      "MaxLength": "64",
+      "AllowedPattern" : "[a-zA-Z][a-zA-Z0-9]*",
+      "ConstraintDescription" : "must begin with a letter and contain only alphanumeric characters."
+    },
+    "DBUser": {
+      "NoEcho": "true",
+      "Description" : "Username for MySQL database access",
+      "Type": "String",
+      "MinLength": "1",
+      "MaxLength": "16",
+      "AllowedPattern" : "[a-zA-Z][a-zA-Z0-9]*",
+      "ConstraintDescription" : "must begin with a letter and contain only alphanumeric characters."
+    },
+    "DBPassword": {
+      "NoEcho": "true",
+      "Description" : "Password for MySQL database access",
+      "Type": "String",
+      "MinLength": "8",
+      "MaxLength": "41",
+      "AllowedPattern" : "[a-zA-Z0-9]*",
+      "ConstraintDescription" : "must contain only alphanumeric characters."
+    }
+  },
+
+  "Resources": {
+    "DB": {
+      "Type": "AWS::RDS::DBInstance",
+      "Properties": {
+        "Engine": {"Ref": "DBEngine" },
+        "DBName": {"Ref": "DBName" },
+        "MasterUsername": {"Ref": "DBUser"},
+        "MasterUserPassword": {"Ref": "DBPassword"} ,
+        "DBInstanceClass": "db.t2.micro",
+        "AllocatedStorage": "5",
+        "StorageType": "gp2",
+        "MultiAZ": "false",
+        "BackupRetentionPeriod": "7",
+        "VPCSecurityGroups": {"Ref": "SecurityGroups"},
+        "DBSubnetGroupName": {"Ref": "DBSubnetGroup"}
+      },
+      "DeletionPolicy": "Snapshot"
+    },
+    "DBSubnetGroup": {
+      "Type" : "AWS::RDS::DBSubnetGroup",
+      "Properties" : {
+        "DBSubnetGroupDescription" : "DB Subnet Group",
+        "SubnetIds": {"Ref": "SubnetIDs"}
+      }
+    }
+  },
+
+  "Outputs": {
+    "DBEndpoint": {
+      "Description": "The database endpoint",
+      "Value": {"Fn::GetAtt": ["DB", "Endpoint.Address"]}
+    }
+  }
+}

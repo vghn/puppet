@@ -1,16 +1,15 @@
-sudo: false
 language: ruby
-before_install:
-  - openssl aes-256-cbc -K $encrypted_4543e8d896b8_key -iv $encrypted_4543e8d896b8_iv -in .env.enc -out .env -d || true
-install: bin/ci.sh install
-script: bin/ci.sh script
-after_success: bin/ci.sh deploy
-env: PUPPET_GEM_VERSION="~> 4.0" STRICT_VARIABLES=yes
+rvm:
+  - 2.2
+install: bin/ci install
+script: bin/ci test
+after_success: bin/ci deploy
+env: PUPPET_GEM_VERSION="~> 4.0"
 cache:
   directories:
+  - $HOME/.cache/pip
   - dist/profile/vendor
   - dist/profile/spec/fixtures/modules
-  - $HOME/.cache/pip
 notifications:
   slack:
     secure: PO+9V7wfK1zJZTO3RgewarOo2Uk6bhPXTAUFwDhwEoBnbhOEIq1ItLkOZfXW4LgQ9WpK03x1y9LNA4xHK89Z3yxO/s+/Csf5YOcv9+CUuwQR4vjfiFmedB8DCObGKc5HdsuohJx6G/YyLag8gFTJMGIDyQRN4uodXjrK2NGuMG8QRYhq4qwYtmnw3Q4q3o9Nsso1486qTnbWuRtF78ofgVnBurNYefbOiycGRvX4on2WI8syGcBVLQWIO/9Lc3Nye3arKdvtrVKI15/QM5DpgyPCmSTeqeu122XgVP/vPqYtmBXttU3lTladAq3S5VpMo9DQlltgTLvAl4a8ma+mzqtux1K628tMsAcNLUpcsXYbbUTRQILCmIQlDomC8oQOtSWnYPCtMpTr/5pGElVlNoWUSahlZS/VV9m/1Om64lgFdxY+MI9sI8UlXi6Ny47JfpHp7xQJPe80sFVLtwtrs9ievcEyw1R+9rSL1ASs3JIevKu5q9wTFL8Dy8lzWHlwyth8kkSruzUc7b5wsLpOPhJoKXuEJjY1ac3abgBjuX06Vk0y0y/dJdPDKy3Uo+ajY4IdjoppuJPRklXv77/hU04W8XTlD5eBR+M4tWAsUZgU1GkgtoUV05GSfNwhRfpeqzqqqzVjeUDUmXvhUG1YmkNd3wdRaW6t57iCi7P6ikI=

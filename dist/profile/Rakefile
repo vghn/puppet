@@ -15,15 +15,16 @@ begin
 rescue LoadError # rubocop:disable Lint/HandleExceptions
 end
 
-require 'rubocop/rake_task'
-RuboCop::RakeTask.new
-
+# Exclude paths
 exclude_paths = [
   'bundle/**/*',
   'pkg/**/*',
   'vendor/**/*',
   'spec/**/*'
 ]
+
+require 'rubocop/rake_task'
+RuboCop::RakeTask.new
 
 # Coverage from puppetlabs-spec-helper requires rcov which
 # doesn't work in anything since 1.8.7
@@ -32,10 +33,10 @@ Rake::Task[:coverage].clear
 Rake::Task[:lint].clear
 
 PuppetLint.configuration.relative = true
+PuppetLint.configuration.fail_on_warnings = true
 PuppetLint.configuration.disable_80chars
 PuppetLint.configuration.disable_class_inherits_from_params_class
 PuppetLint.configuration.disable_class_parameter_defaults
-PuppetLint.configuration.fail_on_warnings = true
 
 PuppetLint::RakeTask.new :lint do |config|
   config.ignore_paths = exclude_paths
@@ -59,12 +60,7 @@ task test: [
 ]
 
 desc 'Run acceptance tests.'
-task acceptance: [
-  :spec_prep,
-  :beaker
-]
+task acceptance: [:spec_prep, :beaker]
 
 desc 'Clean all test files.'
-task test_clean: [
-  :spec_clean
-]
+task clean: [:spec_clean]

@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+# AWS Lambda tasks
+
+# Load environment
+# shellcheck disable=1090
+. "$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd -P)/env.sh"
+
+# Creates zip archives with the lambda functions and upload them to S3
+upload_lambda_archives(){
+  for funcdir in ${AWS_LAMBDAS_PATH}/*; do
+    local name archive s3path
+    name=$(basename "$funcdir")
+    archive="${TMPDIR}/${name}.zip"
+    s3path="${AWS_LAMBDAS_S3_PATH}/${name}.zip"
+    e_info "Creating ${name} function archive (${archive})"
+    (
+      cd "$funcdir" || exit
+      zip -r "$archive" .
+    )
+    e_info "Uploading ${archive} function archive to S3 (${s3path})"
+    aws s3 cp "$archive" "$s3path"
+    e_info "Cleaning-up ${archive}"
+    rm "$archive" || true
+  done
+}
+
+usage(){
+  echo "USAGE: ${BASH_SOURCE[0]} [COMMAND]" >&2
+  echo "COMMANDS: upload" >&2
+  return 1
+}
+
+# xVARs
+e_header 'Info:'
+e_info "AWS Lambdas path: ${AWS_LAMBDAS_PATH:?}"
+e_info "Temporary directory is: ${TMPDIR:?}"
+
+# Process arguments
+e_header 'Lambdas:'
+case "${1:-}" in
+  upload)
+    upload_lambda_archives
+    ;;
+  *)
+    usage
+    ;;
+esac

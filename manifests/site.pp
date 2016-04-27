@@ -1,23 +1,20 @@
+# Role
+if $::trusted['authenticated'] == 'remote' {
+  $real_role = $::trusted['extensions']['pp_role']
+} elsif $::trusted['authenticated'] == 'local' {
+  $real_role = $::role
+} else {
+  fail('Unauthorized node!')
+}
+
 # Exec defaults:
 Exec { path => '/usr/local/bin:/usr/bin:/usr/sbin/:/bin:/sbin' }
 
 # DEFAULT NODE
 node default {
-  if $trusted["authenticated"] == "remote" {
-    if !empty( $trusted['extensions']['pp_role'] ) {
-      info("Applying role '${::trusted['extensions']['pp_role']}'...")
-      include "::role::${::trusted['extensions']['pp_role']}"
-    } else {
-      fail('The \'pp_role\' trusted fact could not be found!')
-    }
-  } elsif $trusted["authenticated"] == "local" {
-    if !empty( $role ) {
-      info("Applying role '${::role}'...")
-      include "::role::${::role}"
-    } else {
-      fail('The \'role\' fact could not be found!')
-    }
+  if !empty( $::real_role ) {
+    include "::role::${::real_role}"
   } else {
-    fail('Unauthorized node!')
+    fail('The \'pp_role\' or the \'role\' fact could not be found!')
   }
 }

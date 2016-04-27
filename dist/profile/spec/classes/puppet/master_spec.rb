@@ -5,25 +5,37 @@ describe 'profile::puppet::master' do
     on_supported_os.each do |os, facts|
       context "on #{os}" do
         let(:facts) do
-          facts
+          facts.merge(
+            aws_assets_bucket: 'my_bucket'
+          )
         end
 
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to contain_class('profile::puppet::master') }
         it { is_expected.to contain_class('hiera') }
-        it { is_expected.to contain_class('r10k') }
 
-        context 'during bootstrap' do
-          let(:facts) { facts.merge(is_bootstrap: 'true') }
-          it do
-            is_expected.to contain_exec('R10K deploy environment')
-              .with_command('r10k deploy environment --puppetfile --verbose')
-              .with_path(['/opt/puppetlabs/puppet/bin', '/usr/bin'])
-              .with_logoutput(true)
-          end
+        it { is_expected.to contain_class('r10k') }
+        it do
+          is_expected
+            .to contain_exec('R10K deploy environment')
+            .with_command('/opt/puppetlabs/puppet/bin/r10k deploy environment --puppetfile --verbose') # rubocop:disable Metrics/LineLength
         end
-        context 'during normal run' do
-          it { is_expected.not_to contain_exec('R10K deploy environment') }
+
+        it do
+          is_expected
+            .to contain_file('R10k Post Run Hook')
+            .with_path('/usr/local/bin/r10k-post-run')
+            .with_owner('root')
+            .with_mode('0755')
+        end
+
+        it { is_expected.to contain_file('/etc/puppetlabs/csr') }
+        it do
+          is_expected
+            .to contain_file('CSR Sign')
+            .with_path('/etc/puppetlabs/csr/sign')
+            .with_owner('root')
+            .with_mode('0555')
         end
       end
     end

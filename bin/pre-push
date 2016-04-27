@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# GIT Pre-Push Hook
+# @author Vlad Ghinea
+
+# Load environment
+# shellcheck disable=1090
+. "$(cd "$(dirname "${BASH_SOURCE[0]}")/../../" && pwd -P)/env.sh"
+
+bash -c "${APPDIR}/bin/app upload-private"
+
+# Git Push
+e_header 'GIT Push:'

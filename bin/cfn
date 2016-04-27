@@ -1,56 +1,122 @@
 #!/usr/bin/env bash
-# CloudFormation stack actions
+# AWS CloudFormation tasks
 
 # Load environment
 # shellcheck disable=1090
-. "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)/../include/aws.sh"
+. "$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd -P)/env.sh"
 
 # Creates a new stack
 create_stack(){
-  aws cloudformation create-stack \
-    --stack-name "$CFN_STACK_NAME" \
-    --template-body "$CFN_STACK_TEMPLATE" \
-    --parameters "$CFN_STACK_PARAMETERS" \
-    --capabilities "$CFN_STACK_CAPABILITIES" \
-    --tags "$CFN_STACK_TAGS" \
-    --on-failure "$CFN_STACK_ON_FAILURE"
+  local args="${*:?}"
+  e_info 'Creating stack'
+  eval "aws cloudformation create-stack ${args}"
 }
 
 # Update an existing stack
 update_stack(){
-  aws cloudformation update-stack \
-    --stack-name "$CFN_STACK_NAME" \
-    --template-body "$CFN_STACK_TEMPLATE" \
-    --parameters "$CFN_STACK_PARAMETERS" \
-    --capabilities "$CFN_STACK_CAPABILITIES"
+  local args="${*:?}"
+  e_info 'Updating stack'
+  eval "aws cloudformation update-stack ${args}"
 }
 
 # Deletes an existing stack
 delete_stack(){
-  aws cloudformation delete-stack --stack-name "$CFN_STACK_NAME"
+  local name="${1:?}"
+  e_warn "Deleting stack ${name}"
+  eval "aws cloudformation delete-stack --stack-name ${name}"
+}
+
+# Validate stack
+validate_stack(){
+  local body="${1:?}"
+  e_info "Validating ${body}"
+  aws cloudformation validate-template \
+    --output table \
+    --template-body "file://${body}"
+}
+
+# Validate all stacks
+validate_stacks(){
+  local stacks_path="${1:?}"
+  for stack in ${stacks_path}/*.json; do
+    validate_stack "$stack"
+  done
 }
 
 # Wait for stack to finish
 wait_for_stack(){
-  if ! aws_cfn_wait_for_stack "$CFN_STACK_NAME"; then
-    echo "FATAL: The stack ${CFN_STACK_NAME} failed" >&2; return 1
+  local name="${1:?}"
+  if ! vgs_aws_cfn_wait "$name"; then
+    e_abort "FATAL: The stack ${name} failed"
   fi
 }
 
-# Process argument
-case "$1" in
+# Upload CloudFormation templates to S3
+upload_cfn_templates(){
+  local src="${1:?}/"
+  local dst="${2:?}/"
+  if aws s3 sync "$src" "$dst" --delete; then
+    e_info "Synced ${src} to ${dst}"
+  else
+    e_abort "Could not sync ${src} to ${dst}"
+  fi
+}
+
+# Returns the usage instructions
+usage(){
+  echo "USAGE: ${BASH_SOURCE[0]} [COMMAND] [STACK]" >&2
+  echo "COMMANDS: create | update | delete | validate | upload" >&2
+  echo "STACKS: vgh" >&2
+  return 1
+}
+
+# Returns usage instructions if the stack name is not present
+check_stack_name(){
+  [[ -n "$CFN_STACK_ALIAS" ]] || usage
+}
+
+# CLI Arguments
+CMD="${1:-}"
+CFN_STACK_ALIAS="${2:-}"
+process_cfn_stacks "$CFN_STACK_ALIAS" "$CMD"
+
+# xVARs
+e_header 'Info:'
+e_info "Stack name: ${CFN_STACK_NAME:?}"
+e_info "Stack template body: ${CFN_STACK_BODY:?}"
+e_info "Stack command arguments: ${CFN_CMD_ARGS:?}"
+e_info "Stack path: ${CFN_STACKS_PATH:?}"
+e_info "Stack S3 path: ${CFN_STACKS_S3_PATH:?}"
+
+# Process arguments
+e_header 'CloudFormation:'
+case "$CMD" in
   create)
-    create_stack
-    wait_for_stack
+    check_stack_name
+    create_stack "$CFN_CMD_ARGS"
+    wait_for_stack "$CFN_STACK_NAME"
     ;;
   update)
-    update_stack
-    wait_for_stack
+    check_stack_name
+    update_stack "$CFN_CMD_ARGS"
+    wait_for_stack "$CFN_STACK_NAME"
     ;;
   delete)
-    delete_stack
+    check_stack_name
+    delete_stack "$CFN_STACK_NAME"
+    wait_for_stack "$CFN_STACK_NAME"
+    ;;
+  validate)
+    if [[ -n "$CFN_STACK_ALIAS" ]]; then
+      validate_stack "$CFN_STACK_BODY"
+    else
+      validate_stacks "$CFN_STACKS_PATH"
+    fi
+    ;;
+  upload)
+    upload_cfn_templates "$CFN_STACKS_PATH" "$CFN_STACKS_S3_PATH"
     ;;
   *)
-    echo 'USAGE: cfn [create | update | delete]'; exit 1
+    usage
     ;;
 esac

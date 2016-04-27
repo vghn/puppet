@@ -5,13 +5,20 @@ class profile::base {
   include ::apt
   include ::ntp
 
+  # Ensure essential packages
+  ensure_packages([
+    'curl',
+    'nfs-common',
+    'mysql-client',
+    'wget',
+    'tmux',
+    'vim',
+    'unzip',
+  ])
+
   # SSH Keys
-  if ($::ec2_metadata) {
-    if ($::os['name'] == 'Ubuntu') {
-      $user = 'ubuntu'
-    } else {
-      $user = 'root'
-    }
+  if ($::ec2_metadata and $::operatingsystem == 'Ubuntu') {
+    $user = 'ubuntu'
   } else {
     $user = 'root'
   }

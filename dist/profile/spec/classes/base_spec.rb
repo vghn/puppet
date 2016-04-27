@@ -5,7 +5,9 @@ describe 'profile::base' do
     on_supported_os.each do |os, facts|
       context "on #{os}" do
         let(:facts) do
-          facts
+          facts.merge(
+            ec2_metadata: { placement: { :'availability-zone' => 'us-east-1' } }
+          )
         end
 
         it { is_expected.to compile.with_all_deps }
@@ -13,6 +15,14 @@ describe 'profile::base' do
         it { is_expected.to contain_class('stdlib') }
         it { is_expected.to contain_class('apt') }
         it { is_expected.to contain_class('ntp') }
+
+        it { is_expected.to contain_package('curl') }
+        it { is_expected.to contain_package('nfs-common') }
+        it { is_expected.to contain_package('mysql-client') }
+        it { is_expected.to contain_package('wget') }
+        it { is_expected.to contain_package('tmux') }
+        it { is_expected.to contain_package('vim') }
+        it { is_expected.to contain_package('unzip') }
 
         it { is_expected.to contain_ssh_authorized_key('test-key') }
       end

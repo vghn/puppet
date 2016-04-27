@@ -1,11 +1,27 @@
-require 'spec_helper_acceptance'
-
 shared_examples 'profile::base' do
-  describe user('root') do
-    it { should have_authorized_key 'ssh-rsa ABC test-key' }
+  describe package('curl') do
+    it { is_expected.to be_installed }
   end
-  describe service('ntp') do
-    it { is_expected.to be_enabled }
-    it { is_expected.to be_running }
+  describe package('nfs-common') do
+    it { is_expected.to be_installed }
+  end
+  describe package('mysql-client') do
+    it { is_expected.to be_installed }
+  end
+  describe package('wget') do
+    it { is_expected.to be_installed }
+  end
+  describe package('tmux') do
+    it { is_expected.to be_installed }
+  end
+  describe package('vim') do
+    it { is_expected.to be_installed }
+  end
+  describe package('unzip') do
+    it { is_expected.to be_installed }
+  end
+
+  describe user('ubuntu') do
+    it { is_expected.to have_authorized_key 'ssh-rsa' }
   end
 end

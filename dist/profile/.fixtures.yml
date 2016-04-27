@@ -4,25 +4,19 @@ fixtures:
   forge_modules:
     apt:
       repo: 'puppetlabs/apt'
-      ref: '2.2.1'
+      ref: '2.2.2'
     concat:
       repo: 'puppetlabs/concat'
       ref: '2.1.0'
     git:
       repo: 'puppetlabs/git'
       ref: '0.4.0'
-    docker:
-      repo: 'garethr/docker'
-      ref: '5.0.0'
-    hiera:
-      repo: 'hunner/hiera'
-      ref: '2.0.1'
     inifile:
       repo: 'puppetlabs/inifile'
-      ref: '1.4.3'
+      ref: '1.5.0'
     stdlib:
       repo: 'puppetlabs/mysql'
-      ref: '3.6.2'
+      ref: '3.7.0'
     ntp:
       repo: 'puppetlabs/ntp'
       ref: '4.1.2'
@@ -32,21 +26,30 @@ fixtures:
     vcsrepo:
       repo: 'puppetlabs/vcsrepo'
       ref: '1.3.2'
+    docker:
+      repo: 'garethr/docker'
+      ref: '5.2.0'
+    ssh:
+      repo: 'ghoneycutt/ssh'
+      ref: '3.36.0'
+    hiera:
+      repo: 'hunner/hiera'
+      ref: '2.0.1'
     wget:
       repo: 'maestrodev/wget'
-      ref: '1.7.1'
-    limits:
-      repo: 'saz/limits'
-      ref: '2.3.0'
-    locales:
-      repo: 'saz/locales'
-      ref: '2.2.2'
-    ssh:
-      repo: 'saz/ssh'
-      ref: '2.8.1'
-    sudo:
-      repo: 'saz/sudo'
-      ref: '3.1.0'
+      ref: '1.7.3'
     r10k:
       repo: 'zack/r10k'
       ref: '3.2.0'
+    gnupg:
+      repo: 'golja/gnupg'
+      ref: '1.2.3'
+    cloudwatchlogs:
+      repo: 'kemra102/cloudwatchlogs'
+      ref: '2.2.0'
+    rvm:
+      repo: 'maestrodev/rvm'
+      ref: '1.13.1'
+    epel:
+      repo: 'stahnma/epel'
+      ref: '1.2.2'

@@ -1,10 +1,10 @@
 # Private
 .env
-ssl_*/
-
-# Everything in data except global.yaml
 /hieradata/*
 !/hieradata/common.yaml
+/csr/sign.yaml
 
+# Other
 /tmp
 /modules
+Gemfile.lock
