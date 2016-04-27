@@ -61,6 +61,7 @@ send_ec2_run_command(){
 
   if [[ -n "$command_id" ]]; then
     e_info "Wait for command (id: $command_id)"
+    status=
     until [[ "$status" =~ ^(Success|Failed|Timed Out|Cancelled)$ ]]; do
       status="$(aws ssm list-commands --command-id "$command_id" --query 'Commands[].Status' --output text)"
       sleep 1
