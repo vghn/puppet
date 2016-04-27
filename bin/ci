@@ -61,7 +61,7 @@ send_ec2_run_command(){
 
   if [[ -n "$command_id" ]]; then
     e_info "Wait until at least 1 invocation returns succes(id: $command_id)"
-    until [[ $(aws ssm list-commands --region us-east-1 --command-id "$command_id" --query 'Commands[].Status' --output text) =~ 'Success' ]]; do sleep 1; done
+    until [[ $(aws ssm list-commands --region us-east-1 --command-id "$command_id" --query 'Commands[].Status' --output text) =~ ^(Success|Failed|Timed Out|Cancelled)$ ]]; do sleep 1; done
     e_info 'Done'
   else
     e_abort 'Could not send command'
