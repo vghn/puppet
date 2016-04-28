@@ -204,9 +204,6 @@
           "/opt/puppetlabs/bin/puppet config set server ", {"Ref": "PuppetMaster"}, " --section main\n",
           "/opt/puppetlabs/bin/puppet config set environment ", {"Ref": "EnvType"}, " --section main\n",
 
-          "echo 'Remove old puppet certificates'\n",
-          "rm -r /etc/puppetlabs/puppet/ssl\n",
-
           "echo 'Create new csr attributes file'\n",
           "cat << EOF > /etc/puppetlabs/puppet/csr_attributes.yaml\n",
           "---\n",
@@ -282,6 +279,7 @@
             "Cpu": "64",
             "Memory": "64",
             "Essential": "true",
+            "User": "999:999",
             "MountPoints": [
               {
                 "SourceVolume": "PuppetCA",
