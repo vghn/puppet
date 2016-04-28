@@ -35,10 +35,6 @@
       "Type": "String",
       "Description": "The AMI Id for the Zeus ASG"
     },
-    "AMIPrefix": {
-      "Type": "String",
-      "Description": "The AMI Prefix"
-    },
     "SSHLocations": {
       "Type": "CommaDelimitedList",
       "Description": "The IP address ranges that can be used to SSH to the EC2 instances"
@@ -322,32 +318,6 @@
       }
     },
 
-    "AMIInfo": {
-      "Type": "Custom::AMIInfo",
-      "Properties": {
-        "ServiceToken": {"Fn::GetAtt": ["AMIInfoFunction", "Arn"]},
-        "Version": {"Ref": "Version"},
-        "Prefix": {"Ref": "AMIPrefix"},
-        "Region": {"Ref": "AWS::Region"},
-        "Owners": ["self"]
-      }
-    },
-
-    "AMIInfoFunction": {
-      "Type": "AWS::Lambda::Function",
-      "Properties": {
-        "Code": {
-          "S3Bucket": {"Ref": "AssetsBucket"},
-          "S3Key": {"Fn::Join": ["/", [{"Ref": "AssetsKeyPrefix"}, "lambdas/amilookup.zip"]]}
-        },
-        "Role": {"Fn::GetAtt": ["IAM", "Outputs.LambdaExecutionRole"]},
-        "Description": "Looks up the latest AMI ID",
-        "Handler": "index.handler",
-        "Runtime": "nodejs4.3",
-        "Timeout": "30"
-      }
-    },
-
     "VPC": {
       "Type": "AWS::CloudFormation::Stack",
       "Properties": {
@@ -415,10 +385,6 @@
       "Description": "The CodeDeploy service role ARN",
       "Value": {"Fn::GetAtt": ["IAM", "Outputs.CodeDeployServiceRole"]}
     },
-    "LambdaExecutionRole": {
-      "Description": "The CodeDeploy service role ARN",
-      "Value": {"Fn::GetAtt": ["IAM", "Outputs.LambdaExecutionRole"]}
-    },
     "ECSCluster": {
       "Value": {"Ref": "ECSCluster"}
     },
@@ -429,7 +395,7 @@
       "Value": {"Ref": "ECSService"}
     },
     "ECSServiceRole": {
-      "Description": "The CodeDeploy service role ARN",
+      "Description": "The ECS service role ARN",
       "Value": {"Fn::GetAtt": ["IAM", "Outputs.ECSServiceRole"]}
     }
   }
