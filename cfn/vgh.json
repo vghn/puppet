@@ -138,7 +138,7 @@
         ],
         "MinSize": "0",
         "MaxSize": "1",
-        "DesiredCapacity": "0",
+        "DesiredCapacity": "1",
         "HealthCheckType": "ELB",
         "HealthCheckGracePeriod": "600",
         "Cooldown": "600",
@@ -221,6 +221,15 @@
           "echo 'Run puppet agent for the first time'\n",
           "/opt/puppetlabs/bin/puppet agent --test --logdest syslog || true\n",
 
+          "echo 'Start the certificates sync agent'\n",
+          "mkdir -p /etc/puppetlabs/vcrt && chown -R 999:999 /etc/puppetlabs/vcrt\n",
+          "docker run --name vcrt-sync-agent",
+          "  --restart unless-stopped -d",
+          "  --user 999:999",
+          "  -v /etc/puppetlabs/vcrt:/watch",
+          "  -e S3PATH=", {"Ref": "CASSLS3Path"},
+          "  vladgh/s3sync:latest\n",
+
           "echo 'Start the ECS agent'\n",
           "docker run --name ecs-agent",
           "  --privileged",
@@ -272,24 +281,8 @@
                 "ContainerPath": "/etc/puppetlabs/csr"
               }
             ],
-            "Links": ["PuppetCASync"],
             "Environment": [
               {"Name": "JAVA_ARGS", "Value": "-Xms256m -Xmx512m"}
-            ]
-          },{
-            "Name": "PuppetCASync",
-            "Image": "vladgh/s3sync:latest",
-            "Cpu": "64",
-            "Memory": "64",
-            "Essential": "true",
-            "MountPoints": [
-              {
-                "SourceVolume": "PuppetCA",
-                "ContainerPath": "/watch"
-              }
-            ],
-            "Environment": [
-              {"Name": "S3PATH", "Value": {"Ref": "CASSLS3Path"}}
             ]
           }
         ],
@@ -312,7 +305,7 @@
       "DependsOn": ["Zeus"],
       "Properties": {
         "Cluster": {"Ref": "ECSCluster"},
-        "DesiredCount": "0",
+        "DesiredCount": "1",
         "DeploymentConfiguration": {
           "MaximumPercent" : "100",
           "MinimumHealthyPercent" : "0"
