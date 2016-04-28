@@ -204,6 +204,9 @@
           "/opt/puppetlabs/bin/puppet config set server ", {"Ref": "PuppetMaster"}, " --section main\n",
           "/opt/puppetlabs/bin/puppet config set environment ", {"Ref": "EnvType"}, " --section main\n",
 
+          "echo 'Remove old puppet certificates'\n",
+          "rm -r /etc/puppetlabs/puppet/ssl\n",
+
           "echo 'Create new csr attributes file'\n",
           "cat << EOF > /etc/puppetlabs/puppet/csr_attributes.yaml\n",
           "---\n",
@@ -217,6 +220,15 @@
 
           "echo 'Run puppet agent for the first time'\n",
           "/opt/puppetlabs/bin/puppet agent --test --logdest syslog || true\n",
+
+          "echo 'Start the certificates sync agent'\n",
+          "mkdir -p /etc/puppetlabs/vcrt && chown -R 999:999 /etc/puppetlabs/vcrt\n",
+          "docker run --name vcrt-sync-agent",
+          "  --restart unless-stopped -d",
+          "  --user 999:999",
+          "  -v /etc/puppetlabs/vcrt:/watch",
+          "  -e S3PATH=", {"Ref": "CASSLS3Path"},
+          "  vladgh/s3sync:latest\n",
 
           "echo 'Start the ECS agent'\n",
           "docker run --name ecs-agent",
@@ -269,25 +281,8 @@
                 "ContainerPath": "/etc/puppetlabs/csr"
               }
             ],
-            "Links": ["PuppetCASync"],
             "Environment": [
               {"Name": "JAVA_ARGS", "Value": "-Xms256m -Xmx512m"}
-            ]
-          },{
-            "Name": "PuppetCASync",
-            "Image": "vladgh/s3sync:latest",
-            "Cpu": "64",
-            "Memory": "64",
-            "Essential": "true",
-            "User": "999:999",
-            "MountPoints": [
-              {
-                "SourceVolume": "PuppetCA",
-                "ContainerPath": "/watch"
-              }
-            ],
-            "Environment": [
-              {"Name": "S3PATH", "Value": {"Ref": "CASSLS3Path"}}
             ]
           }
         ],
