@@ -116,40 +116,6 @@
       }
     },
 
-    "LambdaExecutionRole": {
-      "Type": "AWS::IAM::Role",
-      "Properties": {
-        "AssumeRolePolicyDocument": {
-          "Version": "2012-10-17",
-          "Statement": [{
-            "Effect": "Allow",
-            "Principal": {"Service": ["lambda.amazonaws.com"]},
-            "Action": ["sts:AssumeRole"]
-          }]
-        },
-        "Path": "/",
-        "Policies": [{
-          "PolicyName": "LambdaPolicies",
-          "PolicyDocument": {
-            "Version": "2012-10-17",
-            "Statement": [{
-              "Effect": "Allow",
-              "Action": [
-                "logs:CreateLogGroup",
-                "logs:CreateLogStream",
-                "logs:PutLogEvents"
-              ],
-              "Resource": "arn:aws:logs:*:*:*"
-            },{
-              "Effect": "Allow",
-              "Action": ["ec2:DescribeImages"],
-              "Resource": "*"
-            }]
-          }
-        }]
-      }
-    },
-
     "ECSServiceRole": {
       "Type": "AWS::IAM::Role",
       "Properties": {
@@ -237,12 +203,8 @@
       "Description": "The CodeDeploy service role ARN",
       "Value": {"Fn::GetAtt": ["CodeDeployRole", "Arn"]}
     },
-    "LambdaExecutionRole": {
-      "Description": "The Lambda execution role ARN",
-      "Value": {"Fn::GetAtt": ["LambdaExecutionRole", "Arn"]}
-    },
     "ECSServiceRole": {
-      "Description": "The Lambda execution role ARN",
+      "Description": "The ECS execution role ARN",
       "Value": {"Fn::GetAtt": ["ECSServiceRole", "Arn"]}
     },
     "CIAccessKey": {

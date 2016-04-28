@@ -173,7 +173,6 @@ process_cfn_stacks(){
       P="$P ParameterKey=AssetsKeyPrefix,ParameterValue=${AWS_ASSETS_KEY_PREFIX}"
       P="$P ParameterKey=PuppetMaster,ParameterValue=${PUPPET_MASTER}"
       P="$P ParameterKey=CASSLS3Path,ParameterValue=${PP_VCRT_PATH}"
-      P="$P ParameterKey=AMIPrefix,ParameterValue=${AWS_EC2_IMAGE_PREFIX}_*"
       P="$P ParameterKey=ZeusAMIId,ParameterValue=$(vgs_aws_ec2_get_latest_ami_id "$AWS_EC2_IMAGE_PREFIX")"
       P="$P 'ParameterKey=SSHLocations,ParameterValue=\"${TRUSTED_IPS}\"'"
       P="$P ParameterKey=DBEngine,ParameterValue=${AWS_RDS_DB_ENGINE}"

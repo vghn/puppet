@@ -76,7 +76,6 @@ send_ec2_run_command(){
 ci_deploy(){
   if [[ ${PR} == false ]]; then
     bash -c "${APPDIR}/bin/cfn upload"
-    bash -c "${APPDIR}/bin/lambda upload"
     bash -c "${APPDIR}/bin/app upload"
     send_ec2_run_command "$AWS_TAG_ROLE"
   else
