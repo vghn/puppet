@@ -1,3 +1,6 @@
+## Version 0.0.4 / 2016-04-29
+  * Change the location of the container info in ECS ([Vlad - b5791c5](https://github.com/vghn/puppet/commit/b5791c5399d85aa1e9174998b92e5e7fd43cad69))
+
 ## Version 0.0.3 / 2016-04-28
   * Remove Lambda functions from CloudFormation ([Vlad - 21f928a](https://github.com/vghn/puppet/commit/21f928a7278274435f480f717e93c5b0383635e4))
 
