@@ -22,5 +22,13 @@ mod 'golja/gnupg', '1.2.3'
 mod 'kemra102/cloudwatchlogs', '2.2.0'
 mod 'maestrodev/rvm', '1.13.1'
 
-# Dependencies
+# Dependencies (find with `sudo /opt/puppetlabs/bin/puppet module list --tree`)
+mod 'croddy-make', '0.0.5'
+mod 'gentoo-portage', '2.3.0'
+mod 'ghoneycutt-common', '1.5.0'
+mod 'nanliu-staging', '1.0.3'
+mod 'puppetlabs-firewall', '1.8.0'
+mod 'puppetlabs-gcc', '0.3.0'
+mod 'puppetlabs-pe_gem', '0.2.0'
+mod 'puppetlabs-ruby', '0.4.0'
 mod 'stahnma/epel', '1.2.2'

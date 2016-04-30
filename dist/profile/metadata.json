@@ -44,6 +44,14 @@
     { "name": "golja/gnupg", "version_requirement": "1.2.3" },
     { "name": "kemra102/cloudwatchlogs", "version_requirement": "2.2.0" },
     { "name": "maestrodev/rvm", "version_requirement": "1.13.1" },
+    { "name": "croddy/make", "version_requirement": "0.0.5" },
+    { "name": "gentoo/portage", "version_requirement": "2.3.0" },
+    { "name": "ghoneycutt/common", "version_requirement": "1.5.0" },
+    { "name": "nanliu/staging", "version_requirement": "1.0.3" },
+    { "name": "puppetlabs/firewall", "version_requirement": "1.8.0" },
+    { "name": "puppetlabs/gcc", "version_requirement": "0.3.0" },
+    { "name": "puppetlabs/pe_gem", "version_requirement": "0.2.0" },
+    { "name": "puppetlabs/ruby", "version_requirement": "0.4.0" },
     { "name": "stahnma/epel", "version_requirement": "1.2.2" }
   ],
   "data_provider": "hiera"

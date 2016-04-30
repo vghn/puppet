@@ -50,6 +50,30 @@ fixtures:
     rvm:
       repo: 'maestrodev/rvm'
       ref: '1.13.1'
+    make:
+      repo: 'croddy/make'
+      ref: '0.0.5'
+    portage:
+      repo: 'gentoo/portage'
+      ref: '2.3.0'
+    common:
+      repo: 'ghoneycutt/common'
+      ref: '1.5.0'
+    staging:
+      repo: 'nanliu/staging'
+      ref: '1.0.3'
+    firewall:
+      repo: 'puppetlabs/firewall'
+      ref: '1.8.0'
+    gcc:
+      repo: 'puppetlabs/gcc'
+      ref: '0.3.0'
+    pe_gem:
+      repo: 'puppetlabs/pe_gem'
+      ref: '0.2.0'
+    ruby:
+      repo: 'puppetlabs/ruby'
+      ref: '0.4.0'
     epel:
       repo: 'stahnma/epel'
       ref: '1.2.2'
