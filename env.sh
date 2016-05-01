@@ -97,6 +97,10 @@ export PUPPET_MASTER="${PUPPET_MASTER:-puppet.ghn.me}"
 # Trusted IPs
 export TRUSTED_IPS="${TRUSTED_IPS:-"$(vgs_get_external_ip)/32"}"
 
+# Logging
+export LOG_SERVER="${LOG_SERVER:-}"
+export LOG_PORT="${LOG_PORT:-}"
+
 # Slack Incoming Web Hook URL
 export SLACK_CHANNEL="${SLACK_CHANNEL:-general}"
 export SLACK_USER="${SLACK_USER:-Bot}"
@@ -180,6 +184,8 @@ process_cfn_stacks(){
       P="$P ParameterKey=DBUser,ParameterValue=${AWS_RDS_DB_USER}"
       P="$P ParameterKey=DBPassword,ParameterValue=${AWS_RDS_DB_PASS}"
       P="$P ParameterKey=SSLCertificateId,ParameterValue=${AWS_SSL_ARN}"
+      P="$P ParameterKey=LogServer,ParameterValue=${LOG_SERVER}"
+      P="$P ParameterKey=LogPort,ParameterValue=${LOG_PORT}"
       P="$P ParameterKey=VPCTemplateKey,ParameterValue=vpc.json"
       P="$P ParameterKey=SGTemplateKey,ParameterValue=sg.json"
       P="$P ParameterKey=IAMTemplateKey,ParameterValue=iam.json"
