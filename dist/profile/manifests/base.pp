@@ -30,4 +30,19 @@ class profile::base {
       { user => $user }
     )
   }
+
+  # Papertrail Logging
+  $log_server_address = hiera('log_server_address', undef)
+  $log_server_port = hiera('log_server_port', undef)
+  if ($log_server_port and $log_server_port) {
+    class{'::rsyslog::client':
+      remote_servers => [
+        {
+          host    => $log_server_address,
+          port    => $log_server_port,
+          pattern => '*.*',
+        },
+      ],
+    }
+  }
 }

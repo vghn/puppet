@@ -38,6 +38,9 @@ fixtures:
     wget:
       repo: 'maestrodev/wget'
       ref: '1.7.3'
+    rsyslog:
+      repo: 'saz/rsyslog'
+      ref: '3.5.1'
     r10k:
       repo: 'zack/r10k'
       ref: '3.2.0'

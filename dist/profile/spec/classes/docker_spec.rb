@@ -13,6 +13,11 @@ describe 'profile::docker' do
         it { is_expected.to contain_class('docker::images') }
         it { is_expected.to contain_class('docker::compose') }
 
+        it { is_expected.to contain_docker__image('test_image') }
+        it do
+          is_expected.to contain_file('/usr/local/bin/update_docker_image.sh')
+        end
+
         it { is_expected.to contain_package('docker') }
         it { is_expected.to contain_package('apparmor') }
         it { is_expected.to contain_package('cgroup-lite') }
