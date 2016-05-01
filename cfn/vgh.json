@@ -77,6 +77,14 @@
       "Description": "The ARN of the SSL certificate to use",
       "Type": "String"
     },
+    "LogServer": {
+      "Description": "The centralized logging server",
+      "Type": "String"
+    },
+    "LogPort": {
+      "Description": "The centralized logging server's port",
+      "Type": "String"
+    },
     "VPCTemplateKey": {
       "Type": "String",
       "Description": "The key of the template for the VPC nested stack"
@@ -226,6 +234,14 @@
           "  -v /etc/puppetlabs/vcrt:/watch",
           "  -e S3PATH=", {"Ref": "CASSLS3Path"},
           "  vladgh/s3sync:latest\n",
+
+          "echo 'Start the logging agent'\n",
+          "docker run --name logging-agent",
+          "  --restart unless-stopped -d",
+          "  --hostname logging-agent",
+          "  -v /var/run/docker.sock:/var/run/docker.sock",
+          "  gliderlabs/logspout",
+          "  syslog://", {"Ref": "LogServer"}, ":", {"Ref": "LogPort"}, "\n",
 
           "echo 'Start the ECS agent'\n",
           "docker run --name ecs-agent",

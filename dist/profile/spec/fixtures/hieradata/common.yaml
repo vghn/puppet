@@ -23,5 +23,5 @@ rvm_system_ruby:        'ruby-2.2.1'
 docker_compose_version: '1.7.0'
 docker_machine_version: '0.7.0'
 
-log_server_address: 'logs.server.com'
-log_server_port: '12345'
+LOG_SERVER: 'logs.server.com'
+LOG_PORT: '12345'
