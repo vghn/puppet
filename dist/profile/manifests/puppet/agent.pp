@@ -11,6 +11,6 @@ class profile::puppet::agent {
     ensure  => present,
     user    => 'root',
     minute  => [fqdn_rand(30), fqdn_rand(30) + 30],
-    command => '/opt/puppetlabs/bin/puppet agent --onetime --no-daemonize --logdest syslog > /dev/null 2>&1',
+    command => 'sudo /opt/puppetlabs/bin/puppet agent --onetime --no-daemonize --logdest syslog > /dev/null 2>&1',
   }
 }
