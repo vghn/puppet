@@ -1,8 +1,6 @@
 # Private
-.env
 /hieradata/*
 !/hieradata/common.yaml
-/csr/sign.yaml
 
 # Other
 /tmp

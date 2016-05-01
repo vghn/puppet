@@ -11,8 +11,8 @@ aws_cloudwatch_logs:
 
 docker::docker_users: [ubuntu]
 docker::images::images:
-  amazon/amazon-ecs-agent:
-    image_tag: 'latest'
+  test_image:
+    image_tag: 'testing'
 
 control_repo: 'https://github.com/vghn/puppet.git'
 
@@ -22,3 +22,6 @@ r10k_version:           '2.2.2'
 rvm_system_ruby:        'ruby-2.2.1'
 docker_compose_version: '1.7.0'
 docker_machine_version: '0.7.0'
+
+log_server_address: 'logs.server.com'
+log_server_port: '12345'

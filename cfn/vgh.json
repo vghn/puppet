@@ -221,6 +221,7 @@
           "mkdir -p /etc/puppetlabs/vcrt && chown -R 999:999 /etc/puppetlabs/vcrt\n",
           "docker run --name vcrt-sync-agent",
           "  --restart unless-stopped -d",
+          "  --hostname vcrt-sync-agent",
           "  --user 999:999",
           "  -v /etc/puppetlabs/vcrt:/watch",
           "  -e S3PATH=", {"Ref": "CASSLS3Path"},
@@ -241,6 +242,7 @@
           "  -e ECS_LOGLEVEL=info",
           "  -e ECS_DATADIR=/data",
           "  -e ECS_CLUSTER=", {"Ref": "ECSCluster"},
+          "  --hostname ecs-agent",
           "  amazon/amazon-ecs-agent:latest\n",
 
           "echo 'SUCCEEDED' | tee /var/lib/cloud/instance/status_cfn"
