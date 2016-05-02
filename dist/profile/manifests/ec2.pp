@@ -26,6 +26,10 @@ class profile::ec2 {
       ],
   }
 
+  # monitored file log instance resources
+  $logfile_instances = hiera('rsyslog::imfile', {})
+  create_resources(rsyslog::imfile, $logfile_instances)
+
   # AWS CloudWatch Logs
   $aws_cloudwatch_logs = hiera_hash('aws_cloudwatch_logs', undef)
   if ($aws_cloudwatch_logs != undef) {
