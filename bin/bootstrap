@@ -412,6 +412,7 @@ main(){
   fi
 
   if is_ami; then
+    deploy_r10k
     run_tests
   fi
 }
