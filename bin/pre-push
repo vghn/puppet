@@ -6,6 +6,8 @@
 # shellcheck disable=1090
 . "$(cd "$(dirname "${BASH_SOURCE[0]}")/../../" && pwd -P)/env.sh"
 
+# Hooks
+e_header 'GIT Pre-Push:'
 upload_private_data
 
 # Git Push
