@@ -21,7 +21,8 @@ shared_examples 'profile::base' do
     it { is_expected.to be_installed }
   end
 
-  if fact('virtual').eql?('virtualbox')
+  virtual = command('/opt/puppetlabs/bin/facter virtual').stdout.chomp
+  if virtual == 'virtualbox'
     context 'vagrant tests' do
       describe user('vagrant') do
         it { is_expected.to have_authorized_key 'ssh-rsa' }
