@@ -43,6 +43,12 @@ ensure_vgs(){
 # Load private environment
 eval "$(vgs_parse_yaml "${APPDIR}/hieradata/private.yaml")"
 
+# Load functions
+for file in ${APPDIR}/lib/*.sh; do
+  # shellcheck disable=1090
+  . "$file"
+done
+
 # Version
 export VERSION_FILE="${APPDIR}/VERSION"
 export CHANGELOG_FILE="${APPDIR}/CHANGELOG.md"

@@ -6,7 +6,7 @@
 # shellcheck disable=1090
 . "$(cd "$(dirname "${BASH_SOURCE[0]}")/../../" && pwd -P)/env.sh"
 
-bash -c "${APPDIR}/bin/app upload-private"
+upload_private_data
 
 # Git Push
 e_header 'GIT Push:'
