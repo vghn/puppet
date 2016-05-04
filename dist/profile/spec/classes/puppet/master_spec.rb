@@ -15,11 +15,6 @@ describe 'profile::puppet::master' do
         it { is_expected.to contain_class('hiera') }
 
         it { is_expected.to contain_class('r10k') }
-        it do
-          is_expected
-            .to contain_exec('R10K deploy environment')
-            .with_command('/opt/puppetlabs/puppet/bin/r10k deploy environment --puppetfile --verbose') # rubocop:disable Metrics/LineLength
-        end
 
         it do
           is_expected

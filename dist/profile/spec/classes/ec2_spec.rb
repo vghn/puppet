@@ -18,6 +18,11 @@ describe 'profile::ec2' do
         it { is_expected.to contain_apt__ppa('ppa:git-core/ppa') }
         it { is_expected.to contain_class('git') }
 
+        it do
+          is_expected.to contain_rsyslog__imfile('Testing')
+            .with_file_name('/var/log/test.log')
+        end
+
         it { is_expected.to contain_class('cloudwatchlogs') }
         it do
           is_expected.to contain_cloudwatchlogs__log('TEST/System/SysLog')

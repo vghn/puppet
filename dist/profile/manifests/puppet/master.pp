@@ -53,17 +53,7 @@ class profile::puppet::master {
     cachedir => '/opt/puppetlabs/r10k/cache',
     provider => 'puppet_gem',
     version  => $r10k_version,
-    notify   => Exec['R10K deploy environment'],
     require  => File['R10k Post Run Hook'],
-  }
-
-  # Deploy R10K environment
-  exec {'R10K deploy environment':
-    command   => '/opt/puppetlabs/puppet/bin/r10k deploy environment --puppetfile --verbose',
-    creates   => "${::settings::environmentpath}/production/Puppetfile",
-    logoutput => true,
-    timeout   => 600,
-    require   => Package['r10k'],
   }
 
   file {'/etc/puppetlabs/csr':

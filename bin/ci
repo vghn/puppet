@@ -53,7 +53,7 @@ send_ec2_run_command(){
   command_id=$(aws ssm send-command \
     --document-name "AWS-RunShellScript" \
     --instance-ids $ids \
-    --parameters $'{"commands":["/opt/puppetlabs/puppet/bin/r10k deploy environment --puppetfile --verbose"]}' \
+    --parameters $'{"commands":["sudo /opt/puppetlabs/puppet/bin/r10k deploy environment --puppetfile --verbose"]}' \
     --comment "Deploy R10K environment" \
     --timeout-seconds 600 \
     --query 'Command.CommandId' \
