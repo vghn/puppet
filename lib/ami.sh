@@ -81,6 +81,7 @@ clean_up(){
 }
 
 create_ami(){
+  package_app_files && upload_app_archive
   create_instance && tag_instance
   e_info 'Waiting for instance to start'
   aws ec2 wait instance-running --instance-ids "$instance_id"
