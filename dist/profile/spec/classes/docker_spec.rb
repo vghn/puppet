@@ -10,10 +10,9 @@ describe 'profile::docker' do
         it { is_expected.to contain_class('profile::docker') }
 
         it { is_expected.to contain_class('docker') }
-        it { is_expected.to contain_class('docker::images') }
         it { is_expected.to contain_class('docker::compose') }
 
-        it { is_expected.to contain_docker__image('test_image') }
+        it { is_expected.to contain_docker__image('amazon/amazon-ecs-agent') }
         it do
           is_expected.to contain_file('/usr/local/bin/update_docker_image.sh')
         end

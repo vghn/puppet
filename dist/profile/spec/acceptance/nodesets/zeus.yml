@@ -1,5 +1,5 @@
 HOSTS:
-  default:
+  zeus:
     platform: ubuntu-trusty-x64
     hypervisor: vagrant
     box: puppetlabs/ubuntu-14.04-64-nocm

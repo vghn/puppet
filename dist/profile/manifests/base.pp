@@ -17,19 +17,8 @@ class profile::base {
   ])
 
   # SSH Keys
-  if ($::ec2_metadata and $::operatingsystem == 'Ubuntu') {
-    $user = 'ubuntu'
-  } else {
-    $user = 'root'
-  }
-  $ssh_authorized_keys = hiera_hash('ssh_authorized_keys', undef)
-  if ($ssh_authorized_keys != undef) {
-    create_resources(
-      'ssh_authorized_key',
-      $ssh_authorized_keys,
-      { user => $user }
-    )
-  }
+  $ssh_authorized_keys = hiera_hash('ssh_authorized_keys', {})
+  create_resources(ssh_authorized_key, $ssh_authorized_keys)
 
   # Papertrail Logging
   $log_server_address = hiera('LOG_SERVER', undef)

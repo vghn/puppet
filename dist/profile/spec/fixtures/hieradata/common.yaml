@@ -3,8 +3,9 @@
 
 ssh_authorized_keys:
   'test-key':
-    type: 'ssh-rsa'
-    key: 'ABC'
+    user: vagrant
+    type: ssh-rsa
+    key: ABC
 
 # RSysLog Files
 rsyslog::imfile:
@@ -19,9 +20,9 @@ aws_cloudwatch_logs:
     path: /var/log/syslog
 
 docker::docker_users: [ubuntu]
-docker::images::images:
-  test_image:
-    image_tag: 'testing'
+docker_images:
+  amazon/amazon-ecs-agent:
+    image_tag: 'latest'
 
 control_repo: 'https://github.com/vghn/puppet.git'
 
