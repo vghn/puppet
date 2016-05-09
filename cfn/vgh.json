@@ -244,6 +244,7 @@
           "  syslog://", {"Ref": "LogServer"}, ":", {"Ref": "LogPort"}, "\n",
 
           "echo 'Start the ECS agent'\n",
+          "mkdir -p /var/lib/ecs/data; mkdir -p /var/log/ecs\n",
           "docker run --name ecs-agent",
           "  --privileged",
           "  --restart on-failure:10 -d",

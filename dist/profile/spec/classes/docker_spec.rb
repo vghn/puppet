@@ -28,19 +28,6 @@ describe 'profile::docker' do
           is_expected.to contain_file('/usr/local/bin/docker-machine')
             .that_requires('Wget::Fetch[Docker-Machine Binary]')
         end
-
-        context 'on EC2' do
-          let(:facts) do
-            facts.merge(
-              ec2_metadata: {
-                placement: { :'availability-zone' => 'us-east-1' }
-              }
-            )
-          end
-          it { is_expected.to contain_file('/var/log/ecs') }
-          it { is_expected.to contain_file('/var/lib/ecs') }
-          it { is_expected.to contain_file('/var/lib/ecs/data') }
-        end
       end
     end
   end

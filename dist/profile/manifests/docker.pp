@@ -27,18 +27,5 @@ class profile::docker {
       mode    => '0755',
       require => [Wget::Fetch['Docker-Machine Binary']],
     }
-
-    # AWS ECS
-    if $::ec2_metadata {
-      file { '/var/log/ecs':
-        ensure => 'directory',
-      } ->
-      file { '/var/lib/ecs':
-        ensure => 'directory',
-      } ->
-      file { '/var/lib/ecs/data':
-        ensure => 'directory',
-      }
-    }
   }
 }
