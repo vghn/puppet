@@ -19,7 +19,7 @@ shared_examples 'profile::puppet::master' do
   describe file('/etc/puppetlabs/csr/config.yml') do
     it { is_expected.to exist }
     it { should be_owned_by 'root' }
-    it { should contain 'challengePassword: test' }
+    it { should contain 'challengePassword' }
   end
   describe file('/etc/puppetlabs/csr/sign') do
     it { is_expected.to exist }
