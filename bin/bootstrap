@@ -395,7 +395,7 @@ main(){
   disable_rvm
 
   if is_ami; then
-    apt_upgrade
+    apt_update && apt_upgrade
     ensure_pip
     ensure_awscli
   else
