@@ -24,7 +24,14 @@ describe 'profile::puppet::master' do
             .with_mode('0755')
         end
 
+        it { is_expected.to contain_file('/etc/puppetlabs') }
         it { is_expected.to contain_file('/etc/puppetlabs/csr') }
+        it do
+          is_expected.to contain_file('CSR Sign Config')
+            .with_path('/etc/puppetlabs/csr/config.yml')
+            .with_content(/challengePassword: test/)
+        end
+
         it do
           is_expected
             .to contain_file('CSR Sign')
