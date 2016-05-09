@@ -232,8 +232,8 @@
           "  --hostname vcrt-sync-agent",
           "  --user 999:999",
           "  -v /etc/puppetlabs/vcrt:/watch",
-          "  -e S3PATH=", {"Ref": "CASSLS3Path"},
-          "  vladgh/s3sync:latest\n",
+          "  vladgh/s3sync:latest",
+          "  ", {"Ref": "CASSLS3Path"}, "\n",
 
           "echo 'Start the logging agent'\n",
           "docker run --name logging-agent",
