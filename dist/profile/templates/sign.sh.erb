@@ -6,10 +6,10 @@ require 'aws-sdk'
 require 'logger'
 
 # Log
-logger = Logger.new('<%= @csr_log %>')
+logger = Logger.new('<%= @csr_log_file %>')
 
 # Configuration
-cfg = YAML.load_file('<%= @csr_config %>')
+cfg = YAML.load_file('<%= @csr_config_file %>')
 
 # Load AWS SDK
 ec2 = Aws::EC2::Resource.new(region: 'us-east-1')
@@ -49,7 +49,7 @@ exts.each {|ext|
 }
 
 # Sign if password matches
-authorized_secret = cfg['CA'][project]['challengePassword'] rescue nil
+authorized_secret = cfg[project]['challengePassword'] rescue nil
 if (pp_secret == authorized_secret && !authorized_secret.nil?)
   logger.info 'Node authorized based on the provided secret'
   exit 0

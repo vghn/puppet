@@ -35,6 +35,16 @@
       "Type": "String",
       "Description": "The AMI Id for the Zeus ASG"
     },
+    "ZeusDesiredCapacity": {
+      "Type": "Number",
+      "Default": "1",
+      "Description": "The AMI Id for the Zeus ASG"
+    },
+    "PuppetServerDesiredCount": {
+      "Type": "Number",
+      "Default": "1",
+      "Description": "The AMI Id for the Zeus ASG"
+    },
     "SSHLocations": {
       "Type": "CommaDelimitedList",
       "Description": "The IP address ranges that can be used to SSH to the EC2 instances"
@@ -142,12 +152,12 @@
         ],
         "MinSize": "0",
         "MaxSize": "1",
-        "DesiredCapacity": "1",
+        "DesiredCapacity": {"Ref": "ZeusDesiredCapacity"},
         "HealthCheckType": "ELB",
         "HealthCheckGracePeriod": "600",
         "Cooldown": "600",
-        "LoadBalancerNames": [ { "Ref": "ELB" } ],
-        "TerminationPolicies": [ "OldestInstance", "Default" ],
+        "LoadBalancerNames": [{"Ref": "ELB"}],
+        "TerminationPolicies": ["OldestInstance", "Default"],
         "Tags": [
           {"Key": "Role", "Value": "zeus", "PropagateAtLaunch": "true"},
           {"Key": "Name", "Value": {"Fn::Join": ["-" , [{"Ref": "AWS::StackName"}, "Zeus"]]}, "PropagateAtLaunch": "true"}
@@ -232,8 +242,8 @@
           "  --hostname vcrt-sync-agent",
           "  --user 999:999",
           "  -v /etc/puppetlabs/vcrt:/watch",
-          "  -e S3PATH=", {"Ref": "CASSLS3Path"},
-          "  vladgh/s3sync:latest\n",
+          "  vladgh/s3sync:latest",
+          "  ", {"Ref": "CASSLS3Path"}, "\n",
 
           "echo 'Start the logging agent'\n",
           "docker run --name logging-agent",
@@ -244,6 +254,7 @@
           "  syslog://", {"Ref": "LogServer"}, ":", {"Ref": "LogPort"}, "\n",
 
           "echo 'Start the ECS agent'\n",
+          "mkdir -p /var/lib/ecs/data; mkdir -p /var/log/ecs\n",
           "docker run --name ecs-agent",
           "  --privileged",
           "  --restart on-failure:10 -d",
@@ -319,7 +330,7 @@
       "DependsOn": ["Zeus"],
       "Properties": {
         "Cluster": {"Ref": "ECSCluster"},
-        "DesiredCount": "1",
+        "DesiredCount": {"Ref": "PuppetServerDesiredCount"},
         "DeploymentConfiguration": {
           "MaximumPercent" : "100",
           "MinimumHealthyPercent" : "0"

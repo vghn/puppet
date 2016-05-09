@@ -35,3 +35,7 @@ docker_machine_version: '0.7.0'
 
 LOG_SERVER: 'logs.server.com'
 LOG_PORT: '12345'
+
+csr_config:
+  test:
+    challengePassword: test

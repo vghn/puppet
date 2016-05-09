@@ -1,14 +1,7 @@
 # Puppet Master Class
 class profile::puppet::master {
-
-  # VARs
-  $hiera_data_dir = "${::settings::environmentpath}/%{::environment}/hieradata"
-  $csr_config     = "${::settings::environmentpath}/${::environment}/hieradata/roles/${::real_role}.yaml"
-  $csr_log        = '/tmp/csr_sign.log'
-  $control_repo   = hiera('control_repo')
-  $r10k_version   = hiera('r10k_version', 'latest')
-
   # Hiera config
+  $hiera_data_dir = "${::settings::environmentpath}/%{::environment}/hieradata"
   class {'::hiera':
     datadir            => $hiera_data_dir,
     hiera_yaml         => "${::settings::codedir}/hiera.yaml",
@@ -41,6 +34,8 @@ class profile::puppet::master {
   }
 
   # Install, configure and run R10K
+  $control_repo = hiera('control_repo')
+  $r10k_version = hiera('r10k_version', 'latest')
   class {'::r10k':
     sources  => {
       'main' => {
@@ -56,8 +51,23 @@ class profile::puppet::master {
     require  => File['R10k Post Run Hook'],
   }
 
+  # CSR
+  $csr_config_file = '/etc/puppetlabs/csr/config.yml'
+  $csr_log_file = '/tmp/csr_sign.log'
+  $csr_config = hiera('csr_config', {})
+  validate_hash($csr_config)
+  $csr_template = '<%= @csr_config.to_yaml %>'
+
+  file {'/etc/puppetlabs':
+    ensure => 'directory',
+  } ->
   file {'/etc/puppetlabs/csr':
     ensure => 'directory',
+  } ->
+  file {'CSR Sign Config':
+    ensure  => file,
+    path    => $csr_config_file,
+    content => inline_template($csr_template),
   } ->
   file {'CSR Sign':
     ensure  => present,

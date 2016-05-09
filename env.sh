@@ -43,6 +43,12 @@ ensure_vgs(){
 # Load private environment
 eval "$(vgs_parse_yaml "${APPDIR}/hieradata/private.yaml")"
 
+# Load functions
+for file in ${APPDIR}/lib/*.sh; do
+  # shellcheck disable=1090
+  . "$file"
+done
+
 # Version
 export VERSION_FILE="${APPDIR}/VERSION"
 export CHANGELOG_FILE="${APPDIR}/CHANGELOG.md"
@@ -178,6 +184,8 @@ process_cfn_stacks(){
       P="$P ParameterKey=PuppetMaster,ParameterValue=${PUPPET_MASTER}"
       P="$P ParameterKey=CASSLS3Path,ParameterValue=${PP_VCRT_PATH}"
       P="$P ParameterKey=ZeusAMIId,ParameterValue=$(vgs_aws_ec2_get_latest_ami_id "$AWS_EC2_IMAGE_PREFIX")"
+      P="$P ParameterKey=ZeusDesiredCapacity,ParameterValue=${ZEUS_CAPACITY:-1}"
+      P="$P ParameterKey=PuppetServerDesiredCount,ParameterValue=${PUPPETSERVER_COUNT:-1}"
       P="$P 'ParameterKey=SSHLocations,ParameterValue=\"${TRUSTED_IPS}\"'"
       P="$P ParameterKey=DBEngine,ParameterValue=${AWS_RDS_DB_ENGINE}"
       P="$P ParameterKey=DBName,ParameterValue=${AWS_RDS_DB_NAME}"
