@@ -35,6 +35,16 @@
       "Type": "String",
       "Description": "The AMI Id for the Zeus ASG"
     },
+    "ZeusDesiredCapacity": {
+      "Type": "Number",
+      "Default": "1",
+      "Description": "The AMI Id for the Zeus ASG"
+    },
+    "PuppetServerDesiredCount": {
+      "Type": "Number",
+      "Default": "1",
+      "Description": "The AMI Id for the Zeus ASG"
+    },
     "SSHLocations": {
       "Type": "CommaDelimitedList",
       "Description": "The IP address ranges that can be used to SSH to the EC2 instances"
@@ -142,12 +152,12 @@
         ],
         "MinSize": "0",
         "MaxSize": "1",
-        "DesiredCapacity": "1",
+        "DesiredCapacity": {"Ref": "ZeusDesiredCapacity"},
         "HealthCheckType": "ELB",
         "HealthCheckGracePeriod": "600",
         "Cooldown": "600",
-        "LoadBalancerNames": [ { "Ref": "ELB" } ],
-        "TerminationPolicies": [ "OldestInstance", "Default" ],
+        "LoadBalancerNames": [{"Ref": "ELB"}],
+        "TerminationPolicies": ["OldestInstance", "Default"],
         "Tags": [
           {"Key": "Role", "Value": "zeus", "PropagateAtLaunch": "true"},
           {"Key": "Name", "Value": {"Fn::Join": ["-" , [{"Ref": "AWS::StackName"}, "Zeus"]]}, "PropagateAtLaunch": "true"}
@@ -320,7 +330,7 @@
       "DependsOn": ["Zeus"],
       "Properties": {
         "Cluster": {"Ref": "ECSCluster"},
-        "DesiredCount": "1",
+        "DesiredCount": {"Ref": "PuppetServerDesiredCount"},
         "DeploymentConfiguration": {
           "MaximumPercent" : "100",
           "MinimumHealthyPercent" : "0"
