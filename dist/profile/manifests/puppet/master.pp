@@ -59,7 +59,7 @@ class profile::puppet::master {
   $csr_log_file = '/tmp/csr_sign.log'
   $csr_config = hiera('csr_config', {})
   validate_hash($csr_config)
-  $csr_template = "<%= @csr_config.to_yaml %>"
+  $csr_template = '<%= @csr_config.to_yaml %>'
 
   file {'/etc/puppetlabs':
     ensure => 'directory',
