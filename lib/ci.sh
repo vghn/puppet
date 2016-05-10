@@ -70,9 +70,12 @@ send_ec2_run_command(){
 
 # CI Deploy
 ci_deploy(){
-  if [[ ${PR} == false ]]; then
-    bash -c "${APPDIR}/bin/cfn upload"
+  if [[ "$PR" == false ]]; then
     bash -c "${APPDIR}/bin/app upload"
+    bash -c "${APPDIR}/bin/cfn upload"
+    if [[ "$EVTYPE" == production ]]; then
+      bash -c "${APPDIR}/bin/cfn update vgh"
+    fi
     send_ec2_run_command "$AWS_TAG_ROLE"
   else
     echo 'Deployment is not allowed from pull requests' >&2
