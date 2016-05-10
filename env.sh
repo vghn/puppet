@@ -95,7 +95,7 @@ elif [[ ${TRAVIS:-false} == true ]]; then
 fi
 
 # Full version
-export FULL_VERSION=${VERSION}-${BUILD}
+export FULL_VERSION=${VERSION}-${GIT_SHA1}
 
 # Puppet
 export PUPPET_MASTER="${PUPPET_MASTER:-puppet.ghn.me}"
@@ -176,8 +176,7 @@ process_cfn_stacks(){
       else
         ARGS=''
       fi
-      P="   ParameterKey=Version,ParameterValue=${FULL_VERSION}"
-      P="$P ParameterKey=EnvType,ParameterValue=${ENVTYPE}"
+      P="   ParameterKey=EnvType,ParameterValue=${ENVTYPE}"
       P="$P ParameterKey=KeyName,ParameterValue=${AWS_EC2_KEY}"
       P="$P ParameterKey=AssetsBucket,ParameterValue=${AWS_ASSETS_BUCKET}"
       P="$P ParameterKey=AssetsKeyPrefix,ParameterValue=${AWS_ASSETS_KEY_PREFIX}"
