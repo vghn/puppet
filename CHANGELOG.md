@@ -1,3 +1,6 @@
+## Version 0.0.13 / 2016-05-10
+  * Do not update CloudFormation on every build ([Vlad - 200d952](https://github.com/vghn/puppet/commit/200d95269d1cccddacf86f304622ee17b713a907))
+
 ## Version 0.0.12 / 2016-05-10
   * Add bash checks for desired capacities ([Vlad - 30a5446](https://github.com/vghn/puppet/commit/30a5446a5de2b3a3db6a2d2d26e147391e3861ee))
 
