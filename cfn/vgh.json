@@ -2,10 +2,6 @@
   "Description": "VGH Puppet v0.0.1",
 
   "Parameters": {
-    "Version": {
-      "Type": "String",
-      "Description": "Version"
-    },
     "EnvType": {
       "Type": "String",
       "Description": "Environment type",
