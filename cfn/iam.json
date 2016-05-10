@@ -138,7 +138,8 @@
           "arn:aws:iam::aws:policy/AmazonSSMFullAccess",
           "arn:aws:iam::aws:policy/AmazonEC2ReadOnlyAccess",
           "arn:aws:iam::aws:policy/AWSLambdaFullAccess",
-          "arn:aws:iam::aws:policy/AmazonEC2ContainerServiceFullAccess"
+          "arn:aws:iam::aws:policy/AmazonEC2ContainerServiceFullAccess",
+          "arn:aws:iam::aws:policy/AWSCodeDeployFullAccess"
         ],
         "Policies": [
           {
@@ -147,7 +148,7 @@
               "Version": "2012-10-17",
               "Statement": [
                 {
-                  "Sid": "AllowS3ListAllBucket",
+                  "Sid": "AllowS3ListAllBuckets",
                   "Effect": "Allow",
                   "Action": "s3:ListAllMyBuckets",
                   "Resource": "arn:aws:s3:::*"
@@ -162,14 +163,9 @@
                   ]
                 },
                 {
-                  "Sid": "AllowAccessToCodeDeploy",
-                  "Effect": "Allow",
-                  "Action": ["codedeploy:*"],
-                  "Resource": "arn:aws:codedeploy:*"
-                },
-                {
-                  "Sid": "AllowCloudFormationValidate",
+                  "Sid": "AllowCloudFormation",
                   "Action": [
+                    "cloudformation:UpdateStack",
                     "cloudformation:Describe*",
                     "cloudformation:ValidateTemplate"
                   ],
