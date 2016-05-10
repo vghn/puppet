@@ -187,7 +187,6 @@
           "IFS=$'\\n\\t'", "\n",
 
           "echo 'IN_PROGRESS' | tee /var/lib/cloud/instance/status_cfn\n",
-          "echo 'User Data Version v", {"Ref": "Version"}, "'\n",
 
           "signal_exit(){\n",
           "  /usr/local/bin/cfn-signal --exit-code ${1:-0}",
