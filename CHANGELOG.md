@@ -1,3 +1,6 @@
+## Version 0.0.12 / 2016-05-10
+  * Add bash checks for desired capacities ([Vlad - 30a5446](https://github.com/vghn/puppet/commit/30a5446a5de2b3a3db6a2d2d26e147391e3861ee))
+
 ## Version 0.0.11 / 2016-05-10
   * Read the existing asg and ecs capacities ([Vlad - 43c3c8e](https://github.com/vghn/puppet/commit/43c3c8ecf9dc04ece9134f67fe0acaf975cd352b))
 
