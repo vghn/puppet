@@ -1,3 +1,6 @@
+## Version 0.0.11 / 2016-05-10
+  * Read the existing asg and ecs capacities ([Vlad - 43c3c8e](https://github.com/vghn/puppet/commit/43c3c8ecf9dc04ece9134f67fe0acaf975cd352b))
+
 ## Version 0.0.10 / 2016-05-10
   * Separate CI User ([Vlad - 5b94209](https://github.com/vghn/puppet/commit/5b94209f72e5cecb527b90404fbd2e81ff5da81e))
 

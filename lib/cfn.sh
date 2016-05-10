@@ -70,3 +70,27 @@ usage(){
 check_stack_name(){
   [[ -n "$CFN_STACK_ALIAS" ]] || usage
 }
+
+# Returns the desired capacity for the specified AutoScaling Group
+get_asg_desired_capacity(){
+  local asg
+  asg="$(vgs_aws_cfn_get_output VGH ZeusASGName)"
+  aws autoscaling describe-auto-scaling-groups \
+    --auto-scaling-group-names "$asg" \
+    --query "AutoScalingGroups[0].DesiredCapacity" \
+    --output text || \
+    echo 0
+}
+
+# Returns the desired running count for the specified ECS Service
+get_ecs_service_desired_running_count(){
+  local cluster service
+  cluster="$(vgs_aws_cfn_get_output VGH ECSCluster)"
+  service="$(vgs_aws_cfn_get_output VGH ECSService)"
+  aws ecs describe-services \
+    --cluster "$cluster" \
+    --services "$service" \
+    --query "services[0].runningCount" \
+    --output text || \
+    echo 0
+}

@@ -402,7 +402,7 @@
       "Description": "URL - The Load Balancer Public DNS",
       "Value": {"Fn::Join": ["", ["https://", {"Fn::GetAtt": ["ELB", "DNSName"]}]]}
     },
-    "ASGName": {
+    "ZeusASGName": {
       "Description": "The autoscaling group name",
       "Value": {"Ref": "Zeus"}
     },
