@@ -1,3 +1,6 @@
+## Version 0.0.17 / 2016-05-10
+  * Use the trusted certname fact for agent cron job ([Vlad - 743eb2e](https://github.com/vghn/puppet/commit/743eb2e41c61d5204d40e4f6125c2fa098e516fb))
+
 ## Version 0.0.16 / 2016-05-10
   * Update README ([Vlad - 19626ca](https://github.com/vghn/puppet/commit/19626caf82795e6a9a362aedec607f7375d27b30))
 
