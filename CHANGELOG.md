@@ -1,3 +1,6 @@
+## Version 0.0.14 / 2016-05-10
+  * Remove version from the stack parameters ([Vlad - 3bfc726](https://github.com/vghn/puppet/commit/3bfc726db04f9af4a16f254e2049d94330d4f6d3))
+
 ## Version 0.0.13 / 2016-05-10
   * Do not update CloudFormation on every build ([Vlad - 200d952](https://github.com/vghn/puppet/commit/200d95269d1cccddacf86f304622ee17b713a907))
 
