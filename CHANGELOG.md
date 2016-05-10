@@ -1,3 +1,6 @@
+## Version 0.0.15 / 2016-05-10
+  * Use sha for version patch ([Vlad - d9790ed](https://github.com/vghn/puppet/commit/d9790ed2aac23bf99eac115bd5d3d8cb9dfa4053))
+
 ## Version 0.0.14 / 2016-05-10
   * Remove version from the stack parameters ([Vlad - 3bfc726](https://github.com/vghn/puppet/commit/3bfc726db04f9af4a16f254e2049d94330d4f6d3))
 
