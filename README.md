@@ -24,28 +24,30 @@ Contains the hiera data files. It's intended to serve as a base only, for
 public data, with sane defaults. It should be overwritten or amended with data
 from private sources.
 
-### include/
+### lib/
 Contains various functions that can be sourced in other scripts.
 
 ### manifests/
 Contains Puppet's manifests:
   - `site.pp`: the main manifest
 
-### Puppetfile
-r10k needs this file to figure out what component modules you want from the
-Forge. The result is a modules directory containing all the modules specified in
-this file, for each environment/branch. The modules directory is listed in
-environment.conf's modulepath.
+### spec/
+Contains image tests
+
+### env.sh
+This file contains global variables.
+**All variables declared here are public**
 
 ### environment.conf
 This file can override several settings whenever the Puppet master is serving
 nodes assigned to that environment.
 [Config Files: environment.conf](https://docs.puppetlabs.com/puppet/latest/reference/config_file_environment.html)
 
-### defaults.env
-This file contains global variables. **All
-variables declared here are public**. Any sensitive information should be
-placed in an `.env` file which will overwrite the information here.
+### Puppetfile
+r10k needs this file to figure out what component modules you want from the
+Forge. The result is a modules directory containing all the modules specified in
+this file, for each environment/branch. The modules directory is listed in
+environment.conf's modulepath.
 
 ## Testing
 ### Prerequisites
