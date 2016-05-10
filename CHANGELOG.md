@@ -1,3 +1,6 @@
+## Version 0.0.16 / 2016-05-10
+  * Update README ([Vlad - 19626ca](https://github.com/vghn/puppet/commit/19626caf82795e6a9a362aedec607f7375d27b30))
+
 ## Version 0.0.15 / 2016-05-10
   * Use sha for version patch ([Vlad - d9790ed](https://github.com/vghn/puppet/commit/d9790ed2aac23bf99eac115bd5d3d8cb9dfa4053))
 
