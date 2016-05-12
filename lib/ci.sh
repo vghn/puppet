@@ -3,7 +3,8 @@
 
 # CI Install
 ci_install(){
-  ensure_awscli
+  echo 'Install AWS-CLI'
+  pip install --user --upgrade awscli
 
   cd "${APPDIR}/dist/profile" || return 1
   export BUNDLE_GEMFILE=$PWD/Gemfile

@@ -35,11 +35,3 @@ upload_hieradata(){
   e_info 'Sync hiera data'
   aws s3 sync --delete "${APPDIR}/hieradata" "${HIERADATA_S3}/${ENVTYPE}"
 }
-
-# Install AWS-CLI
-# Fix https://bugs.launchpad.net/ubuntu/+source/python-pip/+bug/1306991
-ensure_awscli(){
-  e_info 'Ensure AWS-CLI exists'
-  is_cmd pip || apt-get -qy install python-pip < /dev/null
-  pip install --upgrade pip setuptools awscli
-}
