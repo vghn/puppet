@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
 # VARs
-S3_PATH='s3://vladgh/vpm'
+HIERADATA_S3='<%= @hieradata_s3 %>'
+
+# Internals
 ENV_PATH=$(/opt/puppetlabs/bin/puppet config print environmentpath)
 AZ=$(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone)
 REGION="${AZ%?}"
@@ -11,5 +13,5 @@ for envdir in ${ENV_PATH}/*; do
   [[ -d $envdir ]] || break
   envname=$(basename "$envdir")
   /usr/local/bin/aws --region "$REGION" s3 sync --delete \
-    "${S3_PATH}/${envname}/hieradata" "${envdir}/hieradata/" || break
+    "${HIERADATA_S3}/${envname}" "${envdir}/hieradata/" || break
 done

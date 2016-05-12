@@ -1,6 +1,12 @@
 ---
 # Testing Hiera data
 
+# ENV
+HIERADATA_S3: s3://mybucket/hieradata
+LOG_SERVER: logs.server.com
+LOG_PORT: 12345
+
+# SSH
 ssh_authorized_keys:
   'test-key':
     user: vagrant
@@ -19,12 +25,17 @@ aws_cloudwatch_logs:
   TEST/System/SysLog:
     path: /var/log/syslog
 
+# Docker
 docker::docker_users: [ubuntu]
 docker_images:
   amazon/amazon-ecs-agent:
     image_tag: 'latest'
 
+# Puppet
 control_repo: 'https://github.com/vghn/puppet.git'
+csr_config:
+  test:
+    challengePassword: test
 
 # Software versions
 jq_version:             '1.5'
@@ -32,10 +43,3 @@ r10k_version:           '2.2.2'
 rvm_system_ruby:        'ruby-2.2.1'
 docker_compose_version: '1.7.0'
 docker_machine_version: '0.7.0'
-
-LOG_SERVER: 'logs.server.com'
-LOG_PORT: '12345'
-
-csr_config:
-  test:
-    challengePassword: test

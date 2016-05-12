@@ -1,0 +1,373 @@
+#!/usr/bin/env bash
+#
+# Bootstraps puppet
+#
+# USAGE:
+# git clone https://github.com/vladgh/puppet.git
+# bash bootstrap
+#
+# Environment variables:
+# PP_SERVER: [String] The URL of the Puppet Server. If `none`,
+#            the script looks for a `Puppetfile` (which will install into the
+#            default modules/ directory), for a `hieradata` containing hiera data
+#            (see the function `configure_hiera` bellow for a hierarchy of
+#            files), for a `dist` directory containing the profile and role
+#            modules, and for a `manifests` directory containing the `site.pp`
+#            file.
+# PP_ROLE: [String] Declares the role of the node as a trusted fact*
+# PP_PROJECT: [String] Declares the project name as a trusted fact*
+# PP_SECRET: [String] Declares a shared secret as a trusted fact*
+# PP_CERTNAME: [String] The certificate name for the agent.
+# PP_COLLECTION: [String] The puppet collection (default: 'pc3')
+# PP_CODENAME: [String] The distribution codename (default: `lsb_release -cs`)
+# PP_HIERADATA_S3: [String] An S3 path to the hiera data. If present, the script
+#                  will try to use `awscli` to download it. `awscli` and
+#                  credentials need to be configured.
+# PP_COLOR: [String] Use color or not in output (default: 'true';
+#           https://docs.puppetlabs.com/puppet/latest/reference/configuration.html#color)
+# ENVTYPE: [STRING] The environment (default: 'production)
+#
+# Optional Slack environment variables; if defined exit status will be send to
+# the specified webhook:
+# SLACK_WEBHOOK: [String] The Slack webhook to post to
+# SLACK_CHANNEL: [String] The Slack channel to post to
+# SLACK_USER: [String] The Slack to post as
+#
+# * Trusted facts info: https://docs.puppetlabs.com/puppet/latest/reference/lang_facts_and_builtin_vars.html#trusted-facts
+
+# Load environment
+# shellcheck disable=1091
+. /etc/lsb-release
+
+# DEFAULTS
+PP_SERVER=${PP_SERVER:-puppet}
+PP_ROLE=${PP_ROLE:-none}
+PP_PROJECT=${PP_PROJECT:-}
+PP_SECRET=${PP_SECRET:-}
+PP_CERTNAME=${PP_CERTNAME:-}
+PP_COLLECTION=${PP_COLLECTION:-pc1}
+PP_CODENAME=${PP_CODENAME:-$DISTRIB_CODENAME}
+PP_HIERADATA_S3=${PP_HIERADATA_S3:-}
+PP_COLOR=${PP_COLOR:-true}
+ENVTYPE=${ENVTYPE:-production}
+SLACK_WEBHOOK=${SLACK_WEBHOOK:-}
+SLACK_CHANNEL=${SLACK_CHANNEL:-}
+SLACK_USER=${SLACK_USER:-}
+
+# INTERNALS
+TMPDIR=$(mktemp -d 2>/dev/null || mktemp -d -t 'tmp')
+CSRTMP="${TMPDIR}/csr_attributes.yaml"
+CURDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
+PATH="/opt/puppetlabs/bin:/opt/puppetlabs/puppet/bin:/usr/local/bin:${PATH}"
+
+# Facts
+export FACTER_ROLE="${PP_ROLE}"
+export FACTER_PROJECT="${PP_PROJECT}"
+
+# Output
+e_info() { printf "  ➜  %s\n" "$@" ;}
+e_error() { printf "  ✖  %s\n" "$@" ;}
+e_warn() { printf "    %s\n" "$@" ;}
+e_abort() { e_error "$1"; return "${2:-1}" ;}
+
+# Trap exit and notify Slack
+notify_slack(){
+  local exit_code date title color text
+  exit_code=${1:-0}
+  date=$(TZ=US/Central date)
+
+  if [[ $exit_code == 0 ]]; then
+    title='SUCCESS'
+    color='#3ca553'
+  else
+    title='FAILED'
+    color='#ce0814'
+  fi
+  text="Bootstrap exited with ${exit_code} on $(hostname) @ ${date}"
+
+  if [[ -n "$SLACK_CHANNEL" ]] && \
+    [[ -n "$SLACK_USER" ]] && \
+    [[ -n "$SLACK_WEBHOOK" ]]
+  then
+    printf 'Sending Slack message... '
+    curl -s -X POST --data-urlencode "payload={\"channel\": \"#${SLACK_CHANNEL}\", \"username\": \"${SLACK_USER}\", \"icon_emoji\": \":taurus:\", \"attachments\": [{\"title\": \"${title}\", \"text\": \"${text}\", \"color\": \"${color}\"}]}" "${SLACK_WEBHOOK}" || echo 'failed'
+    echo
+  fi
+
+  echo "$title: $text"; exit "$exit_code"
+}
+
+# Sanity checks
+sanity_checks(){
+  [[ $EUID == 0 ]] || e_abort 'This script needs to run as root'
+}
+
+# Check if command exists
+is_cmd() { command -v "$@" >/dev/null 2>&1 ;}
+
+# APT update
+apt_update() { e_info 'Updating APT' && apt-get -qy update < /dev/null ;}
+
+# APT install package
+apt_install(){ e_info "Installing $*"; apt-get -qy install "$@" < /dev/null ;}
+
+# Generate certificate request attributes file
+generate_csr_attributes(){
+  e_info 'Generating a CSR Attributes file'
+
+  # Get EC2 info
+  instance_id="$(curl --max-time 2 -s http://169.254.169.254/latest/meta-data/instance-id || echo '')"
+  ami_id="$(curl --max-time 2 -s http://169.254.169.254/latest/meta-data/ami-id || echo '')"
+
+  # Define file template
+  cat > "$CSRTMP" <<CSR
+custom_attributes:
+  challengePassword: ${PP_SECRET}
+extension_requests:
+  pp_role: ${PP_ROLE}
+  pp_project: ${PP_PROJECT}
+  pp_instance_id: ${instance_id}
+  pp_image_name: ${ami_id}
+CSR
+}
+
+# Move the CSR Attributes file to the right place and set permissions
+configure_csr_attributes(){
+  e_info 'Configure the CSR Attributes file'
+  if [[ -s "$CSRTMP" ]]; then
+    chmod 600 "$CSRTMP"
+    mv "$CSRTMP" "$PP_CONFDIR"
+  fi
+}
+
+# Install Puppet release package
+install_puppet_agent(){
+  local deb_name deb_path apt_url
+  deb_name="puppetlabs-release-${PP_COLLECTION}-${PP_CODENAME}.deb"
+  deb_path="${TMPDIR}/${deb_name}"
+  apt_url='https://apt.puppetlabs.com'
+
+  if [ ! -x /opt/puppetlabs/bin/puppet ] ; then
+    e_info 'Downloading Puppet release package'
+    if !  curl -sSL -o "$deb_path" "${apt_url}/${deb_name}"; then
+      e_abort 'Could not download the release package'
+    fi
+
+    if [ -s "$deb_path" ]; then
+      e_info 'Installing Puppet release package'
+      dpkg -i "$deb_path" && rm "$deb_path"
+      apt_update && apt_install puppet-agent
+    else
+      e_abort 'Could not install Puppet release package'
+    fi
+  else
+    e_warn "Puppet is already installed - version $(puppet --version)"
+  fi
+}
+
+# Configure puppet master
+deploy_r10k(){
+  if ! is_cmd r10k; then
+    e_info 'Install R10K gem'
+    puppet resource package r10k ensure=latest provider=puppet_gem
+  fi
+
+  if ! is_cmd git; then
+    e_info 'Install git'
+    puppet resource package git ensure=latest
+  fi
+
+  if [[ -s /etc/puppetlabs/r10k/r10k.yaml ]]; then
+    e_info 'Deploy R10K'
+    r10k deploy environment --puppetfile --verbose
+  elif [[ -s "${CURDIR}/Puppetfile" ]]; then
+    e_info 'Install R10K Puppetfile'
+    ( cd "${CURDIR}" && r10k puppetfile install --verbose )
+  else
+    e_warn 'No R10K environment or Puppetfile found!'
+  fi
+}
+
+# Get Hiera Data
+get_hiera_data(){
+  [[ -n "$PP_HIERADATA_S3" ]] || return
+  e_info "Sync hiera data"
+  if ! aws s3 sync --delete "$PP_HIERADATA_S3" "${PP_ENVDIR}/hieradata"; then
+    e_warn "Could not get hiera data from ${PP_HIERADATA_S3}"
+  fi
+}
+
+# Configure hiera
+configure_hiera(){
+  [[ -s "${CURDIR}/hieradata" ]] || return
+
+  get_hiera_data
+
+  local hiera_cfg_file hiera_cfg_head
+  hiera_cfg_file="${PP_CODEDIR}/hiera.yaml"
+  hiera_cfg_head="$(sed -n '1p' "$hiera_cfg_file" 2>/dev/null)"
+
+  if [[ "$hiera_cfg_head" != '# managed by puppet' ]]; then
+    e_info 'Configure Hiera'
+    cat <<HIERACFG > "$hiera_cfg_file"
+---
+:backends:
+  - yaml
+:yaml:
+  :datadir: ${CURDIR}/hieradata
+:hierarchy:
+  - nodes/%{::trusted.certname}
+  - '%{::trusted.domainname}/%{::trusted.hostname}'
+  - roles/%{::trusted.extensions.pp_role}
+  - roles/%{::role}
+  - projects/%{::trusted.extensions.pp_project}
+  - projects/%{::project}
+  - virtual/%{::virtual}
+  - osfamily/%{::osfamily}
+  - env
+  - common
+HIERACFG
+  fi
+}
+
+# Configure puppet server address
+configure_puppet_server(){
+  if [[ "$PP_SERVER" != 'puppet' ]]; then
+    e_info "Set puppet server address - '$PP_SERVER'"
+    puppet config set server "$PP_SERVER" --section main
+  fi
+}
+
+# Configure puppet environment
+configure_puppet_environment(){
+  if [[ "$ENVTYPE" != 'production' ]]; then
+    e_info "Set puppet environment - '$ENVTYPE'"
+    mkdir -p "$PP_ENVDIR"
+    puppet config set environment "$ENVTYPE" --section main
+  fi
+}
+
+# Configure puppet certname
+configure_puppet_certname(){
+  e_info "Set puppet certname - '${PP_CERTNAME}'"
+  puppet config set certname "$PP_CERTNAME" --section main
+}
+
+# Configure agent or master
+configure_puppet(){
+  PP_CONFDIR="$(puppet config print confdir)"
+  PP_CODEDIR="$(puppet config print codedir)"
+  PP_ENVDIR="$(puppet config print environmentpath)/${ENVTYPE}"
+  PP_CERTNAME="${PP_CERTNAME:-$(puppet config print certname)}"
+
+  if [[ "$PP_SERVER" == 'none' ]]; then
+    deploy_r10k
+    configure_hiera
+  fi
+
+  configure_puppet_server
+  configure_puppet_environment
+  configure_puppet_certname
+  configure_csr_attributes
+}
+
+# Process local files
+process_local_puppet(){
+  if [[ -s "${CURDIR}/manifests/site.pp" ]]; then
+    manifest="${CURDIR}/manifests/site.pp"
+  elif [[ -s "${PP_ENVDIR}/manifests/site.pp" ]]; then
+    manifest="${PP_ENVDIR}/manifests/site.pp"
+  else
+    e_abort 'Could not find site.pp'
+  fi
+
+  if [[ -d "${CURDIR}/modules" ]] &&  [[ -d "${CURDIR}/dist" ]]; then
+    modulepath="${CURDIR}/modules:${CURDIR}/dist"
+  elif [[ -d "${PP_ENVDIR}/modules" ]] && [[ -d "${PP_ENVDIR}/dist" ]]; then
+    modulepath="${PP_ENVDIR}/modules:${PP_ENVDIR}/dist"
+  else
+    e_abort 'Could not create modulepath'
+  fi
+}
+
+# Process the exit code
+process_exit_code(){
+  local exit_code="${1:?}"
+  if [[ $exit_code == 0 ]]; then
+    e_info 'The run succeeded with no changes or failures'
+  elif [[ $exit_code == 1 ]]; then
+    e_abort 'The run failed'
+  elif [[ $exit_code == 2 ]]; then
+    e_info 'The run succeeded, and some resources were changed'
+  elif [[ $exit_code == 4 ]]; then
+    e_abort 'The run succeeded, and some resources failed'
+  elif [[ $exit_code == 6 ]]; then
+    e_abort 'The run succeeded, and included both changes and failures'
+  else
+    e_abort 'Unknown run exit code'
+  fi
+}
+
+# Apply puppet
+apply_puppet(){
+  local exit_code
+  exit_code=0
+
+  process_local_puppet
+
+  e_info 'Applying puppet'
+  puppet apply \
+    --verbose \
+    --report \
+    --show_diff \
+    --summarize \
+    --detailed-exitcodes \
+    --color="$PP_COLOR" \
+    --environment="${ENVTYPE}" \
+    --modulepath "$modulepath" \
+    "$manifest" || exit_code=$?
+
+  process_exit_code "$exit_code"
+}
+
+# Run puppet
+run_puppet(){
+  local exit_code
+  exit_code=0
+
+  e_info 'Running puppet'
+  puppet agent \
+    --server "$PP_SERVER" \
+    --environment="$ENVTYPE" \
+    --waitforcert 10 \
+    --no-daemonize \
+    --onetime \
+    --report \
+    --show_diff \
+    --summarize \
+    --detailed-exitcodes \
+    --color="$PP_COLOR" \
+    --verbose || exit_code=$?
+
+  process_exit_code "$exit_code"
+}
+
+# Logic
+main(){
+  trap 'notify_slack $?' EXIT TERM INT
+  sanity_checks
+
+  generate_csr_attributes
+
+  install_puppet_agent
+  configure_puppet
+
+  if [[ "$PP_SERVER" == 'none' ]]; then
+    apply_puppet
+  else
+    run_puppet
+  fi
+}
+
+# Run
+main "$@"

@@ -3,4 +3,3 @@
 class role::tethys {
   include ::profile::vm
 }
-

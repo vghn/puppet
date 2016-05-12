@@ -1,13 +1,13 @@
 language: ruby
 rvm:
-  - 2.2
+- 2.2
 install: bin/ci install
 script: bin/ci test
 after_success: bin/ci deploy
 env: PUPPET_GEM_VERSION="~> 4.0"
 cache:
   directories:
-  - $HOME/.cache/pip
+  - "$HOME/.cache/pip"
   - dist/profile/vendor
   - dist/profile/spec/fixtures/modules
 notifications:

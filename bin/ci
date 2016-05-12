@@ -3,7 +3,7 @@
 
 # Load environment
 # shellcheck disable=1090
-. "$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd -P)/env.sh"
+. "$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd -P)/envrc"
 
 # Process arguments
 case "${1:-}" in

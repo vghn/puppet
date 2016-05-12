@@ -1,0 +1,78 @@
+#!/usr/bin/env bash
+
+# Bash strict mode
+set -euo pipefail
+IFS=$'\n\t'
+
+# Project
+export PROJECT_NAME='puppet'
+
+# Paths
+export APPDIR TMPDIR PATH
+APPDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
+TMPDIR=$(mktemp -d 2>/dev/null || mktemp -d -t 'tmp')
+PATH="/opt/puppetlabs/bin:/opt/puppetlabs/puppet/bin:/usr/local/bin:${PATH}"
+
+# Load functions
+for file in ${APPDIR}/lib/*.sh; do
+  # shellcheck disable=1090
+  . "$file"
+done
+
+# shellcheck disable=1090,1091
+. /opt/vgs/load 2>/dev/null || . ~/vgs/load 2>/dev/null || ensure_vgs || true
+
+# Load private environment
+eval "$(vgs_parse_yaml "${APPDIR}/hieradata/env.yaml")"
+
+# Detect environment
+GIT_BRANCH=$(git symbolic-ref --short HEAD 2>/dev/null || echo '')
+GIT_SHA1=$(git rev-parse --short HEAD 2>/dev/null || echo '0')
+TRAVIS_BRANCH="${TRAVIS_BRANCH:-}"
+DEPLOYMENT_GROUP_NAME="${DEPLOYMENT_GROUP_NAME:-}"
+
+## Detect if git directory or if Travis CI or if AWS CodeDeploy
+if [[ -n "${ENVTYPE:-}" ]]; then
+  ENVTYPE="$ENVTYPE"
+elif [[ -n "${GIT_BRANCH:-}" ]]; then
+  ENVTYPE="$GIT_BRANCH"
+elif [[ -n "${TRAVIS_BRANCH:-}" ]]; then
+  ENVTYPE="$TRAVIS_BRANCH"
+elif [[ -n "${CIRCLE_BRANCH:-}" ]]; then
+  ENVTYPE="$CIRCLE_BRANCH"
+elif [[ -n "${DEPLOYMENT_GROUP_NAME:-}" ]]; then
+  ENVTYPE="$DEPLOYMENT_GROUP_NAME"
+else
+  ENVTYPE=${ENVTYPE:-production}
+fi
+
+## Rename 'master' to 'production'
+if [[ "$ENVTYPE" == 'master' ]]; then
+  export ENVTYPE='production'
+fi
+
+# CI
+export CI=${CI:-false}
+export PR=false
+export BUILD=${GIT_SHA1:-0}
+if [[ ${CIRCLECI:-false} == true ]]; then
+  export PR=${CIRCLE_PR_NUMBER}
+  export BUILD=${CIRCLE_BUILD_NUM}
+  git config --global user.name "CircleCI"
+elif [[ ${TRAVIS:-false} == true ]]; then
+  export PR=${TRAVIS_PULL_REQUEST}
+  export BUILD=${TRAVIS_BUILD_NUMBER}
+  git config --global user.name "TravisCI"
+fi
+
+# Slack Incoming Web Hook URL
+export SLACK_CHANNEL="${SLACK_CHANNEL:-}"
+export SLACK_USER="${SLACK_USER:-}"
+export SLACK_WEBHOOK="${SLACK_WEBHOOK:-}"
+
+# AWS
+export AWS_DEFAULT_REGION="${AWS_DEFAULT_REGION:-us-east-1}"
+
+# AWS S3
+export AWS_ASSETS_BUCKET="${AWS_ASSETS_BUCKET:?}"
+export HIERADATA_S3="${HIERADATA_S3:-s3://${AWS_ASSETS_BUCKET}/hieradata}"

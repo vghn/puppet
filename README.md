@@ -11,9 +11,6 @@ Vlad's Puppet Control Repo.
 ### bin/
 Contains various executable scripts.
 
-### cfn/
-Contains AWS CloudFormation templates.
-
 ### dist/
 Contains organization-specific roles and profiles.
 This directory is specified as a modulepath in environment.conf
@@ -31,17 +28,17 @@ Contains various functions that can be sourced in other scripts.
 Contains Puppet's manifests:
   - `site.pp`: the main manifest
 
-### spec/
-Contains image tests
-
-### env.sh
-This file contains global variables.
-**All variables declared here are public**
+### boostrap
+The bootstrap script. For usage, read the comments at the top of the script.
 
 ### environment.conf
 This file can override several settings whenever the Puppet master is serving
 nodes assigned to that environment.
 [Config Files: environment.conf](https://docs.puppetlabs.com/puppet/latest/reference/config_file_environment.html)
+
+### envrc
+This file contains global variables.
+**All variables declared here are public**
 
 ### Puppetfile
 r10k needs this file to figure out what component modules you want from the

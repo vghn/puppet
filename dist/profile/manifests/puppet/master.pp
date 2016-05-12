@@ -18,12 +18,13 @@ class profile::puppet::master {
       'projects/%{::project}',
       'virtual/%{::virtual}',
       'osfamily/%{::osfamily}',
-      'private',
+      'env',
       'common',
     ],
   }
 
   # Install post run hook
+  $hieradata_s3 = hiera('HIERADATA_S3')
   file {'R10k Post Run Hook':
     ensure  => present,
     path    => '/usr/local/bin/r10k-post-run',

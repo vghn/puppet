@@ -8,13 +8,13 @@ if $::trusted['authenticated'] == 'remote' {
 }
 
 # Exec defaults:
-Exec { path => '/usr/local/bin:/usr/bin:/usr/sbin/:/bin:/sbin' }
+Exec {path => '/usr/local/bin:/usr/bin:/usr/sbin/:/bin:/sbin'}
 
 # DEFAULT NODE
 node default {
   if !empty( $::real_role ) {
     include "::role::${::real_role}"
   } else {
-    fail('The \'pp_role\' or the \'role\' fact could not be found!')
+    fail('No valid role found!')
   }
 }
