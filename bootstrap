@@ -183,6 +183,7 @@ deploy_r10k(){
   elif [[ -s "${CURDIR}/Puppetfile" ]]; then
     e_info 'Install R10K Puppetfile'
     ( cd "${CURDIR}" && r10k puppetfile install --verbose )
+    configure_hiera
   else
     e_warn 'No R10K environment or Puppetfile found!'
   fi
@@ -190,43 +191,27 @@ deploy_r10k(){
 
 # Get Hiera Data
 get_hiera_data(){
-  [[ -n "$PP_HIERADATA_S3" ]] || return
   e_info "Sync hiera data"
-  if ! aws s3 sync --delete "$PP_HIERADATA_S3" "${PP_ENVDIR}/hieradata"; then
+  if ! aws s3 sync --delete "$PP_HIERADATA_S3" "${CURDIR}/hieradata"; then
     e_warn "Could not get hiera data from ${PP_HIERADATA_S3}"
   fi
 }
 
 # Configure hiera
 configure_hiera(){
-  [[ -s "${CURDIR}/hieradata" ]] || return
+  # Get Hiera Data
+  if [[ -n "$PP_HIERADATA_S3" ]]; then
+    get_hiera_data
+  fi
 
-  get_hiera_data
+  # Replace hiera.yaml
+  if [[ -s "${CURDIR}/hiera.yaml" ]]; then
+    cp -fr "${CURDIR}/hiera.yaml" "${PP_CODEDIR}/hiera.yaml"
+  fi
 
-  local hiera_cfg_file hiera_cfg_head
-  hiera_cfg_file="${PP_CODEDIR}/hiera.yaml"
-  hiera_cfg_head="$(sed -n '1p' "$hiera_cfg_file" 2>/dev/null)"
-
-  if [[ "$hiera_cfg_head" != '# managed by puppet' ]]; then
-    e_info 'Configure Hiera'
-    cat <<HIERACFG > "$hiera_cfg_file"
----
-:backends:
-  - yaml
-:yaml:
-  :datadir: ${CURDIR}/hieradata
-:hierarchy:
-  - nodes/%{::trusted.certname}
-  - '%{::trusted.domainname}/%{::trusted.hostname}'
-  - roles/%{::trusted.extensions.pp_role}
-  - roles/%{::role}
-  - projects/%{::trusted.extensions.pp_project}
-  - projects/%{::project}
-  - virtual/%{::virtual}
-  - osfamily/%{::osfamily}
-  - env
-  - common
-HIERACFG
+  # Replace hieradata
+  if [[ -d "${CURDIR}/hieradata" ]]; then
+    cp -fr "${CURDIR}/hieradata" "${PP_ENVDIR}/hieradata"
   fi
 }
 
@@ -262,7 +247,7 @@ configure_puppet(){
 
   if [[ "$PP_SERVER" == 'none' ]]; then
     deploy_r10k
-    configure_hiera
+    configure_local_puppet
   fi
 
   configure_puppet_server
@@ -272,7 +257,7 @@ configure_puppet(){
 }
 
 # Process local files
-process_local_puppet(){
+configure_local_puppet(){
   if [[ -s "${CURDIR}/manifests/site.pp" ]]; then
     manifest="${CURDIR}/manifests/site.pp"
   elif [[ -s "${PP_ENVDIR}/manifests/site.pp" ]]; then
@@ -312,8 +297,6 @@ process_exit_code(){
 apply_puppet(){
   local exit_code
   exit_code=0
-
-  process_local_puppet
 
   e_info 'Applying puppet'
   puppet apply \
@@ -358,7 +341,6 @@ main(){
   sanity_checks
 
   generate_csr_attributes
-
   install_puppet_agent
   configure_puppet
 

@@ -1,28 +1,5 @@
 # Puppet Master Class
 class profile::puppet::master {
-  # Hiera config
-  $hiera_data_dir = "${::settings::environmentpath}/%{::environment}/hieradata"
-  class {'::hiera':
-    datadir            => $hiera_data_dir,
-    hiera_yaml         => "${::settings::codedir}/hiera.yaml",
-    puppet_conf_manage => false,
-    create_symlink     => false,
-    owner              => 'root',
-    group              => 'root',
-    hierarchy          => [
-      'nodes/%{::trusted.certname}',
-      '%{::trusted.domainname}/%{::trusted.hostname}',
-      'roles/%{::trusted.extensions.pp_role}',
-      'roles/%{::role}',
-      'projects/%{::trusted.extensions.pp_project}',
-      'projects/%{::project}',
-      'virtual/%{::virtual}',
-      'osfamily/%{::osfamily}',
-      'env',
-      'common',
-    ],
-  }
-
   # Install post run hook
   $hieradata_s3 = hiera('HIERADATA_S3')
   file {'R10k Post Run Hook':
