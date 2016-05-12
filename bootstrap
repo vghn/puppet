@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 #
-# Bootstraps puppet
+# Bootstraps puppet. It allows tu run puppet agent with a remote server, or
+# apply local manifests.
 #
 # USAGE:
 # git clone https://github.com/vladgh/puppet.git
@@ -9,7 +10,7 @@
 # Environment variables:
 # PP_SERVER: [String] The URL of the Puppet Server. If `none`,
 #            the script looks for a `Puppetfile` (which will install into the
-#            default modules/ directory), for a `hieradata` containing hiera data
+#            default modules/ directory), for a `hieradata` containing hieradata
 #            (see the function `configure_hiera` bellow for a hierarchy of
 #            files), for a `dist` directory containing the profile and role
 #            modules, and for a `manifests` directory containing the `site.pp`
