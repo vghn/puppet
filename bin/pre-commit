@@ -194,9 +194,8 @@ for file in $(git diff --name-only --cached | grep -E '\.sh$'); do
 done
 echo ""
 
-# Status
-
-if [[ $syntax_is_bad -eq 1 ]]; then
+# Report
+if [[ ${syntax_is_bad:-0} -eq 1 ]]; then
   echo
   echo "################################################################"
   echo -e "### \033[31mPlease fix the errors above before committing your code.\033[0m ###"
