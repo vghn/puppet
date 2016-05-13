@@ -278,7 +278,7 @@ configure_local_puppet(){
 
 # Process the exit code
 process_exit_code(){
-  local exit_code="${1:?}"
+  local exit_code="${1}"
   if [[ $exit_code == 0 ]]; then
     e_info 'The run succeeded with no changes or failures'
   elif [[ $exit_code == 1 ]]; then
