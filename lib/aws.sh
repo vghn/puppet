@@ -4,9 +4,9 @@
 # EC2 Run Command
 aws_ec2_send_run_command(){
   local role comm desc
-  role=${1:?}
-  desc=${2:?}
-  comm=${3:?}
+  role="$1"
+  desc="$2"
+  comm="$3"
 
   e_info "Looking for instances tagged ${role}"
   ids=$(aws ec2 describe-instances \

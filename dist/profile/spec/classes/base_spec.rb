@@ -4,11 +4,7 @@ describe 'profile::base' do
   context 'supported operating systems' do
     on_supported_os.each do |os, facts|
       context "on #{os}" do
-        let(:facts) do
-          facts.merge(
-            ec2_metadata: { placement: { :'availability-zone' => 'us-east-1' } }
-          )
-        end
+        let(:facts) { facts }
 
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to contain_class('profile::base') }
@@ -25,6 +21,12 @@ describe 'profile::base' do
         it { is_expected.to contain_package('unzip') }
 
         it { is_expected.to contain_ssh_authorized_key('test-key') }
+
+        it { is_expected.to contain_class('rsyslog::client') }
+        it do
+          is_expected.to contain_rsyslog__imfile('Testing')
+            .with_file_name('/var/log/test.log')
+        end
       end
     end
   end
