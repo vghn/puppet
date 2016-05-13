@@ -21,8 +21,8 @@ class profile::base {
   create_resources(ssh_authorized_key, $ssh_authorized_keys)
 
   # Papertrail Logging
-  $log_server_address = hiera('LOG_SERVER', undef)
-  $log_server_port = hiera('LOG_PORT', undef)
+  $log_server_address = hiera('log_server_address', undef)
+  $log_server_port = hiera('log_server_address', undef)
   if ($log_server_port and $log_server_port) {
     class{'::rsyslog::client':
       remote_servers => [

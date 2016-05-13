@@ -5,6 +5,10 @@
 hieradata_bucket: mybucket
 hieradata_prefix: hieradata
 
+# Centralized Logging
+log_server_address: my.logserver.com
+log_server_address: 514
+
 # SSH
 ssh_authorized_keys:
   'test-key':
