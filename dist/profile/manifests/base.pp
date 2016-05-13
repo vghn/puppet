@@ -23,7 +23,7 @@ class profile::base {
   # Papertrail Logging
   $log_server_address = hiera('log_server_address', undef)
   $log_server_port = hiera('log_server_port', undef)
-  if ($log_server_port and $log_server_port) {
+  if ($log_server_address and $log_server_port) {
     class{'::rsyslog::client':
       remote_servers => [
         {
@@ -33,5 +33,9 @@ class profile::base {
         },
       ],
     }
+
+    # monitored file log instance resources
+    $logfile_instances = hiera('rsyslog::imfile', {})
+    create_resources(rsyslog::imfile, $logfile_instances)
   }
 }
