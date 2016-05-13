@@ -1,10 +1,9 @@
 ---
 # Testing Hiera data
 
-# ENV
-HIERADATA_S3: s3://mybucket/hieradata
-LOG_SERVER: logs.server.com
-LOG_PORT: 12345
+# Hieradata
+hieradata_bucket: mybucket
+hieradata_prefix: hieradata
 
 # SSH
 ssh_authorized_keys:
@@ -33,6 +32,8 @@ docker_images:
 
 # Puppet
 control_repo: 'https://github.com/vghn/puppet.git'
+
+  # Certificate Authority CSR Sign
 csr_config:
   test:
     challengePassword: test

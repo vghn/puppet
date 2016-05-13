@@ -1,7 +1,8 @@
 # Puppet Master Class
 class profile::puppet::master {
   # Install post run hook
-  $hieradata_s3 = hiera('HIERADATA_S3')
+  $hieradata_bucket = hiera('hieradata_bucket')
+  $hieradata_prefix = hiera('hieradata_prefix')
   file {'R10k Post Run Hook':
     ensure  => present,
     path    => '/usr/local/bin/r10k-post-run',
