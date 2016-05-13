@@ -7,14 +7,7 @@ hieradata_prefix: hieradata
 
 # Centralized Logging
 log_server_address: my.logserver.com
-log_server_address: 514
-
-# SSH
-ssh_authorized_keys:
-  'test-key':
-    user: vagrant
-    type: ssh-rsa
-    key: ABC
+log_server_port: 514
 
 # RSysLog Files
 rsyslog::imfile:
@@ -22,6 +15,13 @@ rsyslog::imfile:
     file_name: /var/log/test.log
     file_tag: test
     file_facility: local0
+
+# SSH
+ssh_authorized_keys:
+  'test-key':
+    user: vagrant
+    type: ssh-rsa
+    key: ABC
 
 # CloudWatch Logs
 aws_cloudwatch_logs:
