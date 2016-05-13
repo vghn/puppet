@@ -4,26 +4,20 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-# Project
-export PROJECT_NAME='puppet'
-
 # Paths
 export APPDIR TMPDIR PATH
 APPDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
 TMPDIR=$(mktemp -d 2>/dev/null || mktemp -d -t 'tmp')
-PATH="/opt/puppetlabs/bin:/opt/puppetlabs/puppet/bin:/usr/local/bin:${PATH}"
+
+# Load VGS library
+# shellcheck disable=1090,1091
+. /opt/vgs/load 2>/dev/null || . ~/vgs/load 2>/dev/null || true
 
 # Load functions
 for file in ${APPDIR}/lib/*.sh; do
   # shellcheck disable=1090
   . "$file"
 done
-
-# shellcheck disable=1090,1091
-. /opt/vgs/load 2>/dev/null || . ~/vgs/load 2>/dev/null || ensure_vgs || true
-
-# Load private environment
-eval "$(vgs_parse_yaml "${APPDIR}/hieradata/env.yaml")"
 
 # Detect environment
 GIT_BRANCH=$(git symbolic-ref --short HEAD 2>/dev/null || echo '')
@@ -65,14 +59,8 @@ elif [[ ${TRAVIS:-false} == true ]]; then
   git config --global user.name "TravisCI"
 fi
 
-# Slack Incoming Web Hook URL
-export SLACK_CHANNEL="${SLACK_CHANNEL:-}"
-export SLACK_USER="${SLACK_USER:-}"
-export SLACK_WEBHOOK="${SLACK_WEBHOOK:-}"
-
 # AWS
 export AWS_DEFAULT_REGION="${AWS_DEFAULT_REGION:-us-east-1}"
-
-# AWS S3
+## AWS S3
 export AWS_ASSETS_BUCKET="${AWS_ASSETS_BUCKET:?}"
 export HIERADATA_S3="${HIERADATA_S3:-s3://${AWS_ASSETS_BUCKET}/hieradata}"

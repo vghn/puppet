@@ -3,6 +3,10 @@
 
 # CI Install
 ci_install(){
+  echo 'Installing VGS library'
+  mkdir -p ~/vgs
+  wget -qO- https://s3.amazonaws.com/vghn/vgs.tgz | tar xz -C ~/vgs
+
   echo 'Install AWS-CLI'
   pip install --user --upgrade awscli
 

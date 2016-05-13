@@ -12,5 +12,4 @@
   - projects/%{::project}
   - virtual/%{::virtual}
   - osfamily/%{::osfamily}
-  - env
   - common
