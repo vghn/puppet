@@ -3,7 +3,6 @@ class role::zeus {
   include ::profile::aws::cloudformation
   include ::profile::aws::ssm
   include ::profile::base
-  include ::profile::ec2
   include ::profile::docker
   include ::profile::git
   include ::profile::jq
