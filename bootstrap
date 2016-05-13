@@ -66,9 +66,9 @@ export FACTER_ROLE="${PP_ROLE}"
 export FACTER_PROJECT="${PP_PROJECT}"
 
 # Output
-e_info() { printf "  ➜  %s\n" "$@" ;}
+e_info()  { printf "  ➜  %s\n" "$@" ;}
 e_error() { printf "  ✖  %s\n" "$@" ;}
-e_warn() { printf "    %s\n" "$@" ;}
+e_warn()  { printf "    %s\n" "$@" ;}
 e_abort() { e_error "$1"; return "${2:-1}" ;}
 
 # Trap exit and notify Slack
@@ -184,7 +184,6 @@ deploy_r10k(){
   elif [[ -s "${CURDIR}/Puppetfile" ]]; then
     e_info 'Install R10K Puppetfile'
     ( cd "${CURDIR}" && r10k puppetfile install --verbose )
-    configure_hiera
   else
     e_warn 'No R10K environment or Puppetfile found!'
   fi
@@ -247,6 +246,7 @@ configure_puppet(){
   PP_CERTNAME="${PP_CERTNAME:-$(puppet config print certname)}"
 
   if [[ "$PP_SERVER" == 'none' ]]; then
+    configure_hiera
     deploy_r10k
     configure_local_puppet
   fi
