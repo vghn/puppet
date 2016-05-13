@@ -12,7 +12,7 @@ ci_install(){
 
   cd "${APPDIR}/dist/profile" || return 1
   export BUNDLE_GEMFILE=$PWD/Gemfile
-  e_info 'Install required testing gems'
+  echo 'Install required testing gems'
   bundle install --without development system_tests --path vendor
 }
 
