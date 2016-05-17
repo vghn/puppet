@@ -13,12 +13,13 @@ describe 'profile::base' do
         it { is_expected.to contain_class('ntp') }
 
         it { is_expected.to contain_package('curl') }
-        it { is_expected.to contain_package('nfs-common') }
+        it { is_expected.to contain_package('htop') }
         it { is_expected.to contain_package('mysql-client') }
-        it { is_expected.to contain_package('wget') }
+        it { is_expected.to contain_package('nfs-common') }
         it { is_expected.to contain_package('tmux') }
-        it { is_expected.to contain_package('vim') }
         it { is_expected.to contain_package('unzip') }
+        it { is_expected.to contain_package('vim') }
+        it { is_expected.to contain_package('wget') }
 
         it { is_expected.to contain_ssh_authorized_key('test-key') }
 
