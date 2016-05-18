@@ -23,6 +23,7 @@ describe 'profile::puppet::master' do
             .to contain_exec('R10K deploy environment')
             .with_command('/opt/puppetlabs/puppet/bin/r10k ' \
               'deploy environment --puppetfile --verbose')
+            .with_user('root')
         end
 
         it { is_expected.to contain_file('/etc/puppetlabs') }
