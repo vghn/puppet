@@ -17,7 +17,7 @@ shared_examples 'profile::aws::s3fs' do
   end
   describe file('/etc/fstab') do
     its(:content) do
-      should match(%r{s3fs#mybucket\s*\/mnt\/s3_mybucket\s*fuse\s*})
+      should match(%r{mybucket\s*\/mnt\/s3_mybucket\s*fuse\.s3fs\s*})
     end
   end
 end
