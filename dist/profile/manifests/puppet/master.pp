@@ -12,7 +12,7 @@ class profile::puppet::master {
     content => template('profile/r10k-post-run.sh.erb'),
   }
 
-  # Install, configure and deploy R10K
+  # Install and configure R10K
   $control_repo = hiera('control_repo')
   $r10k_version = hiera('r10k_version', 'latest')
   class {'::r10k':
@@ -28,10 +28,12 @@ class profile::puppet::master {
     provider => 'puppet_gem',
     version  => $r10k_version,
     require  => File['R10k Post Run Hook'],
-  } ~>
+  }
+
+  # Deploy R10K
   exec {'R10K deploy environment':
     command   => '/opt/puppetlabs/puppet/bin/r10k deploy environment --puppetfile --verbose',
-    creates   => "${::settings::environmentpath}/production/Puppetfile",
+    creates   => "${::settings::environmentpath}/production/.r10k-deploy.json",
     logoutput => true,
     timeout   => 600,
     require   => Package['r10k'],
