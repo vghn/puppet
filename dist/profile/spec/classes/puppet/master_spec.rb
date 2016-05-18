@@ -18,6 +18,12 @@ describe 'profile::puppet::master' do
             .with_owner('root')
             .with_mode('0755')
         end
+        it do
+          is_expected
+            .to contain_exec('R10K deploy environment')
+            .with_command('/opt/puppetlabs/puppet/bin/r10k ' \
+              'deploy environment --puppetfile --verbose')
+        end
 
         it { is_expected.to contain_file('/etc/puppetlabs') }
         it { is_expected.to contain_file('/etc/puppetlabs/csr') }

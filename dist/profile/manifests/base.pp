@@ -8,12 +8,13 @@ class profile::base {
   # Ensure essential packages
   ensure_packages([
     'curl',
-    'nfs-common',
+    'htop',
     'mysql-client',
-    'wget',
+    'nfs-common',
     'tmux',
-    'vim',
     'unzip',
+    'vim',
+    'wget',
   ])
 
   # SSH Keys
