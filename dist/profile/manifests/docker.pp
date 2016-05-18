@@ -8,8 +8,14 @@ class profile::docker {
       tcp_bind    => 'tcp://0.0.0.0:2375',
       socket_bind => 'unix:///var/run/docker.sock',
     }
+
+    # Pull images
     $docker_images = hiera('docker_images', {})
     create_resources(docker::image, $docker_images)
+
+    # Run containers
+    $docker_run = hiera('docker_run', {})
+    create_resources(docker::run, $docker_run)
 
     # Docker Compose
     $docker_compose_version = hiera('docker_compose_version')

@@ -6,7 +6,7 @@ control_repo: 'https://github.com/vghn/puppet.git'
 
 # Software versions
 jq_version:             '1.5'
-r10k_version:           '2.2.2'
+r10k_version:           '2.3.0'
 rvm_system_ruby:        'ruby-2.2.1'
-docker_compose_version: '1.7.0'
+docker_compose_version: '1.7.1'
 docker_machine_version: '0.7.0'
