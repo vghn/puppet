@@ -12,9 +12,10 @@ RSpec.configure do |c|
   spec_dir = File.expand_path(File.dirname(__FILE__))
   profiles_root = File.expand_path(File.join(spec_dir, '..'))
   modules_dir = File.join(spec_dir, 'fixtures/modules')
-  host_modules_dir = '/etc/puppetlabs/code/environments/production/modules'
+  production_dir = '/etc/puppetlabs/code/environments/production'
+  host_modules_dir = "#{production_dir}/modules"
   hieradata_dir = File.join(spec_dir, 'fixtures/hieradata')
-  host_hieradata_dir = '/etc/puppetlabs/code/environments/production/hieradata'
+  host_hieradata_dir = "#{production_dir}/hieradata"
 
   # Readable test descriptions
   c.formatter = :documentation
@@ -46,6 +47,10 @@ RSpec.configure do |c|
         target_module_path: host_modules_dir,
         module_name: 'profile'
       )
+
+      # Prevent R10k deployment
+      shell "touch #{production_dir}/.r10k-deploy.json",
+            accept_all_exit_codes: true
     end
   end
 end
