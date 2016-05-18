@@ -4,6 +4,7 @@
 # AWS
 assets_bucket: mybucket
 iam_instance_role: MyInstanceRole
+ecs_cluster: default
 
 # Hieradata
 hieradata_bucket: mybucket
@@ -33,10 +34,14 @@ aws_cloudwatch_logs:
     path: /var/log/syslog
 
 # Docker
-docker::docker_users: [ubuntu]
+docker::docker_users: [vagrant]
 docker_images:
-  amazon/amazon-ecs-agent:
+  busybox:
     image_tag: 'latest'
+docker_run:
+  test:
+    image: 'busybox:latest'
+    command: '/bin/sh -c "while true; do echo hello; sleep 1; done"'
 
 # Puppet
 control_repo: 'https://github.com/vghn/puppet.git'
@@ -48,7 +53,7 @@ csr_config:
 
 # Software versions
 jq_version:             '1.5'
-r10k_version:           '2.2.2'
+r10k_version:           '2.3.0'
 rvm_system_ruby:        'ruby-2.2.1'
-docker_compose_version: '1.7.0'
+docker_compose_version: '1.7.1'
 docker_machine_version: '0.7.0'

@@ -12,7 +12,8 @@ describe 'profile::docker' do
         it { is_expected.to contain_class('docker') }
         it { is_expected.to contain_class('docker::compose') }
 
-        it { is_expected.to contain_docker__image('amazon/amazon-ecs-agent') }
+        it { is_expected.to contain_docker__image('busybox') }
+        it { is_expected.to contain_docker__run('test') }
         it do
           is_expected.to contain_file('/usr/local/bin/update_docker_image.sh')
         end
@@ -21,7 +22,7 @@ describe 'profile::docker' do
         it { is_expected.to contain_package('apparmor') }
         it { is_expected.to contain_package('cgroup-lite') }
         it { is_expected.to contain_apt__pin('docker') }
-        it { is_expected.to contain_user('ubuntu') }
+        it { is_expected.to contain_user('vagrant') }
 
         it { is_expected.to contain_wget__fetch('Docker-Machine Binary') }
         it do
