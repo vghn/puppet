@@ -34,6 +34,7 @@ class profile::puppet::master {
   exec {'R10K deploy environment':
     command   => '/opt/puppetlabs/puppet/bin/r10k deploy environment --puppetfile --verbose',
     creates   => "${::settings::environmentpath}/production/.r10k-deploy.json",
+    user      => 'root',
     logoutput => true,
     timeout   => 600,
     require   => Package['r10k'],
