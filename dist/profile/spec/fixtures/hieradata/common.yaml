@@ -1,6 +1,10 @@
 ---
 # Testing Hiera data
 
+# AWS
+assets_bucket: mybucket
+iam_instance_role: MyInstanceRole
+
 # Hieradata
 hieradata_bucket: mybucket
 hieradata_prefix: hieradata
