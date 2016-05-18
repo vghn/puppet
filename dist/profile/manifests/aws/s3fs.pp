@@ -4,9 +4,9 @@ class profile::aws::s3fs {
   $iam_instance_role = hiera('iam_instance_role', undef)
 
   if $iam_instance_role {
-    $s3fs_mount_options = "_netdev,allow_other,use_rrs,use_cache=/tmp,iam_role=${iam_instance_role}"
+    $s3fs_mount_options = "_netdev,allow_other,use_rrs,use_cache=/tmp,iam_role=${iam_instance_role},retries=10"
   } else {
-    $s3fs_mount_options = '_netdev,allow_other,use_rrs,use_cache=/tmp'
+    $s3fs_mount_options = '_netdev,allow_other,use_rrs,use_cache=/tmp,retries=10'
   }
 
   ensure_packages([
@@ -44,8 +44,8 @@ class profile::aws::s3fs {
       ensure  => present,
       name    => "/mnt/s3_${assets_bucket}",
       atboot  => true,
-      device  => "s3fs#${assets_bucket}",
-      fstype  => 'fuse',
+      device  => $assets_bucket,
+      fstype  => 'fuse.s3fs',
       options => $s3fs_mount_options,
       require => Package['S3FS-Fuse'],
     }

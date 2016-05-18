@@ -24,8 +24,8 @@ describe 'profile::aws::s3fs' do
             .with_ensure('directory')
           is_expected.to contain_mount('Mount assets bucket')
             .with_name('/mnt/s3_mybucket')
-            .with_device('s3fs#mybucket')
-            .with_fstype('fuse')
+            .with_device('mybucket')
+            .with_fstype('fuse.s3fs')
             .with_options(/iam_role=MyInstanceRole/)
         end
       end
