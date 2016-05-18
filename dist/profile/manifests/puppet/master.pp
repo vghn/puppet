@@ -37,7 +37,7 @@ class profile::puppet::master {
     user      => 'root',
     logoutput => true,
     timeout   => 600,
-    require   => Package['r10k'],
+    require   => [ Package['r10k'], File['r10k.yaml'] ],
   }
 
   # CSR
