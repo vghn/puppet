@@ -1,3 +1,28 @@
+## Version 0.0.18 / 2016-05-19
+  * Separate puppet control repo from infrastructure ([Vlad - a0492e4](https://github.com/vghn/puppet/commit/a0492e4465aedfcd07eef55978c8f7169830b5b4))
+  * Fix aws-cli install ([Vlad - c7bb176](https://github.com/vghn/puppet/commit/c7bb176fec8c196ca0f9cf9418e97768a01d65cc))
+  * Hiera should not be managed by puppet ([Vlad - 1474274](https://github.com/vghn/puppet/commit/1474274527f141d2ebab959d8f3e14bed3bd8774))
+  * Update bootstrap ([Vlad - c96ecc2](https://github.com/vghn/puppet/commit/c96ecc21d78b4bbc37c26de71181aa7184e3b1c9))
+  * Fix pre-commit hook ([Vlad - da5d20e](https://github.com/vghn/puppet/commit/da5d20e073326358cd3edeed93322b9bcd361919))
+  * Minor changes in bootstrap script ([Vlad - 57f5c42](https://github.com/vghn/puppet/commit/57f5c42f461e270b09969cfdbab5d9a404ef3483))
+  * Improve environment ([Vlad - 65f061b](https://github.com/vghn/puppet/commit/65f061bbdaff3d5013e0da16cfa211e83c689d20))
+  * Fix ci install script ([Vlad - 44f8293](https://github.com/vghn/puppet/commit/44f8293ca890562aa3f63422afd51cb4b850c5e6))
+  * Fix hieradata ([Vlad - 5860a34](https://github.com/vghn/puppet/commit/5860a34f6332648bccadcab10aecd04631385ab4))
+  * Fix logging ([Vlad - d75442e](https://github.com/vghn/puppet/commit/d75442e3655e77f4e80276670745b9da79c11f89))
+  * Fix logging ([Vlad - 74ffa85](https://github.com/vghn/puppet/commit/74ffa85a24d4e594811bf0e9757d9139f93529ce))
+  * Clean-up code ([Vlad - 623e19f](https://github.com/vghn/puppet/commit/623e19fa3a0e0bddcb4ca2fccacabd1c70aa2bf6))
+  * Separate the EC2 profile in multiple sub-profiles ([Vlad - e66d8e6](https://github.com/vghn/puppet/commit/e66d8e68e1630cf04ff28b63bec99acef20b4e42))
+  * Remove old ec2 profile class ([Vlad - 2e0ed28](https://github.com/vghn/puppet/commit/2e0ed28ac80652251cb63528414f1aac8ca06438))
+  * Deploy r10k after install ([Vlad - c17b133](https://github.com/vghn/puppet/commit/c17b133ec9ed79931c2f287b453b425b7e920d15))
+  * Add htop to base packages ([Vlad - 33c21f9](https://github.com/vghn/puppet/commit/33c21f91dc478f8780522b3d22b9a0f501af8ecc))
+  * Improve r10k deployment ([Vlad - 3258488](https://github.com/vghn/puppet/commit/32584883e948bd481bc761de92fd9195b4b2dad5))
+  * Improve r10k deployment ([Vlad - 967d917](https://github.com/vghn/puppet/commit/967d9174697f155da5b2df9dd9560cf07d8dad6c))
+  * Improve r10k deployment ([Vlad - 609e8ab](https://github.com/vghn/puppet/commit/609e8abeef8d09434feb7b87d19b9a65c03b1d7b))
+  * Add s3fs profile ([Vlad - bb37d45](https://github.com/vghn/puppet/commit/bb37d4567431d4e84326c65f73943938eb0f02b9))
+  * Fix s3fs mount point ([Vlad - c75b49d](https://github.com/vghn/puppet/commit/c75b49dca7edff3092df2f8cb485958c2a067b39))
+  * Improve docker container declaration ([Vlad - e1372ff](https://github.com/vghn/puppet/commit/e1372fffda5ba0d67334a985b98dcf1c9350ec42))
+  * Bring back changes log and version files ([Vlad - 4985893](https://github.com/vghn/puppet/commit/4985893a546ee6656dec1fe5d009271c10f9653c))
+
 ## Version 0.0.17 / 2016-05-10
   * Use the trusted certname fact for agent cron job ([Vlad - 743eb2e](https://github.com/vghn/puppet/commit/743eb2e41c61d5204d40e4f6125c2fa098e516fb))
 
