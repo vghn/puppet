@@ -1,6 +1,9 @@
 language: ruby
 rvm:
 - 2.2
+branches:
+  except:
+    - /^v\d/
 install: bin/ci install
 script: bin/ci test
 after_success: bin/ci deploy
