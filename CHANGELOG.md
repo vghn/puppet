@@ -1,3 +1,6 @@
+## Version 0.0.19 / 2016-05-19
+  * Do not build on release branches ([Vlad - 8605e71](https://github.com/vghn/puppet/commit/8605e71c31deaf5598dd4d015410523f60997aac))
+
 ## Version 0.0.18 / 2016-05-19
   * Separate puppet control repo from infrastructure ([Vlad - a0492e4](https://github.com/vghn/puppet/commit/a0492e4465aedfcd07eef55978c8f7169830b5b4))
   * Fix aws-cli install ([Vlad - c7bb176](https://github.com/vghn/puppet/commit/c7bb176fec8c196ca0f9cf9418e97768a01d65cc))
