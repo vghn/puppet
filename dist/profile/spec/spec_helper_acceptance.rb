@@ -30,7 +30,7 @@ RSpec.configure do |c|
         # Install PIP and upgrade it
         # Fix https://bugs.launchpad.net/ubuntu/+source/python-pip/+bug/1306991
         install_package(host, 'python-pip')
-        on(host, 'sudo pip install --upgrade pip setuptools')
+        on(host, 'pip install --user --upgrade pip setuptools')
       end
 
       # Install hieradata
