@@ -1,3 +1,12 @@
+## Version 0.0.20 / 2016-05-20
+  * Use the closest ruby version to the packaged one ([Vlad - 08c6372](https://github.com/vghn/puppet/commit/08c637271687e9503b4bf428d14eb0934e5865e7))
+  * Fix typos ([Vlad - f0d5ba4](https://github.com/vghn/puppet/commit/f0d5ba4384e6b9bb925041c82c52ce706f144374))
+  * Move hiera config to confdir ([Vlad - 734b596](https://github.com/vghn/puppet/commit/734b59671fcb80ae815d997a99a2613a15c95af4))
+  * Clean-up acceptance tests ([Vlad - e5103ac](https://github.com/vghn/puppet/commit/e5103ac63602a32edfbf1e3c418be5ba918f7fc0))
+  * Disable all puppet agent services ([Vlad - 51dfe6b](https://github.com/vghn/puppet/commit/51dfe6b7188e2926ef46ff7eabefc49df0f6c7c1))
+  * Improve autosign logs ([Vlad - 0a660f5](https://github.com/vghn/puppet/commit/0a660f58b2b23b0ace7a98daff722b830171677d))
+  * Allow regenerating ssl certificates during boostrap ([Vlad - 0f77a1f](https://github.com/vghn/puppet/commit/0f77a1f12b841d1c23fbf03ebad6cc500a74b780))
+
 ## Version 0.0.19 / 2016-05-19
   * Do not build on release branches ([Vlad - 8605e71](https://github.com/vghn/puppet/commit/8605e71c31deaf5598dd4d015410523f60997aac))
 

@@ -1,8 +1,7 @@
 HOSTS:
   mini:
-    platform: ubuntu-trusty-x64
+    platform: ubuntu-xenial-x64
     hypervisor: vagrant
-    box: puppetlabs/ubuntu-14.04-64-nocm
-    box_url: https://vagrantcloud.com/puppetlabs/boxes/ubuntu-14.04-64-nocm
+    box: ubuntu/xenial64
 CONFIG:
   type: aio

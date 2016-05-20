@@ -58,14 +58,14 @@ end
 # Sign if its a known instance
 instances_pool = ec2.instances.map(&:id)
 if instances_pool.include?(instance_id)
-  logger.info 'Node authorized based on instance id'
+  logger.info "Node authorized based on instance id (instance_id)"
   exit 0
 end
 
 # Sign if the base image is known
 ami_pool = ec2.images(owners: ['self']).map(&:id)
 if ami_pool.include?(image_name)
-  logger.info 'Node authorized based on image id'
+  logger.info "Node authorized based on image id (image_name)"
   exit 0
 end
 
