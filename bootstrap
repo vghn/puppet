@@ -206,7 +206,7 @@ configure_hiera(){
 
   # Replace hiera.yaml
   if [[ -s "${CURDIR}/hiera.yaml" ]]; then
-    cp -fr "${CURDIR}/hiera.yaml" "${PP_CODEDIR}/hiera.yaml"
+    cp -fr "${CURDIR}/hiera.yaml" "${PP_CONFDIR}/hiera.yaml"
   fi
 
   # Replace hieradata
@@ -241,7 +241,6 @@ configure_puppet_certname(){
 # Configure agent or master
 configure_puppet(){
   PP_CONFDIR="$(puppet config print confdir)"
-  PP_CODEDIR="$(puppet config print codedir)"
   PP_ENVDIR="$(puppet config print environmentpath)/${ENVTYPE}"
   PP_CERTNAME="${PP_CERTNAME:-$(puppet config print certname)}"
 
