@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Bootstraps puppet. It allows tu run puppet agent with a remote server, or
+# Bootstraps puppet. It allows to run puppet agent with a remote server, or
 # apply local manifests.
 #
 # USAGE:
@@ -19,8 +19,8 @@
 # PP_PROJECT: [String] Declares the project name as a trusted fact*
 # PP_SECRET: [String] Declares a shared secret as a trusted fact*
 # PP_CERTNAME: [String] The certificate name for the agent.
-# PP_COLLECTION: [String] The puppet collection (default: 'pc3')
-# PP_CODENAME: [String] The distribution codename (default: `lsb_release -cs`)
+# PP_COLLECTION: [String] The puppet collection (default: 'pc1')
+# PP_CODENAME: [String] The distribution code name (default: `lsb_release -cs`)
 # PP_HIERADATA_S3: [String] An S3 path to the hiera data. If present, the script
 #                  will try to use `awscli` to download it. `awscli` and
 #                  credentials need to be configured.
