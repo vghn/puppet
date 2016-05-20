@@ -21,6 +21,10 @@
 # PP_CERTNAME: [String] The certificate name for the agent.
 # PP_COLLECTION: [String] The puppet collection (default: 'pc1')
 # PP_CODENAME: [String] The distribution code name (default: `lsb_release -cs`)
+# PP_AGENT_CERT_REGEN: [Boolean] If `true`, the puppet services will be stopped,
+#                      the certificates and catalog cache will be deleted, and
+#                      puppet agent will run in `test` mode, regenerating the
+#                      certificates; https://docs.puppet.com/pe/latest/agent_cert_regen.html
 # PP_HIERADATA_S3: [String] An S3 path to the hiera data. If present, the script
 #                  will try to use `awscli` to download it. `awscli` and
 #                  credentials need to be configured.
@@ -48,6 +52,7 @@ PP_SECRET=${PP_SECRET:-}
 PP_CERTNAME=${PP_CERTNAME:-}
 PP_COLLECTION=${PP_COLLECTION:-pc1}
 PP_CODENAME=${PP_CODENAME:-$DISTRIB_CODENAME}
+PP_AGENT_CERT_REGEN=${PP_AGENT_CERT_REGEN:-false}
 PP_HIERADATA_S3=${PP_HIERADATA_S3:-}
 PP_COLOR=${PP_COLOR:-true}
 ENVTYPE=${ENVTYPE:-production}
@@ -162,7 +167,7 @@ install_puppet_agent(){
       e_abort 'Could not install Puppet release package'
     fi
   else
-    e_warn "Puppet is already installed - version $(puppet --version)"
+    e_info "Puppet is already installed - version $(puppet --version)"
   fi
 }
 
@@ -238,22 +243,20 @@ configure_puppet_certname(){
   puppet config set certname "$PP_CERTNAME" --section main
 }
 
-# Configure agent or master
-configure_puppet(){
-  PP_CONFDIR="$(puppet config print confdir)"
-  PP_ENVDIR="$(puppet config print environmentpath)/${ENVTYPE}"
-  PP_CERTNAME="${PP_CERTNAME:-$(puppet config print certname)}"
-
-  if [[ "$PP_SERVER" == 'none' ]]; then
-    configure_hiera
-    deploy_r10k
-    configure_local_puppet
+# Remove ssldir
+remove_ssldir(){
+  if [[ -d "$PP_SSLDIR" ]]; then
+    e_info "Removing SSLDIR (${PP_SSLDIR})"
+    rm -rf "$PP_SSLDIR"
   fi
+}
 
-  configure_puppet_server
-  configure_puppet_environment
-  configure_puppet_certname
-  configure_csr_attributes
+# Remove cached catalogs
+remove_cached_catalogs(){
+  if [[ -d "$PP_CLIENT_DATADIR" ]]; then
+    e_info "Removing cached catalogs (${PP_CLIENT_DATADIR})"
+    find "$PP_CLIENT_DATADIR" -type f -name "*.json" -exec rm -f {} \;
+  fi
 }
 
 # Process local files
@@ -273,6 +276,42 @@ configure_local_puppet(){
   else
     e_abort 'Could not create modulepath'
   fi
+}
+
+# Stop all puppet services
+stop_puppet_agent_services(){
+  e_info 'Stopping puppet agent'
+  puppet resource service puppet ensure=stopped
+  e_info 'Stopping mcollective agent'
+  puppet resource service mcollective ensure=stopped
+  e_info 'Stopping pxp agent'
+  puppet resource service pxp-agent ensure=stopped
+}
+
+# Configure agent or master
+configure_puppet(){
+  PP_CONFDIR="$(puppet config print confdir)"
+  PP_ENVDIR="$(puppet config print environmentpath)/${ENVTYPE}"
+  PP_CERTNAME="${PP_CERTNAME:-$(puppet config print certname)}"
+  PP_CLIENT_DATADIR="$(puppet config print client_datadir)"
+  PP_SSLDIR="$(puppet config print ssldir)"
+
+  if [[ "$PP_SERVER" == 'none' ]]; then
+    configure_hiera
+    deploy_r10k
+    configure_local_puppet
+  fi
+
+  if [[ "$PP_AGENT_CERT_REGEN" == 'true' ]]; then
+    stop_puppet_agent_services
+    remove_ssldir
+    remove_cached_catalogs
+  fi
+
+  configure_puppet_server
+  configure_puppet_environment
+  configure_puppet_certname
+  configure_csr_attributes
 }
 
 # Process the exit code
@@ -335,6 +374,20 @@ run_puppet(){
   process_exit_code "$exit_code"
 }
 
+# Run puppet in test mode
+run_puppet_test(){
+  local exit_code
+  exit_code=0
+
+  e_info 'Running puppet in test mode'
+  puppet agent \
+    --server "$PP_SERVER" \
+    --environment="$ENVTYPE" \
+    --test || exit_code=$?
+
+  process_exit_code "$exit_code"
+}
+
 # Logic
 main(){
   trap 'notify_slack $?' EXIT TERM INT
@@ -346,6 +399,8 @@ main(){
 
   if [[ "$PP_SERVER" == 'none' ]]; then
     apply_puppet
+  elif [[ "$PP_AGENT_CERT_REGEN" == 'true' ]]; then
+    run_puppet_test
   else
     run_puppet
   fi
