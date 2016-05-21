@@ -11,13 +11,7 @@ shared_examples 'profile::aws::s3fs' do
   describe package('libxml2-dev') do
     it { is_expected.to be_installed }
   end
-
   describe package('s3fs-fuse') do
     it { is_expected.to be_installed }
-  end
-  describe file('/etc/fstab') do
-    its(:content) do
-      should match(%r{mybucket\s*\/mnt\/s3_mybucket\s*fuse\.s3fs\s*})
-    end
   end
 end
