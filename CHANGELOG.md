@@ -1,3 +1,6 @@
+## Version 0.0.21 / 2016-05-21
+  * Remove assets bucket mount point ([Vlad - 52b942d](https://github.com/vghn/puppet/commit/52b942d42a4c3d8be3f63f68f01fcf01e026e06c))
+
 ## Version 0.0.20 / 2016-05-20
   * Use the closest ruby version to the packaged one ([Vlad - 08c6372](https://github.com/vghn/puppet/commit/08c637271687e9503b4bf428d14eb0934e5865e7))
   * Fix typos ([Vlad - f0d5ba4](https://github.com/vghn/puppet/commit/f0d5ba4384e6b9bb925041c82c52ce706f144374))
