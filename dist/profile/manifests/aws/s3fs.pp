@@ -1,14 +1,5 @@
 # AWS Simple Systems Manager Profile
 class profile::aws::s3fs {
-  $assets_bucket = hiera('assets_bucket', undef)
-  $iam_instance_role = hiera('iam_instance_role', undef)
-
-  if $iam_instance_role {
-    $s3fs_mount_options = "_netdev,allow_other,use_rrs,use_cache=/tmp,iam_role=${iam_instance_role},retries=10"
-  } else {
-    $s3fs_mount_options = '_netdev,allow_other,use_rrs,use_cache=/tmp,retries=10'
-  }
-
   ensure_packages([
     'libcurl4-gnutls-dev',
     'libfuse-dev',
@@ -34,20 +25,5 @@ class profile::aws::s3fs {
         'libxml2-dev',
       ]
     ],
-  }
-
-  if $assets_bucket {
-    file {"/mnt/s3_${assets_bucket}":
-      ensure => 'directory',
-    } ->
-    mount {'Mount assets bucket':
-      ensure  => present,
-      name    => "/mnt/s3_${assets_bucket}",
-      atboot  => true,
-      device  => $assets_bucket,
-      fstype  => 'fuse.s3fs',
-      options => $s3fs_mount_options,
-      require => Package['S3FS-Fuse'],
-    }
   }
 }

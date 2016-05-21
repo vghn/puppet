@@ -19,15 +19,6 @@ describe 'profile::aws::s3fs' do
             .with_name('s3fs-fuse')
             .with_provider('dpkg')
         end
-        it do
-          is_expected.to contain_file('/mnt/s3_mybucket')
-            .with_ensure('directory')
-          is_expected.to contain_mount('Mount assets bucket')
-            .with_name('/mnt/s3_mybucket')
-            .with_device('mybucket')
-            .with_fstype('fuse.s3fs')
-            .with_options(/iam_role=MyInstanceRole/)
-        end
       end
     end
   end
