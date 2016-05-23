@@ -34,10 +34,27 @@ RSpec.configure do |c|
       end
 
       # Install hieradata
-      rsync_to(host, hieradata_dir, host_hieradata_dir)
+      scp_to(host, hieradata_dir, host_hieradata_dir)
 
       # Install modules
-      rsync_to(host, modules_dir, host_modules_dir)
+      scp_to(
+        host,
+        modules_dir,
+        production_dir,
+        ignore: [
+          ".bundle",
+          ".git",
+          ".idea",
+          ".vagrant",
+          ".vendor",
+          "vendor",
+          "acceptance",
+          "bundle",
+          "spec",
+          "tests",
+          "log"
+        ]
+      )
 
       # Install profiles
       shell "rm -r #{host_modules_dir}/profile", accept_all_exit_codes: true
