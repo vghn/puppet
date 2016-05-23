@@ -12,7 +12,10 @@ describe 'profile::git' do
         it { is_expected.to contain_class('apt') }
         it { is_expected.to contain_package('software-properties-common') }
         it { is_expected.to contain_apt__ppa('ppa:git-core/ppa') }
-        it { is_expected.to contain_class('git') }
+        it do
+          is_expected.to contain_class('git')
+            .with_package_ensure('latest')
+        end
       end
     end
   end
