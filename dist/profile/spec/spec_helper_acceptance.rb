@@ -41,17 +41,17 @@ RSpec.configure do |c|
         modules_dir,
         production_dir,
         ignore: [
-          ".bundle",
-          ".git",
-          ".idea",
-          ".vagrant",
-          ".vendor",
-          "vendor",
-          "acceptance",
-          "bundle",
-          "spec",
-          "tests",
-          "log"
+          '.bundle',
+          '.git',
+          '.idea',
+          '.vagrant',
+          '.vendor',
+          'vendor',
+          'acceptance',
+          'bundle',
+          'spec',
+          'tests',
+          'log'
         ]
       )
 
