@@ -15,7 +15,6 @@ RSpec.configure do |c|
   production_dir = '/etc/puppetlabs/code/environments/production'
   host_modules_dir = "#{production_dir}/modules"
   hieradata_dir = File.join(spec_dir, 'fixtures/hieradata')
-  host_hieradata_dir = "#{production_dir}/hieradata"
 
   # Readable test descriptions
   c.formatter = :documentation
@@ -34,7 +33,7 @@ RSpec.configure do |c|
       end
 
       # Install hieradata
-      scp_to(host, hieradata_dir, host_hieradata_dir)
+      scp_to(host, hieradata_dir, production_dir)
 
       # Install modules
       scp_to(
