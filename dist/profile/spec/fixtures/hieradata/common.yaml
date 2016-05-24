@@ -19,7 +19,7 @@ rsyslog::imfile:
 # SSH
 ssh_authorized_keys:
   'test-key':
-    user: vagrant
+    user: root
     type: ssh-rsa
     key: ABC
 

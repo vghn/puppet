@@ -1,3 +1,14 @@
+## Version 0.0.22 / 2016-05-24
+  * Module updates ([Vlad - a6f7124](https://github.com/vghn/puppet/commit/a6f7124e5afd002b0e66c6d8baf516cbbdb4dd01))
+  * Ensure latest git version ([Vlad - b722130](https://github.com/vghn/puppet/commit/b7221307f69b4f7274e51b60a3ca7cf79bfc658b))
+  * Improve acceptance tests ([Vlad - e481344](https://github.com/vghn/puppet/commit/e481344bee4fd20eb0745230bb2a12b23a3c108e))
+  * Fix hieradata path in acceptance tests ([Vlad - 18f4153](https://github.com/vghn/puppet/commit/18f415390f66be62cd720824c95b93012ccb5177))
+  * Fix code style ([Vlad - c05a9b4](https://github.com/vghn/puppet/commit/c05a9b409598eb984626e86a4d3548944c9c907b))
+  * Use the binary Ruby in Travis ([Vlad - 209118e](https://github.com/vghn/puppet/commit/209118e473fa0f50ff81e0fb165109a995385b06))
+  * Fix testing fixtures config ([Vlad - cdc903f](https://github.com/vghn/puppet/commit/cdc903f78e7c6850de44bf6b12d64ee406dd76c2))
+  * Improve acceptance tests ([Vlad - 6c90fb4](https://github.com/vghn/puppet/commit/6c90fb48254585df35a00c83718e6720c81876a3))
+  * Add swap support ([Vlad - 18d1c19](https://github.com/vghn/puppet/commit/18d1c1946bd521d4964fa6c1d0547c2527a83352))
+
 ## Version 0.0.21 / 2016-05-21
   * Remove assets bucket mount point ([Vlad - 52b942d](https://github.com/vghn/puppet/commit/52b942d42a4c3d8be3f63f68f01fcf01e026e06c))
 

@@ -1,6 +1,6 @@
 HOSTS:
   mini:
-    platform: ubuntu-xenial-x64
+    platform: ubuntu-xenial-amd64
     hypervisor: vagrant
     box: ubuntu/xenial64
 CONFIG:

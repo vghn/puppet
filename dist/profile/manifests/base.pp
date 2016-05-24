@@ -11,6 +11,7 @@ class profile::base {
     'htop',
     'mysql-client',
     'nfs-common',
+    'python-pip',
     'tmux',
     'unzip',
     'vim',
