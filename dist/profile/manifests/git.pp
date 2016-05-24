@@ -1,7 +1,7 @@
 # GIT Profile
 class profile::git {
   # Latest GIT
-  include ::apt
+  require ::apt
   apt::ppa {'ppa:git-core/ppa': package_manage => true}
   class {'::git':
     package_ensure => 'latest',

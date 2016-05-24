@@ -1,6 +1,6 @@
 # CloudFormation Profile
 class profile::aws::cloudformation {
-  include ::profile::base
+  require ::profile::base
 
   # AWS CloudFormation scripts
   package {'AWS CloudFormation':
