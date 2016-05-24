@@ -1,11 +1,14 @@
 # Puppet Master Class
 class profile::puppet::master {
-  # Install post run hook
+  # VARs
   $hieradata_bucket = hiera('hieradata_bucket')
   $hieradata_prefix = hiera('hieradata_prefix')
+  $post_run_hook    = '/etc/puppetlabs/r10k/post-run.sh'
+
+  # Hooks
   file {'R10k Post Run Hook':
     ensure  => present,
-    path    => '/usr/local/bin/r10k-post-run',
+    path    => $post_run_hook,
     owner   => 'root',
     group   => 'root',
     mode    => '0755',
@@ -23,7 +26,7 @@ class profile::puppet::master {
         'prefix'  => false,
       },
     },
-    postrun  => ['/usr/local/bin/r10k-post-run'],
+    postrun  => [$post_run_hook],
     cachedir => '/opt/puppetlabs/r10k/cache',
     provider => 'puppet_gem',
     version  => $r10k_version,
