@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+#
+# Redirect stdout/stderr to a file
+exec &> /tmp/r10k_post_run.log
 
 # VARs
 ENV_PATH=$(/opt/puppetlabs/bin/puppet config print environmentpath)
