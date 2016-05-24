@@ -22,16 +22,6 @@ RSpec.configure do |c|
   # Configure all nodes in nodeset
   c.before :suite do
     hosts.each do |host|
-      # Install pip
-      if fact('operatingsystem') == 'Ubuntu' &&
-         fact('lsbdistcodename') == 'trusty' &&
-         ENV['BEAKER_provision'] != 'no'
-        # Install PIP and upgrade it
-        # Fix https://bugs.launchpad.net/ubuntu/+source/python-pip/+bug/1306991
-        install_package(host, 'python-pip')
-        on(host, 'pip install --user --upgrade pip setuptools')
-      end
-
       # Install hieradata
       scp_to(host, hieradata_dir, production_dir)
 
@@ -56,7 +46,6 @@ RSpec.configure do |c|
       )
 
       # Install profiles
-      shell "rm -r #{host_modules_dir}/profile", accept_all_exit_codes: true
       copy_module_to(
         host,
         source: profiles_root,
