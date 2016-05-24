@@ -1,14 +1,23 @@
 # Puppet Master Class
 class profile::puppet::master {
   # VARs
-  $hieradata_bucket = hiera('hieradata_bucket')
-  $hieradata_prefix = hiera('hieradata_prefix')
-  $post_run_hook    = '/etc/puppetlabs/r10k/post-run.sh'
+  $control_repo           = hiera('control_repo')
+  $hieradata_bucket       = hiera('hieradata_bucket')
+  $hieradata_prefix       = hiera('hieradata_prefix')
+  $r10k_post_run_hook     = '/etc/puppetlabs/r10k/post-run.sh'
+  $r10k_post_run_log_file = '/tmp/r10k_post_run.log'
+  $r10k_version           = hiera('r10k_version', 'latest')
+  $csr_config_file        = '/etc/puppetlabs/csr/config.yml'
+  $csr_log_file           = '/tmp/csr_sign.log'
+  $csr_config             = hiera('csr_config', {})
+
+  # Checks
+  validate_hash($csr_config)
 
   # Hooks
   file {'R10k Post Run Hook':
     ensure  => present,
-    path    => $post_run_hook,
+    path    => $r10k_post_run_hook,
     owner   => 'root',
     group   => 'root',
     mode    => '0755',
@@ -16,8 +25,6 @@ class profile::puppet::master {
   }
 
   # Install and configure R10K
-  $control_repo = hiera('control_repo')
-  $r10k_version = hiera('r10k_version', 'latest')
   class {'::r10k':
     sources  => {
       'main' => {
@@ -26,7 +33,7 @@ class profile::puppet::master {
         'prefix'  => false,
       },
     },
-    postrun  => [$post_run_hook],
+    postrun  => [$r10k_post_run_hook],
     cachedir => '/opt/puppetlabs/r10k/cache',
     provider => 'puppet_gem',
     version  => $r10k_version,
@@ -44,12 +51,6 @@ class profile::puppet::master {
   }
 
   # CSR
-  $csr_config_file = '/etc/puppetlabs/csr/config.yml'
-  $csr_log_file = '/tmp/csr_sign.log'
-  $csr_config = hiera('csr_config', {})
-  validate_hash($csr_config)
-  $csr_template = '<%= @csr_config.to_yaml %>'
-
   file {'/etc/puppetlabs':
     ensure => 'directory',
   } ->
@@ -59,7 +60,7 @@ class profile::puppet::master {
   file {'CSR Sign Config':
     ensure  => file,
     path    => $csr_config_file,
-    content => inline_template($csr_template),
+    content => inline_template('<%= @csr_config.to_yaml %>'),
   } ->
   file {'CSR Sign':
     ensure  => present,
