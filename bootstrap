@@ -394,7 +394,8 @@ main(){
   else
     run_puppet || {
       if [[ "$PP_RETRY_LOCAL" == 'true' ]]; then
-        export PP_SERVER=none && apply_puppet
+        export PP_SERVER=none
+        configure_puppet && apply_puppet
       fi
     }
   fi
