@@ -26,5 +26,9 @@ ci_test(){
 
 # CI Deploy
 ci_deploy(){
-  aws_ec2_send_run_command 'zeus' 'Deploy R10K environment' 'sudo /opt/puppetlabs/puppet/bin/r10k deploy environment --puppetfile --verbose'
+  aws_ec2_send_run_command \
+  'zeus' \
+  'Deploy R10K environment' \
+  "sudo docker exec $(sudo docker ps -qf 'name=PuppetServer') \
+  r10k deploy environment --puppetfile --verbose"
 }

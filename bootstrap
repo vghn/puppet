@@ -216,7 +216,8 @@ configure_hiera(){
 
   # Replace hieradata
   if [[ -d "${CURDIR}/hieradata" ]]; then
-    cp -fr "${CURDIR}/hieradata" "${PP_ENVDIR}/hieradata"
+    mkdir -p "$PP_HIERADATA"
+    cp -fr "${CURDIR}/hieradata/" "${PP_HIERADATA}/"
   fi
 }
 
@@ -295,6 +296,7 @@ configure_puppet(){
   PP_CERTNAME="${PP_CERTNAME:-$(puppet config print certname)}"
   PP_CLIENT_DATADIR="$(puppet config print client_datadir)"
   PP_SSLDIR="$(puppet config print ssldir)"
+  PP_HIERADATA="/etc/puppetlabs/hieradata/environments/${ENVTYPE}"
 
   if [[ "$PP_SERVER" == 'none' ]]; then
     configure_hiera
@@ -361,29 +363,16 @@ run_puppet(){
   puppet agent \
     --server "$PP_SERVER" \
     --environment="$ENVTYPE" \
-    --waitforcert 10 \
-    --no-daemonize \
     --onetime \
+    --no-daemonize \
+    --no-splay \
+    --no-usecacheonfailure \
     --report \
     --show_diff \
     --summarize \
     --detailed-exitcodes \
     --color="$PP_COLOR" \
     --verbose || exit_code=$?
-
-  process_exit_code "$exit_code"
-}
-
-# Run puppet in test mode
-run_puppet_test(){
-  local exit_code
-  exit_code=0
-
-  e_info 'Running puppet in test mode'
-  puppet agent \
-    --server "$PP_SERVER" \
-    --environment="$ENVTYPE" \
-    --test || exit_code=$?
 
   process_exit_code "$exit_code"
 }
@@ -399,8 +388,6 @@ main(){
 
   if [[ "$PP_SERVER" == 'none' ]]; then
     apply_puppet
-  elif [[ "$PP_AGENT_CERT_REGEN" == 'true' ]]; then
-    run_puppet_test
   else
     run_puppet
   fi

@@ -4,5 +4,6 @@
 # Download private data
 upload_hieradata(){
   e_info 'Sync hiera data'
-  aws s3 sync --delete "${APPDIR}/hieradata" "${HIERADATA_S3}/${ENVTYPE}"
+  aws s3 sync --delete \
+    "${APPDIR}/hieradata" "$HIERADATA_S3"
 }

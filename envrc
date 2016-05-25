@@ -9,6 +9,10 @@ export APPDIR TMPDIR PATH
 APPDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
 TMPDIR=$(mktemp -d 2>/dev/null || mktemp -d -t 'tmp')
 
+# Load private environment
+# shellcheck disable=1090
+. "${APPDIR}/.env" 2>/dev/null || true
+
 # Load VGS library
 # shellcheck disable=1090,1091
 . /opt/vgs/load 2>/dev/null || . ~/vgs/load 2>/dev/null || true
@@ -63,4 +67,4 @@ fi
 export AWS_DEFAULT_REGION="${AWS_DEFAULT_REGION:-us-east-1}"
 ## AWS S3
 export AWS_ASSETS_BUCKET="${AWS_ASSETS_BUCKET:?'Please set the AWS_ASSETS_BUCKET environment variable'}"
-export HIERADATA_S3="${HIERADATA_S3:-s3://${AWS_ASSETS_BUCKET}/hieradata}"
+export HIERADATA_S3="${HIERADATA_S3:-s3://${AWS_ASSETS_BUCKET}/hieradata/environments/${ENVTYPE}}"

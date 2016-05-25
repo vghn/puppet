@@ -1,0 +1,20 @@
+version: '2'
+
+services:
+  puppetserver:
+    image: vladgh/puppetserver:latest
+    volumes:
+      - .:/etc/puppetlabs/code/environments/production
+      - ./r10k:/etc/puppetlabs/puppet/r10k
+      - ./csr:/etc/puppetlabs/puppet/csr
+      - ssl:/etc/puppetlabs/puppet/ssl
+    ports:
+      - '8140:8140'
+    networks:
+      - main
+
+networks:
+  main:
+
+volumes:
+  ssl:

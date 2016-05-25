@@ -8,7 +8,7 @@ class profile::aws::s3fs {
   ])
 
   wget::fetch {'S3FS-Fuse Deb':
-    source      => 'https://s3.amazonaws.com/vladgh/debs/s3fs-fuse.deb',
+    source      => 'https://s3.amazonaws.com/vladgh/packages/s3fs-fuse.deb',
     destination => '/usr/local/src/s3fs-fuse.deb',
   }
   package {'S3FS-Fuse':
