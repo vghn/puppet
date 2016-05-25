@@ -25,6 +25,8 @@
 #                      the certificates and catalog cache will be deleted, and
 #                      puppet agent will run in `test` mode, regenerating the
 #                      certificates; https://docs.puppet.com/pe/latest/agent_cert_regen.html
+# PP_RETRY_LOCAL: [Boolean] If `true`, when the agent's run fails, it will retry
+#                 in serverless mode (See `PP_SERVER=none` above).
 # PP_HIERADATA_S3: [String] An S3 path to the hiera data. If present, the script
 #                  will try to use `awscli` to download it. `awscli` and
 #                  credentials need to be configured.
@@ -53,6 +55,7 @@ PP_CERTNAME=${PP_CERTNAME:-}
 PP_COLLECTION=${PP_COLLECTION:-pc1}
 PP_CODENAME=${PP_CODENAME:-$DISTRIB_CODENAME}
 PP_AGENT_CERT_REGEN=${PP_AGENT_CERT_REGEN:-false}
+PP_RETRY_LOCAL=${PP_RETRY_LOCAL:-false}
 PP_HIERADATA_S3=${PP_HIERADATA_S3:-}
 PP_COLOR=${PP_COLOR:-true}
 ENVTYPE=${ENVTYPE:-production}
@@ -389,7 +392,11 @@ main(){
   if [[ "$PP_SERVER" == 'none' ]]; then
     apply_puppet
   else
-    run_puppet
+    run_puppet || {
+      if [[ "$PP_RETRY_LOCAL" == 'true' ]]; then
+        export PP_SERVER=none && apply_puppet
+      fi
+    }
   fi
 }
 
