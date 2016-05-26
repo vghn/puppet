@@ -207,6 +207,11 @@ get_hiera_data(){
 
 # Configure hiera
 configure_hiera(){
+  if ! is_cmd rsync; then
+    e_info 'Install rsync'
+    puppet resource package rsync ensure=latest
+  fi
+
   # Get Hiera Data
   if [[ -n "$PP_HIERADATA_S3" ]]; then
     get_hiera_data
