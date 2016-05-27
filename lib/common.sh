@@ -3,7 +3,7 @@
 
 # Download private data
 sync_hieradata(){
-  e_info 'Sync hiera data'
+  e_info "Sync hiera data (${PP_HIERADATA_S3})"
   aws s3 sync --delete \
     "${APPDIR}/hieradata" "$PP_HIERADATA_S3"
 }
@@ -14,7 +14,7 @@ archive_hieradata(){
 
   # Only pack the required files
   e_info "Creating hieradata archive (${hieradata_archive_path})"
-  if ! tar czf "$hieradata_archive_path" -C ./hieradata .;
+  if ! tar czf "$hieradata_archive_path" -C "${APPDIR}/hieradata" .;
   then
     e_abort "Could not create ${hieradata_archive_path}"
   fi
