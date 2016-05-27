@@ -27,9 +27,8 @@
 #                      certificates; https://docs.puppet.com/pe/latest/agent_cert_regen.html
 # PP_RETRY_LOCAL: [Boolean] If `true`, when the agent's run fails, it will retry
 #                 in serverless mode (See `PP_SERVER=none` above).
-# PP_HIERADATA_S3: [String] An S3 path to the hiera data. If present, the script
-#                  will try to use `awscli` to download it. `awscli` and
-#                  credentials need to be configured.
+# PP_HIERADATA_URL: [String] URL to the hiera data. If present, the script
+#                  will try to download it (this can be a S3 generated ULR)
 # PP_COLOR: [String] Use color or not in output (default: 'true';
 #           https://docs.puppetlabs.com/puppet/latest/reference/configuration.html#color)
 # ENVTYPE: [STRING] The environment (default: 'production)
@@ -56,7 +55,7 @@ PP_COLLECTION=${PP_COLLECTION:-pc1}
 PP_CODENAME=${PP_CODENAME:-$DISTRIB_CODENAME}
 PP_AGENT_CERT_REGEN=${PP_AGENT_CERT_REGEN:-false}
 PP_RETRY_LOCAL=${PP_RETRY_LOCAL:-false}
-PP_HIERADATA_S3=${PP_HIERADATA_S3:-}
+PP_HIERADATA_URL=${PP_HIERADATA_URL:-}
 PP_COLOR=${PP_COLOR:-true}
 ENVTYPE=${ENVTYPE:-production}
 SLACK_WEBHOOK=${SLACK_WEBHOOK:-}
@@ -106,11 +105,6 @@ notify_slack(){
   echo "$title: $text"; exit "$exit_code"
 }
 
-# Sanity checks
-sanity_checks(){
-  [[ $EUID == 0 ]] || e_abort 'This script needs to run as root'
-}
-
 # Check if command exists
 is_cmd() { command -v "$@" >/dev/null 2>&1 ;}
 
@@ -119,6 +113,12 @@ apt_update() { e_info 'Updating APT' && apt-get -qy update < /dev/null ;}
 
 # APT install package
 apt_install(){ e_info "Installing $*"; apt-get -qy install "$@" < /dev/null ;}
+
+# Sanity checks
+sanity_checks(){
+  [[ $EUID == 0 ]] || e_abort 'This script needs to run as root'
+  is_cmd curl || { e_info 'Install CURL' && apt_update && apt_install curl ;}
+}
 
 # Generate certificate request attributes file
 generate_csr_attributes(){
@@ -165,6 +165,7 @@ install_puppet_agent(){
     if [ -s "$deb_path" ]; then
       e_info 'Installing Puppet release package'
       dpkg -i "$deb_path" && rm "$deb_path"
+      e_info 'Installing Puppet Agent'
       apt_update && apt_install puppet-agent
     else
       e_abort 'Could not install Puppet release package'
@@ -177,12 +178,12 @@ install_puppet_agent(){
 # Configure puppet master
 deploy_r10k(){
   if ! is_cmd r10k; then
-    e_info 'Install R10K gem'
+    e_info 'Install R10K'
     puppet resource package r10k ensure=latest provider=puppet_gem
   fi
 
   if ! is_cmd git; then
-    e_info 'Install git'
+    e_info 'Install GIT'
     puppet resource package git ensure=latest
   fi
 
@@ -199,22 +200,15 @@ deploy_r10k(){
 
 # Get Hiera Data
 get_hiera_data(){
-  e_info "Sync hiera data"
-  if ! aws s3 sync --delete "$PP_HIERADATA_S3" "${CURDIR}/hieradata"; then
-    e_warn "Could not get hiera data from ${PP_HIERADATA_S3}"
-  fi
+  e_info "Download hiera data"
+  wget -O- "$PP_HIERADATA_URL" | sudo tar xvz -C "${PP_HIERADATA}/"
 }
 
 # Configure hiera
 configure_hiera(){
   if ! is_cmd rsync; then
-    e_info 'Install rsync'
+    e_info 'Install RSYNC'
     puppet resource package rsync ensure=latest
-  fi
-
-  # Get Hiera Data
-  if [[ -n "$PP_HIERADATA_S3" ]]; then
-    get_hiera_data
   fi
 
   # Replace hiera.yaml
@@ -222,10 +216,14 @@ configure_hiera(){
     cp -fr "${CURDIR}/hiera.yaml" "${PP_CONFDIR}/hiera.yaml"
   fi
 
+  # Ensure hieradata directory exists
+  mkdir -p "$PP_HIERADATA"
+
   # Replace hieradata
-  if [[ -d "${CURDIR}/hieradata" ]]; then
-    mkdir -p "$PP_HIERADATA"
-    cp -fr "${CURDIR}/hieradata/" "${PP_HIERADATA}/"
+  if [[ -n "$PP_HIERADATA_URL" ]]; then
+    get_hiera_data
+  elif [[ -d "${CURDIR}/hieradata" ]]; then
+    rsync --delete -razv "${CURDIR}/hieradata/" "${PP_HIERADATA}/"
   fi
 }
 
@@ -364,8 +362,14 @@ apply_puppet(){
 
 # Run puppet
 run_puppet(){
-  local exit_code
+  local exit_code waitforcert
   exit_code=0
+  waitforcert=5
+
+  # If allowed to retry locally, should not wait for certificate
+  if [[ "$PP_RETRY_LOCAL" == 'true' ]]; then
+    waitforcert=0
+  fi
 
   e_info 'Running puppet'
   puppet agent \
@@ -375,6 +379,7 @@ run_puppet(){
     --no-daemonize \
     --no-splay \
     --no-usecacheonfailure \
+    --waitforcert "$waitforcert" \
     --report \
     --show_diff \
     --summarize \
