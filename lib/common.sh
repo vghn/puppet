@@ -14,10 +14,7 @@ archive_hieradata(){
 
   # Only pack the required files
   e_info "Creating hieradata archive (${hieradata_archive_path})"
-  if ! tar czf "$hieradata_archive_path" \
-    bin/ dist/{profile,role}/{manifests,templates} hieradata/ lib/ manifests/ \
-    .env bootstrap environment.conf envrc hiera.yaml Puppetfile r10k.yaml \
-    CHANGELOG.md LICENSE README.md VERSION;
+  if ! tar czf "$hieradata_archive_path" -C ./hieradata .;
   then
     e_abort "Could not create ${hieradata_archive_path}"
   fi

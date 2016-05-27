@@ -28,7 +28,7 @@
 # PP_RETRY_LOCAL: [Boolean] If `true`, when the agent's run fails, it will retry
 #                 in serverless mode (See `PP_SERVER=none` above).
 # PP_HIERADATA_URL: [String] URL to the hiera data. If present, the script
-#                  will try to download it (this can be a S3 generated ULR)
+#                  will try to download it (this can be a S3 generated URL)
 # PP_COLOR: [String] Use color or not in output (default: 'true';
 #           https://docs.puppetlabs.com/puppet/latest/reference/configuration.html#color)
 # ENVTYPE: [STRING] The environment (default: 'production)
@@ -201,7 +201,7 @@ deploy_r10k(){
 # Get Hiera Data
 get_hiera_data(){
   e_info "Download hiera data"
-  wget -O- "$PP_HIERADATA_URL" | sudo tar xvz -C "${PP_HIERADATA}/"
+  wget -qO- "$PP_HIERADATA_URL" | sudo tar xvz -C "${PP_HIERADATA}/"
 }
 
 # Configure hiera
