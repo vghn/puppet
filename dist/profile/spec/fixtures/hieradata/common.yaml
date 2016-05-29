@@ -23,6 +23,11 @@ ssh_authorized_keys:
     type: ssh-rsa
     key: ABC
 
+# Python
+python::python_pips:
+  awscli:
+    ensure: present
+
 # CloudWatch Logs
 aws_cloudwatch_logs:
   TEST/System/SysLog:
@@ -41,7 +46,7 @@ docker_run:
 # Puppet
 control_repo: 'https://github.com/vghn/puppet.git'
 
-  # Certificate Authority CSR Sign
+# Certificate Authority CSR Sign
 csr_config:
   test:
     challengePassword: test

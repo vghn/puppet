@@ -16,6 +16,7 @@ mod 'ghoneycutt/ssh', '3.36.0'
 mod 'hunner/hiera', '2.0.1'
 mod 'maestrodev/wget', '1.7.3'
 mod 'saz/rsyslog', '3.5.1'
+mod 'stankevich/python', '1.12.0'
 mod 'zack/r10k', '3.2.0'
 
 # Others

@@ -4,6 +4,7 @@ class profile::base {
   include ::stdlib
   include ::apt
   include ::ntp
+  include ::python
 
   # Ensure essential packages
   ensure_packages([
@@ -11,7 +12,6 @@ class profile::base {
     'htop',
     'mysql-client',
     'nfs-common',
-    'python-pip',
     'tmux',
     'unzip',
     'vim',
@@ -22,7 +22,7 @@ class profile::base {
   $ssh_authorized_keys = hiera_hash('ssh_authorized_keys', {})
   create_resources(ssh_authorized_key, $ssh_authorized_keys)
 
-  # Papertrail Logging
+  # Logging
   $log_server_address = hiera('log_server_address', undef)
   $log_server_port = hiera('log_server_port', undef)
   if ($log_server_address and $log_server_port) {
