@@ -11,6 +11,7 @@ class profile::aws::s3fs {
     source      => 'https://s3.amazonaws.com/vladgh/packages/s3fs-fuse.deb',
     destination => '/usr/local/src/s3fs-fuse.deb',
   }
+
   package {'S3FS-Fuse':
     ensure   => present,
     name     => 's3fs-fuse',

@@ -1,23 +1,5 @@
 # Base Profile
 class profile::base {
-  # Include classes
-  include ::stdlib
-  include ::apt
-  include ::ntp
-  include ::python
-
-  # Ensure essential packages
-  ensure_packages([
-    'curl',
-    'htop',
-    'mysql-client',
-    'nfs-common',
-    'tmux',
-    'unzip',
-    'vim',
-    'wget',
-  ])
-
   # SSH Keys
   $ssh_authorized_keys = hiera_hash('ssh_authorized_keys', {})
   create_resources(ssh_authorized_key, $ssh_authorized_keys)
@@ -40,4 +22,22 @@ class profile::base {
     $logfile_instances = hiera('rsyslog::imfile', {})
     create_resources(rsyslog::imfile, $logfile_instances)
   }
+
+  # Include essential classes
+  include ::stdlib
+  include ::apt
+  include ::ntp
+  include ::python
+
+  # Ensure essential packages
+  ensure_packages([
+    'curl',
+    'htop',
+    'mysql-client',
+    'nfs-common',
+    'tmux',
+    'unzip',
+    'vim',
+    'wget',
+  ])
 }

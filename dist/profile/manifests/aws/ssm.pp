@@ -5,6 +5,7 @@ class profile::aws::ssm {
     source      => 'https://amazon-ssm-us-east-1.s3.amazonaws.com/latest/debian_amd64/amazon-ssm-agent.deb',
     destination => '/usr/local/src/amazon-ssm-agent.deb',
   }
+
   package {'AWS SSM Agent':
     ensure   => present,
     name     => 'amazon-ssm-agent',
@@ -14,6 +15,7 @@ class profile::aws::ssm {
       Wget::Fetch['AWS SSM Agent Deb'],
     ],
   }
+
   service {'AWS SSM Agent':
     ensure  => running,
     enable  => true,

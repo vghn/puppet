@@ -1,6 +1,5 @@
-# AMI Profile
+# AWS CloudWatch Logs
 class profile::aws::cloudwatch {
-  # AWS CloudWatch Logs
   $aws_cloudwatch_logs = hiera_hash('aws_cloudwatch_logs', undef)
   if ($aws_cloudwatch_logs != undef) {
     class { '::cloudwatchlogs': region => 'us-east-1' }

@@ -1,7 +1,5 @@
 # CloudFormation Profile
 class profile::aws::cloudformation {
-  require ::profile::base
-
   # AWS CloudFormation scripts
   package {'AWS CloudFormation':
     ensure   => present,

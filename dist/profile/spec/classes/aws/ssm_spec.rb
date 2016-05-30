@@ -10,11 +10,13 @@ describe 'profile::aws::ssm' do
         it { is_expected.to contain_class('profile::aws::ssm') }
 
         it { is_expected.to contain_wget__fetch('AWS SSM Agent Deb') }
+
         it do
           is_expected.to contain_package('AWS SSM Agent')
             .with_name('amazon-ssm-agent')
             .with_provider('dpkg')
         end
+
         it do
           is_expected.to contain_service('AWS SSM Agent')
             .with_name('amazon-ssm-agent')

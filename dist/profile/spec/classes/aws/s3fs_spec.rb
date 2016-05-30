@@ -13,7 +13,9 @@ describe 'profile::aws::s3fs' do
         it { is_expected.to contain_package('libfuse-dev') }
         it { is_expected.to contain_package('libssl-dev') }
         it { is_expected.to contain_package('libxml2-dev') }
+
         it { is_expected.to contain_wget__fetch('S3FS-Fuse Deb') }
+
         it do
           is_expected.to contain_package('S3FS-Fuse')
             .with_name('s3fs-fuse')
