@@ -1,28 +1,10 @@
 # Base Profile
 class profile::base {
-  # Include classes
-  include ::stdlib
-  include ::apt
-  include ::ntp
-
-  # Ensure essential packages
-  ensure_packages([
-    'curl',
-    'htop',
-    'mysql-client',
-    'nfs-common',
-    'python-pip',
-    'tmux',
-    'unzip',
-    'vim',
-    'wget',
-  ])
-
   # SSH Keys
   $ssh_authorized_keys = hiera_hash('ssh_authorized_keys', {})
   create_resources(ssh_authorized_key, $ssh_authorized_keys)
 
-  # Papertrail Logging
+  # Logging
   $log_server_address = hiera('log_server_address', undef)
   $log_server_port = hiera('log_server_port', undef)
   if ($log_server_address and $log_server_port) {
@@ -40,4 +22,22 @@ class profile::base {
     $logfile_instances = hiera('rsyslog::imfile', {})
     create_resources(rsyslog::imfile, $logfile_instances)
   }
+
+  # Include essential classes
+  include ::stdlib
+  include ::apt
+  include ::ntp
+  include ::python
+
+  # Ensure essential packages
+  ensure_packages([
+    'curl',
+    'htop',
+    'mysql-client',
+    'nfs-common',
+    'tmux',
+    'unzip',
+    'vim',
+    'wget',
+  ])
 }

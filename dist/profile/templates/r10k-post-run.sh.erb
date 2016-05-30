@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# Redirect stdout/stderr to a file
+exec &> <%= @r10k_post_run_log_file %>
+
 # VARs
 ENV_PATH=$(/opt/puppetlabs/bin/puppet config print environmentpath)
 AZ=$(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone)
@@ -9,6 +12,8 @@ REGION="${AZ%?}"
 for envdir in ${ENV_PATH}/*; do
   [[ -d $envdir ]] || break
   envname=$(basename "$envdir")
+  echo "Synchronize s3://vladgh/hieradata/${envname} -> ${envdir}/hieradata/"
   /usr/local/bin/aws --region "$REGION" s3 sync --delete \
-    "s3://<%= @hieradata_bucket %>/<%= @hieradata_prefix %>/${envname}" "${envdir}/hieradata/" || break
+    "s3://<%= @hieradata_bucket %>/<%= @hieradata_prefix %>/${envname}" \
+    "${envdir}/hieradata/" || break
 done

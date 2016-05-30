@@ -4,10 +4,12 @@ class profile::aws::codedeploy {
     'ruby2.0',
     'gdebi-core',
   ])
+
   wget::fetch {'CodeDeploy Deb':
     source      => 'https://aws-codedeploy-us-east-1.s3.amazonaws.com/latest/codedeploy-agent_all.deb',
     destination => '/usr/local/src/codedeploy-agent_all.deb',
   }
+
   package {'CodeDeploy Agent':
     ensure   => present,
     name     => 'codedeploy-agent',
@@ -18,6 +20,7 @@ class profile::aws::codedeploy {
       Package['ruby2.0', 'gdebi-core']
     ],
   }
+
   service {'CodeDeploy Service':
     ensure  => running,
     enable  => true,

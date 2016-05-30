@@ -1,4 +1,8 @@
 shared_examples 'profile::base' do
+  describe package('python') do
+    it { is_expected.to be_installed }
+  end
+
   describe package('curl') do
     it { is_expected.to be_installed }
   end
@@ -9,9 +13,6 @@ shared_examples 'profile::base' do
     it { is_expected.to be_installed }
   end
   describe package('nfs-common') do
-    it { is_expected.to be_installed }
-  end
-  describe package('python-pip') do
     it { is_expected.to be_installed }
   end
   describe package('tmux') do
@@ -25,6 +26,10 @@ shared_examples 'profile::base' do
   end
   describe package('wget') do
     it { is_expected.to be_installed }
+  end
+
+  describe package('awscli') do
+    it { is_expected.to be_installed.by(:pip) }
   end
 
   describe user('root') do

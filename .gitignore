@@ -1,4 +1,5 @@
 # Private
+.env
 /hieradata/*
 !/hieradata/common.yaml
 

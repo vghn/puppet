@@ -41,6 +41,7 @@
     { "name": "hunner/hiera", "version_requirement": "2.0.1" },
     { "name": "maestrodev/wget", "version_requirement": "1.7.3" },
     { "name": "saz/rsyslog", "version_requirement": "3.5.1" },
+    { "name": "stankevich/python", "version_requirement": "1.12.0" },
     { "name": "zack/r10k", "version_requirement": "3.2.0" },
     { "name": "golja/gnupg", "version_requirement": "1.2.3" },
     { "name": "kemra102/cloudwatchlogs", "version_requirement": "2.2.1" },
