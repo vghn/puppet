@@ -67,22 +67,29 @@ bundle exec rake test
 
 #### Acceptance testing
 
-`cd dist/profile`
+```
+cd dist/profile
+```
 
 Run default set for the first time (default creates all nodes)
-
-`PUPPET_INSTALL_TYPE=agent ORDERING=manifest BEAKER_destroy=no bundle exec rake acceptance`
+```
+PUPPET_INSTALL_TYPE=agent ORDERING=manifest BEAKER_destroy=no bundle exec rake acceptance
+```
 
 Subsequent runs
-
-`PUPPET_INSTALL_TYPE=agent ORDERING=manifest BEAKER_destroy=no BEAKER_provision=no bundle exec rake acceptance`
+```
+PUPPET_INSTALL_TYPE=agent ORDERING=manifest BEAKER_destroy=no BEAKER_provision=no bundle exec rake acceptance
+```
 
 Last run (will destroy the machines)
-
-`PUPPET_INSTALL_TYPE=agent ORDERING=manifest BEAKER_provision=no bundle exec rake acceptance`
+```
+PUPPET_INSTALL_TYPE=agent ORDERING=manifest BEAKER_provision=no bundle exec rake acceptance
+```
 
 Complete example:
-`PUPPET_INSTALL_TYPE=agent ORDERING=manifest BEAKER_destroy=no BEAKER_provision=yes BEAKER_debug=yes BEAKER_set=default bundle exec rake acceptance`
+```
+PUPPET_INSTALL_TYPE=agent ORDERING=manifest BEAKER_destroy=no BEAKER_provision=yes BEAKER_debug=yes BEAKER_set=default bundle exec rake acceptance
+```
 
 Other commands:
 * List nodes: `bundle exec rake beaker_nodes`
