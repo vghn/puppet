@@ -1,3 +1,22 @@
+## Version 0.0.23 / 2016-05-30
+  * Move r10k post run hook to /etc ([Vlad - a28335a](https://github.com/vghn/puppet/commit/a28335a7bf5015006e02dda0643b0547b120d58e))
+  * Log r10k hook ([Vlad - 475bc63](https://github.com/vghn/puppet/commit/475bc6367f687bf73ba1aadb5a5e84504825bb3d))
+  * Use require instead of include ([Vlad - 45e808d](https://github.com/vghn/puppet/commit/45e808dd6e5d404bba4a4977f4a914abbebe8f84))
+  * Clean-up profile::puppet::master ([Vlad - 772810d](https://github.com/vghn/puppet/commit/772810d0d958924e0e5a7b312298e6945415a008))
+  * Do not manage hiera and r10k in puppet ([Vlad - 684bc1d](https://github.com/vghn/puppet/commit/684bc1dfe322468c64e304cae74646dae7d7e3bd))
+  * Fix acceptance tests ([Vlad - f906826](https://github.com/vghn/puppet/commit/f90682688da320778c9b82aad88dd54b38b7a339))
+  * Add bootstrap option to retry in serverless mode ([Vlad - 599bcc0](https://github.com/vghn/puppet/commit/599bcc0a803ec3fea677342ac7a007b555acb488))
+  * Fix bootstrap script ([Vlad - 2589afa](https://github.com/vghn/puppet/commit/2589afa747c081a063f86a5e85de9dad39254170))
+  * Install rsync ([Vlad - 14191fd](https://github.com/vghn/puppet/commit/14191fda9f631b0581926e82d05a0743aaefef65))
+  * Improve bootstrap ([Vlad - 58b2ea7](https://github.com/vghn/puppet/commit/58b2ea7cdaf7b4428aa55604bc77ec1d77f57897))
+  * Fix bootstrap script ([Vlad - 1b2c7d1](https://github.com/vghn/puppet/commit/1b2c7d14138a7b7d85a28a3c7454ccdf45410429))
+  * Improve push hook ([Vlad - 59b5d0d](https://github.com/vghn/puppet/commit/59b5d0dd79a344cc9f646084615de60049ed2a30))
+  * Update README ([Vlad - 35412bd](https://github.com/vghn/puppet/commit/35412bd9074df2cb58c26e43b86a65fa74ec9f7c))
+  * Switch to an approved Python puppet module ([Vlad - 0481610](https://github.com/vghn/puppet/commit/0481610cc27c51ce56a6bb33c196537df9dc4daa))
+  * Improve docker compose file ([Vlad - 73483ab](https://github.com/vghn/puppet/commit/73483ab5b7541d9aaa0a43d9194fe036ae95c9c1))
+  * Reorder resource declarations ([Vlad - f997906](https://github.com/vghn/puppet/commit/f997906ff7d46dac6d7f11cd8628d520660d679d))
+  * Update README ([Vlad - 0e407ca](https://github.com/vghn/puppet/commit/0e407ca992584749a08fb151955661aa1ef6a7e8))
+
 ## Version 0.0.22 / 2016-05-24
   * Module updates ([Vlad - a6f7124](https://github.com/vghn/puppet/commit/a6f7124e5afd002b0e66c6d8baf516cbbdb4dd01))
   * Ensure latest git version ([Vlad - b722130](https://github.com/vghn/puppet/commit/b7221307f69b4f7274e51b60a3ca7cf79bfc658b))
