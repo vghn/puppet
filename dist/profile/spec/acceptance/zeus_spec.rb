@@ -16,7 +16,7 @@ describe 'Zeus role', if: hosts.map(&:name).include?('zeus') do
       include ::profile::rvm
     EOS
 
-    # Run it twice and test for idempotency
+    # Run it twice and test if idempotent
     apply_manifest(pp, catch_failures: true)
     apply_manifest(pp, catch_changes: true)
   end
