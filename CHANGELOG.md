@@ -1,3 +1,6 @@
+## Version 0.0.25 / 2016-05-31
+  * Allow bootstrap to specify waitforcert value ([Vlad - a48c774](https://github.com/vghn/puppet/commit/a48c7741f38e2951c67806552a4d314ab9e24019))
+
 ## Version 0.0.24 / 2016-05-31
   * Update documentation ([Vlad - 79bc446](https://github.com/vghn/puppet/commit/79bc4464f28e4f43de9bd68673aef4eb651a5e25))
   * Improve CSR script ([Vlad - f1c9f2a](https://github.com/vghn/puppet/commit/f1c9f2a00eadd45b955cabf72a84777cc510b4c3))
