@@ -27,6 +27,9 @@
 #                      certificates; https://docs.puppet.com/pe/latest/agent_cert_regen.html
 # PP_RETRY_LOCAL: [Boolean] If `true`, when the agent's run fails, it will retry
 #                 in serverless mode (See `PP_SERVER=none` above).
+# PP_WAITFORCERT: [INTEGER] The number of seconds between connections to server
+#                 while waiting for a certificate to be signed. You can turn off
+#                 waiting for certificates by specifying a time of 0 (default).
 # PP_HIERADATA_URL: [String] URL to the hiera data. If present, the script
 #                  will try to download it (this can be a S3 generated URL)
 # PP_COLOR: [String] Use color or not in output (default: 'true';
@@ -55,6 +58,7 @@ PP_COLLECTION=${PP_COLLECTION:-pc1}
 PP_CODENAME=${PP_CODENAME:-$DISTRIB_CODENAME}
 PP_AGENT_CERT_REGEN=${PP_AGENT_CERT_REGEN:-false}
 PP_RETRY_LOCAL=${PP_RETRY_LOCAL:-false}
+PP_WAITFORCERT=${PP_WAITFORCERT:-0}
 PP_HIERADATA_URL=${PP_HIERADATA_URL:-}
 PP_COLOR=${PP_COLOR:-true}
 ENVTYPE=${ENVTYPE:-production}
@@ -362,14 +366,8 @@ apply_puppet(){
 
 # Run puppet
 run_puppet(){
-  local exit_code waitforcert
+  local exit_code
   exit_code=0
-  waitforcert=5
-
-  # If allowed to retry locally, should not wait for certificate
-  if [[ "$PP_RETRY_LOCAL" == 'true' ]]; then
-    waitforcert=0
-  fi
 
   e_info 'Running puppet'
   puppet agent \
@@ -379,7 +377,7 @@ run_puppet(){
     --no-daemonize \
     --no-splay \
     --no-usecacheonfailure \
-    --waitforcert "$waitforcert" \
+    --waitforcert "$PP_WAITFORCERT" \
     --report \
     --show_diff \
     --summarize \
