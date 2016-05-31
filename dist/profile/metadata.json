@@ -7,12 +7,6 @@
   "source": "https://github.com/vladgh/puppet",
   "project_page": "https://github.com/vladgh/puppet",
   "issues_url": "https://github.com/vladgh/puppet/issues",
-  "dependencies": [
-    {
-      "name": "puppetlabs-stdlib",
-      "version_requirement": ">= 4.9.0"
-    }
-  ],
   "requirements": [
     {
       "name": "puppet",

@@ -1,3 +1,7 @@
+## Version 0.0.24 / 2016-05-31
+  * Update documentation ([Vlad - 79bc446](https://github.com/vghn/puppet/commit/79bc4464f28e4f43de9bd68673aef4eb651a5e25))
+  * Improve CSR script ([Vlad - f1c9f2a](https://github.com/vghn/puppet/commit/f1c9f2a00eadd45b955cabf72a84777cc510b4c3))
+
 ## Version 0.0.23 / 2016-05-30
   * Move r10k post run hook to /etc ([Vlad - a28335a](https://github.com/vghn/puppet/commit/a28335a7bf5015006e02dda0643b0547b120d58e))
   * Log r10k hook ([Vlad - 475bc63](https://github.com/vghn/puppet/commit/475bc6367f687bf73ba1aadb5a5e84504825bb3d))
