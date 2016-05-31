@@ -15,14 +15,14 @@ aws_region = ENV['AWS_DEFAULT_REGION'] || 'us-east-1'
 logger = Logger.new('/tmp/csr_sign.log')
 
 # Configuration
-cfg = YAML.load `sudo /opt/puppetlabs/bin/hiera -f yaml \
+cfg = YAML.load `/opt/puppetlabs/bin/hiera -f yaml \
                 csr_config environment=#{environment}`
 
 # Load AWS SDK
 ec2 = Aws::EC2::Resource.new(region: aws_region)
 
 # VARs
-secret, instance_id, image_name, project, role = nil
+challengePassword, instance_id, image_name, project, role = nil
 
 # Read CSR
 csr = OpenSSL::X509::Request.new(STDIN.read)
@@ -37,8 +37,8 @@ if atts.empty?
 end
 
 # Get secret password
-secret = atts.select { |att| att.oid == "challengePassword" }
-         .first.value.value.first.value.strip rescue nil
+challengePassword = atts.select { |att| att.oid == "challengePassword" }
+                    .first.value.value.first.value.strip rescue nil
 
 # Get extension requests
 exts = atts.select { |att| att.oid == "extReq" }
@@ -56,9 +56,9 @@ exts.each {|ext|
 }
 
 # Sign if password matches
-authorized_secret = cfg[project]['challengePassword'] rescue nil
-if (pp_secret == authorized_secret && !authorized_secret.nil?)
-  logger.info 'Node authorized based on the provided secret'
+authorizedPassword = cfg[project]['challengePassword'] rescue nil
+if (challengePassword == authorizedPassword && !authorizedPassword.nil?)
+  logger.info 'Node authorized based on the provided challengePassword'
   exit 0
 end
 
