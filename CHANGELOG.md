@@ -1,3 +1,8 @@
+## Version 0.0.31 / 2016-06-01
+  * Fix AWS SSM deploy command ([Vlad - 9124951](https://github.com/vghn/puppet/commit/9124951432206a6a277e175b1854dff59f7068b7))
+  * Fix AWS SSM deploy command ([Vlad - 9fbd39e](https://github.com/vghn/puppet/commit/9fbd39ebfb58c6dece435ab7ed2f36fd571160c9))
+  * Fix AWS SSM deploy command ([Vlad - 4d145dd](https://github.com/vghn/puppet/commit/4d145dd3c590e8c8ae68817361542cab8b3594a5))
+
 ## Version 0.0.30 / 2016-06-01
   * Remove unnecessary output ([Vlad - 2205483](https://github.com/vghn/puppet/commit/2205483b049330058f24cdb5bc29b6089c7fc17d))
   * Do not bind docker to ipaddress without TLS ([Vlad - 3d2d8a7](https://github.com/vghn/puppet/commit/3d2d8a752792af2fb4698da5fc6571be18e5bd7f))
