@@ -10,7 +10,7 @@ sync_hieradata(){
 
 # Archive Puppet Control Repo
 archive_hieradata(){
-  hieradata_archive_path="${TMPDIR}/hieradata.tgz"
+  hieradata_archive_path="${TMPDIR}/${ENVTYPE}.tgz"
 
   # Only pack the required files
   e_info "Creating hieradata archive (${hieradata_archive_path})"
