@@ -1,3 +1,6 @@
+## Version 0.0.28 / 2016-06-01
+  * Fix environment ([Vlad - 0a9db20](https://github.com/vghn/puppet/commit/0a9db20ab902a7a5568cf231311a4c5af03e221a))
+
 ## Version 0.0.27 / 2016-06-01
   * Fix environment detection ([Vlad - 278d3c1](https://github.com/vghn/puppet/commit/278d3c174c71c6d024d5a2bbff4d9784135e2d0f))
   * Fix paths ([Vlad - 9d78f67](https://github.com/vghn/puppet/commit/9d78f67446bfda65bc273b8fa45a6fabca060102))
