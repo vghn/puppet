@@ -1,3 +1,7 @@
+## Version 0.0.27 / 2016-06-01
+  * Fix environment detection ([Vlad - 278d3c1](https://github.com/vghn/puppet/commit/278d3c174c71c6d024d5a2bbff4d9784135e2d0f))
+  * Fix paths ([Vlad - 9d78f67](https://github.com/vghn/puppet/commit/9d78f67446bfda65bc273b8fa45a6fabca060102))
+
 ## Version 0.0.26 / 2016-06-01
   * Revert to R10K managing hieradata ([Vlad - 5bec79e](https://github.com/vghn/puppet/commit/5bec79e20f17823c9e451b47f835ea8e3a48a5d3))
 
