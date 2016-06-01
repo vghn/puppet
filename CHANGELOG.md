@@ -1,3 +1,7 @@
+## Version 0.0.30 / 2016-06-01
+  * Remove unnecessary output ([Vlad - 2205483](https://github.com/vghn/puppet/commit/2205483b049330058f24cdb5bc29b6089c7fc17d))
+  * Do not bind docker to ipaddress without TLS ([Vlad - 3d2d8a7](https://github.com/vghn/puppet/commit/3d2d8a752792af2fb4698da5fc6571be18e5bd7f))
+
 ## Version 0.0.29 / 2016-06-01
   * Use ENVTYPE to declare the environment ([Vlad - 8741b56](https://github.com/vghn/puppet/commit/8741b5680e82673444f4e002f336144f17af41e5))
 
