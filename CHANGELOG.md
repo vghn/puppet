@@ -1,3 +1,6 @@
+## Version 0.0.29 / 2016-06-01
+  * Use ENVTYPE to declare the environment ([Vlad - 8741b56](https://github.com/vghn/puppet/commit/8741b5680e82673444f4e002f336144f17af41e5))
+
 ## Version 0.0.28 / 2016-06-01
   * Fix environment ([Vlad - 0a9db20](https://github.com/vghn/puppet/commit/0a9db20ab902a7a5568cf231311a4c5af03e221a))
 
