@@ -1,3 +1,6 @@
+## Version 0.0.26 / 2016-06-01
+  * Revert to R10K managing hieradata ([Vlad - 5bec79e](https://github.com/vghn/puppet/commit/5bec79e20f17823c9e451b47f835ea8e3a48a5d3))
+
 ## Version 0.0.25 / 2016-05-31
   * Allow bootstrap to specify waitforcert value ([Vlad - a48c774](https://github.com/vghn/puppet/commit/a48c7741f38e2951c67806552a4d314ab9e24019))
 
