@@ -306,7 +306,7 @@ configure_puppet(){
   PP_CERTNAME="${PP_CERTNAME:-$(puppet config print certname)}"
   PP_CLIENT_DATADIR="$(puppet config print client_datadir)"
   PP_SSLDIR="$(puppet config print ssldir)"
-  PP_HIERADATA="/etc/puppetlabs/hieradata/environments/${ENVTYPE}"
+  PP_HIERADATA="${PP_ENVDIR}/hieradata"
 
   if [[ "$PP_SERVER" == 'none' ]]; then
     configure_hiera
