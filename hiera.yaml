@@ -2,7 +2,7 @@
 :backends:
   - yaml
 :yaml:
-  :datadir: /etc/puppetlabs/hieradata/environments/%{::environment}
+  :datadir: /etc/puppetlabs/code/environments/%{::environment}/hieradata
 :hierarchy:
   - nodes/%{::trusted.certname}
   - hosts/%{::trusted.domainname}/%{::trusted.hostname}
