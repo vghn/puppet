@@ -4,10 +4,7 @@ class profile::docker {
   if $::virtual == 'docker' {
     warning('Docker in Docker is not yet supported!')
   } else {
-    class { '::docker':
-      tcp_bind    => 'tcp://0.0.0.0:2375',
-      socket_bind => 'unix:///var/run/docker.sock',
-    }
+    include ::docker
 
     # Pull images
     $docker_images = hiera('docker_images', {})
