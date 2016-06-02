@@ -1,3 +1,8 @@
+## Version 0.0.32 / 2016-06-02
+  * Separate R10K from PuppetServer ([Vlad - 59f3d82](https://github.com/vghn/puppet/commit/59f3d82888d31840c15bce7db66e50aa80c121af))
+  * Separate R10K from PuppetServer ([Vlad - 3bdb687](https://github.com/vghn/puppet/commit/3bdb6876dccb9a597ea0f5aeb22cae02d931f5da))
+  * Fix AWS SSM command ([Vlad - 4ad4a76](https://github.com/vghn/puppet/commit/4ad4a76c68c4bce602bd4f8ae751b8e9c33a4009))
+
 ## Version 0.0.31 / 2016-06-01
   * Fix AWS SSM deploy command ([Vlad - 9124951](https://github.com/vghn/puppet/commit/9124951432206a6a277e175b1854dff59f7068b7))
   * Fix AWS SSM deploy command ([Vlad - 9fbd39e](https://github.com/vghn/puppet/commit/9fbd39ebfb58c6dece435ab7ed2f36fd571160c9))
