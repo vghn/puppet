@@ -1,3 +1,8 @@
+## Version 0.0.33 / 2016-06-02
+  * Name R10K container ([Vlad - bd5db09](https://github.com/vghn/puppet/commit/bd5db09874935a24b9bec67ed4b94d4664016419))
+  * Improve R10K post run hook ([Vlad - d25a0a5](https://github.com/vghn/puppet/commit/d25a0a54aeba0d0228a54362364a5b83ce5595a1))
+  * Implement vladgh/common module ([Vlad - 772293b](https://github.com/vghn/puppet/commit/772293b01d0ab11b66eef37296f0795d71b9f1a3))
+
 ## Version 0.0.32 / 2016-06-02
   * Separate R10K from PuppetServer ([Vlad - 59f3d82](https://github.com/vghn/puppet/commit/59f3d82888d31840c15bce7db66e50aa80c121af))
   * Separate R10K from PuppetServer ([Vlad - 3bdb687](https://github.com/vghn/puppet/commit/3bdb6876dccb9a597ea0f5aeb22cae02d931f5da))

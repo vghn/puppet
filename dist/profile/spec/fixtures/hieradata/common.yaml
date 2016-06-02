@@ -17,7 +17,7 @@ rsyslog::imfile:
     file_facility: local0
 
 # SSH
-ssh_authorized_keys:
+common::ssh_authorized_keys:
   'test-key':
     user: root
     type: ssh-rsa
