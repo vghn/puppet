@@ -1,9 +1,5 @@
 # Base Profile
 class profile::base {
-  # SSH Keys
-  $ssh_authorized_keys = hiera_hash('ssh_authorized_keys', {})
-  create_resources(ssh_authorized_key, $ssh_authorized_keys)
-
   # Logging
   $log_server_address = hiera('log_server_address', undef)
   $log_server_port = hiera('log_server_port', undef)
@@ -26,6 +22,7 @@ class profile::base {
   # Include essential classes
   include ::stdlib
   include ::apt
+  include ::common
   include ::ntp
   include ::python
 

@@ -10,6 +10,7 @@ describe 'profile::base' do
         it { is_expected.to contain_class('profile::base') }
         it { is_expected.to contain_class('stdlib') }
         it { is_expected.to contain_class('apt') }
+        it { is_expected.to contain_class('common') }
         it { is_expected.to contain_class('ntp') }
         it { is_expected.to contain_class('python') }
 

@@ -62,7 +62,7 @@ task test: [
 desc 'Run acceptance tests.'
 task integration: [
   :spec_prep,
-  :acceptance
+  :beaker
 ]
 
 desc 'Clean all test files.'

@@ -1,5 +1,8 @@
 forge 'https://forgeapi.puppetlabs.com'
 
+# Iternal modules
+mod 'common', :git => 'https://github.com/vladgh/puppet-common'
+
 # Puppet supported modules
 mod 'puppetlabs/apt', '2.2.2'
 mod 'puppetlabs/concat', '2.1.0'
@@ -27,7 +30,6 @@ mod 'maestrodev/rvm', '1.13.1'
 # Dependencies (find with `sudo /opt/puppetlabs/bin/puppet module list --tree`)
 mod 'croddy-make', '0.0.5'
 mod 'gentoo-portage', '2.3.0'
-mod 'ghoneycutt-common', '1.5.0'
 mod 'nanliu-staging', '1.0.3'
 mod 'puppetlabs-firewall', '1.8.1'
 mod 'puppetlabs-gcc', '0.3.0'

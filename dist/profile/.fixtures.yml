@@ -1,6 +1,8 @@
 fixtures:
   symlinks:
     profile: "#{source_dir}"
+  repositories:
+    common: 'https://github.com/vladgh/puppet-common'
   forge_modules:
     apt:
       repo: 'puppetlabs/apt'
@@ -62,9 +64,6 @@ fixtures:
     portage:
       repo: 'gentoo/portage'
       ref: '2.3.0'
-    common:
-      repo: 'ghoneycutt/common'
-      ref: '1.5.0'
     staging:
       repo: 'nanliu/staging'
       ref: '1.0.3'
