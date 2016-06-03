@@ -1,6 +1,10 @@
 ---
 # Testing Hiera data
 
+# Project
+project_path: /opt/myproject
+scripts_path: "%{hiera('project_path')}/scripts"
+
 # Centralized Logging
 log_server_address: my.logserver.com
 log_server_port: 514

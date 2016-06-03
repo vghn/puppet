@@ -22,7 +22,7 @@ cfg = YAML.load `/opt/puppetlabs/bin/hiera -f yaml \
 ec2 = Aws::EC2::Resource.new(region: aws_region)
 
 # VARs
-challengePassword, instance_id, image_name, project, role = nil
+instance_id, image_name, project, role = nil
 
 # Read CSR
 csr = OpenSSL::X509::Request.new(STDIN.read)
@@ -37,27 +37,27 @@ if atts.empty?
 end
 
 # Get secret password
-challengePassword = atts.select { |att| att.oid == "challengePassword" }
-                    .first.value.value.first.value.strip rescue nil
+challenge_password = atts.select { |att| att.oid == 'challengePassword' }
+                         .first.value.value.first.value.strip || nil
 
 # Get extension requests
-exts = atts.select { |att| att.oid == "extReq" }
-       .first.value.value.first.value
+exts = atts.select { |att| att.oid == 'extReq' }
+           .first.value.value.first.value
 
 # Read each extension request
-exts.each {|ext|
+exts.each do |ext|
   id   = ext.value[0].value.strip
   resp = ext.value[1].value.gsub(/([\x00-\x1f])/, '').strip
 
-  instance_id = resp if id == "1.3.6.1.4.1.34380.1.1.2"
-  image_name = resp  if id == "1.3.6.1.4.1.34380.1.1.3"
-  project = resp     if id == "1.3.6.1.4.1.34380.1.1.7"
-  role = resp        if id == "1.3.6.1.4.1.34380.1.1.13"
-}
+  instance_id = resp if id == '1.3.6.1.4.1.34380.1.1.2'
+  image_name = resp  if id == '1.3.6.1.4.1.34380.1.1.3'
+  project = resp     if id == '1.3.6.1.4.1.34380.1.1.7'
+  role = resp        if id == '1.3.6.1.4.1.34380.1.1.13'
+end
 
 # Sign if password matches
-authorizedPassword = cfg[project]['challengePassword'] rescue nil
-if (challengePassword == authorizedPassword && !authorizedPassword.nil?)
+authorized_password = cfg[project]['challengePassword'] || nil
+if challenge_password == authorized_password && !authorized_password.nil?
   logger.info 'Node authorized based on the provided challengePassword'
   exit 0
 end
@@ -65,14 +65,14 @@ end
 # Sign if its a known instance
 instances_pool = ec2.instances.map(&:id)
 if instances_pool.include?(instance_id)
-  logger.info "Node authorized based on instance id (instance_id)"
+  logger.info "Node authorized based on instance id (#{instance_id})"
   exit 0
 end
 
 # Sign if the base image is known
 ami_pool = ec2.images(owners: ['self']).map(&:id)
 if ami_pool.include?(image_name)
-  logger.info "Node authorized based on image id (image_name)"
+  logger.info "Node authorized based on image id (#{image_name})"
   exit 0
 end
 
