@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -euo pipefail
+IFS=$'\n\t'
+
+# VARs
+PROJECT_DIR=/opt/vpm
+
+echo 'Deploy R10K environment'
+docker run --rm --name r10k-agent \
+  -v ${PROJECT_DIR}/puppet/r10k.yaml:/etc/puppetlabs/r10k/r10k.yaml:ro \
+  -v ${PROJECT_DIR}/puppet/bin/r10k-post-run:/etc/puppetlabs/r10k/post-run.sh:ro \
+  -v ${PROJECT_DIR}/code/environments:/etc/puppetlabs/code/environments \
+  vladgh/r10k deploy environment --puppetfile --verbose

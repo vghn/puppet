@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -euo pipefail
+IFS=$'\n\t'
+
+echo 'Start logging container'
+docker run \
+  --detach \
+  --name log-agent \
+  --hostname log-agent \
+  --restart unless-stopped \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  gliderlabs/logspout:latest \
+  syslog://<%= @log_server_address %>:<%= @log_server_port %>

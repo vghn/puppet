@@ -28,5 +28,5 @@ ci_deploy(){
   aws_ec2_send_run_command \
   'zeus' \
   'Deploy R10K environment' \
-  'docker-compose --project-name vpm --file /opt/vpm/docker-compose.yaml up -d'
+  '/opt/myproject/scripts/r10k-deploy'
 }
