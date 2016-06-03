@@ -12,10 +12,8 @@ services:
   r10k-agent:
     image: vladgh/r10k
     hostname: r10k-agent
-    restart: on-failure:5
     volumes:
       - ./puppet/r10k.yaml:/etc/puppetlabs/r10k/r10k.yaml:ro
       - ./scripts/r10k-post-run:/etc/puppetlabs/r10k/post-run.sh:ro
       - ./code/environments:/etc/puppetlabs/code/environments
-    command:
-      - deploy environment --puppetfile --verbose
+    command: ['deploy', 'environment', '--puppetfile', '--verbose']
