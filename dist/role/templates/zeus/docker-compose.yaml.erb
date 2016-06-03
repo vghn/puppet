@@ -1,0 +1,19 @@
+version: '2'
+
+services:
+  log-agent:
+    image: gliderlabs/logspout:latest
+    hostname: log-agent
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command:
+      - syslog://<%= @log_server_address %>:<%= @log_server_port %>
+  r10k-agent:
+    image: vladgh/r10k
+    hostname: r10k-agent
+    restart: on-failure:5
+    volumes:
+      - ./puppet/r10k.yaml:/etc/puppetlabs/r10k/r10k.yaml:ro
+      - ./scripts/r10k-post-run:/etc/puppetlabs/r10k/post-run.sh:ro
+      - ./code/environments:/etc/puppetlabs/code/environments

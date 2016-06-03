@@ -1,10 +1,6 @@
 ---
 # Testing Hiera data
 
-# Hieradata
-hieradata_bucket: mybucket
-hieradata_prefix: hieradata
-
 # Centralized Logging
 log_server_address: my.logserver.com
 log_server_port: 514
@@ -43,17 +39,8 @@ docker_run:
     image: 'busybox:latest'
     command: '/bin/sh -c "while true; do echo hello; sleep 1; done"'
 
-# Puppet
-control_repo: 'https://github.com/vghn/puppet.git'
-
-# Certificate Authority CSR Sign
-csr_config:
-  test:
-    challengePassword: test
-
 # Software versions
 jq_version:             '1.5'
-r10k_version:           '2.3.0'
 rvm_system_ruby:        'ruby-2.2.1'
 docker_compose_version: '1.7.1'
 docker_machine_version: '0.7.0'
