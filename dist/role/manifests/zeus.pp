@@ -15,6 +15,7 @@ class role::zeus {
   $project_path = hiera(project_path, "/opt/${real_role}")
 
   # Ensure directories
+  common::mkdir_p {$project_path:}
   common::mkdir_p {"$project_path/scripts":}
 
   # Docker Compose File
@@ -38,7 +39,7 @@ class role::zeus {
     owner   => 'root',
     group   => 'root',
     mode    => '0755',
-    require => Exec["mkdir_p-${project_path}"]
+    require => Exec["mkdir_p-${project_path}/scripts"]
   }
 
   # Policy based CSR auto sign script
@@ -49,6 +50,6 @@ class role::zeus {
     owner   => 'root',
     group   => 'root',
     mode    => '0555',
-    require => Exec["mkdir_p-${project_path}"]
+    require => Exec["mkdir_p-${project_path}/scripts"]
   }
 }
