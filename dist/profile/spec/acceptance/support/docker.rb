@@ -9,9 +9,6 @@ shared_examples 'profile::docker' do
       it { is_expected.to be_enabled }
       it { is_expected.to be_running }
     end
-    describe port(2375) do
-      it { is_expected.to be_listening }
-    end
     describe file('/var/run/docker.sock') do
       it { is_expected.to be_socket }
     end

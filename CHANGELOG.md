@@ -1,3 +1,6 @@
+## Version 0.0.34 / 2016-06-03
+  * Move r10k post run hook and csr sign to roles/zeus ([Vlad - ff39354](https://github.com/vghn/puppet/commit/ff393544b8bb5086529a8e49c04a7a75cc39d3bc))
+
 ## Version 0.0.33 / 2016-06-02
   * Name R10K container ([Vlad - bd5db09](https://github.com/vghn/puppet/commit/bd5db09874935a24b9bec67ed4b94d4664016419))
   * Improve R10K post run hook ([Vlad - d25a0a5](https://github.com/vghn/puppet/commit/d25a0a54aeba0d0228a54362364a5b83ce5595a1))
