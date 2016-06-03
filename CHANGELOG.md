@@ -1,3 +1,6 @@
+## Version 0.0.40 / 2016-06-03
+  * Fix zeus docker-compose.yaml ([Vlad - d1741fc](https://github.com/vghn/puppet/commit/d1741fc6a5fe3f2814d56c7a4be974cd68b3b93f))
+
 ## Version 0.0.39 / 2016-06-03
   * Fix scripts path creation ([Vlad - 5b943a0](https://github.com/vghn/puppet/commit/5b943a0aa71791830b26a8452146a41a5bb783b9))
 
