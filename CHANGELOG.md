@@ -1,3 +1,6 @@
+## Version 0.0.35 / 2016-06-03
+  * Use docker-compose to deploy R10K ([Vlad - e394ffb](https://github.com/vghn/puppet/commit/e394ffbeec01b859b6b5d2638dc031b2ded8e6f7))
+
 ## Version 0.0.34 / 2016-06-03
   * Move r10k post run hook and csr sign to roles/zeus ([Vlad - ff39354](https://github.com/vghn/puppet/commit/ff393544b8bb5086529a8e49c04a7a75cc39d3bc))
 
