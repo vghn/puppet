@@ -15,7 +15,7 @@ class role::zeus {
   $project_path = hiera(project_path, "/opt/${real_role}")
 
   # Ensure directories
-  common::mkdir_p {$project_path:}
+  common::mkdir_p {"$project_path/scripts":}
 
   # Docker Compose File
   $log_server_address = hiera('log_server_address', undef)

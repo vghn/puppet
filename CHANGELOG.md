@@ -1,3 +1,6 @@
+## Version 0.0.38 / 2016-06-03
+  * Fix scripts path creation ([Vlad - a5dc625](https://github.com/vghn/puppet/commit/a5dc6251eb8cb4c2e1b741c7ee5de16aaef5ef55))
+
 ## Version 0.0.37 / 2016-06-03
   * Ensure order ([Vlad - af95643](https://github.com/vghn/puppet/commit/af9564358307a2fdaebbe7bba5367a96ae0bb6c4))
 
