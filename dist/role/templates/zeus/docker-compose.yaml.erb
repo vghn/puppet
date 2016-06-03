@@ -17,3 +17,5 @@ services:
       - ./puppet/r10k.yaml:/etc/puppetlabs/r10k/r10k.yaml:ro
       - ./scripts/r10k-post-run:/etc/puppetlabs/r10k/post-run.sh:ro
       - ./code/environments:/etc/puppetlabs/code/environments
+    command:
+      - deploy environment --puppetfile --verbose
