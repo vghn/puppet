@@ -1,3 +1,7 @@
+## Version 0.0.36 / 2016-06-03
+  *  Disable ENVTYPE cli overriding ([Vlad - 05b5796](https://github.com/vghn/puppet/commit/05b5796b0a1670fe2669c111c9cb20e28ab2c77b))
+  * Make sure parent directories are present ([Vlad - 71d8acf](https://github.com/vghn/puppet/commit/71d8acf81bc4d85eb1723d161e75509aa6c63758))
+
 ## Version 0.0.35 / 2016-06-03
   * Use docker-compose to deploy R10K ([Vlad - e394ffb](https://github.com/vghn/puppet/commit/e394ffbeec01b859b6b5d2638dc031b2ded8e6f7))
 
