@@ -27,25 +27,28 @@ class role::zeus {
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
+    require => Exec["mkdir_p-${project_path}"]
   }
 
   # R10k Post Run Hook
   file {'R10k Post Run Hook':
-    ensure => present,
-    path   => "${project_path}/scripts/r10k-post-run",
-    source => 'puppet:///modules/role/zeus/r10k-post-run',
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0755',
+    ensure  => present,
+    path    => "${project_path}/scripts/r10k-post-run",
+    source  => 'puppet:///modules/role/zeus/r10k-post-run',
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0755',
+    require => Exec["mkdir_p-${project_path}"]
   }
 
   # Policy based CSR auto sign script
   file {'CSR Auto Sign':
-    ensure => present,
-    path   => "${project_path}/scripts/csr-sign",
-    source => 'puppet:///modules/role/zeus/csr-sign',
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0555',
+    ensure  => present,
+    path    => "${project_path}/scripts/csr-sign",
+    source  => 'puppet:///modules/role/zeus/csr-sign',
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0555',
+    require => Exec["mkdir_p-${project_path}"]
   }
 }
