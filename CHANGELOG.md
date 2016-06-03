@@ -1,3 +1,6 @@
+## Version 0.0.37 / 2016-06-03
+  * Ensure order ([Vlad - af95643](https://github.com/vghn/puppet/commit/af9564358307a2fdaebbe7bba5367a96ae0bb6c4))
+
 ## Version 0.0.36 / 2016-06-03
   *  Disable ENVTYPE cli overriding ([Vlad - 05b5796](https://github.com/vghn/puppet/commit/05b5796b0a1670fe2669c111c9cb20e28ab2c77b))
   * Make sure parent directories are present ([Vlad - 71d8acf](https://github.com/vghn/puppet/commit/71d8acf81bc4d85eb1723d161e75509aa6c63758))
