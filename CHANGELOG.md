@@ -1,3 +1,6 @@
+## Version 0.0.39 / 2016-06-03
+  * Fix scripts path creation ([Vlad - 5b943a0](https://github.com/vghn/puppet/commit/5b943a0aa71791830b26a8452146a41a5bb783b9))
+
 ## Version 0.0.38 / 2016-06-03
   * Fix scripts path creation ([Vlad - a5dc625](https://github.com/vghn/puppet/commit/a5dc6251eb8cb4c2e1b741c7ee5de16aaef5ef55))
 
