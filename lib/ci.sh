@@ -28,9 +28,5 @@ ci_deploy(){
   aws_ec2_send_run_command \
   'zeus' \
   'Deploy R10K environment' \
-  "docker run --rm --name r10k-agent \
-    -v /opt/vpm/puppet/r10k.yaml:/etc/puppetlabs/r10k/r10k.yaml:ro \
-    -v /opt/vpm/puppet/bin/r10k-post-run:/etc/puppetlabs/r10k/post-run.sh:ro \
-    -v /opt/vpm/code/environments:/etc/puppetlabs/code/environments \
-    vladgh/r10k deploy environment --puppetfile --verbose"
+  'docker-compose --project-name vpm --file /opt/vpm/docker-compose.yaml up -d'
 }
