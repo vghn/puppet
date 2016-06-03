@@ -1,3 +1,6 @@
+## Version 0.0.41 / 2016-06-03
+  * Reorganize Roles/Profiles ([Vlad - a0074ed](https://github.com/vghn/puppet/commit/a0074eda31d14579e1a8abe1eda5c4a0221bea58))
+
 ## Version 0.0.40 / 2016-06-03
   * Fix zeus docker-compose.yaml ([Vlad - d1741fc](https://github.com/vghn/puppet/commit/d1741fc6a5fe3f2814d56c7a4be974cd68b3b93f))
 
