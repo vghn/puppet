@@ -7,18 +7,17 @@ require 'logger'
 
 # Environment
 environment = ENV['ENVTYPE'] || 'production'
+master_role = 'zeus'
 
-# AWS Default Region
-aws_region = ENV['AWS_DEFAULT_REGION'] || 'us-east-1'
-
-# Log
+# Logging
 logger = Logger.new('/tmp/csr_sign.log')
 
 # Configuration
-cfg = YAML.load `/opt/puppetlabs/bin/hiera -f yaml \
-                csr_config environment=#{environment}`
+cfg = YAML.load `/opt/puppetlabs/bin/hiera -f yaml csr_config \
+                ::role=#{master_role} ::environment=#{environment}`
 
 # Load AWS SDK
+aws_region = ENV['AWS_DEFAULT_REGION'] || 'us-east-1'
 ec2 = Aws::EC2::Resource.new(region: aws_region)
 
 # VARs
@@ -32,19 +31,31 @@ atts = csr.attributes
 
 # Do not sign if there aren't any custom csr attributes
 if atts.empty?
-  logger.warn 'The CSR has no attributes'
+  logger.error 'Authorization failed! The CSR has no attributes!'
   exit 1
 end
 
-# Get secret password
-challenge_password = atts.select { |att| att.oid == 'challengePassword' }
-                         .first.value.value.first.value.strip || nil
+# Get challenge password
+begin
+  challenge_password = atts.select { |att| att.oid == 'challengePassword' }
+                           .first.value.value.first.value.strip
+rescue => e
+  logger.warn 'Could not find challengePassword in the attributes ' \
+              "(#{e.message})!"
+  challenge_password = nil
+end
+
+# Get extensions
+begin
+  exts = atts.select { |att| att.oid == 'extReq' }
+             .first.value.value.first.value
+rescue => e
+  logger.warn 'Could not find other extensions in the attributes! ' \
+              "(#{e.message})!"
+  exts = nil
+end
 
 # Get extension requests
-exts = atts.select { |att| att.oid == 'extReq' }
-           .first.value.value.first.value
-
-# Read each extension request
 exts.each do |ext|
   id   = ext.value[0].value.strip
   resp = ext.value[1].value.gsub(/([\x00-\x1f])/, '').strip
@@ -55,9 +66,17 @@ exts.each do |ext|
   role = resp        if id == '1.3.6.1.4.1.34380.1.1.13'
 end
 
+# Get authorized password
+begin
+  authorized_password = cfg[project]['challengePassword']
+rescue => e
+  logger.warn 'Could not find challengePassword in the configuration! ' \
+              "(#{e.message})!"
+  authorized_password = nil
+end
+
 # Sign if password matches
-authorized_password = cfg[project]['challengePassword'] || nil
-if challenge_password == authorized_password && !authorized_password.nil?
+if authorized_password && challenge_password == authorized_password
   logger.info 'Node authorized based on the provided challengePassword'
   exit 0
 end
@@ -77,4 +96,5 @@ if ami_pool.include?(image_name)
 end
 
 # JUST DON'T
+logger.error 'Authorization failed!'
 exit 1
