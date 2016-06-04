@@ -1,3 +1,7 @@
+## Version 0.0.42 / 2016-06-04
+  * Fix r10k deploy script ([Vlad - c879665](https://github.com/vghn/puppet/commit/c87966532b207dfac12f98aa05e628375424ede2))
+  * Improve CSR Auto Sign script ([Vlad - 59fcf86](https://github.com/vghn/puppet/commit/59fcf86b9a8f11bb1d14a16b9fd8c3fcb71b81fd))
+
 ## Version 0.0.41 / 2016-06-03
   * Reorganize Roles/Profiles ([Vlad - a0074ed](https://github.com/vghn/puppet/commit/a0074eda31d14579e1a8abe1eda5c4a0221bea58))
 
