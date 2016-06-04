@@ -12,7 +12,7 @@ Exec {path => '/usr/local/bin:/usr/bin:/usr/sbin/:/bin:/sbin'}
 
 # DEFAULT NODE
 node default {
-  if !empty( $::real_role ) {
+  if $::real_role {
     include "::role::${::real_role}"
   } else {
     fail('No valid role found!')
