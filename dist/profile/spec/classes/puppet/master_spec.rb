@@ -18,20 +18,6 @@ describe 'profile::puppet::master' do
             .with_owner('root')
             .with_mode('0755')
         end
-
-        it do
-          is_expected.to contain_file('R10k Deploy')
-            .with_path('/opt/myproject/scripts/r10k-deploy')
-            .with_owner('root')
-            .with_mode('0755')
-        end
-
-        it do
-          is_expected.to contain_file('R10k Post Run Hook')
-            .with_path('/opt/myproject/scripts/r10k-post-run')
-            .with_owner('root')
-            .with_mode('0755')
-        end
       end
     end
   end

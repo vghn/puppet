@@ -18,26 +18,4 @@ class profile::puppet::master {
     mode    => '0755',
     require => Exec["mkdir_p-${scripts_path}"],
   }
-
-  # R10k Deploy Script
-  file {'R10k Deploy':
-    ensure  => present,
-    path    => "${scripts_path}/r10k-deploy",
-    source  => 'puppet:///modules/profile/r10k-deploy',
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0755',
-    require => Exec["mkdir_p-${scripts_path}"],
-  }
-
-  # R10k Post Run Hook
-  file {'R10k Post Run Hook':
-    ensure  => present,
-    path    => "${scripts_path}/r10k-post-run",
-    source  => 'puppet:///modules/profile/r10k-post-run',
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0755',
-    require => Exec["mkdir_p-${scripts_path}"],
-  }
 }
