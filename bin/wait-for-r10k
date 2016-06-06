@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -euo pipefail
+IFS=$'\n\t'
+
+until \
+  [[ -s /etc/puppetlabs/code/environments/production/.r10k-deploy.json ]]
+do
+  >&2 echo "R10K did not deploy - sleeping"
+  sleep 5
+done
+
+echo "R10K deployed - executing command"
+exec "$@"

@@ -1,5 +1,5 @@
 ---
-postrun: ['/etc/puppetlabs/r10k/post-run.sh']
+postrun: ['/etc/puppetlabs/r10k/post-run']
 cachedir: '/opt/puppetlabs/r10k/cache'
 sources:
   operations:

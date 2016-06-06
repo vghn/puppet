@@ -1,0 +1,39 @@
+version: '2'
+
+services:
+  server:
+    image: vladgh/puppetserver:aws
+    hostname: puppet.ghn.me
+    ports:
+      - '8140:8140'
+    volumes_from:
+      - r10k
+    volumes:
+      - ssl:/etc/puppetlabs/puppet/ssl
+      - ./csr:/etc/puppetlabs/puppet/csr
+      - ./hiera.yaml:/etc/puppetlabs/puppet/hiera.yaml
+    environment:
+      AUTOSIGN: '/etc/puppetlabs/puppet/csr/sign'
+      JAVA_ARGS: '-Xms768m -Xmx768m'
+    entrypoint: /scripts/wait-for-r10k /entrypoint.sh puppetserver foreground
+    restart: 'unless-stopped'
+  r10k:
+    image: vladgh/r10k:latest
+    hostname: r10k-agent
+    volumes:
+      - ./r10k:/etc/puppetlabs/r10k:ro
+      - ./bin:/scripts:ro
+      - code:/etc/puppetlabs/code
+    command: deploy environment --puppetfile
+    restart: 'on-failure:5'
+  logs:
+    hostname: log-agent
+    image: gliderlabs/logspout:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: "syslog://${LOG_SERVER_ADDRESS}:${LOG_SERVER_PORT}"
+    restart: 'unless-stopped'
+
+volumes:
+  code:
+  ssl:
