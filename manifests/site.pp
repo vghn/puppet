@@ -4,7 +4,7 @@ if $::trusted['authenticated'] == 'remote' {
 } elsif $::trusted['authenticated'] == 'local' {
   $real_role = $::role
 } else {
-  fail('Unauthorized node!')
+  warning('Unauthorized node!')
 }
 
 # Exec defaults:
@@ -15,6 +15,6 @@ node default {
   if $::real_role {
     include "::role::${::real_role}"
   } else {
-    fail('No valid role found!')
+    warning('No valid role found!')
   }
 }
