@@ -40,15 +40,4 @@ class profile::puppet::master {
     mode    => '0755',
     require => Exec["mkdir_p-${scripts_path}"],
   }
-
-  # Policy based CSR auto sign script
-  file {'CSR Auto Sign':
-    ensure  => present,
-    path    => "${scripts_path}/csr-sign",
-    source  => 'puppet:///modules/profile/csr-sign',
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0555',
-    require => Exec["mkdir_p-${scripts_path}"],
-  }
 }

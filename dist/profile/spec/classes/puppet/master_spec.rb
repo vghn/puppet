@@ -32,12 +32,6 @@ describe 'profile::puppet::master' do
             .with_owner('root')
             .with_mode('0755')
         end
-        it do
-          is_expected.to contain_file('CSR Auto Sign')
-            .with_path('/opt/myproject/scripts/csr-sign')
-            .with_owner('root')
-            .with_mode('0555')
-        end
       end
     end
   end

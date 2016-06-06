@@ -2,6 +2,7 @@
 .env
 /hieradata/*
 !/hieradata/common.yaml
+/csr/cfg.yaml
 
 # Other
 /tmp
