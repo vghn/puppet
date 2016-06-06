@@ -1,3 +1,12 @@
+## Version 0.0.43 / 2016-06-06
+  * Update ssh module ([Vlad - 24ed049](https://github.com/vghn/puppet/commit/24ed04927a4802a31817c8fd44877d91dabae3db))
+  * Remove unnecessary function ([Vlad - 8a5fa03](https://github.com/vghn/puppet/commit/8a5fa03608375b5e9c6ad57751f74389ba53cc0f))
+  * Fix CSR signing script, and separate it from profile ([Vlad - d3b7643](https://github.com/vghn/puppet/commit/d3b7643ba8f8566fdbdcaa1dfc005e4e39b09f50))
+  * Separate R10K from profile ([Vlad - 9cf50f7](https://github.com/vghn/puppet/commit/9cf50f7121fd1c98c7b89704b4b42c68148e4a1f))
+  * Do not fail if role is not found ([Vlad - 26c86c1](https://github.com/vghn/puppet/commit/26c86c12f6086d0090d1693f5c891ac246638362))
+  * Create Rhea role for the Puppet Master of Masters ([Vlad - e978605](https://github.com/vghn/puppet/commit/e978605defa7959d225cf35ab8fcf756ada6ad1a))
+  * Create a Docker Compose environment ([Vlad - 6bc160a](https://github.com/vghn/puppet/commit/6bc160a25243c959b335929a7d38854604b1f6fe))
+
 ## Version 0.0.42 / 2016-06-04
   * Fix r10k deploy script ([Vlad - c879665](https://github.com/vghn/puppet/commit/c87966532b207dfac12f98aa05e628375424ede2))
   * Improve CSR Auto Sign script ([Vlad - 59fcf86](https://github.com/vghn/puppet/commit/59fcf86b9a8f11bb1d14a16b9fd8c3fcb71b81fd))
