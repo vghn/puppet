@@ -1,3 +1,8 @@
+## Version 0.0.46 / 2016-06-08
+  * Improve container run scripts ([Vlad - 07ad22f](https://github.com/vghn/puppet/commit/07ad22f8459e930d56ec22eb8add25d2ae8284e5))
+  * Simplify the bootstrap script ([Vlad - d32c193](https://github.com/vghn/puppet/commit/d32c1931c0f8d50e44ddfea469db779b32e275a9))
+  * Add script to bootstrap Puppet Master of Masters ([Vlad - b511941](https://github.com/vghn/puppet/commit/b511941d28b502c97924077d4815a8ba5c608c5f))
+
 ## Version 0.0.45 / 2016-06-08
   * Add wait_for_data function ([Vlad - 841e23b](https://github.com/vghn/puppet/commit/841e23b5c3ea8ae6a0ccc98f8606edf1c54e80a4))
   * Append date to the deployment status file ([Vlad - d45de56](https://github.com/vghn/puppet/commit/d45de5630c0067df278df44ea39164f9a34263d0))

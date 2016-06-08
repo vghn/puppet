@@ -16,6 +16,9 @@ fi
 sync_down_private_data
 sync_down_hieradata
 
+# Move policy based auto signing script
+ln -fs "${PRIVATE_DATA_DIR}/csr_cfg.yaml" /etc/puppetlabs/puppet/csr/cfg.yaml
+
 # Deploy R10K
 r10k deploy environment --puppetfile --verbose
 
