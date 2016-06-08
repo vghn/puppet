@@ -1,3 +1,8 @@
+## Version 0.0.45 / 2016-06-08
+  * Add wait_for_data function ([Vlad - 841e23b](https://github.com/vghn/puppet/commit/841e23b5c3ea8ae6a0ccc98f8606edf1c54e80a4))
+  * Append date to the deployment status file ([Vlad - d45de56](https://github.com/vghn/puppet/commit/d45de5630c0067df278df44ea39164f9a34263d0))
+  * Improve environment declaration ([Vlad - 7466d04](https://github.com/vghn/puppet/commit/7466d048e0ae0918e65752795db510cd2bfc606b))
+
 ## Version 0.0.44 / 2016-06-08
   * Move sensitive data to 'private/' ([Vlad - 9098993](https://github.com/vghn/puppet/commit/9098993430acddc63d1244cb250da18ac939d713))
   * Improve environment detection ([Vlad - 256e1f9](https://github.com/vghn/puppet/commit/256e1f942607decb5ecae808061b5b2b2e717f18))
