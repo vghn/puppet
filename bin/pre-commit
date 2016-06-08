@@ -7,8 +7,7 @@
 # Install:
 #  /path/to/repo/.git/hooks/pre-commit
 #
-# Authors:
-#  Vlad Ghinea
+# Inspired from the work of:
 #  Ronny Roethof
 #  Mattias Geniar <m@ttias.be>
 #  Rob Nelson <rnelson0@gmail.com>

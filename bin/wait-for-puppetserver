@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Wait for Puppetserver to be up and ready
+
 set -euo pipefail
 IFS=$'\n\t'
 

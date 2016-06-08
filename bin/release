@@ -5,6 +5,7 @@
 # shellcheck disable=1090
 . "$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd -P)/envrc"
 
+# Release to GitHub from production branch
 vgs_release \
   --sign \
   --type "${1:-patch}" \

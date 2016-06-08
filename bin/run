@@ -1,13 +1,12 @@
 #!/usr/bin/env bash
-# GIT Pre-Push Hook
-# @author Vlad Ghinea
-
-#VARs
-ENVNAME="${1:-dev}"
+# Docker Compose Run Script
 
 # Load environment
 # shellcheck disable=1090
 . "$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd -P)/envrc"
+
+#VARs
+ENVNAME="${1:-prod}"
 
 # Run docker compose
 e_header "Running Docker Compose (${ENVNAME})"

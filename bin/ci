@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Continuous Integration / Continuous Deployment tasks
+# CI/CD Tasks
 
 # Load environment
 # shellcheck disable=1090
