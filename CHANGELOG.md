@@ -1,3 +1,18 @@
+## Version 0.0.44 / 2016-06-08
+  * Move sensitive data to 'private/' ([Vlad - 9098993](https://github.com/vghn/puppet/commit/9098993430acddc63d1244cb250da18ac939d713))
+  * Improve environment detection ([Vlad - 256e1f9](https://github.com/vghn/puppet/commit/256e1f942607decb5ecae808061b5b2b2e717f18))
+  * Separate upload of hiera and private data ([Vlad - 3b6df64](https://github.com/vghn/puppet/commit/3b6df64e180b982c8c97de9449b8ec55ee58bccf))
+  * Update scripts headers ([Vlad - 5fdd7d0](https://github.com/vghn/puppet/commit/5fdd7d0eddd012e3a20430896132468ebf78486d))
+  * Move CSR sign script to bin/ ([Vlad - 03cf172](https://github.com/vghn/puppet/commit/03cf172de3698ab8ab9fab63d8f7587357d18806))
+  * Remove R10K post run hook ([Vlad - 7dc54c8](https://github.com/vghn/puppet/commit/7dc54c8906e671da87ab0dbce33db67eb07f2aab))
+  * Move hieradata outside code ([Vlad - ba3e721](https://github.com/vghn/puppet/commit/ba3e7211e0c5f9e223129f1397af3f13b8f55ffc))
+  * Update SSM command ([Vlad - 73fa7fc](https://github.com/vghn/puppet/commit/73fa7fc562decc17bf9b54409d8af775b284a584))
+  * Add script to prepare the data container ([Vlad - 782a1dd](https://github.com/vghn/puppet/commit/782a1ddb0371109db6d5e3d7368025f6da0116c8))
+  * Add script to run the centralized logging container ([Vlad - d2078db](https://github.com/vghn/puppet/commit/d2078db0a8d5b8996da16988c5a9aa6253ed0071))
+  * Add script to run the puppet server ([Vlad - 5509e9d](https://github.com/vghn/puppet/commit/5509e9dedcb518f0a220bdd3b5fab946d408059d))
+  * Add wait scripts ([Vlad - 6c4e0e0](https://github.com/vghn/puppet/commit/6c4e0e095b6ac7a7a4892ce83f0f0ca00047ff25))
+  * Improve Docker Compose environment ([Vlad - f684dd4](https://github.com/vghn/puppet/commit/f684dd469ac670e2c23daf36c15a3881a5fc4e60))
+
 ## Version 0.0.43 / 2016-06-06
   * Update ssh module ([Vlad - 24ed049](https://github.com/vghn/puppet/commit/24ed04927a4802a31817c8fd44877d91dabae3db))
   * Remove unnecessary function ([Vlad - 8a5fa03](https://github.com/vghn/puppet/commit/8a5fa03608375b5e9c6ad57751f74389ba53cc0f))
