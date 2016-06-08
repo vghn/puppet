@@ -1,4 +1,6 @@
 #!/opt/puppetlabs/puppet/bin/ruby
+# Policy-based auto signing script for Puppet
+# https://docs.puppet.com/puppet/latest/reference/ssl_autosign.html#policy-based-autosigning
 
 require 'yaml'
 require 'openssl'
@@ -88,8 +90,17 @@ def role
     .first
 end
 
-# Get authorized password
-def authorized_password
+# Get master password
+def master_password
+  cfg['challengePassword']
+rescue => e
+  puts 'Could not find \'challengePassword\' in the configuration' \
+       " (#{e.message})!"
+  return nil
+end
+
+# Get project authorized password
+def project_password
   cfg[project]['challengePassword']
 rescue => e
   puts 'Could not find challengePassword in the configuration for' \
@@ -97,9 +108,14 @@ rescue => e
   return nil
 end
 
-# Sign if password matches
-def check_password
-  authorized_password && challenge_password == authorized_password
+# Sign if the master password matches
+def check_master_password
+  master_password && challenge_password == master_password
+end
+
+# Sign if the project password matches
+def check_project_password
+  project_password && challenge_password == project_password
 end
 
 # Sign if its a known instance
@@ -120,15 +136,17 @@ end
 
 # Authorize
 def authorize(ret, msg)
-  puts msg
+  STDERR.puts msg
   exit ret
 end
 
 # Authorization
 if atts.empty?
   authorize 1, 'Authorization failed! The CSR has no attributes!'
-elsif check_password
-  authorize 0, 'Node authorized based on the provided challengePassword'
+elsif check_master_password
+  authorize 0, 'Node authorized based on the provided master challengePassword'
+elsif check_project_password
+  authorize 0, 'Node authorized based on the provided project challengePassword'
 elsif check_instances_list
   authorize 0, "Node authorized based on instance id (#{instance_id})"
 elsif check_images_list
