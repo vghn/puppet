@@ -5,13 +5,17 @@ set -euo pipefail
 IFS=$'\n\t'
 
 # Paths
-export APPDIR TMPDIR PATH
+export APPDIR TMPDIR
 APPDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
 TMPDIR=$(mktemp -d 2>/dev/null || mktemp -d -t 'tmp')
 
+# Internal paths
+export PRIVATE_DATA_DIR="${APPDIR}/.private"
+export HIERA_DATA_DIR="${APPDIR}/hieradata"
+
 # Load private environment
 # shellcheck disable=1090
-. "${APPDIR}/private/.env" 2>/dev/null || true
+. "${APPDIR}/.private/.env" 2>/dev/null || true
 
 # Load VGS library
 # shellcheck disable=1090,1091
@@ -58,9 +62,8 @@ elif [[ ${TRAVIS:-false} == true ]]; then
 fi
 
 # AWS
+export AWS_ASSETS_BUCKET='vladgh'
 export AWS_DEFAULT_REGION="${AWS_DEFAULT_REGION:-us-east-1}"
-## AWS S3
-export AWS_ASSETS_BUCKET="${AWS_ASSETS_BUCKET:?'Please set the AWS_ASSETS_BUCKET environment variable'}"
 export ARCHIVE_S3PATH="s3://${AWS_ASSETS_BUCKET}/${ENVTYPE}.tgz"
 export PP_HIERADATA_S3="s3://${AWS_ASSETS_BUCKET}/hieradata/${ENVTYPE}"
 export PP_PRIVATE_DATA_S3="s3://${AWS_ASSETS_BUCKET}/private/${ENVTYPE}"
