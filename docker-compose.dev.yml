@@ -1,29 +1,25 @@
 version: '2'
 
 services:
-  agent:
-    image: vladgh/puppet:latest
-    volumes:
-      - ./bin:/scripts
-    environment:
-      ROLE: 'none'
-    links:
-      - server:puppet
-    entrypoint: bash -c '/scripts/wait-for-puppetserver puppet puppet agent --test'
   server:
     image: vladgh/puppetserver:aws
+    hostname: puppet.ghn.me
     ports:
       - '8140:8140'
     volumes_from:
       - r10k
-    volumes:
-      - ./hiera.yaml:/etc/puppetlabs/puppet/hiera.yaml
     environment:
       AUTOSIGN: 'true'
-      JAVA_ARGS: '-Xms512m -Xmx512m'
+      JAVA_ARGS: '-Xms256m -Xmx256m'
+    restart: 'on-failure:5'
   r10k:
     image: vladgh/r10k:latest
+    hostname: r10k-agent
     volumes:
+      - ~/.aws:/root/.aws:ro
       - .:/etc/puppetlabs/code/environments/production
+      - ./hiera.yaml:/etc/puppetlabs/puppet/hiera.yaml:ro
+      - ./hieradata:/etc/puppetlabs/hieradata
+    command: puppetfile install
     working_dir: /etc/puppetlabs/code/environments/production
-    command: puppetfile install --verbose
+    restart: 'no'
