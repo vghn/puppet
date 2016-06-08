@@ -11,7 +11,7 @@ TMPDIR=$(mktemp -d 2>/dev/null || mktemp -d -t 'tmp')
 
 # Load private environment
 # shellcheck disable=1090
-. "${APPDIR}/.env" 2>/dev/null || true
+. "${APPDIR}/private/.env" 2>/dev/null || true
 
 # Load VGS library
 # shellcheck disable=1090,1091
@@ -24,8 +24,8 @@ for file in ${APPDIR}/lib/*.sh; do
 done
 
 # Detect environment
-GIT_BRANCH=$(git symbolic-ref --short HEAD 2>/dev/null || echo '')
-GIT_SHA1=$(git rev-parse --short HEAD 2>/dev/null || echo '0')
+GIT_BRANCH=$(git -C "$APPDIR" symbolic-ref --short HEAD 2>/dev/null || echo '')
+GIT_SHA1=$(git -C "$APPDIR" rev-parse --short HEAD 2>/dev/null || echo '0')
 
 ## Detect if git directory or if Travis CI or if AWS CodeDeploy
 if [[ -n "${ENVTYPE:-}" ]]; then
@@ -61,7 +61,6 @@ fi
 export AWS_DEFAULT_REGION="${AWS_DEFAULT_REGION:-us-east-1}"
 ## AWS S3
 export AWS_ASSETS_BUCKET="${AWS_ASSETS_BUCKET:?'Please set the AWS_ASSETS_BUCKET environment variable'}"
-
-# Puppet
+export ARCHIVE_S3PATH="s3://${AWS_ASSETS_BUCKET}/${ENVTYPE}.tgz"
 export PP_HIERADATA_S3="s3://${AWS_ASSETS_BUCKET}/hieradata/${ENVTYPE}"
-export PP_HIERADATA_ARCHIVE_S3PATH="s3://${AWS_ASSETS_BUCKET}/hieradata/${ENVTYPE}.tgz"
+export PP_PRIVATE_DATA_S3="s3://${AWS_ASSETS_BUCKET}/private/${ENVTYPE}"

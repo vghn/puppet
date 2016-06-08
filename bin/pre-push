@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 # GIT Pre-Push Hook
-# @author Vlad Ghinea
 
 # Disable ENVTYPE cli overriding (it should be auto detected only)
 unset ENVTYPE
@@ -11,7 +10,8 @@ unset ENVTYPE
 
 # Hooks
 e_header 'GIT Pre-Push:'
-upload_hieradata
+sync_up_private_data
+sync_up_hieradata
 
 # Git Push
 e_header 'GIT Push:'

@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+# Load environment before running the centralized log agent
+# Only load credentials from .env (envrc is not SH safe)
+
+# shellcheck disable=1090
+. "$(cd "$(dirname "$0")/../" && pwd -P)/private/.env"
+
+/bin/logspout "syslog://${LOG_SERVER_ADDRESS}:${LOG_SERVER_PORT}"

@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+# Prepares the data container
+
+# Install/Update VGS Library
+if [[ -d /opt/vgs/.git ]]; then
+  ( cd /opt/vgs && git fetch --all && git reset --hard origin/master )
+else
+  git clone https://github.com/vghn/vgs.git /opt/vgs
+fi
+
+# Load environment
+# shellcheck disable=1090
+. "$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd -P)/envrc"
+
+# Sync S3 Data
+sync_down_private_data
+sync_down_hieradata
+
+# Deploy R10K
+r10k deploy environment --puppetfile --verbose
+
+# Signal finish
+touch /var/local/data_deployed
