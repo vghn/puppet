@@ -3,6 +3,13 @@
 # Only load credentials from .env (envrc is not SH safe)
 
 # shellcheck disable=1090
-. "$(cd "$(dirname "$0")/../" && pwd -P)/private/.env"
+. "$(cd "$(dirname "$0")/../" && pwd -P)/.private/.env"
 
+# Wait for data to be deployed
+until [ -f /var/local/data_deployed ]; do
+  >&2 echo "Data did not deploy - sleeping"
+  sleep 5
+done
+
+echo "Data deployed - starting log agent"
 /bin/logspout "syslog://${LOG_SERVER_ADDRESS}:${LOG_SERVER_PORT}"

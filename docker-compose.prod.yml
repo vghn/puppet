@@ -20,7 +20,7 @@ services:
       - ~/.aws:/root/.aws:ro
       - .:/vpm
       - ./bin/csr-sign:/etc/puppetlabs/puppet/csr/sign:ro
-      - ./private/csr_cfg.yaml:/etc/puppetlabs/puppet/csr/cfg.yaml:ro
+      - ./.private/csr_cfg.yaml:/etc/puppetlabs/puppet/csr/cfg.yaml:ro
       - ./r10k.yaml:/etc/puppetlabs/r10k/r10k.yaml:ro
       - ./hiera.yaml:/etc/puppetlabs/puppet/hiera.yaml:ro
       - ssl:/etc/puppetlabs/puppet/ssl

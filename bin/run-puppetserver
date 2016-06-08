@@ -3,13 +3,8 @@
 
 # Load environment
 # shellcheck disable=1090
-. "$(cd "$(dirname "${BASH_SOURCE[0]}")/../../" && pwd -P)/envrc"
+. "$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd -P)/envrc"
 
-
-until [[ -f /var/local/data_deployed ]]; do
-  >&2 echo "Data did not deploy - sleeping"
-  sleep 5
-done
-
+wait_for_data
 echo "Data deployed - Starting Puppet Server"
 /entrypoint.sh puppetserver foreground

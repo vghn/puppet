@@ -1,5 +1,5 @@
 # Private
-/private/*
+/.private/*
 /hieradata/*
 !/hieradata/common.yaml
 
