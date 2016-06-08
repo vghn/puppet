@@ -7,7 +7,7 @@ IFS=$'\n\t'
 host="${1:?Must specify the host as the 1st argument}"
 shift
 
-until [[ $(curl --insecure --silent "https://${host}:8140/puppet-ca/v1/certificate/ca") =~ '-----BEGIN CERTIFICATE-----' ]]; do
+until [[ $(wget --no-check-certificate -qO- "https://${host}:8140/puppet-ca/v1/certificate/ca") =~ '-----BEGIN CERTIFICATE-----' ]]; do
   >&2 echo "Puppetserver is unavailable - sleeping"
   sleep 5
 done
