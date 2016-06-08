@@ -26,7 +26,7 @@ ci_test(){
 # CI Deploy
 ci_deploy(){
   aws_ec2_send_run_command \
-  'zeus' \
-  'Deploy R10K environment' \
-  '/opt/myproject/scripts/r10k-deploy'
+  'rhea' \
+  'Run Docker Compose' \
+  '/opt/vpm/bin/run'
 }
