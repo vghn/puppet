@@ -20,4 +20,4 @@ sync_down_hieradata
 r10k deploy environment --puppetfile --verbose
 
 # Signal finish
-touch /var/local/data_deployed
+date > /var/local/data_deployed
