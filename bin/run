@@ -9,5 +9,4 @@
 ENVNAME="${1:-prod}"
 
 # Run docker compose
-e_header "Running Docker Compose (${ENVNAME})"
 docker-compose -f "${APPDIR}/docker-compose.${ENVNAME}.yml" up -d
