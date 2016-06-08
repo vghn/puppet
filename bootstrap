@@ -1,20 +1,13 @@
 #!/usr/bin/env bash
 #
-# Bootstraps puppet. It allows to run puppet agent with a remote server, or
-# apply local manifests.
+# Bootstraps Puppet
 #
 # USAGE:
 # git clone https://github.com/vladgh/puppet.git
 # bash bootstrap
 #
 # Environment variables:
-# PP_SERVER: [String] The URL of the Puppet Server. If `none`,
-#            the script looks for a `Puppetfile` (which will install into the
-#            default modules/ directory), for a `hieradata` containing hieradata
-#            (see the function `configure_hiera` bellow for a hierarchy of
-#            files), for a `dist` directory containing the profile and role
-#            modules, and for a `manifests` directory containing the `site.pp`
-#            file.
+# PP_SERVER: [String] The URL of the Puppet Server. Defaults to `puppet`
 # PP_ROLE: [String] Declares the role of the node as a trusted fact*
 # PP_PROJECT: [String] Declares the project name as a trusted fact*
 # PP_SECRET: [String] Declares a shared secret as a trusted fact*
@@ -22,31 +15,21 @@
 # PP_COLLECTION: [String] The puppet collection (default: 'pc1')
 # PP_CODENAME: [String] The distribution code name (default: `lsb_release -cs`)
 # PP_AGENT_CERT_REGEN: [Boolean] If `true`, the puppet services will be stopped,
-#                      the certificates and catalog cache will be deleted, and
-#                      puppet agent will run in `test` mode, regenerating the
-#                      certificates; https://docs.puppet.com/pe/latest/agent_cert_regen.html
-# PP_RETRY_LOCAL: [Boolean] If `true`, when the agent's run fails, it will retry
-#                 in serverless mode (See `PP_SERVER=none` above).
+#                      the certificates and catalog cache will be deleted prior
+#                      to puppet run;
+#                      https://docs.puppet.com/pe/latest/agent_cert_regen.html
 # PP_WAITFORCERT: [INTEGER] The number of seconds between connections to server
 #                 while waiting for a certificate to be signed. You can turn off
 #                 waiting for certificates by specifying a time of 0 (default).
-# PP_HIERADATA_URL: [String] URL to the hiera data. If present, the script
-#                  will try to download it (this can be a S3 generated URL)
 # PP_COLOR: [String] Use color or not in output (default: 'true';
 #           https://docs.puppetlabs.com/puppet/latest/reference/configuration.html#color)
 # ENVTYPE: [STRING] The environment (default: 'production)
 #
-# Optional Slack environment variables; if defined exit status will be send to
-# the specified webhook:
-# SLACK_WEBHOOK: [String] The Slack webhook to post to
-# SLACK_CHANNEL: [String] The Slack channel to post to
-# SLACK_USER: [String] The Slack to post as
-#
 # * Trusted facts info: https://docs.puppetlabs.com/puppet/latest/reference/lang_facts_and_builtin_vars.html#trusted-facts
 
-# Load environment
+# Load distribution information
 # shellcheck disable=1091
-. /etc/lsb-release
+. /etc/lsb-release || true
 
 # DEFAULTS
 PP_SERVER=${PP_SERVER:-puppet}
@@ -57,19 +40,13 @@ PP_CERTNAME=${PP_CERTNAME:-}
 PP_COLLECTION=${PP_COLLECTION:-pc1}
 PP_CODENAME=${PP_CODENAME:-$DISTRIB_CODENAME}
 PP_AGENT_CERT_REGEN=${PP_AGENT_CERT_REGEN:-false}
-PP_RETRY_LOCAL=${PP_RETRY_LOCAL:-false}
 PP_WAITFORCERT=${PP_WAITFORCERT:-0}
-PP_HIERADATA_URL=${PP_HIERADATA_URL:-}
 PP_COLOR=${PP_COLOR:-true}
 ENVTYPE=${ENVTYPE:-production}
-SLACK_WEBHOOK=${SLACK_WEBHOOK:-}
-SLACK_CHANNEL=${SLACK_CHANNEL:-}
-SLACK_USER=${SLACK_USER:-}
 
 # INTERNALS
 TMPDIR=$(mktemp -d 2>/dev/null || mktemp -d -t 'tmp')
 CSRTMP="${TMPDIR}/csr_attributes.yaml"
-CURDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
 PATH="/opt/puppetlabs/bin:/opt/puppetlabs/puppet/bin:/usr/local/bin:${PATH}"
 
 # Facts
@@ -81,33 +58,6 @@ e_info()  { printf "  ➜  %s\n" "$@" ;}
 e_error() { printf "  ✖  %s\n" "$@" ;}
 e_warn()  { printf "    %s\n" "$@" ;}
 e_abort() { e_error "$1"; return "${2:-1}" ;}
-
-# Trap exit and notify Slack
-notify_slack(){
-  local exit_code date title color text
-  exit_code=${1:-0}
-  date=$(TZ=US/Central date)
-
-  if [[ $exit_code == 0 ]]; then
-    title='SUCCESS'
-    color='#3ca553'
-  else
-    title='FAILED'
-    color='#ce0814'
-  fi
-  text="Bootstrap exited with ${exit_code} on $(hostname) @ ${date}"
-
-  if [[ -n "$SLACK_CHANNEL" ]] && \
-    [[ -n "$SLACK_USER" ]] && \
-    [[ -n "$SLACK_WEBHOOK" ]]
-  then
-    printf 'Sending Slack message... '
-    curl -s -X POST --data-urlencode "payload={\"channel\": \"#${SLACK_CHANNEL}\", \"username\": \"${SLACK_USER}\", \"icon_emoji\": \":taurus:\", \"attachments\": [{\"title\": \"${title}\", \"text\": \"${text}\", \"color\": \"${color}\"}]}" "${SLACK_WEBHOOK}" || echo 'failed'
-    echo
-  fi
-
-  echo "$title: $text"; exit "$exit_code"
-}
 
 # Check if command exists
 is_cmd() { command -v "$@" >/dev/null 2>&1 ;}
@@ -121,7 +71,7 @@ apt_install(){ e_info "Installing $*"; apt-get -qy install "$@" < /dev/null ;}
 # Sanity checks
 sanity_checks(){
   [[ $EUID == 0 ]] || e_abort 'This script needs to run as root'
-  is_cmd curl || { e_info 'Install CURL' && apt_update && apt_install curl ;}
+  is_cmd curl || { apt_update && e_info 'Install CURL' && apt_install curl ;}
 }
 
 # Generate certificate request attributes file
@@ -145,7 +95,7 @@ CSR
 }
 
 # Move the CSR Attributes file to the right place and set permissions
-configure_csr_attributes(){
+install_csr_attributes(){
   e_info 'Configure the CSR Attributes file'
   if [[ -s "$CSRTMP" ]]; then
     chmod 600 "$CSRTMP"
@@ -176,58 +126,6 @@ install_puppet_agent(){
     fi
   else
     e_info "Puppet is already installed - version $(puppet --version)"
-  fi
-}
-
-# Configure puppet master
-deploy_r10k(){
-  if ! is_cmd r10k; then
-    e_info 'Install R10K'
-    puppet resource package r10k ensure=latest provider=puppet_gem
-  fi
-
-  if ! is_cmd git; then
-    e_info 'Install GIT'
-    puppet resource package git ensure=latest
-  fi
-
-  if [[ -s /etc/puppetlabs/r10k/r10k.yaml ]]; then
-    e_info 'Deploy R10K'
-    r10k deploy environment --puppetfile --verbose
-  elif [[ -s "${CURDIR}/Puppetfile" ]]; then
-    e_info 'Install R10K Puppetfile'
-    ( cd "${CURDIR}" && r10k puppetfile install --verbose )
-  else
-    e_warn 'No R10K environment or Puppetfile found!'
-  fi
-}
-
-# Get Hiera Data
-get_hiera_data(){
-  e_info "Download hiera data"
-  wget -qO- "$PP_HIERADATA_URL" | sudo tar xvz -C "${PP_HIERADATA}/"
-}
-
-# Configure hiera
-configure_hiera(){
-  if ! is_cmd rsync; then
-    e_info 'Install RSYNC'
-    puppet resource package rsync ensure=latest
-  fi
-
-  # Replace hiera.yaml
-  if [[ -s "${CURDIR}/hiera.yaml" ]]; then
-    cp -fr "${CURDIR}/hiera.yaml" "${PP_CONFDIR}/hiera.yaml"
-  fi
-
-  # Ensure hieradata directory exists
-  mkdir -p "$PP_HIERADATA"
-
-  # Replace hieradata
-  if [[ -n "$PP_HIERADATA_URL" ]]; then
-    get_hiera_data
-  elif [[ -d "${CURDIR}/hieradata" ]]; then
-    rsync --delete -razv "${CURDIR}/hieradata/" "${PP_HIERADATA}/"
   fi
 }
 
@@ -270,25 +168,6 @@ remove_cached_catalogs(){
   fi
 }
 
-# Process local files
-configure_local_puppet(){
-  if [[ -s "${CURDIR}/manifests/site.pp" ]]; then
-    manifest="${CURDIR}/manifests/site.pp"
-  elif [[ -s "${PP_ENVDIR}/manifests/site.pp" ]]; then
-    manifest="${PP_ENVDIR}/manifests/site.pp"
-  else
-    e_abort 'Could not find site.pp'
-  fi
-
-  if [[ -d "${CURDIR}/modules" ]] &&  [[ -d "${CURDIR}/dist" ]]; then
-    modulepath="${CURDIR}/modules:${CURDIR}/dist"
-  elif [[ -d "${PP_ENVDIR}/modules" ]] && [[ -d "${PP_ENVDIR}/dist" ]]; then
-    modulepath="${PP_ENVDIR}/modules:${PP_ENVDIR}/dist"
-  else
-    e_abort 'Could not create modulepath'
-  fi
-}
-
 # Stop all puppet services
 stop_puppet_agent_services(){
   puppet resource service puppet ensure=stopped
@@ -303,13 +182,6 @@ configure_puppet(){
   PP_CERTNAME="${PP_CERTNAME:-$(puppet config print certname)}"
   PP_CLIENT_DATADIR="$(puppet config print client_datadir)"
   PP_SSLDIR="$(puppet config print ssldir)"
-  PP_HIERADATA="${PP_ENVDIR}/hieradata"
-
-  if [[ "$PP_SERVER" == 'none' ]]; then
-    configure_hiera
-    deploy_r10k
-    configure_local_puppet
-  fi
 
   if [[ "$PP_AGENT_CERT_REGEN" == 'true' ]]; then
     stop_puppet_agent_services
@@ -320,7 +192,7 @@ configure_puppet(){
   configure_puppet_server
   configure_puppet_environment
   configure_puppet_certname
-  configure_csr_attributes
+  install_csr_attributes
 }
 
 # Process the exit code
@@ -339,26 +211,6 @@ process_exit_code(){
   else
     e_abort 'Unknown run exit code'
   fi
-}
-
-# Apply puppet
-apply_puppet(){
-  local exit_code
-  exit_code=0
-
-  e_info 'Applying puppet'
-  puppet apply \
-    --verbose \
-    --report \
-    --show_diff \
-    --summarize \
-    --detailed-exitcodes \
-    --color="$PP_COLOR" \
-    --environment="${ENVTYPE}" \
-    --modulepath "$modulepath" \
-    "$manifest" || exit_code=$?
-
-  process_exit_code "$exit_code"
 }
 
 # Run puppet
@@ -387,23 +239,13 @@ run_puppet(){
 
 # Logic
 main(){
-  trap 'notify_slack $?' EXIT TERM INT
   sanity_checks
 
   generate_csr_attributes
   install_puppet_agent
   configure_puppet
 
-  if [[ "$PP_SERVER" == 'none' ]]; then
-    apply_puppet
-  else
-    run_puppet || {
-      if [[ "$PP_RETRY_LOCAL" == 'true' ]]; then
-        export PP_SERVER=none
-        configure_puppet && apply_puppet
-      fi
-    }
-  fi
+  run_puppet
 }
 
 # Run
