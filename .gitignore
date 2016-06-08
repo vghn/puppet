@@ -1,8 +1,7 @@
 # Private
-.env
+/private/*
 /hieradata/*
 !/hieradata/common.yaml
-/csr/cfg.yaml
 
 # Other
 /tmp

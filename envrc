@@ -11,7 +11,7 @@ TMPDIR=$(mktemp -d 2>/dev/null || mktemp -d -t 'tmp')
 
 # Load private environment
 # shellcheck disable=1090
-. "${APPDIR}/.env" 2>/dev/null || true
+. "${APPDIR}/private/.env" 2>/dev/null || true
 
 # Load VGS library
 # shellcheck disable=1090,1091
