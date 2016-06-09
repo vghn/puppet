@@ -1,10 +1,19 @@
 #!/usr/bin/env bash
 # Starts Puppet Server
 
+until [[ -s /var/local/r10k_deployed ]]; do
+  >&2 echo "R10K did not deploy - sleeping"
+  sleep 5
+done
+echo "Data deployed - Starting Puppet Server"
+
 # Load environment
 # shellcheck disable=1090
 . "$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd -P)/envrc"
 
-wait_for_data
-echo "Data deployed - Starting Puppet Server"
+# Move policy based auto signing script
+e_info 'Create link to CSR configuration'
+ln -fsn "${PRIVATE_DATA_DIR}/csr_cfg.yaml" /etc/puppetlabs/puppet/csr/cfg.yaml
+
+# Start Puppet Server
 /entrypoint.sh puppetserver foreground
