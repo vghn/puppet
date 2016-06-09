@@ -6,10 +6,14 @@
 . "$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd -P)/envrc"
 
 # Bootstrap Puppet Agent
-# shellcheck disable=1090
-. "${APPDIR}/bootstrap" || true
+bash "${APPDIR}/bootstrap" || true
 
 # VARs
+export PP_SERVER=puppet.ghn.me
+export PP_ROLE=rhea
+export PP_PROJECT=vpm
+
+# Commands
 PPT=/opt/puppetlabs/bin/puppet
 
 # Bootstrap modules

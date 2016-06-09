@@ -1,3 +1,6 @@
+## Version 0.0.47 / 2016-06-09
+  * Fix bootstrap script ([Vlad - 73d85b3](https://github.com/vghn/puppet/commit/73d85b33bd0a9c909711c4f2c5d03af8960f021d))
+
 ## Version 0.0.46 / 2016-06-08
   * Improve container run scripts ([Vlad - 07ad22f](https://github.com/vghn/puppet/commit/07ad22f8459e930d56ec22eb8add25d2ae8284e5))
   * Simplify the bootstrap script ([Vlad - d32c193](https://github.com/vghn/puppet/commit/d32c1931c0f8d50e44ddfea469db779b32e275a9))
