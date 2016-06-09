@@ -1,3 +1,11 @@
+## Version 0.0.48 / 2016-06-09
+  * Fix CSR autosign script ([Vlad - 1693e76](https://github.com/vghn/puppet/commit/1693e7601c9d13316c87670b5e18681408e383df))
+  * Rename and improve MoM start script ([Vlad - e875aac](https://github.com/vghn/puppet/commit/e875aac0a7c0984fda25358345a3d0b0a4bd130a))
+  * Add a separate data container ([Vlad - 5f7dd24](https://github.com/vghn/puppet/commit/5f7dd24bac9173ae40c752fd3ba501cdc7617f19))
+  * Add warning if the role fact is not found ([Vlad - 2265abd](https://github.com/vghn/puppet/commit/2265abdf8f985dd04a811aab2fdaff132b04e6ed))
+  * Improve Docker Compose ([Vlad - ab55248](https://github.com/vghn/puppet/commit/ab55248c898b89f289cdde32484c56d75f68d7d5))
+  * Add bootstrap option to run puppet agent or not ([Vlad - fb91445](https://github.com/vghn/puppet/commit/fb9144597a4d4a79cce7b433b3cf1e6fdddee344))
+
 ## Version 0.0.47 / 2016-06-09
   * Fix bootstrap script ([Vlad - 73d85b3](https://github.com/vghn/puppet/commit/73d85b33bd0a9c909711c4f2c5d03af8960f021d))
 

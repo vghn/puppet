@@ -1,14 +1,6 @@
 #!/usr/bin/env bash
 # Common tasks
 
-# Wait for data to deployed
-wait_for_data(){
-  until [[ -s /var/local/data_deployed ]]; do
-    >&2 echo "Data did not deploy - sleeping"
-    sleep 5
-  done
-}
-
 # Upload private data
 sync_up_private_data(){
   e_info "Upload private data (${PP_PRIVATE_DATA_S3})"

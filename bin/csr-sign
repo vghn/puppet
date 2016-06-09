@@ -120,7 +120,7 @@ end
 
 # Sign if its a known instance
 def check_instances_list
-  ec2.instances.map(&:id).include?(@instance_id)
+  ec2.instances.map(&:id).include?(instance_id)
 rescue => e
   puts "Could not get a list of instances (#{e.message})!"
   return false
@@ -128,7 +128,7 @@ end
 
 # Sign if the base image is known
 def check_images_list
-  ec2.images(owners: ['self']).map(&:id).include?(@image_name)
+  ec2.images(owners: ['self']).map(&:id).include?(image_name)
 rescue => e
   puts "Could not get a list of images (#{e.message})!"
   return false

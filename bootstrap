@@ -14,6 +14,8 @@
 # PP_CERTNAME: [String] The certificate name for the agent.
 # PP_COLLECTION: [String] The puppet collection (default: 'pc1')
 # PP_CODENAME: [String] The distribution code name (default: `lsb_release -cs`)
+# PP_AGENT_RUN: [Boolean] Whether to run pupet agent after installation or not
+#               (default: true)
 # PP_AGENT_CERT_REGEN: [Boolean] If `true`, the puppet services will be stopped,
 #                      the certificates and catalog cache will be deleted prior
 #                      to puppet run;
@@ -39,6 +41,7 @@ PP_SECRET=${PP_SECRET:-}
 PP_CERTNAME=${PP_CERTNAME:-}
 PP_COLLECTION=${PP_COLLECTION:-pc1}
 PP_CODENAME=${PP_CODENAME:-$DISTRIB_CODENAME}
+PP_AGENT_RUN=${PP_AGENT_RUN:-true}
 PP_AGENT_CERT_REGEN=${PP_AGENT_CERT_REGEN:-false}
 PP_WAITFORCERT=${PP_WAITFORCERT:-0}
 PP_COLOR=${PP_COLOR:-true}
@@ -48,10 +51,6 @@ ENVTYPE=${ENVTYPE:-production}
 TMPDIR=$(mktemp -d 2>/dev/null || mktemp -d -t 'tmp')
 CSRTMP="${TMPDIR}/csr_attributes.yaml"
 PATH="/opt/puppetlabs/bin:/opt/puppetlabs/puppet/bin:/usr/local/bin:${PATH}"
-
-# Facts
-export FACTER_ROLE="${PP_ROLE}"
-export FACTER_PROJECT="${PP_PROJECT}"
 
 # Output
 e_info()  { printf "  ➜  %s\n" "$@" ;}
@@ -245,7 +244,9 @@ main(){
   install_puppet_agent
   configure_puppet
 
-  run_puppet
+  if [[ "$PP_AGENT_RUN" == 'true' ]]; then
+    run_puppet
+  fi
 }
 
 # Run
