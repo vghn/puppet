@@ -1,3 +1,7 @@
+## Version 0.0.49 / 2016-06-10
+  * Fix policy based autosign script ([Vlad - 8efd856](https://github.com/vghn/puppet/commit/8efd85669826a818d4629089a5735b52da74c22a))
+  * Fix Docker Compose Environment ([Vlad - 6b6f250](https://github.com/vghn/puppet/commit/6b6f250c4a7574508b6feadfdd465716ce3e93ad))
+
 ## Version 0.0.48 / 2016-06-09
   * Fix CSR autosign script ([Vlad - 1693e76](https://github.com/vghn/puppet/commit/1693e7601c9d13316c87670b5e18681408e383df))
   * Rename and improve MoM start script ([Vlad - e875aac](https://github.com/vghn/puppet/commit/e875aac0a7c0984fda25358345a3d0b0a4bd130a))
