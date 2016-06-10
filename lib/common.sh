@@ -29,32 +29,6 @@ sync_down_hieradata(){
     "$PP_HIERADATA_S3" "$HIERA_DATA_DIR"
 }
 
-# Archive Puppet Control Repo
-create_archive(){
-  archive_path="${TMPDIR}/${ENVTYPE}.tgz"
-
-  # Only pack the required files
-  e_info "Creating hieradata archive (${archive_path})"
-  if ! tar czf "$archive_path" -C "$APPDIR" .;
-  then
-    e_abort "Could not create ${archive_path}"
-  fi
-}
-
-# Upload archive to S3
-upload_archive(){
-  e_info "Uploading hieradata archive (${ARCHIVE_S3PATH})"
-  if ! aws s3 cp "$archive_path" "$ARCHIVE_S3PATH" --quiet; then
-    e_abort "Could not upload ${archive_path} to ${ARCHIVE_S3PATH}"
-  fi
-}
-
-# Clean-up
-clean_archive(){
-  e_info "Cleaning-up hieradata archive ${archive_path}"
-  rm "$archive_path" || true
-}
-
 # EC2 Run Command
 aws_ec2_send_run_command(){
   local role comm desc

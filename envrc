@@ -13,6 +13,10 @@ TMPDIR=$(mktemp -d 2>/dev/null || mktemp -d -t 'tmp')
 export PRIVATE_DATA_DIR="${APPDIR}/.private"
 export HIERA_DATA_DIR="${APPDIR}/hieradata"
 
+# Other
+export NOW
+NOW="$(date +"%Y%m%d_%H%M")"
+
 # Load private environment
 # shellcheck disable=1090
 . "${APPDIR}/.private/.env" 2>/dev/null || true
@@ -64,6 +68,6 @@ fi
 # AWS
 export AWS_ASSETS_BUCKET='vladgh'
 export AWS_DEFAULT_REGION="${AWS_DEFAULT_REGION:-us-east-1}"
-export ARCHIVE_S3PATH="s3://${AWS_ASSETS_BUCKET}/${ENVTYPE}.tgz"
+export PP_BACKUP_S3="s3://${AWS_ASSETS_BUCKET}/backup/${ENVTYPE}/${NOW}.tgz"
 export PP_HIERADATA_S3="s3://${AWS_ASSETS_BUCKET}/hieradata/${ENVTYPE}"
 export PP_PRIVATE_DATA_S3="s3://${AWS_ASSETS_BUCKET}/private/${ENVTYPE}"
