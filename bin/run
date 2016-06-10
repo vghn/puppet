@@ -5,8 +5,7 @@
 # shellcheck disable=1090
 . "$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd -P)/envrc"
 
-#VARs
-ENVNAME="${1:-prod}"
-
 # Run docker compose
-docker-compose -f "${APPDIR}/docker-compose.${ENVNAME}.yml" up -d
+docker-compose build
+docker-compose pull
+docker-compose up -d

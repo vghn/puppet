@@ -40,4 +40,4 @@ cat << EOP | puppet apply --verbose
   class {'::docker::compose': version => '1.7.1'}
 EOP
 
-docker-compose -f docker-compose.dev.yaml up -d
+bash bin/run
