@@ -17,7 +17,7 @@ end
 
 # Configuration
 def cfg
-  YAML.load_file('/etc/puppetlabs/puppet/csr/cfg.yaml')
+  YAML.load_file(ENV['AUTOSIGN_CFG'])
 rescue => e
   puts "Could not load the configuration file (#{e.message})!"
   return []
@@ -54,7 +54,7 @@ def instance_id
         ext.value[1].value.gsub(/([\x00-\x1f])/, '').strip
       end
     end
-    .first
+    .compact.first
 end
 
 # Get image_name
@@ -65,7 +65,7 @@ def image_name
         ext.value[1].value.gsub(/([\x00-\x1f])/, '').strip
       end
     end
-    .first
+    .compact.first
 end
 
 # Get project
@@ -76,7 +76,7 @@ def project
         ext.value[1].value.gsub(/([\x00-\x1f])/, '').strip
       end
     end
-    .first
+    .compact.first
 end
 
 # Get role
@@ -87,7 +87,7 @@ def role
         ext.value[1].value.gsub(/([\x00-\x1f])/, '').strip
       end
     end
-    .first
+    .compact.first
 end
 
 # Get master password
