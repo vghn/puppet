@@ -1,21 +1,19 @@
 version: '2'
 
 services:
-  data:
-    image: busybox
-    hostname: data-agent
+  r10k:
+    image: vladgh/r10k:latest
+    hostname: r10k-agent
     volumes:
       - ~/.aws:/root/.aws
       - .:/vpm
-      - ./bin/csr-sign:/etc/puppetlabs/puppet/csr/sign
-      - ./r10k.yaml:/etc/puppetlabs/r10k/r10k.yaml
-      - ./hiera.yaml:/etc/puppetlabs/puppet/hiera.yaml
       - ssl:/etc/puppetlabs/puppet/ssl
       - code:/etc/puppetlabs/code
       - hieradata:/etc/puppetlabs/hieradata
       - /var/local
       - /opt/vgs
     working_dir: /vpm
+    entrypoint: /vpm/bin/run-r10k-agent
     restart: 'no'
   server:
     image: vladgh/puppetserver:aws
@@ -23,24 +21,18 @@ services:
     ports:
       - '8140:8140'
     volumes_from:
-      - data
+      - r10k
     environment:
-      AUTOSIGN: '/etc/puppetlabs/puppet/csr/sign'
+      AUTOSIGN: '/vpm/bin/csr-sign'
+      AUTOSIGN_CFG: '/vpm/.private/csr_cfg.yaml'
       JAVA_ARGS: '-Xms768m -Xmx768m'
     entrypoint: /vpm/bin/run-puppetserver
     restart: 'on-failure:5'
-  r10k:
-    image: vladgh/r10k:latest
-    hostname: r10k-agent
-    volumes_from:
-      - data
-    entrypoint: /vpm/bin/run-r10k-agent
-    restart: 'no'
   logs:
     hostname: log-agent
     image: gliderlabs/logspout:latest
     volumes_from:
-      - data
+      - r10k
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     entrypoint: /vpm/bin/run-log-agent

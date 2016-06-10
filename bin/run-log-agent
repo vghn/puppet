@@ -3,8 +3,8 @@
 # Only load credentials from .env (envrc is not SH safe)
 
 # Wait for data to be deployed
-until [ -f /var/local/r10k_deployed ]; do
-  >&2 echo "R10k did not deploy - sleeping"
+until [ -f /var/local/privatedata_deployed ]; do
+  >&2 echo "Private data did not deploy - sleeping"
   sleep 5
 done
 echo "Data deployed - starting log agent"

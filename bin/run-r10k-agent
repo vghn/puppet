@@ -2,6 +2,7 @@
 # Prepares the data container
 
 # Install/Update VGS Library
+echo 'Install/Update VGS Library'
 if [[ -d /opt/vgs/.git ]]; then
   ( cd /opt/vgs && git fetch --all && git reset --hard origin/master )
 else
@@ -12,12 +13,31 @@ fi
 # shellcheck disable=1090
 . "$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd -P)/envrc"
 
-# Sync S3 Data
+# Sync Private S3 Data
 sync_down_private_data
+date > /var/local/privatedata_deployed
+
+# Re-Load environment with private data
+# shellcheck disable=1090
+. "$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd -P)/envrc"
+
+# Move policy based auto signing script
+e_info 'Install CSR policy based auto signing'
+mkdir -p /etc/puppetlabs/puppet/csr
+ln -fsn "${PRIVATE_DATA_DIR}/csr_cfg.yaml" /etc/puppetlabs/puppet/csr/cfg.yaml
+ln -fsn "${APPDIR}/bin/csr-sign" /etc/puppetlabs/puppet/csr/sign
+date > /var/local/csr_deployed
+
+# Sync Hieradata
+e_info 'Install Hieradata'
+mkdir -p /etc/puppetlabs/puppet
+ln -fsn "${APPDIR}/hiera.yaml" /etc/puppetlabs/puppet/hiera.yaml
 sync_down_hieradata
+date > /var/local/hieradata_deployed
 
 # Deploy R10K
+e_info 'Deploy R10K'
+mkdir -p /etc/puppetlabs/r10k
+ln -fsn "${APPDIR}/r10k.yaml" /etc/puppetlabs/r10k/r10k.yaml
 r10k deploy environment --puppetfile --verbose
-
-# Signal finish
 date > /var/local/r10k_deployed
