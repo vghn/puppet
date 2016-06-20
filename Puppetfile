@@ -15,7 +15,7 @@ mod 'puppetlabs/vcsrepo', '1.3.2'
 
 # Puppet approved modules
 mod 'garethr/docker', '5.2.0'
-mod 'ghoneycutt/ssh', '3.40.0'
+mod 'ghoneycutt/ssh', '3.41.1'
 mod 'hunner/hiera', '2.0.1'
 mod 'maestrodev/wget', '1.7.3'
 mod 'saz/rsyslog', '3.5.1'
@@ -26,6 +26,7 @@ mod 'zack/r10k', '3.2.0'
 mod 'golja/gnupg', '1.2.3'
 mod 'kemra102/cloudwatchlogs', '2.2.1'
 mod 'maestrodev/rvm', '1.13.1'
+mod 'puppet/archive', '0.5.1'
 
 # Dependencies (find with `sudo /opt/puppetlabs/bin/puppet module list --tree`)
 mod 'croddy-make', '0.0.5'
