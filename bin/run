@@ -6,7 +6,7 @@
 . "$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd -P)/envrc"
 
 # Set working directory
-cd "${APPDIR}" || true
+cd "${APPDIR}" || exit
 
 # Run docker compose
 docker-compose build
