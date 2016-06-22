@@ -11,15 +11,12 @@ services:
     environment:
       AUTOSIGN: 'true'
       JAVA_ARGS: '-Xms256m -Xmx256m'
-    restart: 'on-failure:5'
   r10k:
     image: vladgh/r10k:latest
     hostname: r10k-agent
     volumes:
-      - ~/.aws:/root/.aws:ro
       - .:/etc/puppetlabs/code/environments/production
-      - ./hiera.yaml:/etc/puppetlabs/puppet/hiera.yaml:ro
-      - ./hieradata:/etc/puppetlabs/hieradata
+      - ./hiera.yaml:/etc/puppetlabs/puppet/hiera.yaml
+      - ./hieradata:/etc/puppetlabs/hieradata/production
     command: puppetfile install
     working_dir: /etc/puppetlabs/code/environments/production
-    restart: 'no'
