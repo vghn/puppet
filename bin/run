@@ -5,6 +5,9 @@
 # shellcheck disable=1090
 . "$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd -P)/envrc"
 
+# Set working directory
+cd "${APPDIR}" || true
+
 # Run docker compose
 docker-compose build
 docker-compose pull
