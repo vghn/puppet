@@ -19,14 +19,6 @@ group :test do
 
   gem 'puppet-lint', git: 'https://github.com/rodjek/puppet-lint.git',
                      require: false
-  gem 'puppet-lint-absolute_classname-check', require: false
-  gem 'puppet-lint-duplicate_class_parameters-check', require: false
-  gem 'puppet-lint-classes_and_types_beginning_with_digits-check',
-      require: false
-  gem 'puppet-lint-leading_zero-check', require: false
-  gem 'puppet-lint-trailing_comma-check', require: false
-  gem 'puppet-lint-unquoted_string-check', require: false
-  gem 'puppet-lint-version_comparison-check', require: false
 end
 
 group :development do
