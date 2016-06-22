@@ -26,10 +26,7 @@ exclude_paths = [
 require 'rubocop/rake_task'
 RuboCop::RakeTask.new
 
-# Coverage from puppetlabs-spec-helper requires rcov which
-# doesn't work in anything since 1.8.7
-Rake::Task[:coverage].clear
-
+# Must clear as it will not override the existing puppet-lint rake task
 Rake::Task[:lint].clear
 
 PuppetLint.configuration.relative = true

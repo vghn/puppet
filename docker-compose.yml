@@ -25,6 +25,7 @@ services:
     environment:
       AUTOSIGN: '/vpm/bin/csr-sign'
       AUTOSIGN_CFG: '/vpm/.private/csr_cfg.yaml'
+      DNS_ALT_NAMES: 'puppet,puppet.ghn.me,puppetca,puppetca.ghn.me'
       JAVA_ARGS: '-Xms768m -Xmx768m'
     entrypoint: /vpm/bin/run-puppetserver
     restart: 'on-failure:5'

@@ -31,6 +31,10 @@ Contains Puppet's manifests:
 ### boostrap
 The bootstrap script. For usage, read the comments at the top of the script.
 
+### docker-compose.yml
+This file defines services, networks and volumes for the containers.
+Additional environments should be suffixed to the name (Ex: docker-compose.dev.yml)
+
 ### environment.conf
 This file can override several settings whenever the Puppet master is serving
 nodes assigned to that environment.
@@ -40,11 +44,17 @@ nodes assigned to that environment.
 This file contains global variables.
 **All variables declared here are public**
 
+### hiera.yaml
+This file contains the Hiera configuration.
+
 ### Puppetfile
 r10k needs this file to figure out what component modules you want from the
 Forge. The result is a modules directory containing all the modules specified in
 this file, for each environment/branch. The modules directory is listed in
 environment.conf's modulepath.
+
+### r10k.yaml
+This file contains the R10K configuration.
 
 ## Testing
 ### Prerequisites
@@ -57,6 +67,23 @@ environment.conf's modulepath.
 ```
 cd dist/profile
 bundle install
+```
+
+### Docker
+Start Puppet Server
+```
+docker-compose -f docker-compose.dev.yml up -d
+docker-compose -f docker-compose.dev.yml logs -f
+```
+
+Generate a CSR attributes file
+```
+echo -e "extension_requests:\n  pp_role: none" > /tmp/csr_attributes.yaml
+```
+
+Run Puppet Agent
+```
+docker run --rm -it --link puppet_server_1:puppet --net puppet_default -v /tmp/csr_attributes.yaml:/etc/puppetlabs/puppet/csr_attributes.yaml vladgh/puppet agent --test
 ```
 
 ### Unit testing

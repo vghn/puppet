@@ -1,3 +1,20 @@
+## Version 0.0.50 / 2016-06-22
+  * Update Modules and gem ([Vlad - 01e16df](https://github.com/vghn/puppet/commit/01e16dfc8e62c72f4542c0a050eb39b5e3720958))
+  * Fix EC2 SSM command ([Vlad - 604cdfe](https://github.com/vghn/puppet/commit/604cdfea367dbee69754b9ebcee9bb82779bb71f))
+  * Fix Rhea start script ([Vlad - c65760e](https://github.com/vghn/puppet/commit/c65760e153cd0b2d6b602cb80e2108e698e3fe3c))
+  * Create backup script ([Vlad - 7c0c95b](https://github.com/vghn/puppet/commit/7c0c95b3c1206a0745b80640dc695ccadeafab3d))
+  * Puppet modules update ([Vlad - 71d959a](https://github.com/vghn/puppet/commit/71d959ab364504b06dd4f31732e9ff0e23873727))
+  * Clean-up Rakefile and rename tests folder ([Vlad - 1be6217](https://github.com/vghn/puppet/commit/1be62174bb0114264304313845c8bb6b234b8b4e))
+  * Fix main manifest ([Vlad - c15df87](https://github.com/vghn/puppet/commit/c15df87d9bbddc1656b75e0efcd46ccacc32e100))
+  * Remove 3rd party lint checks ([Vlad - 7e8e13b](https://github.com/vghn/puppet/commit/7e8e13bbb0ff3d2ead59fe174991e9503333616e))
+  * Add DNS alt names for the Puppet Master ([Vlad - 82705a4](https://github.com/vghn/puppet/commit/82705a427c7347a7cfe933a7cb158fe26f9188ae))
+  * Set working directory ([Vlad - c04c3ef](https://github.com/vghn/puppet/commit/c04c3ef1a4f8771f2c01acfe7102c303b3553fcc))
+  * Do not run if the directory is not right ([Vlad - 28045c7](https://github.com/vghn/puppet/commit/28045c78499a9cac35a5cbcd312ffc6b87daef8a))
+  * Update README ([Vlad - 131ac78](https://github.com/vghn/puppet/commit/131ac78ea38e1b14d8eb4896c50d5d61284340d4))
+  * Improve development environment ([Vlad - 9412249](https://github.com/vghn/puppet/commit/941224970fb627e15e9b83af4d6729f167adf329))
+  * Clean-up ([Vlad - fef55d1](https://github.com/vghn/puppet/commit/fef55d1c0d647bf49d974db0bf805c78fc0635a7))
+  * Improve run script ([Vlad - d07f58a](https://github.com/vghn/puppet/commit/d07f58a3b125e5b13f24ec51afce2a1c79b1d012))
+
 ## Version 0.0.49 / 2016-06-10
   * Fix policy based autosign script ([Vlad - 8efd856](https://github.com/vghn/puppet/commit/8efd85669826a818d4629089a5735b52da74c22a))
   * Fix Docker Compose Environment ([Vlad - 6b6f250](https://github.com/vghn/puppet/commit/6b6f250c4a7574508b6feadfdd465716ce3e93ad))
