@@ -8,7 +8,13 @@
 # Set working directory
 cd "${APPDIR}" || exit
 
-# Run docker compose
+# Update control repo
+git fetch --all
+git reset --hard origin/production
+
+# Update docker images
 docker-compose build
 docker-compose pull
+
+# Run docker compose
 docker-compose up -d
