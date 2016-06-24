@@ -1,3 +1,6 @@
+## Version 0.0.51 / 2016-06-24
+  * Add a data container and improve run scripts ([Vlad - 7768aa7](https://github.com/vghn/puppet/commit/7768aa713e9d888d93519bb97e3a6a6cc485ec17))
+
 ## Version 0.0.50 / 2016-06-22
   * Update Modules and gem ([Vlad - 01e16df](https://github.com/vghn/puppet/commit/01e16dfc8e62c72f4542c0a050eb39b5e3720958))
   * Fix EC2 SSM command ([Vlad - 604cdfe](https://github.com/vghn/puppet/commit/604cdfea367dbee69754b9ebcee9bb82779bb71f))

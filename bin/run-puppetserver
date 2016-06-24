@@ -1,15 +1,19 @@
 #!/usr/bin/env bash
 # Starts Puppet Server
 
-until [[ -s /var/local/r10k_deployed ]]; do
-  >&2 echo "R10K did not deploy - sleeping"
-  sleep 5
+# Wait for private data, hiera data and r10k deployment
+until \
+  [ -s /var/local/privatedata_deployed ] && \
+  [ -s /var/local/hieradata_deployed ] && \
+  [ -s /var/local/r10k_deployed ]
+do
+  >&2 echo "Data did not deploy - sleeping"; sleep 5
 done
-echo "R10K deployed - Starting Puppet Server"
 
 # Load environment
 # shellcheck disable=1090
 . "$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd -P)/envrc"
 
 # Start Puppet Server
+e_info 'Starting Puppet Server'
 /entrypoint.sh puppetserver foreground

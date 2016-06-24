@@ -3,30 +3,30 @@
 
 # Upload private data
 sync_up_private_data(){
-  e_info "Upload private data (${PP_PRIVATE_DATA_S3})"
+  e_info "Upload private data (${S3_PRIVATE_DATA})"
   aws s3 sync --delete \
-    "$PRIVATE_DATA_DIR" "$PP_PRIVATE_DATA_S3"
+    "$PRIVATE_DATA_REPO" "$S3_PRIVATE_DATA"
 }
 
 # Download private data
 sync_down_private_data(){
-  e_info "Download private data (${PP_PRIVATE_DATA_S3})"
+  e_info "Download private data (${S3_PRIVATE_DATA_ALL})"
   aws s3 sync --delete \
-    "$PP_PRIVATE_DATA_S3" "$PRIVATE_DATA_DIR"
+    "$S3_PRIVATE_DATA_ALL" "$PRIVATE_DATA"
 }
 
 # Upload Hiera Data
 sync_up_hieradata(){
-  e_info "Upload hiera data (${PP_HIERADATA_S3})"
+  e_info "Upload hiera data (${S3_HIERADATA})"
   aws s3 sync --delete \
-    "$HIERA_DATA_DIR" "$PP_HIERADATA_S3"
+    "$HIERA_DATA_REPO" "$S3_HIERADATA"
 }
 
 # Download Hiera Data
 sync_down_hieradata(){
-  e_info "Download hiera data (${PP_HIERADATA_S3})"
+  e_info "Download hiera data (${S3_HIERADATA_ALL})"
   aws s3 sync --delete \
-    "$PP_HIERADATA_S3" "$HIERA_DATA_DIR"
+    "$S3_HIERADATA_ALL" "$HIERA_DATA"
 }
 
 # EC2 Run Command

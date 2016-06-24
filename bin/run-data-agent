@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# Prepares the data container
+
+# Install/Update VGS Library
+echo 'Install/Update VGS Library'
+if [[ -d /opt/vgs/.git ]]; then
+  ( cd /opt/vgs && git fetch --all && git reset --hard origin/master )
+else
+  git clone https://github.com/vghn/vgs.git /opt/vgs
+fi
+
+# Load environment
+# shellcheck disable=1090
+. "$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd -P)/envrc"
+
+# Sync Private S3 Data
+sync_down_private_data
+date > /var/local/privatedata_deployed
+
+# Sync Hieradata
+sync_down_hieradata
+date > /var/local/hieradata_deployed
