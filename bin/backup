@@ -10,5 +10,5 @@
 
 # Backup Puppet SSL Directory
 create_archive '/etc/puppetlabs/puppet/ssl'
-upload_archive "$PP_BACKUP_S3"
+upload_archive "$S3_BACKUP"
 clean_archive

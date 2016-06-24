@@ -2,13 +2,14 @@
 # Load environment before running the centralized log agent
 # Only load credentials from .env (envrc is not SH safe)
 
-# Wait for data to be deployed
-until [ -f /var/local/privatedata_deployed ]; do
-  >&2 echo "Private data did not deploy - sleeping"
-  sleep 5
+# Wait for private data to be deployed
+until [ -s /var/local/privatedata_deployed ]; do
+  >&2 echo "Private data did not deploy - sleeping"; sleep 5
 done
-echo "Data deployed - starting log agent"
 
+# Load only the private .env (envrc has multiple bash only expressions)
 # shellcheck disable=1090
 . "$(cd "$(dirname "$0")/../" && pwd -P)/.private/.env"
+
+echo "Starting Log Agent"
 /bin/logspout "syslog://${LOG_SERVER_ADDRESS}:${LOG_SERVER_PORT}"

@@ -10,8 +10,10 @@ APPDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
 TMPDIR=$(mktemp -d 2>/dev/null || mktemp -d -t 'tmp')
 
 # Internal paths
-export PRIVATE_DATA_DIR="${APPDIR}/.private"
-export HIERA_DATA_DIR="${APPDIR}/hieradata"
+export PRIVATE_DATA_REPO="${APPDIR}/.private"
+export HIERA_DATA_REPO="${APPDIR}/hieradata"
+export PRIVATE_DATA="/etc/puppetlabs/private"
+export HIERA_DATA="/etc/puppetlabs/hieradata"
 
 # Other
 export NOW
@@ -68,6 +70,8 @@ fi
 # AWS
 export AWS_ASSETS_BUCKET='vladgh'
 export AWS_DEFAULT_REGION="${AWS_DEFAULT_REGION:-us-east-1}"
-export PP_BACKUP_S3="s3://${AWS_ASSETS_BUCKET}/backup/${ENVTYPE}/${NOW}.tgz"
-export PP_HIERADATA_S3="s3://${AWS_ASSETS_BUCKET}/hieradata/${ENVTYPE}"
-export PP_PRIVATE_DATA_S3="s3://${AWS_ASSETS_BUCKET}/private/${ENVTYPE}"
+export S3_BACKUP="s3://${AWS_ASSETS_BUCKET}/backup/${ENVTYPE}/${NOW}.tgz"
+export S3_HIERADATA="s3://${AWS_ASSETS_BUCKET}/hieradata/${ENVTYPE}"
+export S3_PRIVATE_DATA="s3://${AWS_ASSETS_BUCKET}/private/${ENVTYPE}"
+export S3_HIERADATA_ALL="s3://${AWS_ASSETS_BUCKET}/hieradata"
+export S3_PRIVATE_DATA_ALL="s3://${AWS_ASSETS_BUCKET}/private"
