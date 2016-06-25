@@ -1,3 +1,7 @@
+## Version 0.0.55 / 2016-06-25
+  * Make puppet runs verbose ([Vlad - ca488b4](https://github.com/vghn/puppet/commit/ca488b45c7939e5311c3305f77942073d82473a5))
+  * Fix backup scripts ([Vlad - 7a3f4d7](https://github.com/vghn/puppet/commit/7a3f4d714d438deb85ca39507d2acbcbc04f9285))
+
 ## Version 0.0.54 / 2016-06-25
   * Improve output of pre-commit hook ([Vlad - 5dcb78b](https://github.com/vghn/puppet/commit/5dcb78b32eb24769b336536dd33cf91b1dad1f04))
   * Add test for Puppetfile syntax ([Vlad - 2cc5530](https://github.com/vghn/puppet/commit/2cc553047189829a588d80551564dd9f5253d4df))

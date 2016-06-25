@@ -28,7 +28,7 @@ describe 'profile::puppet::agent' do
         it do
           is_expected.to contain_cron('Puppet Run')
             .with_command('sudo /opt/puppetlabs/bin/puppet agent --onetime ' \
-            '--no-daemonize --logdest syslog > /dev/null 2>&1')
+            '--no-daemonize --verbose --logdest syslog > /dev/null 2>&1')
         end
       end
     end
