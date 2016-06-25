@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# Update Script for the control repository and docker images
+
+# Load environment
+# shellcheck disable=1090
+. "$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd -P)/envrc"
+
+# Set working directory
+cd "${APPDIR}" || exit
+
+# Update control repo
+git fetch --all
+git reset --hard origin/production
+
+# Update docker images
+docker-compose build
+docker-compose pull
