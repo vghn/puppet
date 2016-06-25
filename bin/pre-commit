@@ -28,60 +28,20 @@ function checkyaml() {
 # stop the commit. Force the use of these tools before a commit is allowed.
 # No commit should ever happen without a puppet-lint check.
 
-if ! is_cmd git; then
-  echo "The git binary wasn't found."
-  echo "Sorry, I won't allow you to commit without git installed."
-  echo "Please install git and try again."
-  exit 1
-fi
-
-if ! is_cmd puppet; then
-  echo "The puppet binary wasn't found."
-  echo "Sorry, I won't allow you to commit without puppet installed."
-  echo "Please install puppet and try again."
-  exit 1
-fi
-
-if ! is_cmd puppet-lint; then
-  echo "The puppet-lint binary wasn't found."
-  echo "Sorry, I won't allow you to commit without puppet-lint installed."
-  echo "Please install puppet-lint and try again."
-  exit 1
-fi
-
-if ! is_cmd erb; then
-  echo "The erb binary wasn't found. Sorry, I won't allow you to commit without erb installed."
-  echo "Please install erb (Ruby Templating) and try again."
-  exit 1
-fi
-
-if ! is_cmd ruby; then
-  echo "The ruby binary wasn't found."
-  echo "Sorry, I won't allow you to commit without ruby installed."
-  echo "Please install ruby and try again."
-  exit 1
-fi
-
-if ! is_cmd aws; then
-  echo "The aws binary wasn't found."
-  echo "Sorry, I won't allow you to commit without AWS CLI installed."
-  echo "Please install AWS CLI and try again."
-  exit 1
-fi
-
-if ! is_cmd shellcheck; then
-  echo "The shellcheck binary wasn't found."
-  echo "Sorry, I won't allow you to commit without shellcheck installed."
-  echo "Please install shellcheck and try again."
-  exit 1
-fi
+is_cmd git || e_abort "The git binary wasn't found."
+is_cmd puppet || e_abort "The puppet binary wasn't found."
+is_cmd puppet-lint || e_abort "The puppet-lint binary wasn't found."
+is_cmd erb || e_abort "The erb binary wasn't found."
+is_cmd ruby || e_abort "The ruby binary wasn't found."
+is_cmd r10k || e_abort "The r10k binary wasn't found."
+is_cmd shellcheck || e_abort "The shellcheck binary wasn't found."
 
 # Checks
 
-echo "### Checking puppet syntax, for science! ###"
-for file in $(git diff --name-only --cached | grep -E '\.(pp)'); do
+e_info "Checking puppet syntax, for science!"
+for file in $(git diff --name-only --cached | grep -E '\.pp'); do
   # Only check new/modified files that end in *.pp extension
-  if [[ -f $file && $file == *.pp ]]; then
+  if [[ -f $file ]]; then
     puppet-lint \
       --no-140chars-check \
       --with-filename "$file"
@@ -90,106 +50,92 @@ for file in $(git diff --name-only --cached | grep -E '\.(pp)'); do
     if [[ $? -ne 0 ]]; then
       syntax_is_bad=1
     else
-      echo "OK: $file looks valid"
+      e_ok "$file looks valid"
     fi
   fi
 done
-echo ""
 
-echo "### Checking if puppet manifests are valid ###"
-for file in $(git diff --name-only --cached | grep -E '\.(pp)'); do
+e_info "Checking if puppet manifests are valid!"
+for file in $(git diff --name-only --cached | grep -E '\.pp'); do
   if [[ -f $file ]]; then
     puppet parser validate "$file"
     if [[ $? -ne 0 ]]; then
-      echo "ERROR: puppet parser failed at: $file"
+      e_error "puppet parser failed at: $file"
       syntax_is_bad=1
     else
-      echo "OK: $file looks valid"
+      e_ok "$file looks valid"
     fi
   fi
 done
-echo ""
 
-echo "### Checking if ruby template syntax is valid ###"
-for file in $(git diff --name-only --cached | grep -E '\.(erb)'); do
+e_info "Checking if ruby template syntax is valid!"
+for file in $(git diff --name-only --cached | grep -E '\.erb'); do
   if [[ -f $file ]]; then
     erb -P -x -T '-' "$file" | ruby -c
     if [[ $? -ne 0 ]]; then
-      echo "ERROR: ruby template parser failed at: $file"
+      e_error "ruby template parser failed at: $file"
       syntax_is_bad=1
     else
-       echo "OK: $file looks valid"
+      e_ok "$file looks valid"
     fi
   fi
 done
-echo ""
 
-echo "### Checking if puppet template syntax is valid ###"
-for file in $(git diff --name-only --cached | grep -E '\.(epp)'); do
+e_info "Checking if puppet template syntax is valid!"
+for file in $(git diff --name-only --cached | grep -E '\.epp'); do
   if [[ -f $file ]]; then
     puppet epp validate "$file"
     if [[ $? -ne 0 ]]; then
-      echo "ERROR: puppet template parser failed at: $file"
+      e_error "puppet template parser failed at: $file"
       syntax_is_bad=1
     else
-       echo "OK: $file looks valid"
+      e_ok "$file looks valid"
     fi
   fi
 done
-echo ""
 
-echo "### Checking if YAML syntax is valid ###"
-for file in $(git diff --name-only --cached | grep -E '\.(yaml)'); do
+e_info "Checking if YAML syntax is valid!"
+for file in $(git diff --name-only --cached | grep -E '\.yaml'); do
   if [[ -f $file ]]; then
     checkyaml "$file"
     if [[ $? -ne 0 ]]; then
-      echo "ERROR: YAML syntax validation failed at: $file"
+      e_error "YAML syntax validation failed at: $file"
       syntax_is_bad=1
     else
-       echo "OK: $file looks valid"
+      e_ok "$file looks valid"
     fi
   fi
 done
-echo ""
 
-echo "### Checking if CloudFormation syntax is valid ###"
-for file in $(git diff --name-only --cached | grep -E 'cfn\/.*\.(json)'); do
+e_info "Checking if R10K Puppetfile syntax is valid!"
+for file in $(git diff --name-only --cached | grep -E 'Puppetfile'); do
   if [[ -f $file ]]; then
-    aws --region 'us-west-2' --output text \
-      cloudformation validate-template \
-      --template-body "file://${file}"
+    PUPPETFILE="$file" r10k puppetfile check
     if [[ $? -ne 0 ]]; then
-      echo "ERROR: Cloudformation syntax validation failed at: $file"
+      e_error "R10K Puppetfile validation failed at: $file"
       syntax_is_bad=1
     else
-       echo "OK: $file looks valid"
+      e_ok "$file looks valid"
     fi
   fi
 done
-echo ""
 
-echo "### Checking if bash syntax is valid ###"
-for file in $(git diff --name-only --cached | grep -E '\.sh$'); do
+e_info "Checking if bash syntax is valid!"
+for file in $(git diff --name-only --cached | grep -E '\.sh'); do
   if [[ -f $file ]]; then
     shellcheck "$file"
     if [[ $? -ne 0 ]]; then
-      echo "ERROR: Bash syntax validation failed at: $file"
+      e_error "Bash syntax validation failed at: $file"
       syntax_is_bad=1
     else
-       echo "OK: $file looks valid"
+      e_ok "$file looks valid"
     fi
   fi
 done
-echo ""
 
 # Report
 if [[ ${syntax_is_bad:-0} -eq 1 ]]; then
-  echo
-  echo "################################################################"
-  echo -e "### \033[31mPlease fix the errors above before committing your code.\033[0m ###"
-  echo "################################################################"
-  echo
-  exit 1
+  e_abort "Please fix the errors above before committing your code"
 else
-  echo "Everything looks good."
+  e_ok "Everything looks good."
 fi
