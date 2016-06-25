@@ -1,3 +1,7 @@
+## Version 0.0.53 / 2016-06-25
+  * Fix Rhea upstart script source ([Vlad - aa61bf2](https://github.com/vghn/puppet/commit/aa61bf2c27c1e5cfebb3e1bd88da66b804fd2f11))
+  * Fix pre-commit checks ([Vlad - 074434a](https://github.com/vghn/puppet/commit/074434a31f294dfeade691b9b8703cb3743e1146))
+
 ## Version 0.0.52 / 2016-06-25
   * Fix puppet modules ([Vlad - 8edc633](https://github.com/vghn/puppet/commit/8edc633339a3e4556c98112867194ca84eec0661))
   * Update pre-commit hook ([Vlad - df71267](https://github.com/vghn/puppet/commit/df71267704f01661af5667f4c4a662e7ebd7c7f6))
