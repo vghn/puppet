@@ -27,6 +27,9 @@ set +o nounset
 # Add /usr/local/bin to PATH
 PATH=/usr/local/bin:${PATH}
 
+# Check if command exists
+is_cmd() { command -v "$@" >/dev/null 2>&1 ;}
+
 # Check YAML
 function checkyaml() {
   ruby -e "require 'yaml'; YAML.load_file('$1')"
@@ -36,48 +39,49 @@ function checkyaml() {
 # stop the commit. Force the use of these tools before a commit is allowed.
 # No commit should ever happen without a puppet-lint check.
 
-path_to_puppet=$(command -v puppet)
-if ! [ -x "$path_to_puppet" ]; then
+if ! is_cmd git; then
+  echo "The git binary wasn't found."
+  echo "Sorry, I won't allow you to commit without git installed."
+  echo "Please install git and try again."
+  exit 1
+fi
+
+if ! is_cmd puppet; then
   echo "The puppet binary wasn't found."
   echo "Sorry, I won't allow you to commit without puppet installed."
   echo "Please install puppet and try again."
   exit 1
 fi
 
-path_to_puppet_lint=$(command -v puppet-lint)
-if ! [ -x "$path_to_puppet_lint" ]; then
+if ! is_cmd puppet-lint; then
   echo "The puppet-lint binary wasn't found."
   echo "Sorry, I won't allow you to commit without puppet-lint installed."
   echo "Please install puppet-lint and try again."
   exit 1
 fi
 
-path_to_erb=$(command -v erb)
-if ! [ -x "$path_to_erb" ]; then
+if ! is_cmd erb; then
   echo "The erb binary wasn't found. Sorry, I won't allow you to commit without erb installed."
   echo "Please install erb (Ruby Templating) and try again."
   exit 1
 fi
 
-path_to_ruby=$(command -v ruby)
-if ! [ -x "$path_to_ruby" ]; then
+if ! is_cmd ruby; then
   echo "The ruby binary wasn't found."
   echo "Sorry, I won't allow you to commit without ruby installed."
   echo "Please install ruby and try again."
   exit 1
 fi
 
-path_to_aws=$(command -v aws)
-if ! [ -x "$path_to_aws" ]; then
-  echo "The AWS CLI binary wasn't found."
-  echo "Sorry, I won't allow you to commit without aws cli installed."
-  echo "Please install aws cli and try again."
+if ! is_cmd aws; then
+  echo "The aws binary wasn't found."
+  echo "Sorry, I won't allow you to commit without AWS CLI installed."
+  echo "Please install AWS CLI and try again."
   exit 1
 fi
 
-path_to_shellcheck=$(command -v shellcheck)
-if ! [ -x "$path_to_shellcheck" ]; then
-  echo "The Shellcheck binary wasn't found."
+if ! is_cmd shellcheck; then
+  echo "The shellcheck binary wasn't found."
   echo "Sorry, I won't allow you to commit without shellcheck installed."
   echo "Please install shellcheck and try again."
   exit 1
@@ -91,10 +95,7 @@ for file in $(git diff --name-only --cached | grep -E '\.(pp)'); do
   # Only check new/modified files that end in *.pp extension
   if [[ -f $file && $file == *.pp ]]; then
     puppet-lint \
-      --no-80chars-check \
-      --no-autoloader_layout-check \
-      --no-nested_classes_or_defines-check \
-      --no-class_inherits_from_params_class-check \
+      --no-140chars-check \
       --with-filename "$file"
 
     # Set us up to bail if we receive any syntax errors
