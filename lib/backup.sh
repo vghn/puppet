@@ -4,7 +4,7 @@
 # Archive Puppet Control Repo
 create_archive(){
   backup_dir="${1:?Must specify the directory to archive as the 1st argument}"
-  tmp_archive="${TMPDIR}/${ENVTYPE}.tgz"
+  tmp_archive="${TMPDIR}/${NOW}.tgz"
 
   # Only pack the required files
   e_info "Creating archive (${backup_dir})"
@@ -27,4 +27,14 @@ upload_archive(){
 clean_archive(){
   e_info "Cleaning-up archive ${tmp_archive}"
   rm "$tmp_archive" || true
+}
+
+# Backup directory
+backup_directory(){
+  src="${1:?Must specify the directory to archive as the 1st argument}"
+  dst="${2:?Must specify S3 path as the 2nd argument}"
+
+  create_archive "$src"
+  upload_archive "$dst"
+  clean_archive
 }
