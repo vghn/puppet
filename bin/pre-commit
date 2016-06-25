@@ -16,17 +16,6 @@
 # shellcheck disable=1090
 . "$(cd "$(dirname "${BASH_SOURCE[0]}")/../../" && pwd -P)/envrc"
 
-# RVM does not like strict variable
-set +o nounset
-
-# Add RVM
-# shellcheck disable=1090
-[ -s "${HOME}/.rvm/scripts/rvm" ] && source "${HOME}/.rvm/scripts/rvm"
-[ -d "${HOME}/.rvm" ] && export PATH="$PATH:$HOME/.rvm/bin"
-
-# Add /usr/local/bin to PATH
-PATH=/usr/local/bin:${PATH}
-
 # Check if command exists
 is_cmd() { command -v "$@" >/dev/null 2>&1 ;}
 
@@ -90,7 +79,6 @@ fi
 # Checks
 
 echo "### Checking puppet syntax, for science! ###"
-# for file in `git diff --name-only --cached | grep -E '\.(pp|erb)'`
 for file in $(git diff --name-only --cached | grep -E '\.(pp)'); do
   # Only check new/modified files that end in *.pp extension
   if [[ -f $file && $file == *.pp ]]; then
