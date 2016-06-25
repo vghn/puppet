@@ -22,9 +22,9 @@ class profile::base {
   # Include essential classes
   include ::stdlib
   include ::apt
-  include ::common
   include ::ntp
   include ::python
+  include ::vg
 
   # Ensure essential packages
   ensure_packages([

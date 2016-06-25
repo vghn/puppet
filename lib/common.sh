@@ -29,6 +29,22 @@ sync_down_hieradata(){
     "$S3_HIERADATA_ALL" "$HIERA_DATA"
 }
 
+# Update control repo
+update_repo(){
+  git fetch --all && git reset --hard origin/production
+}
+
+# Update docker images
+docker_compose_update_images(){
+  docker-compose build
+  docker-compose pull
+}
+
+# Start docker compose
+docker_compose_start(){
+  docker-compose up -d
+}
+
 # EC2 Run Command
 aws_ec2_send_run_command(){
   local role comm desc

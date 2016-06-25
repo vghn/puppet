@@ -2,7 +2,7 @@ fixtures:
   symlinks:
     profile: "#{source_dir}"
   repositories:
-    common: 'https://github.com/vladgh/puppet-common'
+    vg: 'https://github.com/vladgh/puppet-module-vg'
   forge_modules:
     apt:
       repo: 'puppetlabs/apt'
@@ -67,9 +67,12 @@ fixtures:
     portage:
       repo: 'gentoo/portage'
       ref: '2.3.0'
+    common:
+      repo: 'ghoneycutt/common'
+      ref: '1.6.0'
     staging:
-      repo: 'nanliu/staging'
-      ref: '1.0.3'
+      repo: 'puppet/staging'
+      ref: '2.0.0'
     firewall:
       repo: 'puppetlabs/firewall'
       ref: '1.8.1'

@@ -1,15 +1,11 @@
 ---
 # Testing Hiera data
 
-# Project
-project_path: /opt/myproject
-scripts_path: "%{hiera('project_path')}/scripts"
-
 # Centralized Logging
 log_server_address: my.logserver.com
 log_server_port: 514
 
-# RSysLog Files
+# RSysLog Additional Files
 rsyslog::imfile:
   Testing:
     file_name: /var/log/test.log
@@ -17,7 +13,7 @@ rsyslog::imfile:
     file_facility: local0
 
 # SSH
-common::ssh_authorized_keys:
+vg::ssh_authorized_keys:
   'test-key':
     user: root
     type: ssh-rsa

@@ -1,3 +1,12 @@
+## Version 0.0.52 / 2016-06-25
+  * Fix puppet modules ([Vlad - 8edc633](https://github.com/vghn/puppet/commit/8edc633339a3e4556c98112867194ca84eec0661))
+  * Update pre-commit hook ([Vlad - df71267](https://github.com/vghn/puppet/commit/df71267704f01661af5667f4c4a662e7ebd7c7f6))
+  * Improve Gemfile and Rakefile ([Vlad - 796c363](https://github.com/vghn/puppet/commit/796c3634f1f152adf573bbb2e78fa3adda4e1030))
+  * Separate run and update commands ([Vlad - 9a71032](https://github.com/vghn/puppet/commit/9a710328cc98af2b842c509b1ed5707c3dc0f7f3))
+  * Improve run/update scripts ([Vlad - e2dcd27](https://github.com/vghn/puppet/commit/e2dcd27accb63698cb01e6c31358df69b6c42a8d))
+  * Add Rhea upstart script ([Vlad - 323b978](https://github.com/vghn/puppet/commit/323b9785aeb93a26ef0b2cf587c3089e2ce8fc1e))
+  * Add warning on files managed by Puppet ([Vlad - cd796d3](https://github.com/vghn/puppet/commit/cd796d39f1f3ea71a39c99ae8f743ade9bc4acd1))
+
 ## Version 0.0.51 / 2016-06-24
   * Add a data container and improve run scripts ([Vlad - 7768aa7](https://github.com/vghn/puppet/commit/7768aa713e9d888d93519bb97e3a6a6cc485ec17))
 
