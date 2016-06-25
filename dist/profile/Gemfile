@@ -10,6 +10,7 @@ group :test do
   gem 'rspec', require: false
   gem 'rspec-puppet', require: false
   gem 'rspec-puppet-facts', require: false
+  gem 'r10k', require: false
   gem 'rubocop', require: false
   gem 'simplecov', require: false
   gem 'simplecov-console', require: false
