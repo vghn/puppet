@@ -70,7 +70,7 @@ fi
 # AWS
 export AWS_ASSETS_BUCKET='vladgh'
 export AWS_DEFAULT_REGION="${AWS_DEFAULT_REGION:-us-east-1}"
-export S3_BACKUP="s3://${AWS_ASSETS_BUCKET}/backup/${NOW}.tgz"
+export S3_SSL_BACKUP="s3://${AWS_ASSETS_BUCKET}/backup/ssl_${NOW}.tgz"
 export S3_HIERADATA="s3://${AWS_ASSETS_BUCKET}/hieradata/${ENVTYPE}"
 export S3_PRIVATE_DATA="s3://${AWS_ASSETS_BUCKET}/private/${ENVTYPE}"
 export S3_HIERADATA_ALL="s3://${AWS_ASSETS_BUCKET}/hieradata"

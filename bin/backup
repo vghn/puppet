@@ -9,6 +9,4 @@
 . "$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd -P)/envrc"
 
 # Backup Puppet SSL Directory
-create_archive '/etc/puppetlabs/puppet/ssl'
-upload_archive "$S3_BACKUP"
-clean_archive
+backup_directory '/etc/puppetlabs/puppet/ssl' "$S3_SSL_BACKUP"

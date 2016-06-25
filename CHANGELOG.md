@@ -1,3 +1,6 @@
+## Version 0.0.56 / 2016-06-25
+  * Improve backup script ([Vlad - 33b81c8](https://github.com/vghn/puppet/commit/33b81c896148f1c65f1db45542b465d862858f26))
+
 ## Version 0.0.55 / 2016-06-25
   * Make puppet runs verbose ([Vlad - ca488b4](https://github.com/vghn/puppet/commit/ca488b45c7939e5311c3305f77942073d82473a5))
   * Fix backup scripts ([Vlad - 7a3f4d7](https://github.com/vghn/puppet/commit/7a3f4d714d438deb85ca39507d2acbcbc04f9285))
