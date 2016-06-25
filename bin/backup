@@ -2,7 +2,7 @@
 # Backup Script
 #
 # Example usage:
-# docker run --rm -it -v $(pwd):/vpm --volumes-from puppet_r10k_1 vladgh/awscli:latest /vpm/bin/backup
+# docker run --rm -it -v $(pwd):/vpm --volumes-from puppet_data_1 vladgh/awscli:latest /vpm/bin/backup
 
 # Load environment
 # shellcheck disable=1090

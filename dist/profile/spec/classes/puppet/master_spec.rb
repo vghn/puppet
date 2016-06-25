@@ -10,6 +10,12 @@ describe 'profile::puppet::master' do
         it { is_expected.to contain_class('profile::puppet::master') }
 
         it { is_expected.to contain_file('/etc/init/rhea.conf') }
+
+        it do
+          is_expected.to contain_cron('Backup')
+            .with_command('docker run --rm -it -v $(pwd):/vpm --volumes-from ' \
+            'puppet_data_1 vladgh/awscli:latest /vpm/bin/backup')
+        end
       end
     end
   end
