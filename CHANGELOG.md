@@ -1,3 +1,8 @@
+## Version 0.0.54 / 2016-06-25
+  * Improve output of pre-commit hook ([Vlad - 5dcb78b](https://github.com/vghn/puppet/commit/5dcb78b32eb24769b336536dd33cf91b1dad1f04))
+  * Add test for Puppetfile syntax ([Vlad - 2cc5530](https://github.com/vghn/puppet/commit/2cc553047189829a588d80551564dd9f5253d4df))
+  * Add backup cron job ([Vlad - df8d5e3](https://github.com/vghn/puppet/commit/df8d5e3bbde48a036aae3e2e19998ecf67b9e4e2))
+
 ## Version 0.0.53 / 2016-06-25
   * Fix Rhea upstart script source ([Vlad - aa61bf2](https://github.com/vghn/puppet/commit/aa61bf2c27c1e5cfebb3e1bd88da66b804fd2f11))
   * Fix pre-commit checks ([Vlad - 074434a](https://github.com/vghn/puppet/commit/074434a31f294dfeade691b9b8703cb3743e1146))
