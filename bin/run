@@ -5,8 +5,38 @@
 # shellcheck disable=1090
 . "$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd -P)/envrc"
 
+# Default arguments
+update=false
+
+# Process arguments
+while :
+do
+  case "${1:-}" in
+    -u | --update)
+      update=true
+      shift
+      ;;
+    --) # End of all options
+      shift
+      break
+      ;;
+    -*)
+      e_abort "Error: Unknown option: ${1}"; return 1
+      ;;
+    *)  # No more options
+      break
+      ;;
+  esac
+done
+
 # Set working directory
 cd "${APPDIR}" || exit
 
-# Run docker compose
-docker-compose up -d
+# Update repo and images if necessary
+if [[ "$update" == true ]]; then
+  update_repo
+  docker_compose_update_images
+fi
+
+# Start compose
+docker_compose_start

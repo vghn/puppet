@@ -28,5 +28,5 @@ ci_deploy(){
   aws_ec2_send_run_command \
   'rhea' \
   'Run Docker Compose' \
-  '/opt/vpm/puppet/bin/update && /opt/vpm/puppet/bin/run'
+  '/opt/vpm/puppet/bin/run --update'
 }
