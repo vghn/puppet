@@ -12,8 +12,9 @@ class profile::puppet::master {
   # Backup cron job
   cron { 'Backup' :
     ensure  => present,
-    command => 'docker run --rm -it -v $(pwd):/vpm --volumes-from puppet_data_1 vladgh/awscli:latest /vpm/bin/backup',
+    command => "bash -c 'docker run --rm --name backup --hostname backup -v /opt/vpm/puppet:/vpm --volumes-from puppet_data_1 vladgh/awscli:latest /vpm/bin/backup'",
     minute  => '33',
+    hour    => '*/3',
     user    => 'root',
   }
 }
