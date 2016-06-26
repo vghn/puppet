@@ -6,3 +6,11 @@
 # Other
 /tmp
 /modules
+.*.sw?
+/pkg
+/.rspec_system
+/.bundle
+/vendor
+/Gemfile.lock
+/.yardoc
+/coverage

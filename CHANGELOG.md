@@ -1,3 +1,8 @@
+## Version 0.0.58 / 2016-06-26
+  * Add rake tasks for the entire repo ([Vlad - 17fb63f](https://github.com/vghn/puppet/commit/17fb63f71b9a5d0553d3cbd7b5556e317028841a))
+  * Add task to check for outdated forge modules ([Vlad - dfb62f6](https://github.com/vghn/puppet/commit/dfb62f66d5e9545dce2b913187836467c541406c))
+  * Update ssh module ([Vlad - 71abad7](https://github.com/vghn/puppet/commit/71abad7768d2fbbadead916de991a7cf51c31985))
+
 ## Version 0.0.57 / 2016-06-26
   * Add timezone ([Vlad - 64b17ec](https://github.com/vghn/puppet/commit/64b17ecac62d571b111b273abc9c02c411017eed))
 
