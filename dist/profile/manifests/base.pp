@@ -25,6 +25,7 @@ class profile::base {
   include ::ntp
   include ::python
   include ::vg
+  include ::vg::time
 
   # Ensure essential packages
   ensure_packages([
