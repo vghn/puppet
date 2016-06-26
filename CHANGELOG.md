@@ -1,3 +1,6 @@
+## Version 0.0.57 / 2016-06-26
+  * Add timezone ([Vlad - 64b17ec](https://github.com/vghn/puppet/commit/64b17ecac62d571b111b273abc9c02c411017eed))
+
 ## Version 0.0.56 / 2016-06-25
   * Improve backup script ([Vlad - 33b81c8](https://github.com/vghn/puppet/commit/33b81c896148f1c65f1db45542b465d862858f26))
 
