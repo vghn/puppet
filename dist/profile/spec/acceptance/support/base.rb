@@ -27,12 +27,4 @@ shared_examples 'profile::base' do
   describe package('wget') do
     it { is_expected.to be_installed }
   end
-
-  describe package('awscli') do
-    it { is_expected.to be_installed.by(:pip) }
-  end
-
-  describe user('root') do
-    it { is_expected.to have_authorized_key 'ssh-rsa' }
-  end
 end
