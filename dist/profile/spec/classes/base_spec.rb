@@ -23,16 +23,6 @@ describe 'profile::base' do
         it { is_expected.to contain_package('unzip') }
         it { is_expected.to contain_package('vim') }
         it { is_expected.to contain_package('wget') }
-
-        it { is_expected.to contain_ssh_authorized_key('test-key') }
-
-        it { is_expected.to contain_class('rsyslog::client') }
-        it do
-          is_expected.to contain_rsyslog__imfile('Testing')
-            .with_file_name('/var/log/test.log')
-        end
-
-        it { is_expected.to contain_python__pip('awscli') }
       end
     end
   end

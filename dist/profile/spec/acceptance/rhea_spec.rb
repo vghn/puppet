@@ -6,6 +6,7 @@ describe 'Rhea role', if: hosts.map(&:name).include?('rhea') do
     pp = <<-EOS
       include ::profile::base
       include ::profile::swap
+      include ::profile::log
       include ::profile::git
       include ::profile::jq
       include ::profile::puppet::agent

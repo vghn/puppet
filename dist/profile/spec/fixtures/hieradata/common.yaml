@@ -2,27 +2,15 @@
 # Testing Hiera data
 
 # Centralized Logging
-log_server_address: my.logserver.com
-log_server_port: 514
+profile::log::server_address: my.logserver.com
+profile::log::server_port: 514
 
 # RSysLog Additional Files
 rsyslog::imfile:
-  Testing:
+  testing:
     file_name: /var/log/test.log
-    file_tag: test
+    file_tag: testing
     file_facility: local0
-
-# SSH
-vg::ssh_authorized_keys:
-  'test-key':
-    user: root
-    type: ssh-rsa
-    key: ABC
-
-# Python
-python::python_pips:
-  awscli:
-    ensure: present
 
 # CloudWatch Logs
 aws_cloudwatch_logs:
