@@ -1,3 +1,7 @@
+## Version 0.0.59 / 2016-06-27
+  * Cron jobs are now in the VG module ([Vlad - 3305c20](https://github.com/vghn/puppet/commit/3305c20586b2b79559575c7e7d44a74828c9e2d9))
+  * Separate logging profile ([Vlad - 219d20c](https://github.com/vghn/puppet/commit/219d20c84bd10ee03314228469ce3409d5ef8f96))
+
 ## Version 0.0.58 / 2016-06-26
   * Add rake tasks for the entire repo ([Vlad - 17fb63f](https://github.com/vghn/puppet/commit/17fb63f71b9a5d0553d3cbd7b5556e317028841a))
   * Add task to check for outdated forge modules ([Vlad - dfb62f6](https://github.com/vghn/puppet/commit/dfb62f66d5e9545dce2b913187836467c541406c))
