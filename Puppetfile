@@ -5,8 +5,8 @@ mod 'vg', :git => 'https://github.com/vladgh/puppet-module-vg'
 
 # Puppet supported modules
 mod 'puppetlabs/apt', '2.2.2'
-mod 'puppetlabs/concat', '2.1.0'
-mod 'puppetlabs/git', '0.4.0'
+mod 'puppetlabs/concat', '2.2.0'
+mod 'puppetlabs/git', '0.5.0'
 mod 'puppetlabs/inifile', '1.5.0'
 mod 'puppetlabs/mysql', '3.8.0'
 mod 'puppetlabs/ntp', '4.2.0'

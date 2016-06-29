@@ -9,10 +9,10 @@ fixtures:
       ref: '2.2.2'
     concat:
       repo: 'puppetlabs/concat'
-      ref: '2.1.0'
+      ref: '2.2.0'
     git:
       repo: 'puppetlabs/git'
-      ref: '0.4.0'
+      ref: '0.5.0'
     inifile:
       repo: 'puppetlabs/inifile'
       ref: '1.5.0'
