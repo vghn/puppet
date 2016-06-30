@@ -1,3 +1,7 @@
+## Version 0.0.60 / 2016-06-30
+  * Update modules ([Vlad - 3b627bf](https://github.com/vghn/puppet/commit/3b627bfdf9cffaa3a9bb6b2c3f42675034b22b0e))
+  * Change puppet path ([Vlad - d9ff85f](https://github.com/vghn/puppet/commit/d9ff85fe60349ab3bd89a23a4d3d758b0a5d49fd))
+
 ## Version 0.0.59 / 2016-06-27
   * Cron jobs are now in the VG module ([Vlad - 3305c20](https://github.com/vghn/puppet/commit/3305c20586b2b79559575c7e7d44a74828c9e2d9))
   * Separate logging profile ([Vlad - 219d20c](https://github.com/vghn/puppet/commit/219d20c84bd10ee03314228469ce3409d5ef8f96))
