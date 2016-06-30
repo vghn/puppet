@@ -1,3 +1,6 @@
+## Version 0.0.63 / 2016-06-30
+  * Fix path ([Vlad - db381ed](https://github.com/vghn/puppet/commit/db381ed9d6d896f57f77ef48f088023c628ef247))
+
 ## Version 0.0.62 / 2016-06-30
   * Fix environment ([Vlad - 7f29257](https://github.com/vghn/puppet/commit/7f292577062f546d5ec28c179230e38070273b8d))
 
