@@ -7,6 +7,7 @@ class role::rhea {
   include ::profile::jq
   include ::profile::puppet::master
   include ::profile::puppet::agent
+  include ::profile::aws::cloudformation
   include ::profile::aws::ssm
   include ::profile::docker
 }

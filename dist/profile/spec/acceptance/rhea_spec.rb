@@ -11,6 +11,7 @@ describe 'Rhea role', if: hosts.map(&:name).include?('rhea') do
       include ::profile::jq
       include ::profile::puppet::agent
       include ::profile::puppet::master
+      include ::profile::aws::cloudformation
       include ::profile::aws::ssm
       include ::profile::docker
     EOS
@@ -26,6 +27,7 @@ describe 'Rhea role', if: hosts.map(&:name).include?('rhea') do
   it_behaves_like 'profile::jq'
   it_behaves_like 'profile::puppet::agent'
   it_behaves_like 'profile::puppet::master'
+  it_behaves_like 'profile::aws::cloudformation'
   it_behaves_like 'profile::aws::ssm'
   it_behaves_like 'profile::docker'
 end
