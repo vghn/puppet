@@ -7,7 +7,8 @@ require 'openssl'
 require 'aws-sdk'
 
 # Read CSR
-@csr = OpenSSL::X509::Request.new(STDIN.read)
+@cert = ARGV[0]
+@csr  = OpenSSL::X509::Request.new(STDIN.read)
 
 # Load AWS SDK (EC2)
 def ec2
@@ -19,7 +20,7 @@ end
 def cfg
   YAML.load_file(ENV['AUTOSIGN_CFG'])
 rescue => e
-  puts "Could not load the configuration file (#{e.message})!"
+  STDERR.puts "Could not load the configuration file (#{e.message})!"
   return []
 end
 
@@ -33,7 +34,7 @@ def challenge_password
   atts.select { |att| att.oid == 'challengePassword' }
       .first.value.value.first.value.strip
 rescue => e
-  puts "Could not find challengePassword in the attributes (#{e.message})!"
+  STDERR.puts "Could not find challengePassword in the attributes (#{e.message})!"
   return nil
 end
 
@@ -42,7 +43,7 @@ def exts
   atts.select { |att| att.oid == 'extReq' }
       .first.value.value.first.value
 rescue => e
-  puts "Could not find other extensions in the attributes! (#{e.message})!"
+  STDERR.puts "Could not find other extensions in the attributes! (#{e.message})!"
   return []
 end
 
@@ -94,7 +95,7 @@ end
 def master_password
   cfg['challengePassword']
 rescue => e
-  puts 'Could not find \'challengePassword\' in the configuration' \
+  STDERR.puts 'Could not find \'challengePassword\' in the configuration' \
        " (#{e.message})!"
   return nil
 end
@@ -103,7 +104,7 @@ end
 def project_password
   cfg[project]['challengePassword']
 rescue => e
-  puts 'Could not find challengePassword in the configuration for' \
+  STDERR.puts 'Could not find challengePassword in the configuration for' \
        " project '#{project}' (#{e.message})!"
   return nil
 end
@@ -122,7 +123,7 @@ end
 def check_instances_list
   ec2.instances.map(&:id).include?(instance_id)
 rescue => e
-  puts "Could not get a list of instances (#{e.message})!"
+  STDERR.puts "Could not get a list of instances (#{e.message})!"
   return false
 end
 
@@ -130,27 +131,25 @@ end
 def check_images_list
   ec2.images(owners: ['self']).map(&:id).include?(image_name)
 rescue => e
-  puts "Could not get a list of images (#{e.message})!"
+  STDERR.puts "Could not get a list of images (#{e.message})!"
   return false
 end
 
-# Authorize
-def authorize(ret, msg)
-  STDERR.puts msg
-  exit ret
-end
-
 # Authorization
+STDERR.puts "Commencing validation for #{@cert}"
 if atts.empty?
-  authorize 1, 'Authorization failed! The CSR has no attributes!'
+  STDERR.puts 'Authorization failed! The CSR has no attributes!'
+  exit 1
 elsif check_master_password
-  authorize 0, 'Node authorized based on the provided master challengePassword'
+  STDERR.puts 'Node authorized based on the provided master challengePassword'
 elsif check_project_password
-  authorize 0, 'Node authorized based on the provided project challengePassword'
+  STDERR.puts 'Node authorized based on the provided project challengePassword'
 elsif check_instances_list
-  authorize 0, "Node authorized based on instance id (#{instance_id})"
+  STDERR.puts "Node authorized based on instance id (#{instance_id})"
 elsif check_images_list
-  authorize 0, "Node authorized based on image id (#{image_name})"
+  STDERR.puts "Node authorized based on image id (#{image_name})"
 else
-  authorize 1, 'Authorization failed!'
+  STDERR.puts 'Authorization failed!'
+  exit 1
 end
+STDERR.puts "Completed validation for #{@cert} - Signing CSR"
