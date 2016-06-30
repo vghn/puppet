@@ -1,3 +1,6 @@
+## Version 0.0.62 / 2016-06-30
+  * Fix environment ([Vlad - 7f29257](https://github.com/vghn/puppet/commit/7f292577062f546d5ec28c179230e38070273b8d))
+
 ## Version 0.0.61 / 2016-06-30
   * Improve output of the CSR sign script ([Vlad - ab27f7d](https://github.com/vghn/puppet/commit/ab27f7dfa679d378389f6b8d895e366a430fc5b5))
   * Fix environment ([Vlad - 18b6089](https://github.com/vghn/puppet/commit/18b60893c261637e3ce803d76bb6dbc63eb4f265))
