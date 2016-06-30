@@ -33,6 +33,8 @@ services:
       - data
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      ENVTYPE: "$ENVTYPE"
     entrypoint: /vpm/bin/run-log-agent
     restart: 'on-failure:5'
   data:
