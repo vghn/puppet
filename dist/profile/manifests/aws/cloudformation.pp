@@ -8,10 +8,16 @@ class profile::aws::cloudformation {
     provider => 'pip',
   }
 
+  file { '/usr/local/init/ubuntu/cfn-hup':
+    ensure  => 'file',
+    mode    => '0755',
+    require => Package['AWS CloudFormation'],
+  }
+
   file { '/etc/init.d/cfn-hup':
     ensure  => 'link',
     target  => '/usr/local/init/ubuntu/cfn-hup',
-    require => Package['AWS CloudFormation'],
+    require => File['/usr/local/init/ubuntu/cfn-hup'],
   }
 
   service { 'cfn-hup':

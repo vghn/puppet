@@ -16,6 +16,11 @@ describe 'profile::aws::cloudformation' do
         end
 
         it do
+          is_expected.to contain_file('/usr/local/init/ubuntu/cfn-hup')
+            .with_mode('0755')
+        end
+
+        it do
           is_expected.to contain_file('/etc/init.d/cfn-hup')
             .with_target('/usr/local/init/ubuntu/cfn-hup')
         end
