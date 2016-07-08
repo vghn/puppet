@@ -10,6 +10,7 @@
 # PP_SERVER: [String] The URL of the Puppet Server. Defaults to `puppet`
 # PP_ROLE: [String] Declares the role of the node as a trusted fact*
 # PP_PROJECT: [String] Declares the project name as a trusted fact*
+# PP_APPLICATION: [String] Declares the application name as a trusted fact*
 # PP_SECRET: [String] Declares a shared secret as a trusted fact*
 # PP_CERTNAME: [String] The certificate name for the agent.
 # PP_COLLECTION: [String] The puppet collection (default: 'pc1')
@@ -37,6 +38,7 @@
 PP_SERVER=${PP_SERVER:-puppet}
 PP_ROLE=${PP_ROLE:-none}
 PP_PROJECT=${PP_PROJECT:-}
+PP_APPLICATION=${PP_APPLICATION:-}
 PP_SECRET=${PP_SECRET:-}
 PP_CERTNAME=${PP_CERTNAME:-}
 PP_COLLECTION=${PP_COLLECTION:-pc1}
@@ -88,6 +90,7 @@ custom_attributes:
 extension_requests:
   pp_role: ${PP_ROLE}
   pp_project: ${PP_PROJECT}
+  pp_application: ${PP_APPLICATION}
   pp_instance_id: ${instance_id}
   pp_image_name: ${ami_id}
 CSR
