@@ -42,6 +42,7 @@ services:
     hostname: data-agent
     volumes:
       - ~/.aws:/root/.aws
+      - /etc/localtime:/etc/localtime:ro
       - .:/vpm
       - ./hiera.yaml:/etc/puppetlabs/puppet/hiera.yaml
       - ./r10k.yaml:/etc/puppetlabs/r10k/r10k.yaml
