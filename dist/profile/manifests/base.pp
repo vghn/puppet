@@ -2,7 +2,7 @@
 class profile::base {
   # Include essential classes
   include ::stdlib
-  include ::apt
+  if $::osfamily == 'Debian' { include ::apt }
   include ::ntp
   include ::vg
   include ::vg::time
