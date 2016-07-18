@@ -3,6 +3,7 @@ class role::rhea {
   include ::profile::base
   include ::profile::swap
   include ::profile::log
+  include ::profile::python
   include ::profile::git
   include ::profile::jq
   include ::profile::puppet::master

@@ -2,6 +2,7 @@
 class role::zeus {
   include ::profile::base
   include ::profile::swap
+  include ::profile::python
   include ::profile::git
   include ::profile::jq
   include ::profile::puppet::agent

@@ -7,6 +7,7 @@ describe 'Rhea role', if: hosts.map(&:name).include?('rhea') do
       include ::profile::base
       include ::profile::swap
       include ::profile::log
+      include ::profile::python
       include ::profile::git
       include ::profile::jq
       include ::profile::puppet::agent
@@ -23,6 +24,8 @@ describe 'Rhea role', if: hosts.map(&:name).include?('rhea') do
 
   it_behaves_like 'profile::base'
   it_behaves_like 'profile::swap'
+  it_behaves_like 'profile::log'
+  it_behaves_like 'profile::python'
   it_behaves_like 'profile::git'
   it_behaves_like 'profile::jq'
   it_behaves_like 'profile::puppet::agent'

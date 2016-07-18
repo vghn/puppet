@@ -4,7 +4,6 @@ class profile::base {
   include ::stdlib
   include ::apt
   include ::ntp
-  include ::python
   include ::vg
   include ::vg::time
 }
