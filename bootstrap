@@ -201,11 +201,11 @@ configure_puppet(){
 process_exit_code(){
   local exit_code="${1}"
   if [[ $exit_code == 0 ]]; then
-    e_info 'The run succeeded with no changes or failures'
+    e_ok 'The run succeeded with no changes or failures'
   elif [[ $exit_code == 1 ]]; then
     e_abort 'The run failed'
   elif [[ $exit_code == 2 ]]; then
-    e_info 'The run succeeded, and some resources were changed'
+    e_ok 'The run succeeded, and some resources were changed'
   elif [[ $exit_code == 4 ]]; then
     e_abort 'The run succeeded, and some resources failed'
   elif [[ $exit_code == 6 ]]; then
