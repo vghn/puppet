@@ -33,7 +33,8 @@ services:
       - data
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    env_file: "/etc/puppetlabs/private/${ENVTYPE}/logging.env"
+    env_file:
+      ENVTYPE: "$ENVTYPE"
     entrypoint: /vpm/bin/run-log-agent
     restart: 'on-failure:5'
   sslsync:
