@@ -55,6 +55,7 @@ CSRTMP="${TMPDIR}/csr_attributes.yaml"
 PATH="/opt/puppetlabs/bin:/opt/puppetlabs/puppet/bin:/usr/local/bin:${PATH}"
 
 # Output
+e_ok()    { printf "  ✔  %s\n" "$@" ;}
 e_info()  { printf "  ➜  %s\n" "$@" ;}
 e_error() { printf "  ✖  %s\n" "$@" ;}
 e_warn()  { printf "    %s\n" "$@" ;}
