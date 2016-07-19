@@ -9,7 +9,7 @@ ci_install(){
   echo 'Install AWS-CLI'
   pip install --user --upgrade awscli
 
-  ech 'Updating Bundler'
+  echo 'Updating Bundler'
   gem update bundler
 
   cd "${APPDIR}/dist/profile" || return 1
