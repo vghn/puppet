@@ -2,14 +2,15 @@
 class role::zeus {
   include ::profile::base
   include ::profile::swap
+  include ::profile::log
   include ::profile::python
   include ::profile::git
   include ::profile::jq
-  include ::profile::puppet::agent
+  include ::profile::rvm
+  include ::profile::vgs
   include ::profile::puppet::master
+  include ::profile::puppet::agent
   include ::profile::aws::cloudformation
   include ::profile::aws::ssm
-  include ::profile::aws::s3fs
   include ::profile::docker
-  include ::profile::rvm
 }

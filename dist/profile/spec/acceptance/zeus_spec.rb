@@ -11,6 +11,7 @@ describe 'Zeus role', if: hosts.map(&:name).include?('zeus') do
       include ::profile::git
       include ::profile::jq
       include ::profile::rvm
+      include ::profile::vgs
       include ::profile::puppet::agent
       include ::profile::puppet::master
       include ::profile::aws::cloudformation
@@ -30,6 +31,7 @@ describe 'Zeus role', if: hosts.map(&:name).include?('zeus') do
   it_behaves_like 'profile::git'
   it_behaves_like 'profile::jq'
   it_behaves_like 'profile::rvm'
+  it_behaves_like 'profile::vgs'
   it_behaves_like 'profile::puppet::agent'
   it_behaves_like 'profile::puppet::master'
   it_behaves_like 'profile::aws::cloudformation'
