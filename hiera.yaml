@@ -8,6 +8,8 @@
   - hosts/%{::trusted.domainname}/%{::trusted.hostname}
   - roles/%{::trusted.extensions.pp_role}
   - roles/%{::role}
+  - application/%{::trusted.extensions.pp_application}
+  - application/%{::application}
   - projects/%{::trusted.extensions.pp_project}
   - projects/%{::project}
   - virtual/%{::virtual}

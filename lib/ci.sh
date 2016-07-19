@@ -9,6 +9,9 @@ ci_install(){
   echo 'Install AWS-CLI'
   pip install --user --upgrade awscli
 
+  echo 'Updating Bundler'
+  gem update bundler
+
   cd "${APPDIR}/dist/profile" || return 1
   export BUNDLE_GEMFILE=$PWD/Gemfile
   echo 'Install required testing gems'

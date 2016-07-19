@@ -1,12 +1,6 @@
 #!/usr/bin/env bash
 # GIT Pre-Commit Hook
 #
-# Prerequisites:
-#   gem install puppet-lint puppet
-#
-# Install:
-#  /path/to/repo/.git/hooks/pre-commit
-#
 # Inspired from the work of:
 #  Ronny Roethof
 #  Mattias Geniar <m@ttias.be>

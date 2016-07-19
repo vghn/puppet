@@ -37,16 +37,26 @@ services:
       ENVTYPE: "$ENVTYPE"
     entrypoint: /vpm/bin/run-log-agent
     restart: 'on-failure:5'
+  sslsync:
+    image: vladgh/s3sync:latest
+    hostname: backup-agent
+    volumes_from:
+      - data
+    environment:
+      WATCHDIR: /etc/puppetlabs/puppet/ssl
+      S3PATH: "$S3_SSL"
+    restart: 'on-failure:5'
   data:
     image: vladgh/awscli:latest
     hostname: data-agent
     volumes:
       - ~/.aws:/root/.aws
+      - /etc/localtime:/etc/localtime:ro
       - .:/vpm
       - ./hiera.yaml:/etc/puppetlabs/puppet/hiera.yaml
       - ./r10k.yaml:/etc/puppetlabs/r10k/r10k.yaml
-      - code:/etc/puppetlabs/code
       - ssl:/etc/puppetlabs/puppet/ssl
+      - code:/etc/puppetlabs/code
       - private:/etc/puppetlabs/private
       - hieradata:/etc/puppetlabs/hieradata
       - /var/local
@@ -58,7 +68,7 @@ services:
     restart: 'no'
 
 volumes:
-  code:
   ssl:
+  code:
   private:
   hieradata:

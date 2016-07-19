@@ -1,3 +1,26 @@
+## Version 0.0.64 / 2016-07-19
+  * Fix project path ([Vlad - ced4aee](https://github.com/vghn/puppet/commit/ced4aee2b5d88b33696c595a0d69998607d5bbc7))
+  * Improve CloudFormation helper scripts ([Vlad - 9b0054c](https://github.com/vghn/puppet/commit/9b0054c2a779f4660a3cad806971ac2abf45c519))
+  * Fix CloudFormation helper init script mode ([Vlad - 3bdde2a](https://github.com/vghn/puppet/commit/3bdde2acaaecc122c0599ad54fce3f4392417c8b))
+  * Add new PP_APPLICATION extension ([Vlad - 1017760](https://github.com/vghn/puppet/commit/1017760dde4a6511233372e2d6e07e07ffdd7dc2))
+  * Separate essential packages ([Vlad - a9cc251](https://github.com/vghn/puppet/commit/a9cc25196028179593399aafaf00d1b8c7453979))
+  * Add host local time to containers ([Vlad - 69d3a0f](https://github.com/vghn/puppet/commit/69d3a0f2812857512310997c30a5c320056aabbc))
+  * Puppet module updates ([Vlad - 823eec1](https://github.com/vghn/puppet/commit/823eec163fff419b434478a886bd6c6b57523d65))
+  * Improve bootstrap output ([Vlad - 2a3ff68](https://github.com/vghn/puppet/commit/2a3ff6814e1e0d7d4fdc78e3cc287f614372aebf))
+  * Separate python from the base class ([Vlad - f2095c4](https://github.com/vghn/puppet/commit/f2095c4f87a86abf7a45d9f1aaf1ff49fba546ca))
+  * Only include the apt class on Debian systems ([Vlad - ba0d0c5](https://github.com/vghn/puppet/commit/ba0d0c5833929e41611f159c5e8c45e6886bc0d3))
+  * Improve Rhea upstart script ([Vlad - d3bd6a6](https://github.com/vghn/puppet/commit/d3bd6a6449750903e96e8b5b54ddddfbbd1c1263))
+  * Minor updates ([Vlad - 62e2bf0](https://github.com/vghn/puppet/commit/62e2bf00e6462e9b171b0a3d7af83200b9f6f6ea))
+  * Add RVM to RHEA ([Vlad - d603eea](https://github.com/vghn/puppet/commit/d603eea709d43f600f3068091b275e2f46f3e14f))
+  * Add Ruby class ([Vlad - 608ed36](https://github.com/vghn/puppet/commit/608ed36e80f085f9829ffcb3c36a583ca1cc3126))
+  * Be more specific with system ruby version ([Vlad - db4aa23](https://github.com/vghn/puppet/commit/db4aa236b72cd2d6664316f7285981bd189d837c))
+  * Add the VGS Library ([Vlad - 269620e](https://github.com/vghn/puppet/commit/269620e38c4e62c65f12a1c50b9135ee6cbb0ece))
+  * Improve bootstrap output ([Vlad - 1b1fe45](https://github.com/vghn/puppet/commit/1b1fe45b477b2771f09e1b6ecd94f084720c2e5b))
+  * Update bundler ([Vlad - 6ea6e72](https://github.com/vghn/puppet/commit/6ea6e721d25b1e0d1a48509039f3e9440186dd0a))
+  * Update bundler ([Vlad - a53477e](https://github.com/vghn/puppet/commit/a53477eb6e4bcac59fbaccc6a29bf249eb84cbde))
+  * Fix typo ([Vlad - f8618af](https://github.com/vghn/puppet/commit/f8618af040c8eaf25eedac5923cf4033de5a86eb))
+  * Add container to sync Puppet SSL keys ([Vlad - 9527fbc](https://github.com/vghn/puppet/commit/9527fbc81d1e0824ee087e39945f24433791e4d7))
+
 ## Version 0.0.63 / 2016-06-30
   * Fix path ([Vlad - db381ed](https://github.com/vghn/puppet/commit/db381ed9d6d896f57f77ef48f088023c628ef247))
 
