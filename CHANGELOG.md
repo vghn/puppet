@@ -1,4 +1,4 @@
-## Version 0.0.67 / 2016-07-21
+## Version 0.0.68 / 2016-07-21
   * Fix typo ([Vlad - a721829](https://github.com/vghn/puppet/commit/a7218293a3098d28033e77143d7c5719cf3d84cf))
   * Fix ssl sync agent hostname ([Vlad - b21bf53](https://github.com/vghn/puppet/commit/b21bf53e02105cb5ce2b928d01d3efae9f9b822b))
   * Add AWS EFS profile ([Vlad - 5df9716](https://github.com/vghn/puppet/commit/5df9716c1b609a4cce35d44607c554c36a239531))
