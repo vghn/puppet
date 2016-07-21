@@ -1,3 +1,13 @@
+## Version 0.0.65 / 2016-07-21
+  * Fix typo ([Vlad - a721829](https://github.com/vghn/puppet/commit/a7218293a3098d28033e77143d7c5719cf3d84cf))
+  * Fix ssl sync agent hostname ([Vlad - b21bf53](https://github.com/vghn/puppet/commit/b21bf53e02105cb5ce2b928d01d3efae9f9b822b))
+  * Add AWS EFS profile ([Vlad - 5df9716](https://github.com/vghn/puppet/commit/5df9716c1b609a4cce35d44607c554c36a239531))
+  * Create a separate .env file for the logging agent ([Vlad - 52456ea](https://github.com/vghn/puppet/commit/52456ea19ad9ad57d2f9ff94af248dfba0087796))
+  * Separate .env file ([Vlad - 598d4f8](https://github.com/vghn/puppet/commit/598d4f8021531f4a7ebe3b23205d7c0a81c4fb65))
+  * Get variables from the private data container ([Vlad - 7d7d5e2](https://github.com/vghn/puppet/commit/7d7d5e20280c382c6ec480cae9b8031f967a3233))
+  * The CloudFormation profile should not handle the service ([Vlad - e30f7b1](https://github.com/vghn/puppet/commit/e30f7b123dd71eea280fda2818f9a95328fd8e16))
+  * Improve Puppet Master start script ([Vlad - 959f17b](https://github.com/vghn/puppet/commit/959f17be5b2adb564ac4b7b12f2f34aebce7da54))
+
 ## Version 0.0.64 / 2016-07-19
   * Fix project path ([Vlad - ced4aee](https://github.com/vghn/puppet/commit/ced4aee2b5d88b33696c595a0d69998607d5bbc7))
   * Improve CloudFormation helper scripts ([Vlad - 9b0054c](https://github.com/vghn/puppet/commit/9b0054c2a779f4660a3cad806971ac2abf45c519))
