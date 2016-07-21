@@ -28,6 +28,7 @@ ci_test(){
 
 # CI Deploy
 ci_deploy(){
+  create_artifact
   aws_ec2_send_run_command \
   'rhea' \
   'Run Docker Compose' \
