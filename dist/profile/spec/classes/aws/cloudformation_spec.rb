@@ -24,8 +24,6 @@ describe 'profile::aws::cloudformation' do
           is_expected.to contain_file('/etc/init.d/cfn-hup')
             .with_target('/usr/local/init/ubuntu/cfn-hup')
         end
-
-        it { is_expected.to contain_service('cfn-hup') }
       end
     end
   end

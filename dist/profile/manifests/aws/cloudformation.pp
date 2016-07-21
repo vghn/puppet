@@ -19,10 +19,4 @@ class profile::aws::cloudformation {
     target  => '/usr/local/init/ubuntu/cfn-hup',
     require => File['/usr/local/init/ubuntu/cfn-hup'],
   }
-
-  service { 'cfn-hup':
-    ensure  => 'running',
-    enable  => true,
-    require => File['/etc/init.d/cfn-hup'],
-  }
 }
