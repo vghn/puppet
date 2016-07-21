@@ -7,9 +7,9 @@ until [ -s /var/local/privatedata_deployed ]; do
   >&2 echo "Private data did not deploy - sleeping"; sleep 5
 done
 
-# Load only the private .env (envrc has multiple bash only expressions)
+# Load only the private logging.env
 # shellcheck disable=1090
-. "/etc/puppetlabs/private/${ENVTYPE}/.env"
+. "/etc/puppetlabs/private/${ENVTYPE}/logging.env"
 
 echo "Starting Log Agent"
 /bin/logspout "syslog://${LOG_SERVER_ADDRESS}:${LOG_SERVER_PORT}"

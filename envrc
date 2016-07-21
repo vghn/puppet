@@ -21,7 +21,7 @@ NOW="$(date +"%Y%m%d_%H%M")"
 
 # Load private environment
 # shellcheck disable=1090
-. "${APPDIR}/.private/.env" 2>/dev/null || true
+. "${APPDIR}/.env" 2>/dev/null || true
 
 # Load VGS library
 # shellcheck disable=1090,1091

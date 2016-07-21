@@ -8,8 +8,6 @@ describe 'profile::puppet::master' do
 
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to contain_class('profile::puppet::master') }
-
-        it { is_expected.to contain_file('/etc/init/rhea.conf') }
       end
     end
   end

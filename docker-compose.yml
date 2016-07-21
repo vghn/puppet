@@ -33,18 +33,18 @@ services:
       - data
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    environment:
+    env_file:
       ENVTYPE: "$ENVTYPE"
     entrypoint: /vpm/bin/run-log-agent
     restart: 'on-failure:5'
   sslsync:
     image: vladgh/s3sync:latest
-    hostname: backup-agent
+    hostname: ssl-sync-agent
     volumes_from:
       - data
     environment:
-      WATCHDIR: /etc/puppetlabs/puppet/ssl
       S3PATH: "$S3_SSL"
+      WATCHDIR: /etc/puppetlabs/puppet/ssl
     restart: 'on-failure:5'
   data:
     image: vladgh/awscli:latest

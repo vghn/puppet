@@ -15,7 +15,7 @@
 # PP_CERTNAME: [String] The certificate name for the agent.
 # PP_COLLECTION: [String] The puppet collection (default: 'pc1')
 # PP_CODENAME: [String] The distribution code name (default: `lsb_release -cs`)
-# PP_AGENT_RUN: [Boolean] Whether to run pupet agent after installation or not
+# PP_AGENT_RUN: [Boolean] Whether to run puppet agent after installation or not
 #               (default: true)
 # PP_AGENT_CERT_REGEN: [Boolean] If `true`, the puppet services will be stopped,
 #                      the certificates and catalog cache will be deleted prior
