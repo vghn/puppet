@@ -1,3 +1,6 @@
+## Version 0.0.66 / 2016-07-21
+  * Fix production docker compose file ([Vlad - 996f7e0](https://github.com/vghn/puppet/commit/996f7e0a708bd6d9423c6d1532527063ab84f85f))
+
 ## Version 0.0.65 / 2016-07-21
   * Fix typo ([Vlad - a721829](https://github.com/vghn/puppet/commit/a7218293a3098d28033e77143d7c5719cf3d84cf))
   * Fix ssl sync agent hostname ([Vlad - b21bf53](https://github.com/vghn/puppet/commit/b21bf53e02105cb5ce2b928d01d3efae9f9b822b))
