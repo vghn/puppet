@@ -5,6 +5,7 @@ describe 'Mini role', if: hosts.map(&:name).include?('mini') do
   it 'should work idempotently with no errors' do
     pp = <<-EOS
       include ::profile::base
+      include ::profile::vgs
       include ::profile::puppet::agent
     EOS
 
@@ -14,5 +15,6 @@ describe 'Mini role', if: hosts.map(&:name).include?('mini') do
   end
 
   it_behaves_like 'profile::base'
+  it_behaves_like 'profile::vgs'
   it_behaves_like 'profile::puppet::agent'
 end
