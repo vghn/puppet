@@ -6,4 +6,6 @@ class profile::base {
   include ::ntp
   include ::vg
   include ::vg::time
+  include ::sudo
+  include ::sudo::configs
 }
