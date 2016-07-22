@@ -1,11 +1,22 @@
 # Base Profile
 class profile::base {
-  # Include essential classes
+  # Standard Library
   include ::stdlib
+
+  # APT
   if $::osfamily == 'Debian' { include ::apt }
-  include ::ntp
+
+  # VG Module
   include ::vg
   include ::vg::time
-  include ::sudo
+
+  # NTP
+  include ::ntp
+
+  # SUDO
+  class { 'sudo':
+    purge               => false,
+    config_file_replace => false,
+  }
   include ::sudo::configs
 }
