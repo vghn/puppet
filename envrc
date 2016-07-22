@@ -33,6 +33,11 @@ for file in ${APPDIR}/lib/*.sh; do
   . "$file"
 done
 
+# Version
+export VERSION_FILE="${APPDIR}/VERSION"
+export CHANGELOG_FILE="${APPDIR}/CHANGELOG.md"
+export VERSION; VERSION=$(cat "$VERSION_FILE" || echo '0.0.0')
+
 # Detect environment
 GIT_BRANCH=$(git -C "$APPDIR" symbolic-ref --short HEAD 2>/dev/null || echo '')
 GIT_SHA1=$(git -C "$APPDIR" rev-parse --short HEAD 2>/dev/null || echo '0')
@@ -72,6 +77,7 @@ export AWS_ASSETS_BUCKET='vladgh'
 export AWS_DEFAULT_REGION="${AWS_DEFAULT_REGION:-us-east-1}"
 export S3_SSL="s3://${AWS_ASSETS_BUCKET}/ssl"
 export S3_SSL_BACKUP="s3://${AWS_ASSETS_BUCKET}/backup/ssl_${NOW}.tgz"
+export S3_ARTIFACTS="s3://${AWS_ASSETS_BUCKET}/artifacts"
 export S3_HIERADATA="s3://${AWS_ASSETS_BUCKET}/hieradata/${ENVTYPE}"
 export S3_PRIVATE_DATA="s3://${AWS_ASSETS_BUCKET}/private/${ENVTYPE}"
 export S3_HIERADATA_ALL="s3://${AWS_ASSETS_BUCKET}/hieradata"

@@ -15,6 +15,8 @@ describe 'profile::base' do
         it { is_expected.to contain_class('ntp') }
         it { is_expected.to contain_class('vg') }
         it { is_expected.to contain_class('vg::time') }
+        it { is_expected.to contain_class('sudo') }
+        it { is_expected.to contain_class('sudo::configs') }
       end
     end
   end

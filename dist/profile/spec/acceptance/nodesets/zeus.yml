@@ -1,7 +1,0 @@
-HOSTS:
-  zeus:
-    platform: ubuntu-trusty-amd64
-    hypervisor: vagrant
-    box: ubuntu/trusty64
-CONFIG:
-  type: aio

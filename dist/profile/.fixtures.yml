@@ -61,6 +61,9 @@ fixtures:
     rvm:
       repo: 'maestrodev/rvm'
       ref: '1.13.1'
+    sudo:
+      repo: 'saz/sudo'
+      ref: '3.1.0'
     archive:
       repo: 'puppet/archive'
       ref: '1.0.0'

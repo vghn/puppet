@@ -1,3 +1,8 @@
+## Version 0.0.67 / 2016-07-22
+  * Create script for CI to upload artifacts to S3 ([Vlad - 47adcc3](https://github.com/vghn/puppet/commit/47adcc34dd74ee90f9fb4c776c239e31a8786a24))
+  * Add saz/sudo puppet module ([Vlad - ad3f978](https://github.com/vghn/puppet/commit/ad3f978a6e98a7cb28cbd4c6b3ef8019308935b1))
+  * Clean-up roles ([Vlad - 75ac98f](https://github.com/vghn/puppet/commit/75ac98f474c9036689f10941c8290d6d2e72874e))
+
 ## Version 0.0.66 / 2016-07-21
   * Fix production docker compose file ([Vlad - 996f7e0](https://github.com/vghn/puppet/commit/996f7e0a708bd6d9423c6d1532527063ab84f85f))
 
