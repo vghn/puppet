@@ -129,6 +129,12 @@ docker_compose_start(){
   docker-compose up -d
 }
 
+# Start only the specified containers
+docker_compose_start_only(){
+  docker-compose pull "$@"
+  docker-compose up -d --no-deps "$@"
+}
+
 # EC2 Run Command
 aws_ec2_send_run_command(){
   local role comm desc
