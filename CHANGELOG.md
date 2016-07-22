@@ -1,3 +1,7 @@
+## Version 0.0.68 / 2016-07-22
+  * Add a data-only option to the run script ([Vlad - 8b6dcd7](https://github.com/vghn/puppet/commit/8b6dcd773bde40db8dbeba04adea76311c659758))
+  * Do not purge sudo configuration ([Vlad - 45f03f1](https://github.com/vghn/puppet/commit/45f03f130d74a1cbf3e1617cd8f87b163c309262))
+
 ## Version 0.0.67 / 2016-07-22
   * Create script for CI to upload artifacts to S3 ([Vlad - 47adcc3](https://github.com/vghn/puppet/commit/47adcc34dd74ee90f9fb4c776c239e31a8786a24))
   * Add saz/sudo puppet module ([Vlad - ad3f978](https://github.com/vghn/puppet/commit/ad3f978a6e98a7cb28cbd4c6b3ef8019308935b1))

@@ -16,6 +16,10 @@ do
       update=true
       shift
       ;;
+    -d | --data)
+      data=true
+      shift
+      ;;
     --) # End of all options
       shift
       break
@@ -38,5 +42,9 @@ if [[ "$update" == true ]]; then
   docker_compose_update_images
 fi
 
-# Start compose
-docker_compose_start
+# Only update data containers
+if [[ "$data" == true ]]; then
+  docker_compose_start_only data r10k
+else
+  docker_compose_start
+fi
