@@ -1,3 +1,6 @@
+## Version 0.0.69 / 2016-07-22
+  * Add default for the data-only parameter of run ([Vlad - 142a7cb](https://github.com/vghn/puppet/commit/142a7cb48417a2b510e85597dfa76c74b6570075))
+
 ## Version 0.0.68 / 2016-07-22
   * Add a data-only option to the run script ([Vlad - 8b6dcd7](https://github.com/vghn/puppet/commit/8b6dcd773bde40db8dbeba04adea76311c659758))
   * Do not purge sudo configuration ([Vlad - 45f03f1](https://github.com/vghn/puppet/commit/45f03f130d74a1cbf3e1617cd8f87b163c309262))
