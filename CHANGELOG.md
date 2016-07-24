@@ -1,3 +1,7 @@
+## Version 0.0.70 / 2016-07-24
+  * Add more modules and clean-up environment ([Vlad - 158db3a](https://github.com/vghn/puppet/commit/158db3a92c4c12e1c8d34866ebd0d29186326e47))
+  * Improve the sensitive data workflow ([Vlad - 4667cac](https://github.com/vghn/puppet/commit/4667cac5c521fa6ee300f110f872182dfcbb51d1))
+
 ## Version 0.0.69 / 2016-07-22
   * Add default for the data-only parameter of run ([Vlad - 142a7cb](https://github.com/vghn/puppet/commit/142a7cb48417a2b510e85597dfa76c74b6570075))
 
