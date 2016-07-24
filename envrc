@@ -4,20 +4,14 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-# Paths
-export APPDIR TMPDIR
+# VARs
+export APPDIR TMPDIR NOW VERSION VERSION_FILE CHANGELOG_FILE
 APPDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
 TMPDIR=$(mktemp -d 2>/dev/null || mktemp -d -t 'tmp')
-
-# Internal paths
-export PRIVATE_DATA_REPO="${APPDIR}/.private"
-export HIERA_DATA_REPO="${APPDIR}/hieradata"
-export PRIVATE_DATA="/etc/puppetlabs/private"
-export HIERA_DATA="/etc/puppetlabs/hieradata"
-
-# Other
-export NOW
-NOW="$(date +"%Y%m%d_%H%M")"
+NOW="$(date +"%Y%m%d_%H%M%S")"
+VERSION_FILE="${APPDIR}/VERSION"
+CHANGELOG_FILE="${APPDIR}/CHANGELOG.md"
+VERSION=$(cat "$VERSION_FILE" || echo '0.0.0')
 
 # Load private environment
 # shellcheck disable=1090
@@ -33,16 +27,9 @@ for file in ${APPDIR}/lib/*.sh; do
   . "$file"
 done
 
-# Version
-export VERSION_FILE="${APPDIR}/VERSION"
-export CHANGELOG_FILE="${APPDIR}/CHANGELOG.md"
-export VERSION; VERSION=$(cat "$VERSION_FILE" || echo '0.0.0')
-
 # Detect environment
 GIT_BRANCH=$(git -C "$APPDIR" symbolic-ref --short HEAD 2>/dev/null || echo '')
 GIT_SHA1=$(git -C "$APPDIR" rev-parse --short HEAD 2>/dev/null || echo '0')
-
-## Detect if git directory or if Travis CI or if AWS CodeDeploy
 if [[ -n "${ENVTYPE:-}" ]]; then
   ENVTYPE="$ENVTYPE"
 elif [[ -n "${GIT_BRANCH:-}" ]]; then
@@ -56,7 +43,11 @@ elif [[ -n "${DEPLOYMENT_GROUP_NAME:-}" ]]; then
 else
   ENVTYPE=${ENVTYPE:-production}
 fi
-export ENVTYPE
+if [[ "$ENVTYPE" == 'master' ]]; then
+  export ENVTYPE='production'
+else
+  export ENVTYPE
+fi
 
 # CI
 export CI=${CI:-false}
@@ -72,13 +63,9 @@ elif [[ ${TRAVIS:-false} == true ]]; then
   git config --global user.name "TravisCI"
 fi
 
-# AWS
-export AWS_ASSETS_BUCKET='vladgh'
+# VARs
 export AWS_DEFAULT_REGION="${AWS_DEFAULT_REGION:-us-east-1}"
+export AWS_ASSETS_BUCKET='vladgh'
 export S3_SSL="s3://${AWS_ASSETS_BUCKET}/ssl"
-export S3_SSL_BACKUP="s3://${AWS_ASSETS_BUCKET}/backup/ssl_${NOW}.tgz"
-export S3_ARTIFACTS="s3://${AWS_ASSETS_BUCKET}/artifacts"
-export S3_HIERADATA="s3://${AWS_ASSETS_BUCKET}/hieradata/${ENVTYPE}"
-export S3_PRIVATE_DATA="s3://${AWS_ASSETS_BUCKET}/private/${ENVTYPE}"
-export S3_HIERADATA_ALL="s3://${AWS_ASSETS_BUCKET}/hieradata"
-export S3_PRIVATE_DATA_ALL="s3://${AWS_ASSETS_BUCKET}/private"
+export S3_PRIVATE="s3://${AWS_ASSETS_BUCKET}/private/${ENVTYPE}.tgz"
+export S3_ARTIFACT="s3://${AWS_ASSETS_BUCKET}/artifacts/${ENVTYPE}.tgz"

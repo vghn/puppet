@@ -53,6 +53,9 @@ fixtures:
       repo: 'zack/r10k'
       ref: '3.2.0'
     gnupg:
+      repo: 'derdanne/nfs'
+      ref: '0.0.14'
+    gnupg:
       repo: 'golja/gnupg'
       ref: '1.2.3'
     cloudwatchlogs:
@@ -64,6 +67,9 @@ fixtures:
     sudo:
       repo: 'saz/sudo'
       ref: '3.1.0'
+    samba:
+      repo: 'thias/samba'
+      ref: '1.0.0'
     archive:
       repo: 'puppet/archive'
       ref: '1.0.0'

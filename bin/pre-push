@@ -10,8 +10,7 @@ unset ENVTYPE
 
 # Hooks
 e_header 'GIT Pre-Push:'
-sync_up_private_data
-sync_up_hieradata
+upload_private_data
 
 # Git Push
 e_header 'GIT Push:'
