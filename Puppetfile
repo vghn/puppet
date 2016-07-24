@@ -24,11 +24,13 @@ mod 'stankevich/python', '1.12.0'
 mod 'zack/r10k', '3.2.0'
 
 # Others
+mod 'derdanne/nfs', '0.0.14'
 mod 'golja/gnupg', '1.2.3'
 mod 'kemra102/cloudwatchlogs', '2.3.0'
 mod 'maestrodev/rvm', '1.13.1'
 mod 'puppet/archive', '1.0.0'
 mod 'saz/sudo', '3.1.0'
+mod 'thias/samba', '1.0.0'
 
 # Dependencies (find with `sudo /opt/puppetlabs/bin/puppet module list --tree`)
 mod 'croddy/make', '0.0.5'

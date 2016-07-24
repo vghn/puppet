@@ -4,7 +4,7 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-# Paths
+# VARs
 export APPDIR TMPDIR
 APPDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
 TMPDIR=$(mktemp -d 2>/dev/null || mktemp -d -t 'tmp')
@@ -41,8 +41,6 @@ export VERSION; VERSION=$(cat "$VERSION_FILE" || echo '0.0.0')
 # Detect environment
 GIT_BRANCH=$(git -C "$APPDIR" symbolic-ref --short HEAD 2>/dev/null || echo '')
 GIT_SHA1=$(git -C "$APPDIR" rev-parse --short HEAD 2>/dev/null || echo '0')
-
-## Detect if git directory or if Travis CI or if AWS CodeDeploy
 if [[ -n "${ENVTYPE:-}" ]]; then
   ENVTYPE="$ENVTYPE"
 elif [[ -n "${GIT_BRANCH:-}" ]]; then
@@ -56,7 +54,11 @@ elif [[ -n "${DEPLOYMENT_GROUP_NAME:-}" ]]; then
 else
   ENVTYPE=${ENVTYPE:-production}
 fi
-export ENVTYPE
+if [[ "$ENVTYPE" == 'master' ]]; then
+  export ENVTYPE='production'
+else
+  export ENVTYPE
+fi
 
 # CI
 export CI=${CI:-false}
