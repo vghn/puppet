@@ -28,9 +28,7 @@ ci_test(){
 
 # CI Deploy
 ci_deploy(){
-  create_artifact
-  aws_ec2_send_run_command \
-  'rhea' \
-  'Run Docker Compose' \
-  '/opt/vpm/bin/run --data'
+   download_private_data
+   upload_artifact
+   aws_ec2_send_run_command 'rhea' 'Run puppet' '/opt/vpm/bin/run --data'
 }
