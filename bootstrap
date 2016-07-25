@@ -30,9 +30,9 @@
 #
 # * Trusted facts info: https://docs.puppetlabs.com/puppet/latest/reference/lang_facts_and_builtin_vars.html#trusted-facts
 
-# Load distribution information
-# shellcheck disable=1091
-. /etc/lsb-release || true
+# Bash strict mode
+set -euo pipefail
+IFS=$'\n\t'
 
 # DEFAULTS
 PP_SERVER=${PP_SERVER:-puppet}
