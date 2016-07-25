@@ -1,16 +1,6 @@
 version: '2'
 
 services:
-  r10k:
-    image: vladgh/r10k:latest
-    hostname: r10k-agent
-    volumes_from:
-      - data
-    environment:
-      ENVTYPE: "$ENVTYPE"
-    working_dir: /vpm
-    entrypoint: /vpm/bin/run-r10k-agent
-    restart: 'no'
   server:
     image: vladgh/puppetserver:aws
     hostname: puppet.ghn.me
@@ -19,13 +9,11 @@ services:
     volumes_from:
       - data
     environment:
-      ENVTYPE: "$ENVTYPE"
       AUTOSIGN: '/vpm/bin/csr-sign'
-      AUTOSIGN_CFG: "/etc/puppetlabs/private/${ENVTYPE}/csr_cfg.yaml"
+      AUTOSIGN_CFG: '/etc/puppetlabs/private/csr_cfg.yaml'
       DNS_ALT_NAMES: 'puppet,puppet.ghn.me,puppetca,puppetca.ghn.me'
       JAVA_ARGS: '-Xms768m -Xmx768m'
     entrypoint: /vpm/bin/run-puppetserver
-    restart: 'on-failure:5'
   logs:
     hostname: log-agent
     image: gliderlabs/logspout:latest
@@ -33,10 +21,8 @@ services:
       - data
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    environment:
-      ENVTYPE: "$ENVTYPE"
+    env_file: .private/logging.env
     entrypoint: /vpm/bin/run-log-agent
-    restart: 'on-failure:5'
   sslsync:
     image: vladgh/s3sync:latest
     hostname: ssl-sync-agent
@@ -45,7 +31,12 @@ services:
     environment:
       S3PATH: "$S3_SSL"
       WATCHDIR: /etc/puppetlabs/puppet/ssl
-    restart: 'on-failure:5'
+  r10k:
+    image: vladgh/r10k:latest
+    hostname: r10k-agent
+    volumes_from:
+      - data
+    entrypoint: /vpm/bin/run-r10k-agent
   data:
     image: vladgh/awscli:latest
     hostname: data-agent
@@ -61,10 +52,6 @@ services:
       - ssl:/etc/puppetlabs/puppet/ssl
       - code:/etc/puppetlabs/code
       - /var/local
-    environment:
-      ENVTYPE: "$ENVTYPE"
-    working_dir: /vpm
-    restart: 'no'
 
 volumes:
   ssl:

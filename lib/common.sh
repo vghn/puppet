@@ -74,6 +74,7 @@ update_repository(){
   fi
 
   e_info 'Extract artifact'
+  mkdir -p "$archive_tmpdir"
   if ! tar zxvf "$archive" -C "$archive_tmpdir"; then
     e_abort "Could not extract ${archive} to ${archive_tmpdir}"
   fi

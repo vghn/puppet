@@ -7,7 +7,7 @@
 
 # Wait for private data, hiera data and r10k deployment
 until [ -s /var/local/r10k_deployed ]; do
-  >&2 echo "Data did not deploy - sleeping"; sleep 5
+  >&2 e_info "Data did not deploy - sleeping"; sleep 5
 done
 
 # Start Puppet Server
