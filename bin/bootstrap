@@ -3,8 +3,8 @@
 # Bootstraps Puppet
 #
 # USAGE:
-# git clone https://github.com/vladgh/puppet.git
-# bash bootstrap
+# git clone https://github.com/vladgh/puppet.git /opt/vpm
+# bash /opt/vpm/bin/bootstrap
 #
 # Environment variables:
 # PP_SERVER: [String] The URL of the Puppet Server. Defaults to `puppet`
