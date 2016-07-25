@@ -1,11 +1,6 @@
 #!/usr/bin/env bash
 # Prepares the R10K container
 
-# Wait for private data to be deployed
-until [ -s /var/local/privatedata_deployed ]; do
-  >&2 echo "Private data did not deploy - sleeping"; sleep 5
-done
-
 # Load environment
 # shellcheck disable=1090
 . "$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd -P)/envrc"

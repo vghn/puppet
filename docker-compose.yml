@@ -52,23 +52,20 @@ services:
     volumes:
       - ~/.aws:/root/.aws
       - /etc/localtime:/etc/localtime:ro
+      - /opt/vgs:/opt/vgs
       - .:/vpm
+      - ./.private:/etc/puppetlabs/private
+      - ./hieradata:/etc/puppetlabs/hieradata
       - ./hiera.yaml:/etc/puppetlabs/puppet/hiera.yaml
       - ./r10k.yaml:/etc/puppetlabs/r10k/r10k.yaml
       - ssl:/etc/puppetlabs/puppet/ssl
       - code:/etc/puppetlabs/code
-      - private:/etc/puppetlabs/private
-      - hieradata:/etc/puppetlabs/hieradata
       - /var/local
-      - /opt/vgs
     environment:
       ENVTYPE: "$ENVTYPE"
     working_dir: /vpm
-    entrypoint: /vpm/bin/run-data-agent
     restart: 'no'
 
 volumes:
   ssl:
   code:
-  private:
-  hieradata:

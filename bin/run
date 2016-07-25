@@ -6,19 +6,24 @@
 . "$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd -P)/envrc"
 
 # Default arguments
-update=false
-data=false
+update_docker_images=false
+update_repo=false
+update_data=false
 
 # Process arguments
 while :
 do
   case "${1:-}" in
-    -u | --update)
-      update=true
+    -i | --update-docker-images)
+      update_docker_images=true
       shift
       ;;
-    -d | --data)
-      data=true
+    -r | --update-repo)
+      update_repo=true
+      shift
+      ;;
+    -d | --update-data)
+      update_data=true
       shift
       ;;
     --) # End of all options
@@ -34,18 +39,28 @@ do
   esac
 done
 
+# Start only the specified containers
+docker_compose_start_only(){
+  docker-compose up -d --no-deps "$@"
+}
+
 # Set working directory
 cd "${APPDIR}" || exit
 
-# Update repo and images if necessary
-if [[ "$update" == true ]]; then
-  update_repo
-  docker_compose_update_images
+# Update docker images
+if [[ "$update_docker_images" == true ]]; then
+  docker-compose build
+  docker-compose pull
 fi
 
-# Only update data containers
-if [[ "$data" == true ]]; then
-  docker_compose_start_only data r10k
+# Update repo
+if [[ "$update_repo" == true ]]; then
+  update_repository
+fi
+
+# Update data containers
+if [[ "$update_data" == true ]]; then
+  docker_compose_start_only r10k
 else
-  docker_compose_start
+  docker-compose up -d
 fi

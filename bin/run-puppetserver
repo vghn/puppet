@@ -1,18 +1,14 @@
 #!/usr/bin/env bash
 # Starts Puppet Server
 
-# Wait for private data, hiera data and r10k deployment
-until \
-  [ -s /var/local/privatedata_deployed ] && \
-  [ -s /var/local/hieradata_deployed ] && \
-  [ -s /var/local/r10k_deployed ]
-do
-  >&2 echo "Data did not deploy - sleeping"; sleep 5
-done
-
 # Load environment
 # shellcheck disable=1090
 . "$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd -P)/envrc"
+
+# Wait for private data, hiera data and r10k deployment
+until [ -s /var/local/r10k_deployed ]; do
+  >&2 echo "Data did not deploy - sleeping"; sleep 5
+done
 
 # Start Puppet Server
 e_info 'Starting Puppet Server'

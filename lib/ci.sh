@@ -30,5 +30,8 @@ ci_test(){
 ci_deploy(){
    download_private_data
    upload_artifact
-   aws_ec2_send_run_command 'rhea' 'Run puppet' '/opt/vpm/bin/run --data'
+   aws_ec2_send_run_command \
+     'rhea' \
+     'Run puppet' \
+     '/opt/vpm/bin/run --update-repo --data'
 }
