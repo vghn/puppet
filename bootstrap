@@ -42,7 +42,7 @@ PP_APPLICATION=${PP_APPLICATION:-}
 PP_SECRET=${PP_SECRET:-}
 PP_CERTNAME=${PP_CERTNAME:-}
 PP_COLLECTION=${PP_COLLECTION:-pc1}
-PP_CODENAME=${PP_CODENAME:-$DISTRIB_CODENAME}
+PP_CODENAME=${PP_CODENAME:-}
 PP_AGENT_RUN=${PP_AGENT_RUN:-true}
 PP_AGENT_CERT_REGEN=${PP_AGENT_CERT_REGEN:-false}
 PP_WAITFORCERT=${PP_WAITFORCERT:-0}
@@ -73,6 +73,7 @@ apt_install(){ e_info "Installing $*"; apt-get -qy install "$@" < /dev/null ;}
 # Sanity checks
 sanity_checks(){
   [[ $EUID == 0 ]] || e_abort 'This script needs to run as root'
+  is_cmd lsb_release || { apt_update && e_info 'Install LSB-Release' && apt_install lsb-release ;}
   is_cmd curl || { apt_update && e_info 'Install CURL' && apt_install curl ;}
 }
 
@@ -109,7 +110,7 @@ install_csr_attributes(){
 # Install Puppet release package
 install_puppet_agent(){
   local deb_name deb_path apt_url
-  deb_name="puppetlabs-release-${PP_COLLECTION}-${PP_CODENAME}.deb"
+  deb_name="puppetlabs-release-${PP_COLLECTION}-${PP_CODENAME:-$(lsb_release -cs)}.deb"
   deb_path="${TMPDIR}/${deb_name}"
   apt_url='https://apt.puppetlabs.com'
 
