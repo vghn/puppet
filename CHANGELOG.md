@@ -1,3 +1,8 @@
+## Version 0.0.71 / 2016-07-25
+  * Enable bash strict mode for the bootstrap script ([Vlad - f0c4155](https://github.com/vghn/puppet/commit/f0c4155b97dfa4d99ff3252d05415421214a8118))
+  * Install lsb-release command during bootstrap ([Vlad - b0a3c5d](https://github.com/vghn/puppet/commit/b0a3c5de6223310f609a164f9b1d9027178ce85e))
+  * Puppet module updates ([Vlad - 3218e30](https://github.com/vghn/puppet/commit/3218e302fdffdeade6dd5956e76f6577e5748644))
+
 ## Version 0.0.70 / 2016-07-24
   * Add more modules and clean-up environment ([Vlad - 158db3a](https://github.com/vghn/puppet/commit/158db3a92c4c12e1c8d34866ebd0d29186326e47))
   * Improve the sensitive data workflow ([Vlad - 4667cac](https://github.com/vghn/puppet/commit/4667cac5c521fa6ee300f110f872182dfcbb51d1))
