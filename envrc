@@ -22,34 +22,37 @@ VERSION=$(cat "$VERSION_FILE" || echo '0.0.0')
 . /opt/vgs/load 2>/dev/null || . ~/vgs/load 2>/dev/null || true
 
 # Load functions
-for file in ${APPDIR}/lib/*.sh; do
-  # shellcheck disable=1090
-  . "$file"
-done
+# shellcheck disable=1090
+for file in ${APPDIR}/lib/*.sh; do . "$file"; done
 
 # Detect environment
 GIT_BRANCH=$(git -C "$APPDIR" symbolic-ref --short HEAD 2>/dev/null || echo '')
 GIT_SHA1=$(git -C "$APPDIR" rev-parse --short HEAD 2>/dev/null || echo '0')
 if [[ -n "${ENVTYPE:-}" ]]; then
+  # If env var
   ENVTYPE="$ENVTYPE"
 elif [[ -n "${GIT_BRANCH:-}" ]]; then
+  # If git branch
   ENVTYPE="$GIT_BRANCH"
 elif [[ -n "${TRAVIS_BRANCH:-}" ]]; then
+  # If TravisCI git branch
   ENVTYPE="$TRAVIS_BRANCH"
 elif [[ -n "${CIRCLE_BRANCH:-}" ]]; then
+  # If CircleCI git branch
   ENVTYPE="$CIRCLE_BRANCH"
 elif [[ -n "${DEPLOYMENT_GROUP_NAME:-}" ]]; then
+  # If AWS CodeDeploy hook
   ENVTYPE="$DEPLOYMENT_GROUP_NAME"
 else
+  # Default
   ENVTYPE=${ENVTYPE:-production}
 fi
-if [[ "$ENVTYPE" == 'master' ]]; then
-  export ENVTYPE='production'
-else
-  export ENVTYPE
-fi
+# Rename master to production
+if [[ "$ENVTYPE" == 'master' ]]; then ENVTYPE='production'; fi
+# Export the actual ENVTYPE
+export ENVTYPE
 
-# CI
+# Detect CI environment
 export CI=${CI:-false}
 export PR=false
 export BUILD=${GIT_SHA1:-0}
@@ -66,6 +69,6 @@ fi
 # VARs
 export AWS_DEFAULT_REGION="${AWS_DEFAULT_REGION:-us-east-1}"
 export AWS_ASSETS_BUCKET='vladgh'
-export S3_SSL="s3://${AWS_ASSETS_BUCKET}/ssl"
-export S3_PRIVATE="s3://${AWS_ASSETS_BUCKET}/private/${ENVTYPE}.tgz"
-export S3_ARTIFACT="s3://${AWS_ASSETS_BUCKET}/artifacts/${ENVTYPE}.tgz"
+export SSL_S3PATH="s3://${AWS_ASSETS_BUCKET}/ssl"
+export VAULT_S3PATH="s3://${AWS_ASSETS_BUCKET}/vault/${ENVTYPE}"
+export HIERA_S3PATH="s3://${AWS_ASSETS_BUCKET}/hieradata/${ENVTYPE}"

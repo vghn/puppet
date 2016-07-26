@@ -8,7 +8,6 @@
 # Default arguments
 update_docker_images=false
 update_repo=false
-update_data=false
 
 # Process arguments
 while :
@@ -20,10 +19,6 @@ do
       ;;
     -r | --update-repo)
       update_repo=true
-      shift
-      ;;
-    -d | --update-data)
-      update_data=true
       shift
       ;;
     --) # End of all options
@@ -39,28 +34,19 @@ do
   esac
 done
 
-# Start only the specified containers
-docker_compose_start_only(){
-  docker-compose up -d --no-deps "$@"
-}
-
 # Set working directory
 cd "${APPDIR}" || exit
 
 # Update docker images
 if [[ "$update_docker_images" == true ]]; then
-  docker-compose build
   docker-compose pull
+  docker-compose build
 fi
 
 # Update repo
 if [[ "$update_repo" == true ]]; then
-  update_repository
+  git fetch --all && git reset --hard origin/production
 fi
 
-# Update data containers
-if [[ "$update_data" == true ]]; then
-  docker_compose_start_only r10k
-else
-  docker-compose up -d
-fi
+# Start containers
+docker-compose up -d

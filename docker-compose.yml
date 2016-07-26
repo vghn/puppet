@@ -2,57 +2,48 @@ version: '2'
 
 services:
   server:
-    image: vladgh/puppetserver:aws
+    image: vladgh/vpm-server:latest
     hostname: puppet.ghn.me
     ports:
       - '8140:8140'
     volumes_from:
       - data
     environment:
-      AUTOSIGN: '/vpm/bin/csr-sign'
-      AUTOSIGN_CFG: '/etc/puppetlabs/private/csr_cfg.yaml'
+      AUTOSIGN: '/usr/local/bin/csr-sign'
+      AUTOSIGN_CFG: '/etc/puppetlabs/vault/csr_cfg.yaml'
       DNS_ALT_NAMES: 'puppet,puppet.ghn.me,puppetca,puppetca.ghn.me'
       JAVA_ARGS: '-Xms768m -Xmx768m'
-    entrypoint: /vpm/bin/run-puppetserver
   logs:
     hostname: log-agent
     image: gliderlabs/logspout:latest
-    volumes_from:
-      - data
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    env_file: .private/logging.env
-    entrypoint: /vpm/bin/run-log-agent
-  sslsync:
+    env_file: vault/logging.env
+    command: syslog://$${LOG_SERVER_ADDRESS}:$${LOG_SERVER_PORT}
+  ssl:
     image: vladgh/s3sync:latest
     hostname: ssl-sync-agent
     volumes_from:
       - data
-    environment:
-      S3PATH: "$S3_SSL"
-      WATCHDIR: /etc/puppetlabs/puppet/ssl
-  r10k:
-    image: vladgh/r10k:latest
-    hostname: r10k-agent
-    volumes_from:
-      - data
-    entrypoint: /vpm/bin/run-r10k-agent
+    env_file: vault/ssl.env
   data:
-    image: vladgh/awscli:latest
+    image: vladgh/vpm-data:latest
     hostname: data-agent
+    environment:
+      AWS_ASSETS_BUCKET: vladgh
     volumes:
+      - .:/opt/vpm
       - ~/.aws:/root/.aws
       - /etc/localtime:/etc/localtime:ro
-      - /opt/vgs:/opt/vgs
-      - .:/vpm
-      - ./.private:/etc/puppetlabs/private
-      - ./hieradata:/etc/puppetlabs/hieradata
-      - ./hiera.yaml:/etc/puppetlabs/puppet/hiera.yaml
-      - ./r10k.yaml:/etc/puppetlabs/r10k/r10k.yaml
+      - /opt/vgs
+      - /var/local
       - ssl:/etc/puppetlabs/puppet/ssl
       - code:/etc/puppetlabs/code
-      - /var/local
+      - vault:/etc/puppetlabs/vault
+      - hieradata:/etc/puppetlabs/hieradata
 
 volumes:
   ssl:
   code:
+  vault:
+  hieradata:

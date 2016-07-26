@@ -1,6 +1,6 @@
 # Private
 /.env
-/.private/*
+/vault/*
 /hieradata/*
 !/hieradata/common.yaml
 
@@ -15,3 +15,4 @@
 /Gemfile.lock
 /.yardoc
 /coverage
+/mkmf.log

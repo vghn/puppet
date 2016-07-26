@@ -1,3 +1,0 @@
-#!/usr/bin/env sh
-echo "Starting Log Agent"
-/bin/logspout "syslog://${LOG_SERVER_ADDRESS}:${LOG_SERVER_PORT}"
