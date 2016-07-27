@@ -6,6 +6,10 @@ log(){
 }
 
 upload_data(){
+  e_info 'Upload .env'
+  if ! aws s3 cp "${APPDIR}/.env" "${ENV_S3PATH}"; then
+    e_abort "Could not upload ${APPDIR}/vault/ to ${VAULT_S3PATH}"
+  fi
   e_info 'Upload vault'
   if ! aws s3 sync "${APPDIR}/vault/" "${VAULT_S3PATH}/" --delete; then
     e_abort "Could not upload ${APPDIR}/vault/ to ${VAULT_S3PATH}"
@@ -17,6 +21,10 @@ upload_data(){
 }
 
 download_data(){
+  e_info 'Download .env'
+  if ! aws s3 cp "${ENV_S3PATH}" "${APPDIR}/.env"; then
+    e_abort "Could not upload ${APPDIR}/vault/ to ${VAULT_S3PATH}"
+  fi
   e_info 'Download vault'
   if ! aws s3 sync "${VAULT_S3PATH}/" "${APPDIR}/vault/" --delete; then
     e_abort "Could not download ${VAULT_S3PATH} to ${APPDIR}/vault/"

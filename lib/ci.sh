@@ -6,6 +6,32 @@ set_bundle_directory(){
   export BUNDLE_GEMFILE=$PWD/Gemfile
 }
 
+publish_artifact(){
+  local archive="vpm_${ENVTYPE}_${VERSION}-${GIT_SHA1}.tgz"
+  local archive_latest="vpm_${ENVTYPE}.tgz"
+  local archive_path="${TMPDIR}/${archive}"
+
+  e_info 'Pack artifact'
+  if ! tar zcvf "$archive_path" \
+    .env hieradata vault\
+    bin dist/{profile,role}/manifests lib manifests \
+    docker-compose.yml environment.conf envrc Puppetfile \
+    CHANGELOG.md LICENSE README.md VERSION;
+  then
+    e_abort "Could not create ${archive_path}"
+  fi
+
+  e_info 'Upload artifact'
+  if ! aws s3 cp "$archive_path" "${ARTIFACTS_S3PATH}/${archive}"; then
+    e_abort "Could not upload ${archive_path} to ${ARTIFACTS_S3PATH}/${archive}"
+  fi
+
+  e_info 'Mark latest version'
+  if ! aws s3 cp "${ARTIFACTS_S3PATH}/${archive}" "${ARTIFACTS_S3PATH}/${archive_latest}"; then
+    e_abort "Could not upload ${ARTIFACTS_S3PATH}/${archive} to ${ARTIFACTS_S3PATH}/${archive_latest}"
+  fi
+}
+
 # CI Install
 ci_install(){
   echo 'Install VGS library'
@@ -48,9 +74,8 @@ ci_deploy(){
     bundle exec rake docker:publish
   fi
 
+  publish_artifact
+
   e_info 'Deploy command'
-  aws_ec2_send_run_command \
-    'rhea' \
-    'Run puppet' \
-    '/opt/vpm/bin/run --update-repo --update-data'
+  aws_ec2_send_run_command 'rhea' 'Start VPM' '/opt/vpm/bin/start'
 }
