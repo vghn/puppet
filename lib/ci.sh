@@ -54,6 +54,8 @@ ci_install(){
 
 # CI Test
 ci_test(){
+  download_data
+
   e_info 'Run tests'
   set_bundle_directory "$APPDIR"
   bundle exec rake docker:test
