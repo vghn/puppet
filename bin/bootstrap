@@ -245,12 +245,13 @@ run_puppet(){
 main(){
   sanity_checks
 
-  generate_csr_attributes
-  install_puppet_agent
-  configure_puppet
-
   if [[ "$PP_AGENT_RUN" == 'true' ]]; then
+    generate_csr_attributes
+    install_puppet_agent
+    configure_puppet
     run_puppet
+  else
+    install_puppet_agent
   fi
 }
 
