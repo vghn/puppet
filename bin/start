@@ -10,8 +10,7 @@ update_docker_images=false
 update_repo=false
 
 # Process arguments
-while :
-do
+while :; do
   case "${1:-}" in
     -i | --update-docker-images)
       update_docker_images=true

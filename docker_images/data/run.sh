@@ -29,4 +29,4 @@ main(){
   deploy_r10k && date > /var/local/deployed_r10k
 }
 
-main
+main "$@"
