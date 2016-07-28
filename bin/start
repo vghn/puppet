@@ -8,6 +8,7 @@
 # Default arguments
 update_docker_images=false
 update_repo=false
+local_puppet=false
 
 # Process arguments
 while :; do
@@ -18,6 +19,10 @@ while :; do
       ;;
     -r | --update-repo)
       update_repo=true
+      shift
+      ;;
+    -l | --local)
+      local_puppet=true
       shift
       ;;
     --) # End of all options
@@ -48,4 +53,8 @@ if [[ "$update_repo" == true ]]; then
 fi
 
 # Start containers
-docker-compose up -d
+if [[ "$local_puppet" == true ]]; then
+  docker-compose up -d server
+else
+  docker-compose up -d
+fi

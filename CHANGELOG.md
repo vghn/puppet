@@ -1,3 +1,6 @@
+## Version 0.0.74 / 2016-07-28
+  * Allow starting a local master and rename image folder ([Vlad - f71ace1](https://github.com/vghn/puppet/commit/f71ace1c23cea890eee2a148ea0e6aa703dd3fd7))
+
 ## Version 0.0.73 / 2016-07-28
   * Login to docker registry before pushing ([Vlad - f869d2d](https://github.com/vghn/puppet/commit/f869d2d417d5fef822b2f9430186f7305dc6fbc8))
 
