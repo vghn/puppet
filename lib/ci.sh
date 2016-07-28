@@ -71,6 +71,9 @@ ci_test(){
 # CI Deploy
 ci_deploy(){
   if [[ "$ENVTYPE" == 'production' ]]; then
+    e_info 'Login to Docker Registry'
+    docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
+
     e_info 'Publish docker images'
     set_bundle_directory "$APPDIR"
     bundle exec rake docker:publish
