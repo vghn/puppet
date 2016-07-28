@@ -4,7 +4,7 @@ NO_CACHE = ENV['DOCKER_NO_CACHE'] || false
 
 require 'mkmf'
 
-IMAGES = Dir.glob('docker_images/*').select do |dir|
+IMAGES = Dir.glob('docker/*').select do |dir|
   File.directory?(dir) && File.exist?("#{dir}/Dockerfile")
 end
 

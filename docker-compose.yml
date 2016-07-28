@@ -39,11 +39,9 @@ services:
       - /var/local
       - ssl:/etc/puppetlabs/puppet/ssl
       - code:/etc/puppetlabs/code
-      - vault:/etc/puppetlabs/vault
-      - hieradata:/etc/puppetlabs/hieradata
+      - ./vault:/etc/puppetlabs/vault
+      - ./hieradata:/etc/puppetlabs/hieradata
 
 volumes:
   ssl:
   code:
-  vault:
-  hieradata:

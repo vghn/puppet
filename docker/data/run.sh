@@ -4,7 +4,14 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-# Install/Update VGS Library
+log(){
+  echo "[$(date "+%Y-%m-%dT%H:%M:%S%z") - $(hostname)] ${*}"
+}
+
+bye() {
+  log 'Exit detected'; exit "${1:-0}"
+}
+
 install_vgs(){
   echo 'Install/Update VGS Library'
   if [[ -d /opt/vgs/.git ]]; then
@@ -20,13 +27,11 @@ deploy_r10k(){
 }
 
 main(){
-  install_vgs && date > /var/local/deployed_vgs
+  trap 'bye $?' HUP INT QUIT TERM
+  mkdir -p /var/local
 
-  # shellcheck disable=1091
-  . /opt/vpm/envrc
-
-  download_data && date > /var/local/deployed_data
-  deploy_r10k && date > /var/local/deployed_r10k
+  if install_vgs; then date > /var/local/deployed_vgs; fi
+  if deploy_r10k; then date > /var/local/deployed_r10k; fi
 }
 
 main "$@"

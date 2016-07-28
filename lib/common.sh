@@ -27,10 +27,10 @@ download_data(){
   fi
   e_info 'Download vault'
   if ! aws s3 sync "${VAULT_S3PATH}/" "${APPDIR}/vault/" --delete; then
-    e_abort "Could not download ${VAULT_S3PATH} to ${APPDIR}/vault/"
+    e_abort "Could not download ${VAULT_S3PATH} to ${APPDIR}/vault"
   fi
   e_info 'Download hieradata'
   if ! aws s3 sync "${HIERA_S3PATH}/" "${APPDIR}/hieradata/" --delete; then
-    e_abort "Could not download ${VAULT_S3PATH} to ${APPDIR}/hieradata/"
+    e_abort "Could not download ${VAULT_S3PATH} to ${APPDIR}/hieradata"
   fi
 }
