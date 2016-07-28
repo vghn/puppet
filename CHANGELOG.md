@@ -1,3 +1,7 @@
+## Version 0.0.75 / 2016-07-28
+  * Fix aws sync functions ([Vlad - ed3cd39](https://github.com/vghn/puppet/commit/ed3cd3926af8a3577526545f7eeec9e512e1f187))
+  * Improve exit code processing in bootstrap ([Vlad - b800532](https://github.com/vghn/puppet/commit/b80053200c1dc343b8aa7119ed7a950083c66444))
+
 ## Version 0.0.74 / 2016-07-28
   * Allow starting a local master and rename image folder ([Vlad - f71ace1](https://github.com/vghn/puppet/commit/f71ace1c23cea890eee2a148ea0e6aa703dd3fd7))
 
