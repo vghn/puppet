@@ -1,3 +1,16 @@
+## Version 0.0.72 / 2016-07-28
+  * Improve update workflow ([Vlad - 205f601](https://github.com/vghn/puppet/commit/205f601430b70c119abc0d45e621f58f77ea7077))
+  * Improve docker compose environment ([Vlad - bc25c7b](https://github.com/vghn/puppet/commit/bc25c7b9c0ae7d4dcf8ccf786c4febb946aa9fcf))
+  * Add command to show the docker compose logs ([Vlad - 5f73f0f](https://github.com/vghn/puppet/commit/5f73f0f3399337d2888c9a3121dce3c86bd2cee5))
+  * Move `bootstrap` script to `bin/bootstrap` ([Vlad - 73ff8ed](https://github.com/vghn/puppet/commit/73ff8edbc8c00ab6dd05092c5a304a28ba52cac8))
+  * Create custom docker images (tested and built by the CI) ([Vlad - 8e29a8f](https://github.com/vghn/puppet/commit/8e29a8f5b41a12aebb2fbd9a983cf853264eebc5))
+  * Publish artifact after successful build ([Vlad - c2d53f3](https://github.com/vghn/puppet/commit/c2d53f3d9a45b30dd105e248900f74d36861a2f7))
+  * Retrieve S3 data ([Vlad - f0da1f0](https://github.com/vghn/puppet/commit/f0da1f0fb179442c83fb4468f39ff5b0435bc932))
+  * Better travis cache ([Vlad - 9ccbdc4](https://github.com/vghn/puppet/commit/9ccbdc49607d08306d509ee85453c6efc764bd19))
+  * Only configure puppet if agent will run ([Vlad - 34090cd](https://github.com/vghn/puppet/commit/34090cd210990a9e843fb152eba06fbaf106dd4e))
+  * Allow server container to toggle data wait ([Vlad - 4c0f8d7](https://github.com/vghn/puppet/commit/4c0f8d79802d94b1376b4bd6ead8002d28303d55))
+  * Fix Travis cache ([Vlad - c12304f](https://github.com/vghn/puppet/commit/c12304fd2a5fa121ecac773b72fb3603f32bbadc))
+
 ## Version 0.0.71 / 2016-07-25
   * Enable bash strict mode for the bootstrap script ([Vlad - f0c4155](https://github.com/vghn/puppet/commit/f0c4155b97dfa4d99ff3252d05415421214a8118))
   * Install lsb-release command during bootstrap ([Vlad - b0a3c5d](https://github.com/vghn/puppet/commit/b0a3c5de6223310f609a164f9b1d9027178ce85e))
