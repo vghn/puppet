@@ -219,9 +219,6 @@ process_exit_code(){
 
 # Run puppet
 run_puppet(){
-  local exit_code
-  exit_code=0
-
   e_info 'Running puppet'
   puppet agent \
     --server "$PP_SERVER" \
@@ -236,9 +233,7 @@ run_puppet(){
     --summarize \
     --detailed-exitcodes \
     --color="$PP_COLOR" \
-    --verbose || exit_code=$?
-
-  process_exit_code "$exit_code"
+    --verbose || process_exit_code $?
 }
 
 # Logic
