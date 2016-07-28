@@ -1,3 +1,6 @@
+## Version 0.0.73 / 2016-07-28
+  * Login to docker registry before pushing ([Vlad - f869d2d](https://github.com/vghn/puppet/commit/f869d2d417d5fef822b2f9430186f7305dc6fbc8))
+
 ## Version 0.0.72 / 2016-07-28
   * Improve update workflow ([Vlad - 205f601](https://github.com/vghn/puppet/commit/205f601430b70c119abc0d45e621f58f77ea7077))
   * Improve docker compose environment ([Vlad - bc25c7b](https://github.com/vghn/puppet/commit/bc25c7b9c0ae7d4dcf8ccf786c4febb946aa9fcf))
