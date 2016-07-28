@@ -10,9 +10,9 @@ script: bin/ci test
 after_success: bin/ci deploy
 env: PUPPET_GEM_VERSION="~> 4.0"
 cache:
-  bundler: true
-  pip: true
   directories:
+    - "$HOME/.cache/pip"
+    - vendor
     - dist/profile/vendor
     - dist/profile/spec/fixtures/modules
 notifications:
