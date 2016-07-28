@@ -3,8 +3,8 @@
 # Bootstraps Puppet
 #
 # USAGE:
-# git clone https://github.com/vladgh/puppet.git
-# bash bootstrap
+# git clone https://github.com/vladgh/puppet.git /opt/vpm
+# bash /opt/vpm/bin/bootstrap
 #
 # Environment variables:
 # PP_SERVER: [String] The URL of the Puppet Server. Defaults to `puppet`
@@ -245,12 +245,13 @@ run_puppet(){
 main(){
   sanity_checks
 
-  generate_csr_attributes
-  install_puppet_agent
-  configure_puppet
-
   if [[ "$PP_AGENT_RUN" == 'true' ]]; then
+    generate_csr_attributes
+    install_puppet_agent
+    configure_puppet
     run_puppet
+  else
+    install_puppet_agent
   fi
 }
 

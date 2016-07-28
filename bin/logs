@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# Docker Compose show logs
+
+# Load environment
+# shellcheck disable=1090
+. "$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd -P)/envrc"
+
+# Set working directory
+cd "${APPDIR}" || exit
+
+# Show docker compose logs
+docker-compose logs "$@"

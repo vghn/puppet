@@ -1,3 +1,15 @@
+def version
+  File.read('VERSION').strip
+end
+
+def current_git_sha
+  `git rev-parse HEAD`.strip
+end
+
+def previous_git_sha
+  `git rev-parse HEAD~1`.strip
+end
+
 # Color prompt
 class String
   def black
@@ -12,7 +24,7 @@ class String
     "\033[32m#{self}\033[0m"
   end
 
-  def brown
+  def yellow
     "\033[33m#{self}\033[0m"
   end
 
@@ -71,4 +83,16 @@ class String
   def reverse_color
     "\033[7m#{self}\033[27m"
   end
+end
+
+def info(message)
+  puts "==> #{message}".green
+end
+
+def warn(message)
+  puts "==> #{message}".yellow
+end
+
+def error(message)
+  puts "==> #{message}".red
 end

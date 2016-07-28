@@ -1,16 +1,13 @@
 #!/usr/bin/env bash
 # GIT Pre-Push Hook
 
-# Disable ENVTYPE cli overriding (it should be auto detected only)
-unset ENVTYPE
-
 # Load environment
 # shellcheck disable=1090
 . "$(cd "$(dirname "${BASH_SOURCE[0]}")/../../" && pwd -P)/envrc"
 
 # Hooks
 e_header 'GIT Pre-Push:'
-upload_private_data
+upload_data
 
 # Git Push
 e_header 'GIT Push:'
