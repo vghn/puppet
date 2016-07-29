@@ -7,12 +7,14 @@
 # bash /opt/vpm/bin/bootstrap
 #
 # Environment variables:
-# PP_SERVER: [String] The URL of the Puppet Server. Defaults to `puppet`
+# PP_SERVER: [String] The URL of the Puppet Server. If the value is `none`, the
+#            script will run `puppet apply` with the current configuration
+#            (defaults to `puppet`)
 # PP_ROLE: [String] Declares the role of the node as a trusted fact*
 # PP_PROJECT: [String] Declares the project name as a trusted fact*
 # PP_APPLICATION: [String] Declares the application name as a trusted fact*
 # PP_SECRET: [String] Declares a shared secret as a trusted fact*
-# PP_CERTNAME: [String] The certificate name for the agent.
+# PP_CERTNAME: [String] The certificate name for the agent
 # PP_COLLECTION: [String] The puppet collection (default: 'pc1')
 # PP_CODENAME: [String] The distribution code name (default: `lsb_release -cs`)
 # PP_AGENT_RUN: [Boolean] Whether to run puppet agent after installation or not
@@ -23,7 +25,7 @@
 #                      https://docs.puppet.com/pe/latest/agent_cert_regen.html
 # PP_WAITFORCERT: [INTEGER] The number of seconds between connections to server
 #                 while waiting for a certificate to be signed. You can turn off
-#                 waiting for certificates by specifying a time of 0 (default).
+#                 waiting for certificates by specifying a time of 0 (default)
 # PP_COLOR: [String] Use color or not in output (default: 'true';
 #           https://docs.puppetlabs.com/puppet/latest/reference/configuration.html#color)
 # ENVTYPE: [STRING] The environment (default: 'production)
@@ -50,6 +52,7 @@ PP_COLOR=${PP_COLOR:-true}
 ENVTYPE=${ENVTYPE:-production}
 
 # INTERNALS
+APPDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd -P)"
 TMPDIR=$(mktemp -d 2>/dev/null || mktemp -d -t 'tmp')
 CSRTMP="${TMPDIR}/csr_attributes.yaml"
 PATH="/opt/puppetlabs/bin:/opt/puppetlabs/puppet/bin:/usr/local/bin:${PATH}"
@@ -180,7 +183,7 @@ stop_puppet_agent_services(){
 }
 
 # Configure agent or master
-configure_puppet(){
+configure_puppet_agent(){
   PP_CONFDIR="$(puppet config print confdir)"
   PP_ENVDIR="$(puppet config print environmentpath)/${ENVTYPE}"
   PP_CERTNAME="${PP_CERTNAME:-$(puppet config print certname)}"
@@ -197,6 +200,49 @@ configure_puppet(){
   configure_puppet_environment
   configure_puppet_certname
   install_csr_attributes
+}
+
+# Install puppet modules with R10K
+install_modules(){
+  if ! is_cmd r10k; then
+    e_info 'Install R10K gem'
+    puppet resource package r10k ensure=latest provider=puppet_gem
+  fi
+
+  if ! is_cmd git; then
+    e_info 'Install git'
+    puppet resource package git ensure=latest
+  fi
+
+  if [[ -s "${APPDIR}/Puppetfile" ]]; then
+    e_info 'Install R10K Puppetfile'
+    ( cd "$APPDIR" && r10k puppetfile install --verbose )
+  fi
+}
+
+configure_hiera(){
+  # This should be the same as the configuration in VPM-SERVER Docker image
+  e_info 'Configure Hiera'
+  ln -fsn "${APPDIR}/hieradata" /etc/puppetlabs/hieradata
+  cat <<HIERACFG > /etc/puppetlabs/puppet/hiera.yaml
+---
+:backends:
+  - yaml
+:yaml:
+  :datadir: /etc/puppetlabs/hieradata
+:hierarchy:
+  - nodes/%{::trusted.certname}
+  - hosts/%{::trusted.domainname}/%{::trusted.hostname}
+  - roles/%{::trusted.extensions.pp_role}
+  - roles/%{::role}
+  - application/%{::trusted.extensions.pp_application}
+  - application/%{::application}
+  - projects/%{::trusted.extensions.pp_project}
+  - projects/%{::project}
+  - virtual/%{::virtual}
+  - osfamily/%{::osfamily}
+  - common
+HIERACFG
 }
 
 # Process the exit code
@@ -236,17 +282,44 @@ run_puppet(){
     --verbose || process_exit_code $?
 }
 
+# Apply puppet
+apply_puppet(){
+  # FACTS
+  export FACTER_ROLE="$PP_ROLE"
+  export FACTER_PROJECT="$PP_PROJECT"
+  export FACTER_APPLICATION="$PP_APPLICATION"
+
+  e_info 'Applying puppet'
+  puppet apply \
+  --verbose \
+  --report \
+  --show_diff \
+  --summarize \
+  --detailed-exitcodes \
+  --color="$PP_COLOR" \
+  --environment="${ENVTYPE}" \
+  --modulepath "${APPDIR}/modules:${APPDIR}/dist" \
+  "${APPDIR}/manifests/site.pp" || process_exit_code $?
+}
+
 # Logic
 main(){
-  sanity_checks
+  e_info "Role: '${PP_ROLE}'"
+  e_info "Project: '${PP_PROJECT}'"
+  e_info "Application: '${PP_APPLICATION}'"
+  e_info "Puppet Server: '${PP_SERVER}'"
 
-  if [[ "$PP_AGENT_RUN" == 'true' ]]; then
-    generate_csr_attributes
-    install_puppet_agent
-    configure_puppet
+  sanity_checks
+  generate_csr_attributes
+  install_puppet_agent
+
+  if [[ "$PP_SERVER" == 'none' ]]; then
+    install_modules
+    configure_hiera
+    apply_puppet
+  elif [[ "$PP_AGENT_RUN" == 'true' ]]; then
+    configure_puppet_agent
     run_puppet
-  else
-    install_puppet_agent
   fi
 }
 

@@ -1,3 +1,9 @@
+## Version 0.0.76 / 2016-07-29
+  * Add a Vagrantfile ([Vlad - 80f3857](https://github.com/vghn/puppet/commit/80f38570bec3481fb09531e36b05a5769b651bbe))
+  * Clean-up start script docker compose files ([Vlad - 5c7ceb0](https://github.com/vghn/puppet/commit/5c7ceb067d559cece08ff668560201d5a4fedaff))
+  * Upgrade docker-compose and docker-machine ([Vlad - f81ee14](https://github.com/vghn/puppet/commit/f81ee1434b55a1ad47b78c7d55b0f06cfc48a3e4))
+  * Add puppet apply option in the bootstrap script ([Vlad - c005436](https://github.com/vghn/puppet/commit/c00543600ac58e8beecbbc47334ce9bf192fe25f))
+
 ## Version 0.0.75 / 2016-07-28
   * Fix aws sync functions ([Vlad - ed3cd39](https://github.com/vghn/puppet/commit/ed3cd3926af8a3577526545f7eeec9e512e1f187))
   * Improve exit code processing in bootstrap ([Vlad - b800532](https://github.com/vghn/puppet/commit/b80053200c1dc343b8aa7119ed7a950083c66444))
