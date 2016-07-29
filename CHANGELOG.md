@@ -1,3 +1,6 @@
+## Version 0.0.78 / 2016-07-29
+  * The start script should update the repo first ([Vlad - 6e2a2ef](https://github.com/vghn/puppet/commit/6e2a2ef8fa69ca4a3769119deb2d0f833c680fd3))
+
 ## Version 0.0.77 / 2016-07-29
   * Download data when starting containers ([Vlad - 71d5795](https://github.com/vghn/puppet/commit/71d5795f0a6ceb38e9f9f88a0b781ac325726b9d))
 
