@@ -21,10 +21,6 @@ while :; do
       update_repo=true
       shift
       ;;
-    -l | --local)
-      local_puppet=true
-      shift
-      ;;
     --) # End of all options
       shift
       break
@@ -53,8 +49,4 @@ if [[ "$update_repo" == true ]]; then
 fi
 
 # Start containers
-if [[ "$local_puppet" == true ]]; then
-  docker-compose up -d server
-else
-  docker-compose up -d
-fi
+docker-compose up -d
