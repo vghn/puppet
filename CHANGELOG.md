@@ -1,3 +1,6 @@
+## Version 0.0.77 / 2016-07-29
+  * Download data when starting containers ([Vlad - 71d5795](https://github.com/vghn/puppet/commit/71d5795f0a6ceb38e9f9f88a0b781ac325726b9d))
+
 ## Version 0.0.76 / 2016-07-29
   * Add a Vagrantfile ([Vlad - 80f3857](https://github.com/vghn/puppet/commit/80f38570bec3481fb09531e36b05a5769b651bbe))
   * Clean-up start script docker compose files ([Vlad - 5c7ceb0](https://github.com/vghn/puppet/commit/5c7ceb067d559cece08ff668560201d5a4fedaff))
