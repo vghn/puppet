@@ -82,5 +82,5 @@ ci_deploy(){
   publish_artifact
 
   e_info 'Deploy command'
-  aws_ec2_send_run_command 'rhea' 'Start VPM' '/opt/vpm/bin/start'
+  aws_ec2_send_run_command 'rhea' 'Start VPM' '/opt/vpm/bin/start --update-repo --update-docker-images'
 }
