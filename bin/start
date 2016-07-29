@@ -8,7 +8,6 @@
 # Default arguments
 update_docker_images=false
 update_repo=false
-local_puppet=false
 
 # Process arguments
 while :; do
@@ -45,7 +44,9 @@ fi
 
 # Update repo
 if [[ "$update_repo" == true ]]; then
-  git fetch --all && git reset --hard origin/production
+  git fetch --all
+  git reset --hard origin/production
+  download_data
 fi
 
 # Start containers
