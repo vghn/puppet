@@ -5,14 +5,15 @@
 !/hieradata/common.yaml
 
 # Other
-/tmp
-/modules
 .*.sw?
-/pkg
-/.rspec_system
 /.bundle
-/vendor
-/Gemfile.lock
+/.rspec_system
+/.vagrant
 /.yardoc
 /coverage
+/Gemfile.lock
 /mkmf.log
+/modules
+/pkg
+/tmp
+/vendor
