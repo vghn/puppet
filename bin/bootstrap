@@ -215,6 +215,8 @@ install_modules(){
   fi
 
   if [[ -s "${APPDIR}/Puppetfile" ]]; then
+    e_info 'Unload RVM'
+    if ! __rvm_unload 2>/dev/null; then unset GEM_HOME GEM_PATH; fi
     e_info 'Install R10K Puppetfile'
     ( cd "$APPDIR" && r10k puppetfile install --verbose )
   fi
