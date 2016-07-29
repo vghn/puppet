@@ -1,3 +1,6 @@
+## Version 0.0.79 / 2016-07-29
+  * Update everything before restarting ([Vlad - 4b9d48b](https://github.com/vghn/puppet/commit/4b9d48b0f3f7b98b69e32acb458ed9317dc438bc))
+
 ## Version 0.0.78 / 2016-07-29
   * The start script should update the repo first ([Vlad - 6e2a2ef](https://github.com/vghn/puppet/commit/6e2a2ef8fa69ca4a3769119deb2d0f833c680fd3))
 
