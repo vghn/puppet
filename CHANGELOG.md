@@ -1,3 +1,6 @@
+## Version 0.0.80 / 2016-07-29
+  * Unload RVM in order to use the gems installed by Puppet ([Vlad - 495a784](https://github.com/vghn/puppet/commit/495a784b17fd0d2aa320a12c38d5502f11fa68b0))
+
 ## Version 0.0.79 / 2016-07-29
   * Update everything before restarting ([Vlad - 4b9d48b](https://github.com/vghn/puppet/commit/4b9d48b0f3f7b98b69e32acb458ed9317dc438bc))
 

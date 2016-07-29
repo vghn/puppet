@@ -23,7 +23,7 @@ upload_data(){
 download_data(){
   e_info 'Download .env'
   if ! aws s3 cp "${ENV_S3PATH}" "${APPDIR}/.env" --quiet; then
-    e_abort "Could not upload ${ENV_S3PATH} to ${APPDIR}/.env"
+    e_abort "Could not download ${ENV_S3PATH} to ${APPDIR}/.env"
   fi
   e_info 'Download vault'
   if ! aws s3 sync "${VAULT_S3PATH}/" "${APPDIR}/vault/" --delete; then
