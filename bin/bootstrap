@@ -196,10 +196,14 @@ configure_puppet_agent(){
     remove_cached_catalogs
   fi
 
-  configure_puppet_server
-  configure_puppet_environment
-  configure_puppet_certname
-  install_csr_attributes
+  if [[ "$PP_SERVER" == 'none' ]]; then
+    mkdir -p "$PP_ENVDIR" # Puppet complains if environment directory is absent
+  else
+    configure_puppet_server
+    configure_puppet_environment
+    configure_puppet_certname
+    install_csr_attributes
+  fi
 }
 
 # Install puppet modules with R10K
@@ -314,13 +318,13 @@ main(){
   sanity_checks
   generate_csr_attributes
   install_puppet_agent
+  configure_puppet_agent
 
   if [[ "$PP_SERVER" == 'none' ]]; then
     install_modules
     configure_hiera
     apply_puppet
   elif [[ "$PP_AGENT_RUN" == 'true' ]]; then
-    configure_puppet_agent
     run_puppet
   fi
 }
