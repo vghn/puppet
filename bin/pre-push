@@ -7,7 +7,7 @@
 
 # Hooks
 e_header 'GIT Pre-Push:'
-upload_data
+upload_private_data
 
 # Git Push
 e_header 'GIT Push:'

@@ -33,14 +33,14 @@ services:
       AWS_ASSETS_BUCKET: vladgh
     volumes:
       - .:/opt/vpm
-      - ~/.aws:/root/.aws
+      - ~/.aws:/root/.aws:ro
       - /etc/localtime:/etc/localtime:ro
-      - /opt/vgs
       - /var/local
-      - ssl:/etc/puppetlabs/puppet/ssl
-      - code:/etc/puppetlabs/code
       - ./vault:/etc/puppetlabs/vault
       - ./hieradata:/etc/puppetlabs/hieradata
+      - ssl:/etc/puppetlabs/puppet/ssl
+      - code:/etc/puppetlabs/code
+      - ../vgs:/opt/vgs:ro
 
 volumes:
   ssl:

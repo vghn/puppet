@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# Data tasks
+
+# Load environment
+# shellcheck disable=1090
+. "$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd -P)/envrc"
+
+# Download private data
+download_private_data
