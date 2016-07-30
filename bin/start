@@ -34,13 +34,13 @@ while :; do
 done
 
 # Set working directory
-cd "${APPDIR}" || exit
+cd "$APPDIR" || exit
 
 # Update repo
 if [[ "$update_repo" == true ]]; then
   git fetch --all
   git reset --hard origin/production
-  download_data
+  download_private_data
 fi
 
 # Update docker images
