@@ -24,6 +24,7 @@ VERSION=$(cat "$VERSION_FILE" || echo '0.0.0')
 # Detect environment
 detect_environment 2>/dev/null || true
 detect_ci_environment 2>/dev/null || true
+ENVTYPE="${ENVTYPE:-production}"
 
 # Load functions
 # shellcheck disable=1090
