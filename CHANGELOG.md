@@ -1,3 +1,11 @@
+## Version 0.0.81 / 2016-07-30
+  * Use the environment detection from the VGS Library ([Vlad - b1d354d](https://github.com/vghn/puppet/commit/b1d354d3205fbdbd4a430c39c508bf3276b38db3))
+  * Add fail safe for the environment ([Vlad - 3cf487b](https://github.com/vghn/puppet/commit/3cf487b7dbefb2763d333eaf32648f33402f3563))
+  * Clean-up functions ([Vlad - 3d43aae](https://github.com/vghn/puppet/commit/3d43aaef67057047a99aa4c099b938854067b49f))
+  * Fix bootstrap script for masterless setup ([Vlad - b476f19](https://github.com/vghn/puppet/commit/b476f193fa156f26e1f2371f41f89f5afa4f887e))
+  * Add pull data command ([Vlad - 246242b](https://github.com/vghn/puppet/commit/246242b87707d156f185dfece476f7507b7aecda))
+  * Improve docker compose environment ([Vlad - 72e3052](https://github.com/vghn/puppet/commit/72e3052ee6827d143034d9356fead5a23c81e85d))
+
 ## Version 0.0.80 / 2016-07-29
   * Unload RVM in order to use the gems installed by Puppet ([Vlad - 495a784](https://github.com/vghn/puppet/commit/495a784b17fd0d2aa320a12c38d5502f11fa68b0))
 
