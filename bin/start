@@ -40,7 +40,6 @@ cd "$APPDIR" || exit
 if [[ "$update_repo" == true ]]; then
   git fetch --all
   git reset --hard origin/production
-  download_private_data
 fi
 
 # Update docker images
