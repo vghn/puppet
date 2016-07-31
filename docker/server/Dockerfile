@@ -11,7 +11,3 @@ RUN gem install aws-sdk --version "$AWS_SDK_VERSION" --no-ri --no-rdoc
 # Copy config files
 COPY csr-sign /usr/local/bin/
 COPY hiera.yaml /etc/puppetlabs/puppet/hiera.yaml
-
-# Configure entrypoint
-COPY run.sh /
-ENTRYPOINT ["/run.sh"]

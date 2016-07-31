@@ -31,8 +31,8 @@ ENVTYPE="${ENVTYPE:-production}"
 for file in ${APPDIR}/lib/*.sh; do . "$file"; done
 
 # VARs
-export AWS_DEFAULT_REGION="${AWS_DEFAULT_REGION:-us-east-1}"
 export AWS_ASSETS_BUCKET='vladgh'
+export AWS_DEFAULT_REGION="${AWS_DEFAULT_REGION:-us-east-1}"
 export SSL_S3PATH="s3://${AWS_ASSETS_BUCKET}/ssl"
 export ARTIFACTS_S3PATH="s3://${AWS_ASSETS_BUCKET}/artifacts"
 export ENV_S3PATH="s3://${AWS_ASSETS_BUCKET}/env/.${ENVTYPE}"
