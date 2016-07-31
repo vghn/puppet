@@ -1,7 +1,3 @@
-## Version 0.0.82 / 2016-07-31
-  * Do not lint Dockerfile in the CI ([Vlad - ae8b68d](https://github.com/vghn/puppet/commit/ae8b68db6633b44273a460e2259f4aa69ae2a3c8))
-  * Improve docker environment ([Vlad - 8932b17](https://github.com/vghn/puppet/commit/8932b173ed3dfeaffeeea95ed0c7faf50d6c9067))
-
 ## Version 0.0.81 / 2016-07-30
   * Use the environment detection from the VGS Library ([Vlad - b1d354d](https://github.com/vghn/puppet/commit/b1d354d3205fbdbd4a430c39c508bf3276b38db3))
   * Add fail safe for the environment ([Vlad - 3cf487b](https://github.com/vghn/puppet/commit/3cf487b7dbefb2763d333eaf32648f33402f3563))
