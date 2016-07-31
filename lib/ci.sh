@@ -26,16 +26,12 @@ ci_test(){
   e_info 'Get private data'
   download_private_data
 
-  e_info 'Run tests'
-  set_bundle_directory "$APPDIR"
-  bundle exec rake docker:test
-
-  e_info 'Build docker images'
-  bundle exec rake docker:build
-
   e_info 'Run profile tests'
   set_bundle_directory "${APPDIR}/dist/profile"
   bundle exec rake test
+
+  e_info 'Build docker images'
+  bundle exec rake docker:build
 }
 
 # CI Deploy
