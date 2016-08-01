@@ -84,6 +84,7 @@ namespace :docker do
   desc 'Run syntax and lint tests.'
   task test: [
     :rubocop,
-    :lint
+    :lint,
+    :spec
   ]
 end
