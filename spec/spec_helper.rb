@@ -1,6 +1,4 @@
 require 'serverspec'
-set :backend, :exec
-
 require 'docker'
 
 # Travis builds can take time

@@ -3,7 +3,6 @@ require 'spec_helper'
 CURRENT_DIRECTORY = File.dirname(File.dirname(__FILE__))
 
 describe 'Dockerfile' do
-  include_context 'using alpine'
   include_context 'with a docker image'
 
   describe package('git') do
@@ -25,16 +24,16 @@ describe 'Dockerfile' do
   describe 'Dockerfile#running' do
     include_context 'with a docker container'
 
+    describe command('aws --version') do
+      its(:stderr) { should contain('aws-cli') }
+    end
+
     describe command('git version') do
       its(:stdout) { should contain('git') }
     end
 
     describe command('r10k version') do
       its(:stdout) { should contain('r10k') }
-    end
-
-    describe command('aws --version') do
-      its(:stderr) { should contain('aws-cli') }
     end
   end
 end
