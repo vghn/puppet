@@ -26,15 +26,15 @@ describe 'Dockerfile' do
     include_context 'with a docker container'
 
     describe command('git version') do
-      its(:exit_status) { should eq 0 }
+      its(:stdout) { should contain('git') }
     end
 
     describe command('r10k version') do
-      its(:exit_status) { should eq 0 }
+      its(:stdout) { should contain('r10k') }
     end
 
     describe command('aws --version') do
-      its(:exit_status) { should eq 0 }
+      its(:stderr) { should contain('aws-cli') }
     end
   end
 end
