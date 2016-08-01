@@ -75,6 +75,12 @@ namespace :docker do
       .collect { |image| "#{File.basename(image)}:#{task_name}" }
   end
 
+  [:spec].each do |task_name|
+    desc "Run #{task_name} for all images in repository"
+    task task_name => IMAGES
+      .collect { |image| "#{File.basename(image)}:#{task_name}" }
+  end
+
   desc 'Run syntax and lint tests.'
   task test: [
     :rubocop,
