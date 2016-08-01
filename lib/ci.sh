@@ -19,6 +19,10 @@ ci_install(){
   echo 'Install profile testing gems'
   set_bundle_directory "${APPDIR}/dist/profile"
   bundle install --without development system_tests --path vendor
+
+  echo 'Build docker images'
+  set_bundle_directory "$APPDIR"
+  bundle exec rake docker:build
 }
 
 # CI Test
@@ -30,9 +34,9 @@ ci_test(){
   set_bundle_directory "${APPDIR}/dist/profile"
   bundle exec rake test
 
-  e_info 'Build docker images'
+  e_info 'Test docker images'
   set_bundle_directory "$APPDIR"
-  bundle exec rake docker:build
+  bundle exec rake docker:test
 }
 
 # CI Deploy
