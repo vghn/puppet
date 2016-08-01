@@ -1,3 +1,6 @@
+## Version 0.0.84 / 2016-08-01
+  * Only deploy data for now ([Vlad - 2e1b455](https://github.com/vghn/puppet/commit/2e1b455c2acfdb8c0cc70fe1fb300aa47b29e649))
+
 ## Version 0.0.83 / 2016-07-31
   * Fix start script ([Vlad - 89c166e](https://github.com/vghn/puppet/commit/89c166e8694f3f8d6ab2064e60f83c0b3e679878))
   * Fix SSM command ([Vlad - 6b19dfc](https://github.com/vghn/puppet/commit/6b19dfccb193ae380d89e22044cef91d86238784))
