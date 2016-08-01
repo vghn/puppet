@@ -1,8 +1,6 @@
-shared_context 'with a docker image' do
+shared_context 'shared docker image' do
   before(:all) do
     @image = Docker::Image.build_from_dir(CURRENT_DIRECTORY)
-
     set :backend, :docker
-    set :docker_image, @image.id
   end
 end

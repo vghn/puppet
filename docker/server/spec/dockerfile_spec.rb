@@ -3,7 +3,7 @@ require 'spec_helper'
 CURRENT_DIRECTORY = File.dirname(File.dirname(__FILE__))
 
 describe 'Dockerfile' do
-  include_context 'with a docker image'
+  include_context 'with a docker container'
 
   it 'uses the correct version of Ubuntu' do
     os_version = command('cat /etc/lsb-release').stdout
@@ -28,17 +28,19 @@ describe 'Dockerfile' do
     it { should be_executable }
   end
 
+  describe command('puppetserver --version') do
+    its(:stdout) { should contain('puppetserver') }
+    its(:exit_status) { should eq 0 }
+  end
+
+  describe process('java') do
+    its(:user) { should eq 'puppet' }
+    it { should be_running }
+  end
+
   describe 'Dockerfile#config' do
     it 'should expose the puppetserver port' do
       expect(@image.json['ContainerConfig']['ExposedPorts']).to include('8140/tcp')
-    end
-  end
-
-  describe 'Dockerfile#running' do
-    include_context 'with a docker container'
-
-    describe command('puppetserver --version') do
-      its(:exit_status) { should eq 0 }
     end
   end
 end
