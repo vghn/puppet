@@ -34,7 +34,7 @@ ci_test(){
   set_bundle_directory "${APPDIR}/dist/profile"
   bundle exec rake test
 
-  e_info 'Build docker images'
+  e_info 'Test docker images'
   set_bundle_directory "$APPDIR"
   bundle exec rake docker:test
 }
