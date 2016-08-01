@@ -1,12 +1,3 @@
-## Version 0.0.85 / 2016-08-01
-  * Spec docker images ([Vlad - 2673b26](https://github.com/vghn/puppet/commit/2673b267989a375288b31af075ec3d315834364d))
-  * Add tests for docker images ([Vlad - 644c383](https://github.com/vghn/puppet/commit/644c3835bafa0451657d09ef4e07dd234ecd5184))
-  * Fix typo ([Vlad - cd07c3a](https://github.com/vghn/puppet/commit/cd07c3a4772ac2d9d6e86fdb0cd7f681b586571b))
-  * Improve puppet server image tests ([Vlad - 0191bd1](https://github.com/vghn/puppet/commit/0191bd1ddc1c9c6e830ef35216368ff9b72fdf96))
-  * Fix spec tests ([Vlad - b5c8904](https://github.com/vghn/puppet/commit/b5c89047b687e39953608b9b1cd9f7121ca545fd))
-  * Fix spec tests ([Vlad - 9bae2f4](https://github.com/vghn/puppet/commit/9bae2f481ceb998a7273e914a2a6dad3bb874b52))
-  * Improve tests ([Vlad - 1764b5c](https://github.com/vghn/puppet/commit/1764b5c25c13dea20de731dc95b0923de38a3e94))
-
 ## Version 0.0.84 / 2016-08-01
   * Only deploy data for now ([Vlad - 2e1b455](https://github.com/vghn/puppet/commit/2e1b455c2acfdb8c0cc70fe1fb300aa47b29e649))
 
