@@ -35,7 +35,7 @@ describe 'Dockerfile' do
 
   describe process('java') do
     its(:user) { should eq 'puppet' }
-    it { should be_running }
+    it { sleep 5; should be_running }
   end
 
   describe 'Dockerfile#config' do
