@@ -23,7 +23,7 @@ aws_ec2_send_run_command(){
   # shellcheck disable=2086
   command_id=$(aws ssm send-command \
     --document-name "AWS-RunShellScript" \
-    --instance-ids $ids \
+    --instance-ids "$ids" \
     --parameters commands="$comm" \
     --comment "$desc" \
     --timeout-seconds 600 \
