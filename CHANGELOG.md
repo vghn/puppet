@@ -1,3 +1,7 @@
+## Version 0.0.83 / 2016-07-31
+  * Fix start script ([Vlad - 89c166e](https://github.com/vghn/puppet/commit/89c166e8694f3f8d6ab2064e60f83c0b3e679878))
+  * Fix SSM command ([Vlad - 6b19dfc](https://github.com/vghn/puppet/commit/6b19dfccb193ae380d89e22044cef91d86238784))
+
 ## Version 0.0.82 / 2016-07-31
   * Do not lint Dockerfile in the CI ([Vlad - ae8b68d](https://github.com/vghn/puppet/commit/ae8b68db6633b44273a460e2259f4aa69ae2a3c8))
   * Improve docker environment ([Vlad - 8932b17](https://github.com/vghn/puppet/commit/8932b173ed3dfeaffeeea95ed0c7faf50d6c9067))
