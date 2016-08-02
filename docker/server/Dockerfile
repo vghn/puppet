@@ -11,3 +11,12 @@ RUN gem install aws-sdk --version "$AWS_SDK_VERSION" --no-ri --no-rdoc
 # Copy config files
 COPY csr-sign /usr/local/bin/
 COPY hiera.yaml /etc/puppetlabs/puppet/hiera.yaml
+
+# Health
+HEALTHCHECK --interval=30s --timeout=5m --retries=2 \
+  CMD curl \
+  --cert $(puppet config print hostcert) \
+  --key $(puppet config print hostprivkey) \
+  --cacert $(puppet config print cacert) \
+  -H 'Accept: pson' \
+  https://puppet:8140/puppet/v3/status/production?environment=production
