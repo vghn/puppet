@@ -2,6 +2,6 @@ HOSTS:
   default:
     platform: ubuntu-trusty-amd64
     hypervisor: vagrant
-    box: ubuntu/trusty64
+    box: puppetlabs/ubuntu-16.04-64-nocm
 CONFIG:
   type: aio

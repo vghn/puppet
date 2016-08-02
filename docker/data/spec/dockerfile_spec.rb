@@ -18,21 +18,21 @@ describe 'Dockerfile' do
   end
 
   describe file('/etc/puppetlabs/r10k/r10k.yaml') do
-    it { should exist }
+    it { is_expected.to exist }
   end
 
   describe command('aws --version') do
-    its(:stderr) { should contain('aws-cli') }
-    its(:exit_status) { should eq 0 }
+    its(:stderr) { is_expected.to contain('aws-cli') }
+    its(:exit_status) { is_expected.to eq 0 }
   end
 
   describe command('git version') do
-    its(:stdout) { should contain('git') }
-    its(:exit_status) { should eq 0 }
+    its(:stdout) { is_expected.to contain('git') }
+    its(:exit_status) { is_expected.to eq 0 }
   end
 
   describe command('r10k version') do
-    its(:stdout) { should contain('r10k') }
-    its(:exit_status) { should eq 0 }
+    its(:stdout) { is_expected.to contain('r10k') }
+    its(:exit_status) { is_expected.to eq 0 }
   end
 end

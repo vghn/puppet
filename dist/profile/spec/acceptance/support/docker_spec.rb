@@ -20,11 +20,11 @@ shared_examples 'profile::docker' do
     end
 
     describe docker_image('busybox:latest') do
-      it { should exist }
+      it { is_expected.to exist }
     end
     describe docker_container('test') do
-      it { should exist }
-      it { should be_running }
+      it { is_expected.to exist }
+      it { is_expected.to be_running }
     end
   end
 end
