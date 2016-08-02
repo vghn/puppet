@@ -4,6 +4,6 @@ shared_examples 'profile::aws::efs' do
   end
 
   describe command('mountpoint -q /efs') do
-    its(:exit_status) { should eq 0 }
+    its(:exit_status) { is_expected.to eq 0 }
   end
 end

@@ -20,26 +20,26 @@ describe 'Dockerfile' do
   end
 
   describe user('puppet') do
-    it { should exist }
+    it { is_expected.to exist }
   end
 
   describe file('/opt/puppetlabs/bin/puppetserver') do
-    it { should exist }
-    it { should be_executable }
+    it { is_expected.to exist }
+    it { is_expected.to be_executable }
   end
 
   describe command('puppetserver --version') do
-    its(:stdout) { should contain('puppetserver') }
-    its(:exit_status) { should eq 0 }
+    its(:stdout) { is_expected.to contain('puppetserver') }
+    its(:exit_status) { is_expected.to eq 0 }
   end
 
   describe process('java') do
-    its(:user) { should eq 'puppet' }
-    it { sleep 5; should be_running }
+    its(:user) { is_expected.to eq 'puppet' }
+    it { sleep 5; is_expected.to be_running }
   end
 
   describe 'Dockerfile#config' do
-    it 'should expose the puppetserver port' do
+    it 'expose the puppetserver port' do
       expect(@image.json['ContainerConfig']['ExposedPorts']).to include('8140/tcp')
     end
   end
