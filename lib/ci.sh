@@ -43,7 +43,7 @@ ci_test(){
 
   e_info 'Test docker images'
   set_bundle_directory "$APPDIR"
-  bundle exec rake docker:test
+  bundle exec rake docker:spec
 }
 
 # CI Deploy
