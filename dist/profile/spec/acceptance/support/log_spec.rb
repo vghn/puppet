@@ -1,4 +1,4 @@
-shared_examples 'profile::base' do
+shared_examples 'profile::log' do
   describe package('rsyslog') do
     it { is_expected.to be_installed }
   end
