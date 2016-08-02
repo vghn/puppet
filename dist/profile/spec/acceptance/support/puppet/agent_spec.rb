@@ -13,6 +13,8 @@ shared_examples 'profile::puppet::agent' do
   end
 
   describe command('sudo -u root crontab -l') do
-    its(:stdout) { is_expected.to match(/puppet agent --onetime --no-daemonize/) }
+    its(:stdout) do
+      is_expected.to match(/puppet agent --onetime --no-daemonize/)
+    end
   end
 end
