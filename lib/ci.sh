@@ -5,7 +5,10 @@
 ci_install(){
   echo 'Updating docker'
   sudo apt-get -qy update
-  sudo apt-get -qy install docker-engine
+  sudo apt-get -qy \
+    -o Dpkg::Options::="--force-confdef" \
+    -o Dpkg::Options::="--force-confold" \
+    install docker-engine
 
   echo 'Install VGS library'
   git clone https://github.com/vghn/vgs.git ~/vgs
