@@ -56,5 +56,5 @@ ci_deploy(){
   aws_ec2_send_run_command \
     'rhea' \
     'Reload data' \
-    'docker-compose -f /opt/vpm/docker-compose.yml up -d data'
+    'docker-compose -f /opt/vpm/docker-compose.yml up data'
 }
