@@ -1,3 +1,9 @@
+## Version 0.0.86 / 2016-08-02
+  * Use expect in tests ([Vlad - 4a3aa89](https://github.com/vghn/puppet/commit/4a3aa8916da73dbc8776de29f9861f0d6dbee0b1))
+  * Rename spec shared example files ([Vlad - d726fff](https://github.com/vghn/puppet/commit/d726fff71c71cadee7616927b8ecc0913d614aa1))
+  * Test using Ubuntu 16.04 Puppet vagrant image ([Vlad - bb5cef1](https://github.com/vghn/puppet/commit/bb5cef1ec7dbe394000b3138b59ef5a2f3ee11b9))
+  * Add Ubuntu 16.04 to supported systems ([Vlad - d040558](https://github.com/vghn/puppet/commit/d040558bb8e4a5fce349c30dd3efc7aa85e42628))
+
 ## Version 0.0.85 / 2016-08-01
   * Spec docker images ([Vlad - 2673b26](https://github.com/vghn/puppet/commit/2673b267989a375288b31af075ec3d315834364d))
   * Add tests for docker images ([Vlad - 644c383](https://github.com/vghn/puppet/commit/644c3835bafa0451657d09ef4e07dd234ecd5184))
