@@ -3,6 +3,10 @@
 
 # CI Install
 ci_install(){
+  echo 'Updating docker'
+  sudo apt-get -qy update
+  sudo apt-get -qy install docker-engine
+
   echo 'Install VGS library'
   git clone https://github.com/vghn/vgs.git ~/vgs
 
