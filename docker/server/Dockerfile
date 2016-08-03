@@ -19,4 +19,4 @@ HEALTHCHECK --interval=30s --timeout=5m --retries=2 CMD \
   --key $(puppet config print hostprivkey) \
   --cacert $(puppet config print cacert) \
   -H 'Accept: pson' \
-  https://puppet:8140/puppet/v3/status/production?environment=production
+  https://puppet:8140/production/status/no_key
