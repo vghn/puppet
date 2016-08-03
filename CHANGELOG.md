@@ -1,3 +1,12 @@
+## Version 0.0.87 / 2016-08-03
+  * Add README for Docker images ([Vlad - 506b296](https://github.com/vghn/puppet/commit/506b296c9fdf6f4613739a5c7bf82b19c11e1cbb))
+  * Do not daemonize data container when pushing changes ([Vlad - c270a0c](https://github.com/vghn/puppet/commit/c270a0ce0aca41132a560dc4a10052b1fe28119c))
+  * Add a healthcheck for the server container ([Vlad - f93c648](https://github.com/vghn/puppet/commit/f93c6487e6bb66bada4646ff69fffc7d813911f2))
+  * Update docker in CI server ([Vlad - c937c48](https://github.com/vghn/puppet/commit/c937c48252a5ca9028b15b3f7c8f083f0bd39be0))
+  * Do not modify docker's config file when updating ([Vlad - 7f0c15d](https://github.com/vghn/puppet/commit/7f0c15d49687cc2a9330cae5d48a12c54c73a81b))
+  * Only run spec test in CI for dockerfiles ([Vlad - 6b41a33](https://github.com/vghn/puppet/commit/6b41a33e29c2de7c117d1370466886a86c86be46))
+  * Update aws-sdk gem ([Vlad - ab641a2](https://github.com/vghn/puppet/commit/ab641a2c10d9a8ab4115bf0aff903fbb87c80e61))
+
 ## Version 0.0.86 / 2016-08-02
   * Use expect in tests ([Vlad - 4a3aa89](https://github.com/vghn/puppet/commit/4a3aa8916da73dbc8776de29f9861f0d6dbee0b1))
   * Rename spec shared example files ([Vlad - d726fff](https://github.com/vghn/puppet/commit/d726fff71c71cadee7616927b8ecc0913d614aa1))

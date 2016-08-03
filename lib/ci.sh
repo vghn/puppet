@@ -3,6 +3,13 @@
 
 # CI Install
 ci_install(){
+  echo 'Updating docker'
+  sudo apt-get -qy update
+  sudo apt-get -qy \
+    -o Dpkg::Options::="--force-confdef" \
+    -o Dpkg::Options::="--force-confold" \
+    install docker-engine
+
   echo 'Install VGS library'
   git clone https://github.com/vghn/vgs.git ~/vgs
 
@@ -36,7 +43,7 @@ ci_test(){
 
   e_info 'Test docker images'
   set_bundle_directory "$APPDIR"
-  bundle exec rake docker:test
+  bundle exec rake docker:spec
 }
 
 # CI Deploy
@@ -56,5 +63,5 @@ ci_deploy(){
   aws_ec2_send_run_command \
     'rhea' \
     'Reload data' \
-    'docker-compose -f /opt/vpm/docker-compose.yml up -d data'
+    'docker-compose -f /opt/vpm/docker-compose.yml up data'
 }
