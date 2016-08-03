@@ -16,20 +16,32 @@ Contains organization-specific roles and profiles.
 This directory is specified as a modulepath in environment.conf
 [Designing Puppet – Roles and Profiles.](http://www.craigdunn.org/2012/05/239/)
 
+### docker/
+Contains various Dockerfiles for the Docker images.
+
 ### hieradata/
 Contains the hiera data files. It's intended to serve as a base only, for
 public data, with sane defaults. It should be overwritten or amended with data
 from private sources.
 
 ### lib/
-Contains various functions that can be sourced in other scripts.
+Contains various functions that can be sourced in other scripts (ruby & bash).
 
 ### manifests/
 Contains Puppet's manifests:
   - `site.pp`: the main manifest
 
-### boostrap
-The bootstrap script. For usage, read the comments at the top of the script.
+### spec/
+Contains test definitions.
+
+### tasks/
+Contains rake tasks.
+
+### vault/
+Contains private data.
+
+### .env
+Contains private environment variables.
 
 ### docker-compose.yml
 This file defines services, networks and volumes for the containers.
@@ -44,17 +56,11 @@ nodes assigned to that environment.
 This file contains global variables.
 **All variables declared here are public**
 
-### hiera.yaml
-This file contains the Hiera configuration.
-
 ### Puppetfile
 r10k needs this file to figure out what component modules you want from the
 Forge. The result is a modules directory containing all the modules specified in
 this file, for each environment/branch. The modules directory is listed in
 environment.conf's modulepath.
-
-### r10k.yaml
-This file contains the R10K configuration.
 
 ## Testing
 ### Prerequisites
@@ -70,10 +76,10 @@ bundle install
 ```
 
 ### Docker
-Start Puppet Server
+Start Puppet Server (without dependencies like sync or log agents)
 ```
-docker-compose -f docker-compose.dev.yml up -d
-docker-compose -f docker-compose.dev.yml logs -f
+docker-compose up -d server
+docker-compose logs -f
 ```
 
 Generate a CSR attributes file
