@@ -3,7 +3,7 @@
 
 Vagrant.configure('2') do |config|
   # Boxes: https://atlas.hashicorp.com/search.
-  config.vm.box = 'ubuntu/trusty64'
+  config.vm.box = 'ubuntu/xenial64'
 
   # Set hostname
   config.vm.hostname = 'test'
