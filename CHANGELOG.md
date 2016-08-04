@@ -1,3 +1,8 @@
+## Version 0.0.88 / 2016-08-04
+  * Update Readme ([Vlad - f4e75e1](https://github.com/vghn/puppet/commit/f4e75e12c48eced9dcaaef6231e952c90e50fc44))
+  * Improve Puppet Server health check url ([Vlad - 12e4671](https://github.com/vghn/puppet/commit/12e4671d8ae4553e56f3fb44c173f80c9b3ea937))
+  * Include the wget class ([Vlad - 2b199d2](https://github.com/vghn/puppet/commit/2b199d21a56fff00574943421d07535ea97e4515))
+
 ## Version 0.0.87 / 2016-08-03
   * Add README for Docker images ([Vlad - 506b296](https://github.com/vghn/puppet/commit/506b296c9fdf6f4613739a5c7bf82b19c11e1cbb))
   * Do not daemonize data container when pushing changes ([Vlad - c270a0c](https://github.com/vghn/puppet/commit/c270a0ce0aca41132a560dc4a10052b1fe28119c))
