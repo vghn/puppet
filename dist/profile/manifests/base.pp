@@ -10,6 +10,9 @@ class profile::base {
   include ::vg
   include ::vg::time
 
+  # WGet
+  include wget
+
   # NTP
   include ::ntp
 
