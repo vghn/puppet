@@ -1,4 +1,4 @@
-# SWAP Class
+# VGS Class
 class profile::vgs {
   vcsrepo { 'VGS Library':
     ensure   => latest,
