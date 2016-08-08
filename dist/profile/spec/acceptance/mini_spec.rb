@@ -5,8 +5,10 @@ describe 'Mini role', if: hosts.map(&:name).include?('mini') do
   it 'should work idempotently with no errors' do
     pp = <<-EOS
       include ::profile::base
-      include ::profile::vgs
+      include ::profile::git
+      include ::profile::samba
       include ::profile::puppet::agent
+      include ::profile::docker
     EOS
 
     # Run it twice and test for idempotency
@@ -15,6 +17,8 @@ describe 'Mini role', if: hosts.map(&:name).include?('mini') do
   end
 
   it_behaves_like 'profile::base'
-  it_behaves_like 'profile::vgs'
+  it_behaves_like 'profile::git'
+  it_behaves_like 'profile::samba'
   it_behaves_like 'profile::puppet::agent'
+  it_behaves_like 'profile::docker'
 end
