@@ -48,7 +48,7 @@ fixtures:
       ref: '1.0.0'
     rsyslog:
       repo: 'saz/rsyslog'
-      ref: '3.5.1'
+      ref: '4.0.0'
     python:
       repo: 'stankevich/python'
       ref: '1.14.0'
