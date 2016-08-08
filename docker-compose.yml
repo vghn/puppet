@@ -3,7 +3,7 @@ version: '2'
 services:
   server:
     image: vladgh/vpm-server:latest
-    hostname: puppet.ghn.me
+    hostname: puppet
     ports:
       - '8140:8140'
     volumes_from:
