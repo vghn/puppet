@@ -1,3 +1,13 @@
+## Version 0.0.89 / 2016-08-09
+  * Move Puppet/Archive to approved modules ([Vlad - 9c15bb5](https://github.com/vghn/puppet/commit/9c15bb5bfaecec9b8902a6cbe33ad7ddbb2763c7))
+  * Fix typos ([Vlad - 4615411](https://github.com/vghn/puppet/commit/4615411c9a4758611fbdfddea3ca129b1dc1cc74))
+  * Hiera should use environments ([Vlad - 3234ac6](https://github.com/vghn/puppet/commit/3234ac62986cfb2811a6bd0b88712fca3f965a1c))
+  * Add Samba class to Mini role ([Vlad - e2ccf5b](https://github.com/vghn/puppet/commit/e2ccf5b82830a7e8598b0140126cdf69d7e6b2b0))
+  * Autosign script should read environment config ([Vlad - 00265ea](https://github.com/vghn/puppet/commit/00265eaea2170713bd0de5bbd17b1b7dd5e760b1))
+  * Upgrade saz/rsyslog puppet module ([Vlad - 7f487b3](https://github.com/vghn/puppet/commit/7f487b3633a5489ecd10e093de7061c8f7c5e184))
+  * The Puppet Server container hostname should be puppet ([Vlad - 249b1d0](https://github.com/vghn/puppet/commit/249b1d0f49e7863636fc9cd5b0872d1ec63ff0f6))
+  * Upgrade software ([Vlad - 9b0e7c5](https://github.com/vghn/puppet/commit/9b0e7c5888e31b57099db3279cbd8cb04119ec2a))
+
 ## Version 0.0.88 / 2016-08-04
   * Update Readme ([Vlad - f4e75e1](https://github.com/vghn/puppet/commit/f4e75e12c48eced9dcaaef6231e952c90e50fc44))
   * Improve Puppet Server health check url ([Vlad - 12e4671](https://github.com/vghn/puppet/commit/12e4671d8ae4553e56f3fb44c173f80c9b3ea937))
