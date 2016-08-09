@@ -3,14 +3,14 @@ version: '2'
 services:
   server:
     image: vladgh/vpm-server:latest
-    hostname: puppet.ghn.me
+    hostname: puppet
     ports:
       - '8140:8140'
     volumes_from:
       - data
     environment:
       AUTOSIGN: '/usr/local/bin/csr-sign'
-      AUTOSIGN_CFG: '/etc/puppetlabs/vault/csr_cfg.yaml'
+      AUTOSIGN_CFG: '/etc/puppetlabs/vault/production/csr_cfg.yaml'
       DNS_ALT_NAMES: 'puppet,puppet.ghn.me,puppetca,puppetca.ghn.me'
       JAVA_ARGS: '-Xms768m -Xmx768m'
     entrypoint: sh -c "until [ -s /var/local/deployed_r10k ]; do echo 'Waiting for R10K'; sleep 5; done; /entrypoint.sh puppetserver foreground"

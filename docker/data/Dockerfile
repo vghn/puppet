@@ -3,7 +3,7 @@ MAINTAINER Vlad Ghinea vlad@ghn.me
 
 # Environment
 ENV R10K_VERSION='2.3.0'
-ENV AWS_CLI_VERSION='1.10.51'
+ENV AWS_CLI_VERSION='1.10.53'
 ENV AWS_DEFAULT_REGION='us-east-1'
 
 # Install packages

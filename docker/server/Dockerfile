@@ -2,7 +2,7 @@ FROM vladgh/puppetserver:stable
 MAINTAINER Vlad Ghinea vlad@ghn.me
 
 # Environment
-ENV AWS_SDK_VERSION='2.5.0'
+ENV AWS_SDK_VERSION='2.5.1'
 ENV AWS_DEFAULT_REGION='us-east-1'
 
 # Install packages
@@ -15,8 +15,8 @@ COPY hiera.yaml /etc/puppetlabs/puppet/hiera.yaml
 # Health
 HEALTHCHECK --interval=30s --timeout=5m --retries=2 CMD \
   curl \
-  --cert $(puppet config print hostcert) \
-  --key $(puppet config print hostprivkey) \
-  --cacert $(puppet config print cacert) \
+  --cert   $(puppet config print hostcert) \
+  --key    $(puppet config print hostprivkey) \
+  --cacert $(puppet config print localcacert) \
   -H 'Accept: pson' \
-  https://puppet:8140/production/status/no_key
+  https://$(puppet config print server):8140/production/status/no_key

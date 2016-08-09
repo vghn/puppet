@@ -31,6 +31,14 @@ docker_run:
     image: 'busybox:latest'
     command: '/bin/sh -c "while true; do echo hello; sleep 1; done"'
 
+# Samba
+samba::server::shares:
+  Test:
+    - 'comment = Test Share'
+    - 'path = /data/share'
+    - 'writeable = yes'
+    - 'browseable = yes'
+
 # Software versions
 jq_version:             '1.5'
 rvm_system_ruby:        'ruby-2.2.1'
