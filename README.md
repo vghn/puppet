@@ -140,6 +140,8 @@ The following environment variables can be used to influence how beaker works:
                     `onpass` to keep the VMs around only after a test failure.
 * `ORDERING`: How unrelated resources should be ordered when applying a
               catalog (https://docs.puppetlabs.com/puppet/latest/reference/configuration.html#ordering)
+* `PUPPET_INSTALL_TYPE`: specify puppet type (one of: pe, foss, agent)
+* `PUPPET_INSTALL_VERSION`: specify the version to install
 
 ### Clean-up
 ```
