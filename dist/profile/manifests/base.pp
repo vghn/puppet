@@ -14,16 +14,15 @@ class profile::base {
   include ::vg
   include ::vg::time
 
-  # WGet
-  include wget
-
-  # NTP
-  include ::ntp
-
-  # SUDO
-  class { 'sudo':
+  # Security
+  class { '::sudo':
     purge               => false,
     config_file_replace => false,
   }
   include ::sudo::configs
+  include ::ssh
+
+  # Others
+  include ::wget
+  include ::ntp
 }

@@ -1,6 +1,6 @@
 HOSTS:
   mini:
-    platform: ubuntu-trusty-amd64
+    platform: ubuntu-14.04-amd64
     hypervisor: vagrant
     box: puppetlabs/ubuntu-14.04-64-nocm
 CONFIG:

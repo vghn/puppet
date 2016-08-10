@@ -15,9 +15,6 @@ shared_examples 'profile::docker' do
     describe file('/usr/local/bin/docker-compose') do
       it { is_expected.to be_executable }
     end
-    describe file('/usr/local/bin/docker-machine') do
-      it { is_expected.to be_executable }
-    end
 
     describe docker_image('busybox:latest') do
       it { is_expected.to exist }

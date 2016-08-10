@@ -12,12 +12,13 @@ describe 'profile::base' do
         if facts[:osfamily] == 'Debian'
           it { is_expected.to contain_class('apt') }
         end
-        it { is_expected.to contain_class('wget') }
-        it { is_expected.to contain_class('ntp') }
         it { is_expected.to contain_class('vg') }
         it { is_expected.to contain_class('vg::time') }
         it { is_expected.to contain_class('sudo') }
         it { is_expected.to contain_class('sudo::configs') }
+        it { is_expected.to contain_class('ssh') }
+        it { is_expected.to contain_class('wget') }
+        it { is_expected.to contain_class('ntp') }
       end
     end
   end
