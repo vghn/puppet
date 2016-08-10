@@ -1,3 +1,14 @@
+## Version 0.0.90 / 2016-08-10
+  * Update Readme ([Vlad - 9b34142](https://github.com/vghn/puppet/commit/9b341424e3dd092c508af40d661c16326b4ef458))
+  * Upgrade APT module to master branch ([Vlad - b5f4d52](https://github.com/vghn/puppet/commit/b5f4d521d70a027b9fc41d8b67897f828f2020f0))
+  * Clean-up ([Vlad - 8016cc4](https://github.com/vghn/puppet/commit/8016cc4d1c460c27b2e606e439f0721f5df4ddff))
+  * Add firewall ([Vlad - e54bfa7](https://github.com/vghn/puppet/commit/e54bfa713d3b813f5a69d92821b822285cf00f5f))
+  * Upgrade production to 1G memory ([Vlad - 9ee8039](https://github.com/vghn/puppet/commit/9ee80393bff3c89a0eab8a273872bab2f9215050))
+  * Use full hostname for Puppet Server container ([Vlad - 5b63134](https://github.com/vghn/puppet/commit/5b6313429c1ccf58bfa05bd370d9b3a7844fe5a6))
+  * Fix deployment ([Vlad - 16ec408](https://github.com/vghn/puppet/commit/16ec408506558437ba51b8892a53f41f4e313e93))
+  * Override VERSION ([Vlad - e212e17](https://github.com/vghn/puppet/commit/e212e1772f6f9f0e96f88339883f5d04a5344b24))
+  * Fix deployment script ([Vlad - 4e7921a](https://github.com/vghn/puppet/commit/4e7921ac705af78985956b4b48bd5cf53f8741a3))
+
 ## Version 0.0.89 / 2016-08-09
   * Move Puppet/Archive to approved modules ([Vlad - 9c15bb5](https://github.com/vghn/puppet/commit/9c15bb5bfaecec9b8902a6cbe33ad7ddbb2763c7))
   * Fix typos ([Vlad - 4615411](https://github.com/vghn/puppet/commit/4615411c9a4758611fbdfddea3ca129b1dc1cc74))

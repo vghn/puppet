@@ -23,12 +23,6 @@ describe 'profile::docker' do
         it { is_expected.to contain_package('cgroup-lite') }
         it { is_expected.to contain_apt__pin('docker') }
         it { is_expected.to contain_user('vagrant') }
-
-        it { is_expected.to contain_wget__fetch('Docker-Machine Binary') }
-        it do
-          is_expected.to contain_file('/usr/local/bin/docker-machine')
-            .that_requires('Wget::Fetch[Docker-Machine Binary]')
-        end
       end
     end
   end

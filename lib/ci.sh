@@ -58,10 +58,4 @@ ci_deploy(){
   fi
 
   publish_artifact
-
-  e_info 'Deploy command'
-  aws_ec2_send_run_command \
-    'rhea' \
-    'Reload data' \
-    'docker-compose -f /opt/vpm/docker-compose.yml up data'
 }

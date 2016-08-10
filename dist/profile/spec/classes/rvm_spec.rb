@@ -11,7 +11,7 @@ describe 'profile::rvm' do
 
         it { is_expected.to contain_class('rvm') }
         it { is_expected.to contain_group('rvm') }
-        it { is_expected.to contain_rvm_system_ruby('ruby-2.2.1') }
+        it { is_expected.to contain_rvm_system_ruby('ruby-2.3.1') }
       end
     end
   end

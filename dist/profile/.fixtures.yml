@@ -2,11 +2,9 @@ fixtures:
   symlinks:
     profile: "#{source_dir}"
   repositories:
-    vg: 'https://github.com/vladgh/puppet-module-vg'
+    vg:  'https://github.com/vladgh/puppet-module-vg'
+    apt: 'https://github.com/puppetlabs/puppetlabs-apt'
   forge_modules:
-    apt:
-      repo: 'puppetlabs/apt'
-      ref: '2.2.2'
     concat:
       repo: 'puppetlabs/concat'
       ref: '2.2.0'

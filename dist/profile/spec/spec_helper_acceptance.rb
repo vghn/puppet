@@ -3,7 +3,7 @@ require 'beaker-rspec/helpers/serverspec'
 require 'beaker/puppet_install_helper'
 
 # Install puppet
-run_puppet_install_helper unless ENV['BEAKER_provision'] == 'no'
+run_puppet_install_helper
 
 # Include shared examples
 Dir['./spec/acceptance/support/**/*_spec.rb'].sort.each { |f| require f }
@@ -52,10 +52,6 @@ RSpec.configure do |c|
         target_module_path: host_modules_dir,
         module_name: 'profile'
       )
-
-      # Prevent R10k deployment
-      shell "touch #{production_dir}/.r10k-deploy.json",
-            accept_all_exit_codes: true
     end
   end
 end
