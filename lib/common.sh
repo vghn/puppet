@@ -27,16 +27,16 @@ upload_private_data(){
 
 download_private_data(){
   e_info 'Download .env'
-  if ! aws s3 cp "${ENV_S3PATH}" "${APPDIR}/.env" --quiet; then
-    e_abort "Could not download ${ENV_S3PATH} to ${APPDIR}/.env"
+  if ! aws s3 cp "${ENV_S3PATH}/.${ENVTYPE}" "${APPDIR}/.env" --quiet; then
+    e_abort "Could not download ${ENV_S3PATH}/.${ENVTYPE} to ${APPDIR}/.env"
   fi
   e_info 'Download vault'
-  if ! aws s3 sync "${VAULT_S3PATH}/" "${APPDIR}/vault/" --delete; then
-    e_abort "Could not download ${VAULT_S3PATH}/ to ${APPDIR}/vault/"
+  if ! aws s3 sync "${VAULT_S3PATH}/${ENVTYPE}/" "${APPDIR}/vault/" --delete; then
+    e_abort "Could not download ${VAULT_S3PATH}/${ENVTYPE}/ to ${APPDIR}/vault/"
   fi
   e_info 'Download hieradata'
-  if ! aws s3 sync "${HIERA_S3PATH}/" "${APPDIR}/hieradata/" --delete; then
-    e_abort "Could not download ${VAULT_S3PATH}/ to ${APPDIR}/hieradata/"
+  if ! aws s3 sync "${HIERA_S3PATH}/${ENVTYPE}/" "${APPDIR}/hieradata/" --delete; then
+    e_abort "Could not download ${HIERA_S3PATH}/${ENVTYPE}/ to ${APPDIR}/hieradata/"
   fi
 }
 

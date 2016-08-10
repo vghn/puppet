@@ -32,7 +32,7 @@ download_vault(){
 download_hieradata(){
   log 'Download hieradata'
   if ! aws s3 sync "${HIERA_S3PATH}/" '/etc/puppetlabs/hieradata/' --delete; then
-    abort "Could not download ${VAULT_S3PATH}"
+    abort "Could not download ${HIERA_S3PATH}"
   fi
 }
 
