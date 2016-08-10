@@ -12,7 +12,7 @@ services:
       AUTOSIGN: '/usr/local/bin/csr-sign'
       AUTOSIGN_CFG: '/etc/puppetlabs/vault/production/csr_cfg.yaml'
       DNS_ALT_NAMES: 'puppet,puppet.ghn.me,puppetca,puppetca.ghn.me'
-      JAVA_ARGS: '-Xms768m -Xmx768m'
+      JAVA_ARGS: '-Xms1G -Xmx1G'
     entrypoint: sh -c "until [ -s /var/local/deployed_r10k ]; do echo 'Waiting for R10K'; sleep 5; done; /entrypoint.sh puppetserver foreground"
   logs:
     hostname: log-agent
