@@ -6,6 +6,8 @@
   * Upgrade production to 1G memory ([Vlad - 9ee8039](https://github.com/vghn/puppet/commit/9ee80393bff3c89a0eab8a273872bab2f9215050))
   * Use full hostname for Puppet Server container ([Vlad - 5b63134](https://github.com/vghn/puppet/commit/5b6313429c1ccf58bfa05bd370d9b3a7844fe5a6))
   * Fix deployment ([Vlad - 16ec408](https://github.com/vghn/puppet/commit/16ec408506558437ba51b8892a53f41f4e313e93))
+  * Override VERSION ([Vlad - e212e17](https://github.com/vghn/puppet/commit/e212e1772f6f9f0e96f88339883f5d04a5344b24))
+  * Fix deployment script ([Vlad - 4e7921a](https://github.com/vghn/puppet/commit/4e7921ac705af78985956b4b48bd5cf53f8741a3))
 
 ## Version 0.0.89 / 2016-08-09
   * Move Puppet/Archive to approved modules ([Vlad - 9c15bb5](https://github.com/vghn/puppet/commit/9c15bb5bfaecec9b8902a6cbe33ad7ddbb2763c7))
