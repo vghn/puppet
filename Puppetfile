@@ -1,10 +1,13 @@
 forge 'https://forgeapi.puppetlabs.com'
 
-# Iternal modules
-mod 'vg', :git => 'https://github.com/vladgh/puppet-module-vg'
+# Internal modules
+mod 'vg',
+    :git => 'https://github.com/vladgh/puppet-module-vg'
 
 # Puppet supported modules
-mod 'puppetlabs/apt', '2.2.2'
+mod 'puppetlabs/apt',
+    :git => 'https://github.com/puppetlabs/puppetlabs-apt',
+    :ref => 'master'
 mod 'puppetlabs/concat', '2.2.0'
 mod 'puppetlabs/git', '0.5.0'
 mod 'puppetlabs/inifile', '1.5.0'
