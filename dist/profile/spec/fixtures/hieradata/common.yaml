@@ -44,3 +44,11 @@ jq_version:             '1.5'
 rvm_system_ruby:        'ruby-2.3.1'
 docker_compose_version: '1.7.1'
 docker_machine_version: '0.7.0'
+
+# Extra firewall rules
+firewall_rules:
+  '123 test rule':
+    proto: 'tcp'
+    dport: 1234
+    state: 'NEW'
+    action: 'accept'

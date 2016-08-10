@@ -10,6 +10,9 @@ class profile::base {
     class { '::apt': require => Package['software-properties-common'] }
   }
 
+  # Base firewall policy
+  include ::profile::linuxfw
+
   # VG Module
   include ::vg
   include ::vg::time
