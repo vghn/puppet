@@ -20,14 +20,23 @@ class DataAgent < Sinatra::Base
 
   # Deploy (/deploy?async=yes)
   # Simulate a github post:
-  # curl -d '{ "repository": { "name": "puppet" }, "ref": "refs/heads/production" }' -H "Accept: application/json" 'https://{USER}:{PASS}@localhost:8523/deploy?async=yes' -k -q
+  # data='{ "repository": { "name": "puppet" }, "ref": "refs/heads/production" }'
+  # curl -d "$data" -H "Accept: application/json" 'https://{USER}:{PASS}@localhost:8523/deploy?async=yes' -k -q
   post '/deploy' do
     protected!
+
+    payload = request.body.read
+    push = JSON.parse(payload)
+
+    verify_signature(payload) if params[:verify] == 'yes'
+
     if params[:async] == 'yes'
       async_deploy
     else
       deploy
     end
+
+    log.info "Requested by @#{push['sender']['login']}"
     'Deployment in progress...'
   end
 
