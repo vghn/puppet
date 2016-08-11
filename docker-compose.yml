@@ -33,14 +33,16 @@ services:
     hostname: data-agent
     environment:
       AWS_ASSETS_BUCKET: vladgh
-    working_dir: /opt/vpm
+      DATA_CONFIG: '/etc/puppetlabs/vault/production/data_cfg.yaml'
+    ports:
+      - '8523:8523'
     volumes:
-      - .:/opt/vpm
       - ssl:/etc/puppetlabs/puppet/ssl
       - code:/etc/puppetlabs/code
       - vault:/etc/puppetlabs/vault
       - hieradata:/etc/puppetlabs/hieradata
-      - ../vgs:/opt/vgs:ro
+      - .:/opt/vpm
+      - ../vgs:/opt/vgs
       - ~/.aws:/root/.aws:ro
       - /etc/localtime:/etc/localtime:ro
       - /var/local
