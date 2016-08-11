@@ -1,3 +1,8 @@
+## Version 0.0.91 / 2016-08-11
+  * Use relative paths in gitignore ([Vlad - 5e14dd0](https://github.com/vghn/puppet/commit/5e14dd0cabfc19a4590971b205423724db7c5d25))
+  * Add Sinatra WebHook to the data container ([Vlad - 2a71583](https://github.com/vghn/puppet/commit/2a715834bc8499bb73ab3147caf457e4bb02e361))
+  * Verify Github signatures for the webhook ([Vlad - 4748c46](https://github.com/vghn/puppet/commit/4748c46de8e47e2c23a69ea70f274b9455b970dd))
+
 ## Version 0.0.90 / 2016-08-10
   * Update Readme ([Vlad - 9b34142](https://github.com/vghn/puppet/commit/9b341424e3dd092c508af40d661c16326b4ef458))
   * Upgrade APT module to master branch ([Vlad - b5f4d52](https://github.com/vghn/puppet/commit/b5f4d521d70a027b9fc41d8b67897f828f2020f0))
