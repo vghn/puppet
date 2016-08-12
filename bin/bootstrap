@@ -153,7 +153,6 @@ configure_puppet_environment(){
   if [[ "$ENVTYPE" != 'production' ]]; then
     e_info "Set puppet environment - '$ENVTYPE'"
     mkdir -p "$PP_ENVDIR"
-    puppet config set environment "$ENVTYPE" --section main
   fi
 }
 
@@ -200,11 +199,10 @@ configure_puppet_agent(){
     remove_cached_catalogs
   fi
 
-  if [[ "$PP_SERVER" == 'none' ]]; then
-    mkdir -p "$PP_ENVDIR" # Puppet complains if environment directory is absent
-  else
+  configure_puppet_environment
+
+  if [[ "$PP_SERVER" != 'none' ]]; then
     configure_puppet_server
-    configure_puppet_environment
     configure_puppet_certname
     install_csr_attributes
   fi
