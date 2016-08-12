@@ -1,3 +1,6 @@
+## Version 0.0.96 / 2016-08-12
+  * Improve the bootstrap script ([Vlad - 2f00dcd](https://github.com/vghn/puppet/commit/2f00dcdccd432077c481ae85697279baa090ae2f))
+
 ## Version 0.0.95 / 2016-08-12
   * Allow specifying the SSL Certificate ([Vlad - 8053c8e](https://github.com/vghn/puppet/commit/8053c8e7361b6588f4f9c58627c841a300a5cd4e))
 
