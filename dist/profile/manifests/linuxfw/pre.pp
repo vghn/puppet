@@ -10,6 +10,7 @@ class profile::linuxfw::pre {
     ignore => [
       # ignore the fail2ban jump rule
       '-j fail2ban-ssh',
+      '-j f2b-sshd',
       # ignore any rules with "ignore" (case insensitive) in the comment in the rule
       '--comment "[^"](?i:ignore)[^"]"',
       ],
