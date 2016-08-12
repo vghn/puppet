@@ -34,6 +34,8 @@ services:
     environment:
       AWS_ASSETS_BUCKET: vladgh
       DATA_CONFIG: '/etc/puppetlabs/vault/production/data_cfg.yaml'
+      RACK_SSL_KEY: '/etc/puppetlabs/vault/production/ghn.me.key'
+      RACK_SSL_CRT: '/etc/puppetlabs/vault/production/ghn.me.crt'
     ports:
       - '8523:8523'
     volumes:
