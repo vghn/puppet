@@ -1,3 +1,11 @@
+## Version 0.0.93 / 2016-08-12
+  * Firewall should end by dropping input and forward ([Vlad - a3dc459](https://github.com/vghn/puppet/commit/a3dc45900cfd21428bc938f9ddb3f68b6b809500))
+  * Fix testing modules fixture config ([Vlad - 42c040e](https://github.com/vghn/puppet/commit/42c040eedc028824e5093677251a36fa42d97a09))
+  * Separate firewall from base profile ([Vlad - 10e8938](https://github.com/vghn/puppet/commit/10e89389dd96ac438a365857c54a7b69bede6da2))
+  * Add fail2ban ([Vlad - 8d349ab](https://github.com/vghn/puppet/commit/8d349abc85e32d1b494ce5a697f32ab0ca33b4f1))
+  * Purge firewall rules (with exceptions) ([Vlad - 5fea6bb](https://github.com/vghn/puppet/commit/5fea6bb83aac8b44e3572a687bc2a9784f9a3bdf))
+  * Fix tests ([Vlad - ffca18b](https://github.com/vghn/puppet/commit/ffca18b6ca819c09e7bacd1e2233e243f196dfc7))
+
 ## Version 0.0.92 / 2016-08-12
   * Fix environment paths ([Vlad - c6c48de](https://github.com/vghn/puppet/commit/c6c48de82514bdc4761ba3cf4d9a8e8fbef164ff))
   * Check bootstrap invovation ([Vlad - 7955db4](https://github.com/vghn/puppet/commit/7955db448c876657fec8727d42053fed09385adf))
