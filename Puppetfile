@@ -29,6 +29,7 @@ mod 'zack/r10k', '3.2.0'
 
 # Others
 mod 'derdanne/nfs', '0.0.14'
+mod 'dhoppe/fail2ban', '1.1.1'
 mod 'golja/gnupg', '1.2.3'
 mod 'kemra102/cloudwatchlogs', '2.3.0'
 mod 'maestrodev/rvm', '1.13.1'

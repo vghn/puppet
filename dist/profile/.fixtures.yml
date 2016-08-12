@@ -56,6 +56,9 @@ fixtures:
     nfs:
       repo: 'derdanne/nfs'
       ref: '0.0.14'
+    fail2ban:
+      repo: 'dhoppe/fail2ban'
+      ref: '1.1.1'
     gnupg:
       repo: 'golja/gnupg'
       ref: '1.2.3'
