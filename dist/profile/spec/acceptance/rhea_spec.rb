@@ -5,6 +5,7 @@ describe 'Rhea role', if: hosts.map(&:name).include?('rhea') do
   it 'should work idempotently with no errors' do
     pp = <<-EOS
       include ::profile::base
+      include ::profile::linuxfw
       include ::profile::log
       include ::profile::python
       include ::profile::git
@@ -21,6 +22,7 @@ describe 'Rhea role', if: hosts.map(&:name).include?('rhea') do
   end
 
   it_behaves_like 'profile::base'
+  it_behaves_like 'profile::linuxfw'
   it_behaves_like 'profile::log'
   it_behaves_like 'profile::python'
   it_behaves_like 'profile::git'
