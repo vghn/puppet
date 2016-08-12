@@ -1,6 +1,8 @@
 # Rhea Role (VGH Puppet Master of Masters)
 class role::rhea {
   include ::profile::base
+  include ::profile::linuxfw
+  include ::profile::fail2ban
   include ::profile::log
   include ::profile::python
   include ::profile::git
