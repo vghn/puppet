@@ -1,3 +1,6 @@
+## Version 0.0.94 / 2016-08-12
+  * Do not purge fail2ban firewall rules ([Vlad - f61f552](https://github.com/vghn/puppet/commit/f61f552beb4a352b79fdfd775a9d3806c0b78e05))
+
 ## Version 0.0.93 / 2016-08-12
   * Firewall should end by dropping input and forward ([Vlad - a3dc459](https://github.com/vghn/puppet/commit/a3dc45900cfd21428bc938f9ddb3f68b6b809500))
   * Fix testing modules fixture config ([Vlad - 42c040e](https://github.com/vghn/puppet/commit/42c040eedc028824e5093677251a36fa42d97a09))
