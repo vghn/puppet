@@ -53,7 +53,7 @@ fixtures:
     r10k:
       repo: 'zack/r10k'
       ref: '3.2.0'
-    gnupg:
+    nfs:
       repo: 'derdanne/nfs'
       ref: '0.0.14'
     gnupg:
