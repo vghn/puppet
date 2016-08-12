@@ -1,16 +1,8 @@
 # Firewall Profile (After)
 class profile::linuxfw::post {
-  firewall { '998 input reject':
+  firewall { '999 drop all':
     proto  => 'all',
-    action => 'reject',
-    reject => 'icmp-host-prohibited',
-    before => undef,
-  }
-  firewall { '999 forward reject':
-    proto  => 'all',
-    chain  => 'FORWARD',
-    action => 'reject',
-    reject => 'icmp-host-prohibited',
+    action => 'drop',
     before => undef,
   }
 }

@@ -21,7 +21,7 @@ class profile::linuxfw::pre {
   }->
   firewall { '003 accept ssh connections':
     proto  => 'tcp',
-    dport  => 22,
+    dport  => '22',
     state  => 'NEW',
     action => 'accept',
   }
