@@ -1,3 +1,6 @@
+## Version 0.0.95 / 2016-08-12
+  * Allow specifying the SSL Certificate ([Vlad - 8053c8e](https://github.com/vghn/puppet/commit/8053c8e7361b6588f4f9c58627c841a300a5cd4e))
+
 ## Version 0.0.94 / 2016-08-12
   * Do not purge fail2ban firewall rules ([Vlad - f61f552](https://github.com/vghn/puppet/commit/f61f552beb4a352b79fdfd775a9d3806c0b78e05))
 
