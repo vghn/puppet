@@ -9,8 +9,7 @@ describe 'profile::linuxfw::post' do
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to contain_class('profile::linuxfw::post') }
 
-        it { is_expected.to contain_firewall('998 input reject') }
-        it { is_expected.to contain_firewall('999 forward reject') }
+        it { is_expected.to contain_firewall('999 drop all') }
       end
     end
   end
