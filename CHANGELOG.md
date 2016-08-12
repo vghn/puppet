@@ -1,3 +1,10 @@
+## Version 0.0.92 / 2016-08-12
+  * Fix environment paths ([Vlad - c6c48de](https://github.com/vghn/puppet/commit/c6c48de82514bdc4761ba3cf4d9a8e8fbef164ff))
+  * Check bootstrap invovation ([Vlad - 7955db4](https://github.com/vghn/puppet/commit/7955db448c876657fec8727d42053fed09385adf))
+  * Firewall should not purge other chains ([Vlad - df14d67](https://github.com/vghn/puppet/commit/df14d67c9c0ba5aa1ceda90cf88b7e4bc314f0c2))
+  * Improve firewall rules ([Vlad - 38d71d1](https://github.com/vghn/puppet/commit/38d71d1b4329b2e9525054e3bc14c0b69a489ba1))
+  * Fix unit tests ([Vlad - 5f5fe31](https://github.com/vghn/puppet/commit/5f5fe31e5068157dcc8b4efadcc905bb217d26e3))
+
 ## Version 0.0.91 / 2016-08-11
   * Use relative paths in gitignore ([Vlad - 5e14dd0](https://github.com/vghn/puppet/commit/5e14dd0cabfc19a4590971b205423724db7c5d25))
   * Add Sinatra WebHook to the data container ([Vlad - 2a71583](https://github.com/vghn/puppet/commit/2a715834bc8499bb73ab3147caf457e4bb02e361))
