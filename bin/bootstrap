@@ -52,7 +52,11 @@ PP_COLOR=${PP_COLOR:-true}
 ENVTYPE=${ENVTYPE:-production}
 
 # INTERNALS
-APPDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd -P)"
+if [ -n "${BASH_SOURCE[0]:-}" ]; then
+  APPDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd -P)"
+else
+  APPDIR='/tmp'
+fi
 TMPDIR=$(mktemp -d 2>/dev/null || mktemp -d -t 'tmp')
 CSRTMP="${TMPDIR}/csr_attributes.yaml"
 PATH="/opt/puppetlabs/bin:/opt/puppetlabs/puppet/bin:/usr/local/bin:${PATH}"
