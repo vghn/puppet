@@ -3,6 +3,9 @@ class profile::linuxfw {
   resources { 'firewall':
     purge => true,
   }
+  resources { 'firewallchain':
+    purge => false,
+  }
 
   Firewall {
     before  => Class['profile::linuxfw::post'],
