@@ -4,6 +4,17 @@ class profile::linuxfw::pre {
     require => undef,
   }
 
+  # Only filter INPUT (leave other chains; for example the docker chain)
+  firewallchain { 'INPUT:filter:IPv4':
+    purge  => true,
+    ignore => [
+      # ignore the fail2ban jump rule
+      '-j fail2ban-ssh',
+      # ignore any rules with "ignore" (case insensitive) in the comment in the rule
+      '--comment "[^"](?i:ignore)[^"]"',
+      ],
+  }
+
   # Default firewall rules
   firewall { '000 accept related established rules':
     proto  => 'all',
@@ -22,7 +33,7 @@ class profile::linuxfw::pre {
   firewall { '003 accept ssh connections':
     proto  => 'tcp',
     dport  => '22',
-    state  => 'NEW',
+    state  => ['NEW', 'ESTABLISHED'],
     action => 'accept',
   }
 
