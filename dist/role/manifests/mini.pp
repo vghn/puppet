@@ -5,4 +5,5 @@ class role::mini {
   include ::profile::git
   include ::profile::puppet::agent
   include ::profile::docker
+  include ::profile::samba
 }
