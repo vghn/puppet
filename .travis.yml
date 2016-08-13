@@ -13,8 +13,8 @@ before_cache:
   - rm -f dist/profile/spec/fixtures/modules/profile
 cache:
   bundler: true
-  pip: true
   directories:
+    - "$HOME/.cache/pip"
     - dist/profile/vendor/bundle
     - dist/profile/spec/fixtures/modules
 notifications:
