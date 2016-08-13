@@ -1,3 +1,6 @@
+## Version 0.0.98 / 2016-08-13
+  * Add Slack slash command ([Vlad - 4768e33](https://github.com/vghn/puppet/commit/4768e3344dbbd016d1341cca5b46423c92c79085))
+
 ## Version 0.0.97 / 2016-08-13
   * Add logs to the MINI role ([Vlad - 0f5baff](https://github.com/vghn/puppet/commit/0f5baffc5f7c9721f7c74fc7d2f7e796dcaec241))
   * Add Samba to the MINI role ([Vlad - 575510f](https://github.com/vghn/puppet/commit/575510f5d282f387a98ec10b196c86fe4ec22a0b))
