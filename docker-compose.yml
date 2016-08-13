@@ -1,11 +1,19 @@
 version: '2'
 
 services:
+  lb:
+    image: dockercloud/haproxy
+    links:
+      - data
+      - server
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - '8523:8523'
+      - '8140:8140'
   server:
     image: vladgh/vpm-server:latest
     hostname: puppet.ghn.me
-    ports:
-      - '8140:8140'
     volumes_from:
       - data
     environment:
@@ -13,6 +21,7 @@ services:
       AUTOSIGN_CFG: '/etc/puppetlabs/vault/production/csr_cfg.yaml'
       DNS_ALT_NAMES: 'puppet,puppet.ghn.me,puppetca,puppetca.ghn.me'
       JAVA_ARGS: '-Xms1G -Xmx1G'
+      TCP_PORTS: '8140'
     entrypoint: sh -c "until [ -s /var/local/deployed_r10k ]; do echo 'Waiting for R10K'; sleep 5; done; /entrypoint.sh puppetserver foreground"
   logs:
     hostname: log-agent
@@ -36,8 +45,8 @@ services:
       DATA_CONFIG: '/etc/puppetlabs/vault/production/data_cfg.yaml'
       RACK_SSL_KEY: '/etc/puppetlabs/vault/production/ghn.me.key'
       RACK_SSL_CRT: '/etc/puppetlabs/vault/production/ghn.me.crt'
-    ports:
-      - '8523:8523'
+      RACK_PORT: '8523'
+      TCP_PORTS: '8523'
     volumes:
       - ssl:/etc/puppetlabs/puppet/ssl
       - code:/etc/puppetlabs/code

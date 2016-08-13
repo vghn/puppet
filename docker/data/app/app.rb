@@ -48,9 +48,9 @@ class DataAgent < Sinatra::Base
     text    = params.fetch('text').strip
 
     if token == config['slack_token']
-      log.info "Authorized request from #{user} on chanel #{channel}"
+      log.info "Authorized request from @#{user} on channel ##{channel}"
     else
-      log.warn "Unauthorized token received from #{user}"
+      log.warn "Unauthorized token received from @#{user}"
     end
 
     case command

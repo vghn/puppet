@@ -1,3 +1,12 @@
+## Version 0.0.99 / 2016-08-13
+  * Improve Slack command output ([Vlad - 9cee575](https://github.com/vghn/puppet/commit/9cee575af5e89506046bef632ce43b1b95f18368))
+  * Improve Travis caching ([Vlad - 36dc7a6](https://github.com/vghn/puppet/commit/36dc7a641613b6d7c350dc61631ad84c34ad2c24))
+  * Remove symlink from cache ([Vlad - eba2fe2](https://github.com/vghn/puppet/commit/eba2fe25e9d826c90b5513b5ec15274ab509a4b9))
+  * Fix PIP cache ([Vlad - ad2b2d7](https://github.com/vghn/puppet/commit/ad2b2d78dd15170c12747a2ea793b2646adc6bb1))
+  * Expose port in the Dockerfile for the data agent ([Vlad - 8d0e92a](https://github.com/vghn/puppet/commit/8d0e92a93dacdc450d81bba8a806796ab83d9102))
+  * Add a load balancer layer ([Vlad - 878e5cb](https://github.com/vghn/puppet/commit/878e5cb9963118432f3acf57e2aa1d8d42ddc7a3))
+  * Add docker health check for the data agent ([Vlad - 22ed605](https://github.com/vghn/puppet/commit/22ed605cd32cff47d8815b70c45cab6f10ef3a0b))
+
 ## Version 0.0.98 / 2016-08-13
   * Add Slack slash command ([Vlad - 4768e33](https://github.com/vghn/puppet/commit/4768e3344dbbd016d1341cca5b46423c92c79085))
 

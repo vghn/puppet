@@ -19,6 +19,8 @@ ENV RACK_PORT=8523 \
     RACK_ENV=production \
     AWS_DEFAULT_REGION=us-east-1
 
+EXPOSE $RACK_PORT
+
 # Copy application
 COPY app /app
 
@@ -28,3 +30,7 @@ COPY r10k.yaml /etc/puppetlabs/r10k/r10k.yaml
 # Configure entrypoint
 COPY run.sh /
 ENTRYPOINT ["/run.sh"]
+
+# Health
+HEALTHCHECK --interval=30s --timeout=30s --retries=10 CMD \
+  curl -kf https://localhost:8523/ || exit 1

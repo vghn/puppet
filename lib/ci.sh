@@ -21,11 +21,11 @@ ci_install(){
 
   echo 'Install gems'
   set_bundle_directory "$APPDIR"
-  bundle install --path vendor
+  bundle install --path vendor/bundle
 
   echo 'Install profile testing gems'
   set_bundle_directory "${APPDIR}/dist/profile"
-  bundle install --without development system_tests --path vendor
+  bundle install --without development system_tests --path vendor/bundle
 
   echo 'Build docker images'
   set_bundle_directory "$APPDIR"
