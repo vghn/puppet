@@ -19,6 +19,8 @@ ENV RACK_PORT=8523 \
     RACK_ENV=production \
     AWS_DEFAULT_REGION=us-east-1
 
+EXPOSE $RACK_PORT
+
 # Copy application
 COPY app /app
 
