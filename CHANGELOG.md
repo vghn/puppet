@@ -1,3 +1,7 @@
+## Version 0.0.97 / 2016-08-13
+  * Add logs to the MINI role ([Vlad - 0f5baff](https://github.com/vghn/puppet/commit/0f5baffc5f7c9721f7c74fc7d2f7e796dcaec241))
+  * Add Samba to the MINI role ([Vlad - 575510f](https://github.com/vghn/puppet/commit/575510f5d282f387a98ec10b196c86fe4ec22a0b))
+
 ## Version 0.0.96 / 2016-08-12
   * Improve the bootstrap script ([Vlad - 2f00dcd](https://github.com/vghn/puppet/commit/2f00dcdccd432077c481ae85697279baa090ae2f))
 
