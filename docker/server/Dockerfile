@@ -13,7 +13,7 @@ COPY csr-sign /usr/local/bin/
 COPY hiera.yaml /etc/puppetlabs/puppet/hiera.yaml
 
 # Health
-HEALTHCHECK --interval=30s --timeout=30s --retries=10 CMD \
+HEALTHCHECK --interval=30s --timeout=30s --retries=20 CMD \
   curl \
   --cert   $(puppet config print hostcert) \
   --key    $(puppet config print hostprivkey) \
