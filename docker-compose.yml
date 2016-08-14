@@ -12,6 +12,9 @@ services:
       - '8523:8523'
       - '8140:8140'
     restart: unless-stopped
+    networks:
+      - frontend
+      - backend
   server:
     image: vladgh/vpm-server:latest
     hostname: puppet.ghn.me
@@ -25,6 +28,8 @@ services:
       TCP_PORTS: '8140'
     entrypoint: sh -c "until [ -s /var/local/deployed_r10k ]; do echo 'Waiting for R10K'; sleep 5; done; /entrypoint.sh puppetserver foreground"
     restart: unless-stopped
+    networks:
+      - backend
   logs:
     hostname: log-agent
     image: gliderlabs/logspout:latest
@@ -34,6 +39,8 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     entrypoint: sh -c "until [ -s /etc/puppetlabs/vault/production/logging.env ]; do echo 'Waiting for data'; sleep 5; done && set -a && . /etc/puppetlabs/vault/production/logging.env && /bin/logspout syslog://$${LOG_SERVER_ADDRESS}:$${LOG_SERVER_PORT}"
     restart: unless-stopped
+    networks:
+      - backend
   ssl:
     image: vladgh/s3sync:latest
     hostname: ssl-sync-agent
@@ -41,6 +48,8 @@ services:
       - data
     entrypoint: sh -c "until [ -s /etc/puppetlabs/vault/production/ssl.env ]; do echo 'Waiting for data'; sleep 5; done && set -a && . /etc/puppetlabs/vault/production/ssl.env && /entrypoint.sh"
     restart: unless-stopped
+    networks:
+      - backend
   data:
     image: vladgh/vpm-data:latest
     hostname: data-agent
@@ -62,9 +71,15 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /var/local
     restart: unless-stopped
+    networks:
+      - backend
 
 volumes:
   ssl:
   code:
   vault:
   hieradata:
+
+networks:
+  frontend:
+  backend:
