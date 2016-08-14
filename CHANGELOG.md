@@ -1,3 +1,9 @@
+## Version 0.0.101 / 2016-08-14
+  * Add restart policies for docker containers ([Vlad - 55a338a](https://github.com/vghn/puppet/commit/55a338ac2a74ceb51ec9ab96d87234aa4c742228))
+  * Create separate networks in docker compose ([Vlad - ca085e4](https://github.com/vghn/puppet/commit/ca085e428c6f20638bf10876c30001cbf351e950))
+  * Increase health check timeout for Puppet Server ([Vlad - 33c258a](https://github.com/vghn/puppet/commit/33c258a0ac7501650d8a0e0ded6f8a88949a71a8))
+  * Do not pin aws sdk gem version ([Vlad - b7349ed](https://github.com/vghn/puppet/commit/b7349edd561b62fc11dab3b4546742fbbbed5570))
+
 ## Version 0.0.100 / 2016-08-14
   * Fix firewall rules ([Vlad - 8e2e74b](https://github.com/vghn/puppet/commit/8e2e74b6e846a2af1c35023871a8c59e4ea1a6ac))
 
