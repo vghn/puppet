@@ -10,6 +10,7 @@ describe 'profile::linuxfw' do
 
         it { is_expected.to contain_class('firewall') }
         it { is_expected.to contain_resources('firewall') }
+        it { is_expected.to contain_resources('firewallchain') }
 
         it { is_expected.to contain_class('profile::linuxfw') }
         it { is_expected.to contain_class('profile::linuxfw::pre') }
