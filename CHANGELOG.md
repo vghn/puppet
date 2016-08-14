@@ -1,3 +1,6 @@
+## Version 0.0.100 / 2016-08-14
+  * Fix firewall rules ([Vlad - 8e2e74b](https://github.com/vghn/puppet/commit/8e2e74b6e846a2af1c35023871a8c59e4ea1a6ac))
+
 ## Version 0.0.99 / 2016-08-13
   * Improve Slack command output ([Vlad - 9cee575](https://github.com/vghn/puppet/commit/9cee575af5e89506046bef632ce43b1b95f18368))
   * Improve Travis caching ([Vlad - 36dc7a6](https://github.com/vghn/puppet/commit/36dc7a641613b6d7c350dc61631ad84c34ad2c24))
