@@ -9,14 +9,13 @@ matrix:
       env: USE_DOCKER=true
       services: docker
     - sudo: false
-      env: USE_DOCKER=false
+      env: PUPPET_GEM_VERSION="~> 4.0"
 branches:
   except:
     - /^v\d/
 install: bin/ci install
 script: bin/ci test
 after_success: bin/ci deploy
-env: PUPPET_GEM_VERSION="~> 4.0"
 before_cache:
   - rm -f dist/profile/spec/fixtures/modules/profile
 cache:
