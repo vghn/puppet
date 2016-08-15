@@ -18,6 +18,10 @@ class DataAgent < Sinatra::Base
     'Nothing here! Yet!'
   end
 
+  get '/status' do
+    'OK'
+  end
+
   # Deploy (/deploy?async=yes)
   # Simulate a github post:
   # data='{ "repository": { "name": "puppet" }, "ref": "refs/heads/production" }'

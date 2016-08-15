@@ -33,4 +33,4 @@ ENTRYPOINT ["/run.sh"]
 
 # Health
 HEALTHCHECK --interval=30s --timeout=30s --retries=10 CMD \
-  curl -kf https://localhost:8523/ || exit 1
+  curl -kf https://localhost:8523/status || exit 1
