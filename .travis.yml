@@ -1,4 +1,5 @@
 language: ruby
+rvm: 2.2
 matrix:
   include:
     - sudo: required
@@ -9,7 +10,6 @@ matrix:
       services: docker
     - sudo: false
       env: PUPPET_GEM_VERSION="~> 4.0"
-      rvm: 2.2
 branches:
   except:
     - /^v\d/
