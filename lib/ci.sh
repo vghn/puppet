@@ -39,6 +39,9 @@ ci_install(){
     set_bundle_directory "${APPDIR}/dist/profile"
     bundle install --without development system_tests --path vendor/bundle
   fi
+
+  e_info 'Get private data'
+  download_private_data
 }
 
 # CI Test
@@ -64,9 +67,6 @@ ci_test(){
 
 # CI Deploy
 ci_deploy(){
-  e_info 'Get private data'
-  download_private_data
-
   if [[ "${USE_DOCKER:-}" == 'true' ]]; then
     set_bundle_directory "$APPDIR"
 
