@@ -71,7 +71,7 @@ ci_deploy(){
     set_bundle_directory "$APPDIR"
 
     e_info 'Login to Docker Registry'
-    docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
+    docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
 
     case "${DOCKER_IMAGE:-}" in
       data)
