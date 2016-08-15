@@ -9,7 +9,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     ports:
-      - '8523:8523'
+      - '443:8523'
       - '8140:8140'
     restart: unless-stopped
     networks:
@@ -58,7 +58,7 @@ services:
       DATA_CONFIG: '/etc/puppetlabs/vault/production/data_cfg.yaml'
       RACK_SSL_KEY: '/etc/puppetlabs/vault/production/ghn.me.key'
       RACK_SSL_CRT: '/etc/puppetlabs/vault/production/ghn.me.crt'
-      RACK_PORT: '8523'
+      RACK_SSL_CA: '/etc/puppetlabs/vault/production/ghn.me_root_bundle.crt'
       TCP_PORTS: '8523'
     volumes:
       - ssl:/etc/puppetlabs/puppet/ssl
