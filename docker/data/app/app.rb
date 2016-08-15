@@ -4,7 +4,7 @@ require 'sinatra'
 require 'sinatra/base'
 
 # Sinatra Application Class
-class DataAgent < Sinatra::Base
+class API < Sinatra::Base
   use Rack::SSL
   configure do
     enable :logging
@@ -19,20 +19,14 @@ class DataAgent < Sinatra::Base
   end
 
   post '/travis' do
-    payload = request.body.read
-    push    = JSON.parse(payload)
-    status  = push['status']
-    build   = push['number']
+    payload = JSON.parse(params[:payload])
+    build   = payload['number']
 
     verify_travis_request
-    if status == 0
-      async_deploy
-      log.info "Deployment requested from build ##{build} for repository" \
-               " #{travis_repo_slug}"
-      'Deployment started'
-    else
-      log.info "Skip deployment for unsuccesfull '#{travis_repo_slug}' build"
-    end
+    async_deploy
+    log.info "Deployment requested from build ##{build} for repository" \
+             " #{travis_repo_slug}"
+    'Deployment started'
   end
 
   post '/github' do
@@ -86,6 +80,6 @@ class DataAgent < Sinatra::Base
   end
 
   get '/status' do
-    'OK'
+    'Alive'
   end
-end # class DataAgent
+end # class API
