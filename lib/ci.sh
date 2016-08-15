@@ -3,6 +3,9 @@
 
 # CI Install
 ci_install(){
+  echo 'Install AWS-CLI'
+  pip install --user --upgrade awscli
+
   echo 'Install VGS library'
   git clone https://github.com/vghn/vgs.git ~/vgs
 
@@ -10,9 +13,6 @@ ci_install(){
   gem update bundler
 
   if [[ "${USE_DOCKER:-}" == 'true' ]]; then
-    echo 'Install AWS-CLI'
-    pip install --user --upgrade awscli
-
     echo 'Updating docker'
     sudo apt-get -qy update
     sudo apt-get -qy \
@@ -44,9 +44,6 @@ ci_install(){
 # CI Test
 ci_test(){
   if [[ "${USE_DOCKER:-}" == 'true' ]]; then
-    e_info 'Get private data'
-    download_private_data
-
     set_bundle_directory "$APPDIR"
     case "${DOCKER_IMAGE:-}" in
       data)
@@ -67,6 +64,9 @@ ci_test(){
 
 # CI Deploy
 ci_deploy(){
+  e_info 'Get private data'
+  download_private_data
+
   if [[ "${USE_DOCKER:-}" == 'true' ]]; then
     set_bundle_directory "$APPDIR"
 
@@ -89,5 +89,6 @@ ci_deploy(){
   eval "$(ssh-agent -s)"
   chmod 600 "${APPDIR}/vault/deploy_key"
   ssh-add "${APPDIR}/vault/deploy_key"
+  ssh-keyscan -H puppet.ghn.me >> ~/.ssh/known_hosts
   ssh ubuntu@puppet.ghn.me 'whoami'
 }
