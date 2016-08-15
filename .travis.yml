@@ -1,7 +1,15 @@
 language: ruby
-services: docker
-rvm:
-  - 2.2.3
+rvm: 2.2.3
+matrix:
+  include:
+    - sudo: required
+      env: USE_DOCKER=true
+      services: docker
+    - sudo: required
+      env: USE_DOCKER=true
+      services: docker
+    - sudo: false
+      env: USE_DOCKER=false
 branches:
   except:
     - /^v\d/
