@@ -87,7 +87,7 @@ ci_deploy(){
 
   # SSH Deployment
   eval "$(ssh-agent -s)"
-  chmod 600 vault/deploy_key
-  ssh-add vault/deploy_key
+  chmod 600 "${APPDIR}/vault/deploy_key"
+  ssh-add "${APPDIR}/vault/deploy_key"
   ssh ubuntu@puppet.ghn.me 'whoami'
 }
