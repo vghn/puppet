@@ -21,7 +21,9 @@ class API < Sinatra::Base
   post '/travis' do
     payload = JSON.parse(params[:payload])
     build   = payload['number']
-
+    File.open(yourfile, 'w') { |file|
+      file.write(payload)
+    }
     verify_travis_request
     async_deploy
     log.info "Deployment requested from build ##{build} for repository" \

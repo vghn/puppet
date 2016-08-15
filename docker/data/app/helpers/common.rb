@@ -106,6 +106,12 @@ end
 
 def verify_travis_request
   digest = Digest::SHA2.new.update("#{travis_repo_slug}#{config['travis_token']}")
+  File.open(yourfile, 'w') { |file|
+    file.write(env)
+    file.write(digest)
+    file.write(travis_repo_slug)
+    file.write(authorization)
+  }
   unless digest.to_s == authorization
     throw(:halt, [403, "Unauthorized TravisCI request!\n"])
   end
