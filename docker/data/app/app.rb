@@ -4,7 +4,7 @@ require 'sinatra'
 require 'sinatra/base'
 
 # Sinatra Application Class
-class DataAgent < Sinatra::Base
+class API < Sinatra::Base
   use Rack::SSL
   configure do
     enable :logging
@@ -18,26 +18,25 @@ class DataAgent < Sinatra::Base
     'Nothing here! Yet!'
   end
 
-  # Deploy (/deploy?async=yes)
-  # Simulate a github post:
-  # data='{ "repository": { "name": "puppet" }, "ref": "refs/heads/production" }'
-  # curl -d "$data" -H "Accept: application/json" 'https://{USER}:{PASS}@localhost:8523/deploy?async=yes' -k -q
-  post '/deploy' do
-    protected!
+  post '/travis' do
+    payload = JSON.parse(params[:payload])
+    build   = payload['number']
 
+    verify_travis_request
+    async_deploy
+    log.info "Deployment requested from build ##{build} for repository" \
+             " #{travis_repo_slug}"
+    'Deployment started'
+  end
+
+  post '/github' do
     payload = request.body.read
     push = JSON.parse(payload)
 
-    verify_signature(payload) if params[:verify] == 'yes'
-
-    if params[:async] == 'yes'
-      async_deploy
-    else
-      deploy
-    end
-
-    log.info "Requested by @#{push['sender']['login']}"
-    'Deployment in progress...'
+    verify_github_signature(payload)
+    async_deploy
+    log.info "Requested by GtiHub user @#{push['sender']['login']}"
+    'Deployment started'
   end
 
   post '/slack' do
@@ -48,9 +47,9 @@ class DataAgent < Sinatra::Base
     text    = params.fetch('text').strip
 
     if token == config['slack_token']
-      log.info "Authorized request from @#{user} on channel ##{channel}"
+      log.info "Authorized request from slacker @#{user} on channel ##{channel}"
     else
-      log.warn "Unauthorized token received from @#{user}"
+      log.warn "Unauthorized token received from slacker @#{user}"
     end
 
     case command
@@ -79,4 +78,8 @@ class DataAgent < Sinatra::Base
         ENV.each.map { |k, v| "<li><b>#{k}:</b> #{v}</li>" }.join + '</ul>'
     end
   end
-end # class DataAgent
+
+  get '/status' do
+    'Alive'
+  end
+end # class API

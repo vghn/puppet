@@ -1,6 +1,7 @@
 require 'logger'
 require 'openssl'
 require 'yaml'
+require 'digest/sha2'
 
 # Logging
 def log
@@ -62,6 +63,7 @@ def deploy
   download_vault
   download_hieradata
   deploy_r10k
+  log.info 'Deployment finished'
 end
 
 # Asynchronous Deployment
@@ -71,6 +73,7 @@ def async_deploy
   Thread.new { download_vault }
   Thread.new { download_hieradata }
   Thread.new { deploy_r10k }
+  log.info 'Deployment started in the background'
 end
 
 def protected!
@@ -86,11 +89,25 @@ def authorized?
   @auth.credentials == [config['user'],config['pass']]
 end
 
-def verify_signature(payload_body)
-  if config['github_secret']
-    signature = 'sha1=' + OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha1'), config['github_secret'], payload_body)
-    throw(:halt, [500, "Signatures didn't match!\n"]) unless Rack::Utils.secure_compare(signature, request.env['HTTP_X_HUB_SIGNATURE'])
-  else
-    log.warn 'github_secret was not found in the configuration file'
+def verify_github_signature(payload_body)
+  signature = 'sha1=' + OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha1'), config['github_secret'], payload_body)
+  unless Rack::Utils.secure_compare(signature, request.env['HTTP_X_HUB_SIGNATURE'])
+    throw(:halt, [500, "Signatures didn't match!\n"])
   end
 end
+
+def authorization
+  env['HTTP_AUTHORIZATION']
+end
+
+def travis_repo_slug
+  env['HTTP_TRAVIS_REPO_SLUG']
+end
+
+def verify_travis_request
+  digest = Digest::SHA2.new.update("#{travis_repo_slug}#{config['travis_token']}")
+  unless digest.to_s == authorization
+    throw(:halt, [403, "Unauthorized TravisCI request!\n"])
+  end
+end
+
