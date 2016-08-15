@@ -67,7 +67,7 @@ ci_test(){
 
 # CI Deploy
 ci_deploy(){
-  if [[ "${USE_DOCKER:-}" == 'true' ]] && [[ "$ENVTYPE" == 'production' ]]; then
+  if [[ "${USE_DOCKER:-}" == 'true' ]]; then
     set_bundle_directory "$APPDIR"
 
     e_info 'Login to Docker Registry'
@@ -83,6 +83,5 @@ ci_deploy(){
         bundle exec rake docker:server:publish
         ;;
     esac
-
   fi
 }
