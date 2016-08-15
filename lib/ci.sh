@@ -27,15 +27,11 @@ ci_install(){
     case "${DOCKER_IMAGE:-}" in
       data)
         echo 'Build data docker image'
-        bundle exec rake docker:build:data
+        bundle exec rake docker:data:build
         ;;
       server)
         echo 'Build server docker image'
-        bundle exec rake docker:build:server
-        ;;
-      *)
-        echo 'Build docker images'
-        bundle exec rake docker:build
+        bundle exec rake docker:server:build
         ;;
     esac
   else
@@ -55,15 +51,11 @@ ci_test(){
     case "${DOCKER_IMAGE:-}" in
       data)
         e_info 'Test data docker image'
-        bundle exec rake docker:spec:data
+        bundle exec rake docker:data:spec
         ;;
       server)
         e_info 'Test data docker image'
-        bundle exec rake docker:spec:server
-        ;;
-      *)
-        e_info 'Test docker images'
-        bundle exec rake docker:spec:
+        bundle exec rake docker:server:spec
         ;;
     esac
   else
@@ -84,15 +76,11 @@ ci_deploy(){
     case "${DOCKER_IMAGE:-}" in
       data)
         e_info 'Publish data docker image'
-        bundle exec rake docker:publish:data
+        bundle exec rake docker:data:publish
         ;;
       server)
         e_info 'Publish docker images'
-        bundle exec rake docker:publish:data
-        ;;
-      *)
-        e_info 'Publish docker images'
-        bundle exec rake docker:publish
+        bundle exec rake docker:server:publish
         ;;
     esac
 
