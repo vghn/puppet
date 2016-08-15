@@ -44,14 +44,11 @@ namespace :docker do
 
       desc 'Build docker image'
       task build: :docker do
-        sh "docker pull #{path}" unless NO_CACHE
-
         info "Building #{path}:latest"
         cmd = "cd #{image} && docker build -t #{path}:latest"
         info "Ignoring layer cache for #{path}" if NO_CACHE
         cmd += ' --no-cache' if NO_CACHE
         sh "#{cmd} ."
-
         if version
           info "Building #{path}:#{version}"
           sh "cd #{image} && docker build -t #{path}:#{version} ."
