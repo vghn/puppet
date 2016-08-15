@@ -20,6 +20,7 @@ script: bin/ci test
 deploy:
   provider: script
   script: bin/ci deploy
+  skip_cleanup: true
   on:
     all_branches: true
 before_cache:
