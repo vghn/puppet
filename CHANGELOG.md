@@ -1,3 +1,6 @@
+## Version 0.0.103 / 2016-08-15
+  * Pull docker images before building ([Vlad - 09fd1d2](https://github.com/vghn/puppet/commit/09fd1d26a6d46aa9c7c1c14c6e9eda7c62fc8101))
+
 ## Version 0.0.102 / 2016-08-15
   * Separate Travis builds for testing profile and docker images ([Vlad - 8e13b3c](https://github.com/vghn/puppet/commit/8e13b3cac9050582fefb7c74ac33b526161dab8c))
   * Fix build matrix ([Vlad - 4edcb10](https://github.com/vghn/puppet/commit/4edcb10751fea2452c5c4cd51a8c988e42cf8689))
