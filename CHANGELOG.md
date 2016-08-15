@@ -1,3 +1,22 @@
+## Version 0.0.102 / 2016-08-15
+  * Separate Travis builds for testing profile and docker images ([Vlad - 8e13b3c](https://github.com/vghn/puppet/commit/8e13b3cac9050582fefb7c74ac33b526161dab8c))
+  * Fix build matrix ([Vlad - 4edcb10](https://github.com/vghn/puppet/commit/4edcb10751fea2452c5c4cd51a8c988e42cf8689))
+  * Fix build matrix ([Vlad - 1eb4744](https://github.com/vghn/puppet/commit/1eb47448ca8760730dd94ada93ac7c614dc3cddc))
+  * Fix build matrix ([Vlad - c487746](https://github.com/vghn/puppet/commit/c4877469dae1cc996b63d6c20c176e80a665e4ba))
+  * Separate docker builds ([Vlad - a281c4b](https://github.com/vghn/puppet/commit/a281c4b91a3636a146b6f9247714bc372f758108))
+  * Fix docker rake task ([Vlad - 7f7f37a](https://github.com/vghn/puppet/commit/7f7f37adddc6ef0fa4c01b65d383917a27916406))
+  * Change Ruby version for profile tests ([Vlad - 9812de9](https://github.com/vghn/puppet/commit/9812de903de71af1fb145b1ab038a56253af9533))
+  * Use the latest Travis Ruby for all tests ([Vlad - 4784c19](https://github.com/vghn/puppet/commit/4784c193d493dbcd647462ee42356a3ff4a02fb9))
+  * Use the latest Travis Ruby for all tests ([Vlad - d680a8d](https://github.com/vghn/puppet/commit/d680a8d1c2c2593b4dc547bf112509dec60affcb))
+  * Separate health check sinatra map ([Vlad - 794abc8](https://github.com/vghn/puppet/commit/794abc8da53e318b7b49611fce53d216dbbfd4dc))
+  * Separate hooks for Travis/GitHub/Slack/Healthcheck ([Vlad - f34fe2f](https://github.com/vghn/puppet/commit/f34fe2f6ba6a5eea97ace6124aa8cb93af94139e))
+  * Add notifications to Travis ([Vlad - 82b48d9](https://github.com/vghn/puppet/commit/82b48d9dc01e4bca225a4c07f2b74ba375f09236))
+  * Debug Travis notifications ([Vlad - 72837d1](https://github.com/vghn/puppet/commit/72837d119ba0b86b16b9bc52d5e4d0b392195560))
+  * Rename DataAgent to API ([Vlad - 7799502](https://github.com/vghn/puppet/commit/779950233e310f74f3d44af2dc995b569888c878))
+  * Fix TravisCI notifications and API ([Vlad - 8e46059](https://github.com/vghn/puppet/commit/8e460591fb3495b3c94f6e674cbaeb4731694e81))
+  * Debug TravisCI notifications ([Vlad - b6f46f5](https://github.com/vghn/puppet/commit/b6f46f59b0471566fe59f00af9a37133238cde08))
+  * Finish debugging TravisCI ([Vlad - ddf7efa](https://github.com/vghn/puppet/commit/ddf7efa93b8adf14014d3f588c74dc52a5a0412b))
+
 ## Version 0.0.101 / 2016-08-14
   * Add restart policies for docker containers ([Vlad - 55a338a](https://github.com/vghn/puppet/commit/55a338ac2a74ceb51ec9ab96d87234aa4c742228))
   * Create separate networks in docker compose ([Vlad - ca085e4](https://github.com/vghn/puppet/commit/ca085e428c6f20638bf10876c30001cbf351e950))
