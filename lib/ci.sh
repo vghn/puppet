@@ -9,7 +9,7 @@ ci_install(){
   echo 'Update Bundler'
   gem update bundler
 
-  if [[ "$USE_DOCKER" == 'true' ]]; then
+  if [[ "${USE_DOCKER:-}" == 'true' ]]; then
     echo 'Install AWS-CLI'
     pip install --user --upgrade awscli
 
@@ -36,7 +36,7 @@ ci_install(){
 
 # CI Test
 ci_test(){
-  if [[ "$USE_DOCKER" == 'true' ]]; then
+  if [[ "${USE_DOCKER:-}" == 'true' ]]; then
     e_info 'Get private data'
     download_private_data
 
@@ -52,7 +52,7 @@ ci_test(){
 
 # CI Deploy
 ci_deploy(){
-  if [[ "$USE_DOCKER" == 'true' ]] && [[ "$ENVTYPE" == 'production' ]]; then
+  if [[ "${USE_DOCKER:-}" == 'true' ]] && [[ "$ENVTYPE" == 'production' ]]; then
     e_info 'Login to Docker Registry'
     docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
 
