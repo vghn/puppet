@@ -24,9 +24,20 @@ ci_install(){
     set_bundle_directory "$APPDIR"
     bundle install --path vendor/bundle
 
-    echo 'Build docker images'
-    set_bundle_directory "$APPDIR"
-    bundle exec rake docker:build
+    case "${DOCKER_IMAGE:-}" in
+      data)
+        echo 'Build data docker image'
+        bundle exec rake docker:build:data
+        ;;
+      server)
+        echo 'Build server docker image'
+        bundle exec rake docker:build:server
+        ;;
+      *)
+        echo 'Build docker images'
+        bundle exec rake docker:build
+        ;;
+    esac
   else
     echo 'Install profile testing gems'
     set_bundle_directory "${APPDIR}/dist/profile"
@@ -40,9 +51,21 @@ ci_test(){
     e_info 'Get private data'
     download_private_data
 
-    e_info 'Test docker images'
     set_bundle_directory "$APPDIR"
-    bundle exec rake docker:spec
+    case "${DOCKER_IMAGE:-}" in
+      data)
+        e_info 'Test data docker image'
+        bundle exec rake docker:spec:data
+        ;;
+      server)
+        e_info 'Test data docker image'
+        bundle exec rake docker:spec:server
+        ;;
+      *)
+        e_info 'Test docker images'
+        bundle exec rake docker:spec:
+        ;;
+    esac
   else
     e_info 'Run profile tests'
     set_bundle_directory "${APPDIR}/dist/profile"
@@ -53,11 +76,25 @@ ci_test(){
 # CI Deploy
 ci_deploy(){
   if [[ "${USE_DOCKER:-}" == 'true' ]] && [[ "$ENVTYPE" == 'production' ]]; then
+    set_bundle_directory "$APPDIR"
+
     e_info 'Login to Docker Registry'
     docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
 
-    e_info 'Publish docker images'
-    set_bundle_directory "$APPDIR"
-    bundle exec rake docker:publish
+    case "${DOCKER_IMAGE:-}" in
+      data)
+        e_info 'Publish data docker image'
+        bundle exec rake docker:publish:data
+        ;;
+      server)
+        e_info 'Publish docker images'
+        bundle exec rake docker:publish:data
+        ;;
+      *)
+        e_info 'Publish docker images'
+        bundle exec rake docker:publish
+        ;;
+    esac
+
   fi
 }
