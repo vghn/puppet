@@ -84,4 +84,10 @@ ci_deploy(){
         ;;
     esac
   fi
+
+  # SSH Deployment
+  eval "$(ssh-agent -s)"
+  chmod 600 vault/deploy_key
+  ssh-add vault/deploy_key
+  ssh ubuntu@puppet.ghn.me 'whoami'
 }
