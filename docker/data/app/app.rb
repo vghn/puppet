@@ -21,11 +21,12 @@ class API < Sinatra::Base
   post '/travis' do
     payload = JSON.parse(params[:payload])
     build   = payload['number']
+    branch  = payload['branch']
 
     verify_travis_request
     async_deploy
-    log.info "Deployment requested from build ##{build} for repository" \
-             " #{travis_repo_slug}"
+    log.info "Deployment requested from build ##{build} for the #{branch} " \
+             "branch of repository #{travis_repo_slug}"
     'Deployment started'
   end
 
