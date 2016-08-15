@@ -3,14 +3,14 @@
 
 # CI Install
 ci_install(){
-  echo 'Install AWS-CLI'
-  pip install --user --upgrade awscli
-
   echo 'Install VGS library'
   git clone https://github.com/vghn/vgs.git ~/vgs
 
   echo 'Update Bundler'
   gem update bundler
+
+  echo 'Install AWS-CLI'
+  pip install --user --upgrade awscli
 
   if [[ "${USE_DOCKER:-}" == 'true' ]]; then
     echo 'Updating docker'
@@ -39,13 +39,13 @@ ci_install(){
     set_bundle_directory "${APPDIR}/dist/profile"
     bundle install --without development system_tests --path vendor/bundle
   fi
-
-  e_info 'Get private data'
-  download_private_data
 }
 
 # CI Test
 ci_test(){
+  e_info 'Get private data'
+  download_private_data
+
   if [[ "${USE_DOCKER:-}" == 'true' ]]; then
     set_bundle_directory "$APPDIR"
     case "${DOCKER_IMAGE:-}" in
