@@ -1,3 +1,7 @@
+## Version 0.0.105 / 2016-08-16
+  * Update SSH module ([Vlad - 268caff](https://github.com/vghn/puppet/commit/268caffa834352c61bcdaafa87108fb3439cdcb8))
+  * Fix load balancer links ([Vlad - 6984006](https://github.com/vghn/puppet/commit/698400693f9077019c8d29c6079fd002c9a58d3a))
+
 ## Version 0.0.104 / 2016-08-16
   * Fix data container health check ([Vlad - 5cd4d8f](https://github.com/vghn/puppet/commit/5cd4d8fbaccc961ef83a3f5e1914c4400939ac2f))
   * Do not pull containers before building ([Vlad - 708fc0f](https://github.com/vghn/puppet/commit/708fc0fec1e83806ae21204a5f5f9b24efe3c5e8))
