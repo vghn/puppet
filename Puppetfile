@@ -19,7 +19,7 @@ mod 'puppetlabs/vcsrepo', '1.3.2'
 
 # Puppet approved modules
 mod 'garethr/docker', '5.3.0'
-mod 'ghoneycutt/ssh', '3.42.0'
+mod 'ghoneycutt/ssh', '3.43.0'
 mod 'hunner/hiera', '2.0.1'
 mod 'maestrodev/wget', '1.7.3'
 mod 'puppet/archive', '1.0.0'
