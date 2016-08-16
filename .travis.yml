@@ -5,11 +5,9 @@ env: PUPPET_GEM_VERSION="~> 4.0"
 branches:
   except:
     - /^v\d/\
-before_install:
-  - gem update bundler
-  - cd dist/profile
-install: bundle install --gemfile=dist/profile/Gemfile --without development system_tests --path vendor/bundle
-script: bundle exec --gemfile=dist/profile/Gemfile rake test
+before_install: gem update bundler
+install: bundle install --gemfile=${TRAVIS _BUILD_DIR}/dist/profile/Gemfile --without development system_tests --path ${TRAVIS _BUILD_DIR}/vendor/bundle
+script: bundle exec --gemfile=${TRAVIS _BUILD_DIR}dist/profile/Gemfile rake test
 before_cache: rm -f dist/profile/spec/fixtures/modules/profile
 cache:
   directories:
