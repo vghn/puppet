@@ -34,7 +34,7 @@ fixtures:
       ref: '5.3.0'
     ssh:
       repo: 'ghoneycutt/ssh'
-      ref: '3.42.0'
+      ref: '3.43.0'
     hiera:
       repo: 'hunner/hiera'
       ref: '2.0.1'
