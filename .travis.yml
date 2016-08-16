@@ -5,15 +5,12 @@ env: PUPPET_GEM_VERSION="~> 4.0"
 branches:
   except:
     - /^v\d/
-before_install:
-  - gem update bundler
-  - cd dist/profile
-install: bundle install --without development system_tests --path vendor/bundle
-script: bundle exec rake test
+before_install: gem update bundler
+install: 'cd dist/profile bundle install --without development system_tests --path vendor/bundle'
+script: 'bundle exec rake test'
 before_cache: rm -f dist/profile/spec/fixtures/modules/profile
 cache:
   directories:
-    - "$HOME/.cache/pip"
     - dist/profile/vendor/bundle
     - dist/profile/spec/fixtures/modules
 notifications:
