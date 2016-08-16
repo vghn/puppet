@@ -1,3 +1,19 @@
+## Version 0.1.0 / 2016-08-16
+  * Separate docker images from the puppet control repo ([Vlad - cdeceb4](https://github.com/vghn/puppet/commit/cdeceb44e6defff0b8f0b72ed51eae74d43b0553))
+  * Simplify CI scripts ([Vlad - fd1385e](https://github.com/vghn/puppet/commit/fd1385e7de14388f4f615fb1bc6acb5cf0482f67))
+  * Fix Travis build ([Vlad - 0df5341](https://github.com/vghn/puppet/commit/0df534170b4f2241b33e60a5a9b91c78c936142b))
+  * Fix bundle path ([Vlad - 73d9617](https://github.com/vghn/puppet/commit/73d96172958b331fb80c0cad47bc5afc634c29cc))
+  * Fix bundle path ([Vlad - 8510c9a](https://github.com/vghn/puppet/commit/8510c9a49b7b483456bb6f7afb90c92ec4323bc7))
+  * Fix bundle path ([Vlad - 13d270c](https://github.com/vghn/puppet/commit/13d270c142f820907c1d73620b4eb42ede06d45f))
+  * Fix travis paths ([Vlad - 17d8a5b](https://github.com/vghn/puppet/commit/17d8a5b48570dc9a1ac780ac0c40b54556ead634))
+  * Fix travis paths ([Vlad - 3d4d243](https://github.com/vghn/puppet/commit/3d4d2433dcc52e27999b5f25910ea5c8c34b0b84))
+  * Fix travis paths ([Vlad - a16c120](https://github.com/vghn/puppet/commit/a16c120a762ce08e49a1988bea67c042cc41be53))
+  * Fix travis paths ([Vlad - cb40138](https://github.com/vghn/puppet/commit/cb40138c1a16b1c248c115efcc6683800565e91d))
+  * Fix travis paths ([Vlad - 58d9f0b](https://github.com/vghn/puppet/commit/58d9f0bc7afcd940289d0f540766f7d7cda90201))
+  * Fix travis paths ([Vlad - 86cafdf](https://github.com/vghn/puppet/commit/86cafdfcb0901a6da69e9847bfa2b5ebb1412788))
+  * Fix travis paths ([Vlad - d338d1e](https://github.com/vghn/puppet/commit/d338d1efd6faa6bb680f65987ae0388203be79e5))
+  * Fix travis build ([Vlad - 348be98](https://github.com/vghn/puppet/commit/348be98656d7c7a34ca6361edec20c8ddffdfa4b))
+
 ## Version 0.0.105 / 2016-08-16
   * Update SSH module ([Vlad - 268caff](https://github.com/vghn/puppet/commit/268caffa834352c61bcdaafa87108fb3439cdcb8))
   * Fix load balancer links ([Vlad - 6984006](https://github.com/vghn/puppet/commit/698400693f9077019c8d29c6079fd002c9a58d3a))
