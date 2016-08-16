@@ -1,3 +1,21 @@
+## Version 0.0.104 / 2016-08-16
+  * Fix data container health check ([Vlad - 5cd4d8f](https://github.com/vghn/puppet/commit/5cd4d8fbaccc961ef83a3f5e1914c4400939ac2f))
+  * Do not pull containers before building ([Vlad - 708fc0f](https://github.com/vghn/puppet/commit/708fc0fec1e83806ae21204a5f5f9b24efe3c5e8))
+  * Improve notifications output ([Vlad - 5cef694](https://github.com/vghn/puppet/commit/5cef694879d790b6fa16b80e01b79093cd9bebaa))
+  * Use a deploy hook in Travis ([Vlad - 9444ced](https://github.com/vghn/puppet/commit/9444ced5513e405d659a5a5385808cd2723219e1))
+  * Allow deployment from the master branch ([Vlad - a534127](https://github.com/vghn/puppet/commit/a534127370c997c5478700f2def78efc169f9ebe))
+  * Allow deployment from any branch ([Vlad - 403d683](https://github.com/vghn/puppet/commit/403d6837ad659a3e43243d94a4d43774a75c011a))
+  * Debug Travis deployment script ([Vlad - 62aae08](https://github.com/vghn/puppet/commit/62aae0867d2b310de1f705d4d73033b43a59db0a))
+  * Skip deployment clean-up ([Vlad - c35b8e8](https://github.com/vghn/puppet/commit/c35b8e829eea145613b8b5df5f80832974604cbe))
+  * Remove deprecated docker login parameters ([Vlad - dce5acf](https://github.com/vghn/puppet/commit/dce5acf4dffa5e267813d67b04599b55a7688488))
+  * Test SSH deployment ([Vlad - 0d1f9bc](https://github.com/vghn/puppet/commit/0d1f9bc3722ac05bd59b3a9374f8b2fa7cfd5866))
+  * Fix deployment key path ([Vlad - 7cf6b34](https://github.com/vghn/puppet/commit/7cf6b342c9d503f425089c45e2c803d98f956667))
+  * Simpler bundler cache ([Vlad - cbf2223](https://github.com/vghn/puppet/commit/cbf2223ee6eb11879dca82f86523edbdb1556638))
+  * Add ssh host to known_hosts and allow private data on all builds ([Vlad - 0098893](https://github.com/vghn/puppet/commit/00988937a1b9bc33fd238f0b79a9f809a6f84b01))
+  * Download private data during the installation step ([Vlad - 794636c](https://github.com/vghn/puppet/commit/794636c2e9bccdef34e4456ef8a7f522c59e98a8))
+  * Fix Travis build ([Vlad - 25ff5dd](https://github.com/vghn/puppet/commit/25ff5dd4529c2422ffa039f504dd770f45af9c41))
+  * Rename DATA container to API and improvements ([Vlad - 8ecfb0d](https://github.com/vghn/puppet/commit/8ecfb0da56a9d2e8bc91ff613c1e3e9c36ee164d))
+
 ## Version 0.0.103 / 2016-08-15
   * Pull docker images before building ([Vlad - 09fd1d2](https://github.com/vghn/puppet/commit/09fd1d26a6d46aa9c7c1c14c6e9eda7c62fc8101))
 

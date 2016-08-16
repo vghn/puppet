@@ -9,10 +9,10 @@ ci_install(){
   echo 'Update Bundler'
   gem update bundler
 
-  if [[ "${USE_DOCKER:-}" == 'true' ]]; then
-    echo 'Install AWS-CLI'
-    pip install --user --upgrade awscli
+  echo 'Install AWS-CLI'
+  pip install --user --upgrade awscli
 
+  if [[ "${USE_DOCKER:-}" == 'true' ]]; then
     echo 'Updating docker'
     sudo apt-get -qy update
     sudo apt-get -qy \
@@ -27,7 +27,7 @@ ci_install(){
     case "${DOCKER_IMAGE:-}" in
       data)
         echo 'Build data docker image'
-        bundle exec rake docker:data:build
+        bundle exec rake docker:api:build
         ;;
       server)
         echo 'Build server docker image'
@@ -43,15 +43,15 @@ ci_install(){
 
 # CI Test
 ci_test(){
-  if [[ "${USE_DOCKER:-}" == 'true' ]]; then
-    e_info 'Get private data'
-    download_private_data
+  e_info 'Get private data'
+  download_private_data
 
+  if [[ "${USE_DOCKER:-}" == 'true' ]]; then
     set_bundle_directory "$APPDIR"
     case "${DOCKER_IMAGE:-}" in
       data)
         e_info 'Test data docker image'
-        bundle exec rake docker:data:spec
+        bundle exec rake docker:api:spec
         ;;
       server)
         e_info 'Test data docker image'
@@ -67,22 +67,21 @@ ci_test(){
 
 # CI Deploy
 ci_deploy(){
-  if [[ "${USE_DOCKER:-}" == 'true' ]] && [[ "$ENVTYPE" == 'production' ]]; then
+  if [[ "${USE_DOCKER:-}" == 'true' ]]; then
     set_bundle_directory "$APPDIR"
 
     e_info 'Login to Docker Registry'
-    docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
+    docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
 
     case "${DOCKER_IMAGE:-}" in
       data)
         e_info 'Publish data docker image'
-        bundle exec rake docker:data:publish
+        bundle exec rake docker:api:publish
         ;;
       server)
         e_info 'Publish docker images'
         bundle exec rake docker:server:publish
         ;;
     esac
-
   fi
 }
