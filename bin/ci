@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+# Continuous Integration / Continuous Deployment tasks
+
+# Load environment
+# shellcheck disable=1090
+. "$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd -P)/envrc"
+
+# CI Install
+ci_install(){
+  echo 'Update Bundler'
+  gem update bundler
+
+  echo 'Install profile testing gems'
+  set_bundle_directory "${APPDIR}/dist/profile"
+  bundle install --without development system_tests --path vendor/bundle
+}
+
+# CI Test
+ci_test(){
+  echo 'Run profile tests'
+  set_bundle_directory "${APPDIR}/dist/profile"
+  bundle exec rake test
+}
+
+# Process arguments
+case "${1:-}" in
+  install)
+    ci_install
+    ;;
+  test)
+    ci_test
+    ;;
+  *)
+    e_abort "USAGE: ${BASH_SOURCE[0]} [install | test]"
+    ;;
+esac
