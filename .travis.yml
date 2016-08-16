@@ -1,34 +1,15 @@
 language: ruby
-matrix:
-  include:
-    - sudo: required
-      rvm: 2.2
-      env: USE_DOCKER=true DOCKER_IMAGE=data
-      services: docker
-    - sudo: required
-      rvm: 2.2
-      env: USE_DOCKER=true DOCKER_IMAGE=server
-      services: docker
-    - sudo: false
-      rvm: 2.2
-      env: PUPPET_GEM_VERSION="~> 4.0"
+rvm: 2.2
+sudo: false
+env: PUPPET_GEM_VERSION="~> 4.0"
 branches:
   except:
-    - /^v\d/
+    - /^v\d/\
 install: bin/ci install
 script: bin/ci test
-deploy:
-  provider: script
-  script: bin/ci deploy
-  skip_cleanup: true
-  on:
-    all_branches: true
-before_cache:
-  - rm -f dist/profile/spec/fixtures/modules/profile
+before_cache: rm -f dist/profile/spec/fixtures/modules/profile
 cache:
   directories:
-    - "$HOME/.cache/pip"
-    - vendor/bundle
     - dist/profile/vendor/bundle
     - dist/profile/spec/fixtures/modules
 notifications:

@@ -7,7 +7,7 @@ log(){
 
 set_bundle_directory(){
   cd "${1:-}" || return 1
-  export BUNDLE_GEMFILE=$PWD/Gemfile
+  export BUNDLE_GEMFILE="${PWD}/Gemfile"
 }
 
 upload_private_data(){
