@@ -12,7 +12,6 @@ Gemfile.lock
 .vagrant
 .yardoc
 coverage
-mkmf.log
 modules
 pkg
 tmp

@@ -13,10 +13,7 @@ case "${1:-}" in
   test)
     ci_test
     ;;
-  deploy)
-    ci_deploy
-    ;;
   *)
-    e_abort "USAGE: ${BASH_SOURCE[0]} [install | test | deploy]"
+    e_abort "USAGE: ${BASH_SOURCE[0]} [install | test "
     ;;
 esac

@@ -1,1 +1,0 @@
-# VPM API Docker Image

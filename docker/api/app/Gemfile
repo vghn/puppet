@@ -1,7 +1,0 @@
-source 'https://rubygems.org'
-
-gem 'json', require: false
-gem 'puma', require: false
-gem 'r10k', require: false
-gem 'sinatra', require: false
-gem 'rack-ssl', require: false
