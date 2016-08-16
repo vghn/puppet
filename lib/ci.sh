@@ -27,7 +27,7 @@ ci_install(){
     case "${DOCKER_IMAGE:-}" in
       data)
         echo 'Build data docker image'
-        bundle exec rake docker:data:build
+        bundle exec rake docker:api:build
         ;;
       server)
         echo 'Build server docker image'
@@ -51,7 +51,7 @@ ci_test(){
     case "${DOCKER_IMAGE:-}" in
       data)
         e_info 'Test data docker image'
-        bundle exec rake docker:data:spec
+        bundle exec rake docker:api:spec
         ;;
       server)
         e_info 'Test data docker image'
@@ -76,7 +76,7 @@ ci_deploy(){
     case "${DOCKER_IMAGE:-}" in
       data)
         e_info 'Publish data docker image'
-        bundle exec rake docker:data:publish
+        bundle exec rake docker:api:publish
         ;;
       server)
         e_info 'Publish docker images'
@@ -84,11 +84,4 @@ ci_deploy(){
         ;;
     esac
   fi
-
-  # SSH Deployment
-  eval "$(ssh-agent -s)"
-  chmod 600 "${APPDIR}/vault/deploy_key"
-  ssh-add "${APPDIR}/vault/deploy_key"
-  ssh-keyscan -H puppet.ghn.me >> ~/.ssh/known_hosts
-  ssh ubuntu@puppet.ghn.me 'whoami'
 }

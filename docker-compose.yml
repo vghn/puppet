@@ -50,9 +50,9 @@ services:
     restart: unless-stopped
     networks:
       - backend
-  data:
-    image: vladgh/vpm-data:latest
-    hostname: data-agent
+  api:
+    image: vladgh/vpm-api:latest
+    hostname: api
     environment:
       AWS_ASSETS_BUCKET: vladgh
       DATA_CONFIG: '/etc/puppetlabs/vault/production/data_cfg.yaml'
@@ -60,6 +60,14 @@ services:
       RACK_SSL_CRT: '/etc/puppetlabs/vault/production/ghn.me.crt'
       RACK_SSL_CA: '/etc/puppetlabs/vault/production/ghn.me_root_bundle.crt'
       TCP_PORTS: '8523'
+    volumes_from:
+      - data
+    restart: unless-stopped
+    networks:
+      - backend
+  data:
+    image: alpine:latest
+    hostname: data
     volumes:
       - ssl:/etc/puppetlabs/puppet/ssl
       - code:/etc/puppetlabs/code
@@ -70,7 +78,7 @@ services:
       - ~/.aws:/root/.aws:ro
       - /etc/localtime:/etc/localtime:ro
       - /var/local
-    restart: unless-stopped
+    command: /bin/true
     networks:
       - backend
 

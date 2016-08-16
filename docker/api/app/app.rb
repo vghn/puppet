@@ -22,21 +22,24 @@ class API < Sinatra::Base
     payload = JSON.parse(params[:payload])
     build   = payload['number']
     branch  = payload['branch']
+    repo    = payload['repo']['name']
 
     verify_travis_request
     async_deploy
     log.info "Deployment requested from build ##{build} for the #{branch} " \
-             "branch of repository #{travis_repo_slug}"
+             "branch of repository #{repo}"
     'Deployment started'
   end
 
   post '/github' do
-    payload = request.body.read
-    push = JSON.parse(payload)
+    request.body.rewind
+    payload_body = request.body.read
+    verify_signature(payload_body)
 
-    verify_github_signature(payload)
+    payload = JSON.parse(params[:payload])
     async_deploy
-    log.info "Requested by GtiHub user @#{push['sender']['login']}"
+    log.info "Requested by GitHub user @#{payload['sender']['login']}"
+
     'Deployment started'
   end
 
