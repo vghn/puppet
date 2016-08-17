@@ -1,3 +1,6 @@
+## Version 0.1.1 / 2016-08-17
+  * Minor changes ([Vlad - 6060bcd](https://github.com/vghn/puppet/commit/6060bcd09565deec00cc02c1602d6dc6a7608891))
+
 ## Version 0.1.0 / 2016-08-16
   * Separate docker images from the puppet control repo ([Vlad - cdeceb4](https://github.com/vghn/puppet/commit/cdeceb44e6defff0b8f0b72ed51eae74d43b0553))
   * Simplify CI scripts ([Vlad - fd1385e](https://github.com/vghn/puppet/commit/fd1385e7de14388f4f615fb1bc6acb5cf0482f67))
