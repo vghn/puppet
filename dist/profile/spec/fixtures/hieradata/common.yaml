@@ -1,6 +1,24 @@
 ---
 # Testing Hiera data
 
+# SSH Keys
+ssh_authorized_keys:
+  'hiera-test-key':
+    user: root
+    type: ssh-rsa
+    key: ABCDEF
+
+# Cron Jobs
+cron_jobs:
+  'test':
+    command: 'true'
+
+# Packages
+Ubuntu::xenial::packages:
+  - htop
+Ubuntu::trusty::packages:
+  - htop
+
 # AWS EFS
 profile::aws::efs::mount_target: 'us-east-1a.fs-1234.efs.us-east-1.amazonaws.com:/'
 profile::aws::efs::mount_point: '/efs'

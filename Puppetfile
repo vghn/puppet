@@ -1,9 +1,5 @@
 forge 'https://forgeapi.puppetlabs.com'
 
-# Internal modules
-mod 'vg',
-    :git => 'https://github.com/vladgh/puppet-module-vg'
-
 # Puppet supported modules
 mod 'puppetlabs/apt',
     :git => 'https://github.com/puppetlabs/puppetlabs-apt',

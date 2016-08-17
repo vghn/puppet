@@ -2,18 +2,13 @@
 # Global Hiera data
 
 # Essential packages
-packages:
+Ubuntu::xenial::packages:
   - curl
   - htop
-  - mysql-client
-  - nfs-common
   - tmux
   - unzip
   - vim
   - wget
-
-# Control repo
-control_repo: 'https://github.com/vghn/puppet.git'
 
 # Software versions
 jq_version:             '1.5'

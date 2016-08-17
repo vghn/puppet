@@ -10,7 +10,8 @@ describe 'profile::aws::efs' do
         it { is_expected.to contain_class('profile::aws::efs') }
 
         it { is_expected.to contain_package('nfs-common') }
-        it { is_expected.to contain_vg__mkdir_p('/efs') }
+        it { is_expected.to contain_profile__mkdir_p('/efs') }
+        it { is_expected.to contain_exec('mkdir_p-/efs') }
 
         it do
           is_expected.to contain_mount('/efs')

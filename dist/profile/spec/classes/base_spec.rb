@@ -12,8 +12,11 @@ describe 'profile::base' do
         if facts[:osfamily] == 'Debian'
           it { is_expected.to contain_class('apt') }
         end
-        it { is_expected.to contain_class('vg') }
-        it { is_expected.to contain_class('vg::time') }
+
+        it { is_expected.to contain_ssh_authorized_key('hiera-test-key') }
+        it { is_expected.to contain_cron('test').with_command('true') }
+        it { is_expected.to contain_package('htop') }
+
         it { is_expected.to contain_class('sudo') }
         it { is_expected.to contain_class('sudo::configs') }
         it { is_expected.to contain_class('ssh') }
