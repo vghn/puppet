@@ -13,6 +13,15 @@ cron_jobs:
   'test':
     command: 'true'
 
+# INI Settings
+ini_settings:
+  'test setting':
+    ensure: 'present'
+    section: 'section1'
+    setting: 'setting1'
+    value: 'value1'
+    path: '/tmp/foo.ini'
+
 # Packages
 Ubuntu::xenial::packages:
   - htop

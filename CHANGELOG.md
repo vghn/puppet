@@ -1,3 +1,7 @@
+## Version 0.1.3 / 2016-08-18
+  * Add hiera ini settings ([Vlad - 588fba1](https://github.com/vghn/puppet/commit/588fba1128bbd586ade8fb83f95116db767f95e3))
+  * Reorganize secrets ([Vlad - 284034f](https://github.com/vghn/puppet/commit/284034fd1d69f0674cf4506812eab70917b17524))
+
 ## Version 0.1.2 / 2016-08-18
   * Incorporate the vladgh/vg module into profiles ([Vlad - 58ab83f](https://github.com/vghn/puppet/commit/58ab83f2633febd5b9cef3606e3c8eb16f64bf64))
   * Rename api config file ([Vlad - e5661a5](https://github.com/vghn/puppet/commit/e5661a5c7feba0f7c2c0b622f32f73c0e2fe162f))
