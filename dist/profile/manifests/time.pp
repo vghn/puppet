@@ -1,7 +1,5 @@
 # Time profile
-class profile::time (
-  String $zone = 'Etc/UTC',
-) {
+class profile::time(String $zone = 'Etc/UTC') {
 
   file { '/etc/localtime':
     source  => "file:///usr/share/zoneinfo/${zone}",

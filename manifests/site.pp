@@ -12,11 +12,24 @@ if $::trusted['authenticated'] == 'remote' {
   warning('Unauthorized node!')
 }
 
+# File defaults:
+File {
+  owner => 'root',
+  group => 'root',
+  mode  => '0644',
+}
+
 # Exec defaults:
-Exec {path => '/usr/local/bin:/usr/bin:/usr/sbin/:/bin:/sbin'}
+Exec {
+  path => '/bin:/usr/bin:/sbin:/usr/sbin:/usr/local/bin:/usr/local/sbin',
+}
 
 # DEFAULT NODE
 node default {
+  # Classification option 1 - Classes defined in Hiera
+  hiera_include('classes', [])
+
+  # Classification option 2 - Classic roles and profiles classes
   if $real_role {
     info("Applying catalog for role ${real_role}")
     include "::role::${real_role}"

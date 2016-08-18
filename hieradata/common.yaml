@@ -2,7 +2,7 @@
 # Global Hiera data
 
 # Essential packages
-Ubuntu::xenial::packages:
+profile::base::Ubuntu::xenial::packages:
   - curl
   - htop
   - tmux
@@ -11,6 +11,5 @@ Ubuntu::xenial::packages:
   - wget
 
 # Software versions
-jq_version:             '1.5'
-docker_compose_version: '1.8.0'
-docker_machine_version: '0.8.0'
+profile::jq::version:             '1.5'
+profile::docker::compose_version: '1.8.0'
