@@ -1,3 +1,7 @@
+## Version 0.1.2 / 2016-08-18
+  * Incorporate the vladgh/vg module into profiles ([Vlad - 58ab83f](https://github.com/vghn/puppet/commit/58ab83f2633febd5b9cef3606e3c8eb16f64bf64))
+  * Rename api config file ([Vlad - e5661a5](https://github.com/vghn/puppet/commit/e5661a5c7feba0f7c2c0b622f32f73c0e2fe162f))
+
 ## Version 0.1.1 / 2016-08-17
   * Minor changes ([Vlad - 6060bcd](https://github.com/vghn/puppet/commit/6060bcd09565deec00cc02c1602d6dc6a7608891))
 

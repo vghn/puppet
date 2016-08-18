@@ -2,7 +2,6 @@ fixtures:
   symlinks:
     profile: "#{source_dir}"
   repositories:
-    vg:  'https://github.com/vladgh/puppet-module-vg'
     apt: 'https://github.com/puppetlabs/puppetlabs-apt'
   forge_modules:
     concat:

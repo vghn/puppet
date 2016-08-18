@@ -3,8 +3,6 @@ class profile::aws::efs (
   Optional[String] $mount_target = undef,
   Optional[String] $mount_point = undef,
 ) {
-  require ::vg
-
   if $mount_target {
     case $::osfamily {
       'Debian': {
@@ -15,7 +13,7 @@ class profile::aws::efs (
       }
     }
 
-    vg::mkdir_p { $mount_point: } ->
+    profile::mkdir_p { $mount_point: } ->
     mount { $mount_point:
       ensure  => present,
       device  => $mount_target,
