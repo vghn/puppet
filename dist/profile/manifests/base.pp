@@ -1,17 +1,5 @@
 # Base Profile
 class profile::base {
-  # Get values from multiple hierarchy levels
-  $ssh_authorized_keys = hiera_hash('ssh_authorized_keys', {})
-  $cron_jobs = hiera_hash('cron_jobs', {})
-  $packages = $::operatingsystem ? {
-    'Ubuntu' => hiera_array("${::operatingsystem}::${::lsbdistcodename}::packages", [])
-  }
-
-  # Validate parameters
-  validate_hash($ssh_authorized_keys)
-  validate_hash($cron_jobs)
-  validate_array($packages)
-
   # Standard Library
   include ::stdlib
 
@@ -32,28 +20,38 @@ class profile::base {
 
   # CRON Jobs
   # https://docs.puppet.com/puppet/latest/reference/lang_resources_advanced.html#implementing-the-createresources-function
-  $cron_jobs.each |$name, $cron_params| {
+  $cron_jobs = hiera_hash('cron_jobs', {})
+  $cron_jobs.each |String $name, Hash $params| {
     cron {
-      default:
-        * =>  {
-                ensure => 'present',
-                user   => 'root',
-              }
-      ;
-      $name:
-        * => $cron_params
-      ;
+      default: * => {
+                      ensure => 'present',
+                      user   => 'root',
+                    };
+      $name: * => $params;
     }
   }
 
   # SSH Keys
-  $ssh_authorized_keys.each |$name, $key_params| {
+  $ssh_authorized_keys = hiera_hash('ssh_authorized_keys', {})
+  $ssh_authorized_keys.each |String $name, Hash $params| {
     ssh_authorized_key { $name:
-      * => $key_params
+      * => $params;
+    }
+  }
+
+  # INI Settings
+  $ini_settings = hiera_hash('ini_settings', {})
+  $ini_settings.each |String $name, Hash $params| {
+    ini_setting { $name:
+      * => $params;
     }
   }
 
   # Packages
+  $packages = $::operatingsystem ? {
+    'Ubuntu' => hiera_array("${::operatingsystem}::${::lsbdistcodename}::packages", [])
+  }
+  validate_array($packages)
   ensure_packages($packages)
 
   # Others
