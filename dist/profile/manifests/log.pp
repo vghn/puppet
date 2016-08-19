@@ -14,7 +14,12 @@ class profile::log (
       ],
     }
 
-    # monitored file log instance resources
-    create_resources(rsyslog::imfile, hiera_hash('rsyslog::imfile', {}))
+    # Extra monitored files
+    $logs = hiera_hash('profile::rsyslog::imfile', {})
+    $logs.each |String $name, Hash $params| {
+      rsyslog::imfile { $name:
+        * => $params;
+      }
+    }
   }
 }

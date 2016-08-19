@@ -1,11 +1,10 @@
-# JQ Profile
-class profile::jq {
-  # JQ JSON Processor
-  $jq_version = hiera('jq_version')
+# JQ JSON Processor Profile
+class profile::jq(String $version) {
   wget::fetch {'JQ JSON Processor':
-    source      => "https://github.com/stedolan/jq/releases/download/jq-${jq_version}/jq-linux64",
+    source      => "https://github.com/stedolan/jq/releases/download/jq-${version}/jq-linux64",
     destination => '/usr/local/bin/jq',
   }
+
   file {'/usr/local/bin/jq':
     owner   => 'root',
     group   => 'root',
