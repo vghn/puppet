@@ -21,7 +21,7 @@ namespace :version do
     end
   end
 
-  desc 'Set specific major, minor and patch'
+  desc 'Set specific release'
   task :set, [:release] do |_, args|
     sh "git tag --sign v#{args[:release]} --message 'Release v#{args[:release]}'"
     sh "git push --follow-tags"
