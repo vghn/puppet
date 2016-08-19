@@ -42,7 +42,7 @@ fixtures:
       ref: '1.7.3'
     archive:
       repo: 'puppet/archive'
-      ref: '1.0.0'
+      ref: '1.1.1'
     rsyslog:
       repo: 'saz/rsyslog'
       ref: '4.0.0'
