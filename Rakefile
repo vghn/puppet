@@ -11,6 +11,16 @@ RuboCop::RakeTask.new(:rubocop) do |task|
   task.patterns = ['tasks/**/*.rake', 'lib/**/*.rb']
 end
 
+require 'github_changelog_generator/task'
+GitHubChangelogGenerator::RakeTask.new :changelog do |config|
+  config.bug_labels         = 'Type: Bug'
+  config.enhancement_labels = 'Type: Enhancement'
+  config.since_tag          = 'v0.1.0'
+  config.future_release     = 'v0.1.6'
+  config.release_branch     = 'production'
+
+end
+
 # List all tasks by default
 task :default do
   puts `rake -T`
