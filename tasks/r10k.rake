@@ -4,9 +4,10 @@ namespace :r10k do
     require 'r10k/puppetfile'
     require 'puppet_forge'
 
-    puppetfile = R10K::Puppetfile.new('.').load
+    puppetfile = R10K::Puppetfile.new('.')
 
-    puppetfile.each do |puppet_module|
+    puppetfile.load
+    puppetfile.modules.each do |puppet_module|
       next unless puppet_module.class == R10K::Module::Forge
       module_name = puppet_module.title.tr('/', '-')
       forge_version = PuppetForge::Module.find(module_name)
