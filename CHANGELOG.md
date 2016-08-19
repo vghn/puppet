@@ -1,5 +1,13 @@
 # Change Log
 
+## [Unreleased](https://github.com/vghn/puppet/tree/HEAD)
+
+[Full Changelog](https://github.com/vghn/puppet/compare/v0.1.5...HEAD)
+
+**Implemented enhancements:**
+
+- Add cronjob to clean RHEA instance [\#26](https://github.com/vghn/puppet/issues/26)
+
 ## [v0.1.5](https://github.com/vghn/puppet/tree/v0.1.5) (2016-08-19)
 [Full Changelog](https://github.com/vghn/puppet/compare/v0.1.4...v0.1.5)
 
@@ -34,6 +42,21 @@
 **Closed issues:**
 
 - RuboCop [\#2](https://github.com/vghn/puppet/issues/2)
+
+**Merged pull requests:**
+
+- Launch [\#13](https://github.com/vghn/puppet/pull/13) ([vladgh](https://github.com/vladgh))
+- Pre Launch [\#12](https://github.com/vghn/puppet/pull/12) ([vladgh](https://github.com/vladgh))
+- Bootstrap [\#11](https://github.com/vghn/puppet/pull/11) ([vladgh](https://github.com/vladgh))
+- More work [\#10](https://github.com/vghn/puppet/pull/10) ([vladgh](https://github.com/vladgh))
+- More improvements [\#9](https://github.com/vghn/puppet/pull/9) ([vladgh](https://github.com/vladgh))
+- More improvements [\#8](https://github.com/vghn/puppet/pull/8) ([vladgh](https://github.com/vladgh))
+- Improvements [\#7](https://github.com/vghn/puppet/pull/7) ([vladgh](https://github.com/vladgh))
+- Acceptance and unit testing [\#6](https://github.com/vghn/puppet/pull/6) ([vladgh](https://github.com/vladgh))
+- Updates [\#5](https://github.com/vghn/puppet/pull/5) ([vladgh](https://github.com/vladgh))
+- Enabe hiera lookups in tests [\#4](https://github.com/vghn/puppet/pull/4) ([vladgh](https://github.com/vladgh))
+- Minor changes [\#3](https://github.com/vghn/puppet/pull/3) ([vladgh](https://github.com/vladgh))
+- Add Tests [\#1](https://github.com/vghn/puppet/pull/1) ([vladgh](https://github.com/vladgh))
 
 
 
