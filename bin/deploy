@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+# Deploy Script
+
+# Load environment
+# shellcheck disable=1090
+. "$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd -P)/envrc"
+
+# Process arguments
+case "${1:-}" in
+  *-sync)
+    DOCKER_SERVICE=ssl-sync
+    ;;
+  *)
+    DOCKER_SERVICE="$1"
+    ;;
+esac
+
+# Set working directory
+cd "$APPDIR" || exit
+
+# Update docker images and restart corresponding services
+if [[ "$DOCKER_SERVICE" == all ]]; then
+  docker-compose pull
+  docker-compose up -d
+else
+  docker-compose pull "$DOCKER_SERVICE"
+  docker-compose up -d "$DOCKER_SERVICE"
+fi
