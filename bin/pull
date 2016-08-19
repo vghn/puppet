@@ -1,9 +1,16 @@
 #!/usr/bin/env bash
-# Data tasks
+# Docker Compose Run Script
 
 # Load environment
 # shellcheck disable=1090
 . "$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd -P)/envrc"
 
-# Download private data
-download_private_data
+# Git branch
+GIT_BRANCH="${1:-production}"
+
+# Set working directory
+cd "$APPDIR" || exit
+
+# Update repo
+git fetch --all
+git reset --hard "origin/${GIT_BRANCH}"

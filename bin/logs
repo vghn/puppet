@@ -5,8 +5,11 @@
 # shellcheck disable=1090
 . "$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd -P)/envrc"
 
+# Service(s)
+DOCKER_SERVICE="$*"
+
 # Set working directory
 cd "${APPDIR}" || exit
 
 # Show docker compose logs
-docker-compose logs "$@"
+docker-compose logs "$DOCKER_SERVICE"
