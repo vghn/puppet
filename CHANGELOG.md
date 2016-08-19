@@ -1,3 +1,7 @@
+## Version 0.1.4 / 2016-08-19
+  * Improve profiles ([Vlad - 84d7ea2](https://github.com/vghn/puppet/commit/84d7ea23b718f46beeac9099cd33c721b950a46b)) ([Vlad - 825ca52](https://github.com/vghn/puppet/commit/825ca5235d466eb4f85252b4d0d0a4b2ded884ac))
+  * Add a very simple deploy script ([Vlad - b941946](https://github.com/vghn/puppet/commit/b941946a6483bfcedcd6fc26aace0af32d17312e))
+
 ## Version 0.1.3 / 2016-08-18
   * Add hiera ini settings ([Vlad - 588fba1](https://github.com/vghn/puppet/commit/588fba1128bbd586ade8fb83f95116db767f95e3))
   * Reorganize secrets ([Vlad - 284034f](https://github.com/vghn/puppet/commit/284034fd1d69f0674cf4506812eab70917b17524))
