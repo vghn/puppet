@@ -12,5 +12,6 @@ GIT_BRANCH="${1:-production}"
 cd "$APPDIR" || exit
 
 # Update repo
-git fetch --all
+git fetch origin "${GIT_BRANCH}"
+git checkout "${GIT_BRANCH}"
 git reset --hard "origin/${GIT_BRANCH}"
