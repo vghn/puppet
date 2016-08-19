@@ -30,23 +30,23 @@ services:
     restart: unless-stopped
     networks:
       - backend
-  logs:
+  log:
     hostname: log-agent
     image: gliderlabs/logspout:latest
     volumes_from:
       - data
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    entrypoint: sh -c "until [ -s /etc/puppetlabs/vault/production/logging.env ]; do echo 'Waiting for data'; sleep 5; done && set -a && . /etc/puppetlabs/vault/production/logging.env && /bin/logspout syslog://$${LOG_SERVER_ADDRESS}:$${LOG_SERVER_PORT}"
+    entrypoint: sh -c "until [ -s /etc/puppetlabs/vault/production/log.env ]; do echo 'Waiting for data'; sleep 5; done && set -a && . /etc/puppetlabs/vault/production/log.env && /bin/logspout syslog://$${LOG_SERVER_ADDRESS}:$${LOG_SERVER_PORT}"
     restart: unless-stopped
     networks:
       - backend
-  ssl:
+  sync:
     image: vladgh/vpm-sync:latest
     hostname: ssl-sync-agent
     volumes_from:
       - data
-    entrypoint: sh -c "until [ -s /etc/puppetlabs/vault/production/ssl.env ]; do echo 'Waiting for data'; sleep 5; done && set -a && . /etc/puppetlabs/vault/production/ssl.env && /entrypoint.sh"
+    entrypoint: sh -c "until [ -s /etc/puppetlabs/vault/production/sync.env ]; do echo 'Waiting for data'; sleep 5; done && set -a && . /etc/puppetlabs/vault/production/sync.env && /entrypoint.sh"
     restart: unless-stopped
     networks:
       - backend

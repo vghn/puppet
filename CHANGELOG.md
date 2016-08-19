@@ -1,3 +1,7 @@
+## Version 0.1.5 / 2016-08-19
+  * Improve scripts ([Vlad - 23c4381](https://github.com/vghn/puppet/commit/23c43812892c3cbe2617ea9835ff673b1b40db7f))
+  * Minor changes ([Vlad - a4f68a1](https://github.com/vghn/puppet/commit/a4f68a17a97db43645da5bf89503804d4dde8b06))
+
 ## Version 0.1.4 / 2016-08-19
   * Improve profiles ([Vlad - 84d7ea2](https://github.com/vghn/puppet/commit/84d7ea23b718f46beeac9099cd33c721b950a46b)) ([Vlad - 825ca52](https://github.com/vghn/puppet/commit/825ca5235d466eb4f85252b4d0d0a4b2ded884ac))
   * Add a very simple deploy script ([Vlad - b941946](https://github.com/vghn/puppet/commit/b941946a6483bfcedcd6fc26aace0af32d17312e))
