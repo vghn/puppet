@@ -37,8 +37,15 @@ def increment(level)
   v = version.dup
   v[level] = v[level].to_i + 1
 
-  to_zero = LEVELS[LEVELS.index(level)+1..LEVELS.size]
-  to_zero.each{ |z| v[z] = 0 }
+  to_zero = LEVELS[LEVELS.index(level) + 1..LEVELS.size]
+  to_zero.each { |z| v[z] = 0 }
 
-  Rake::Task["version:set"].invoke(v[:major], v[:minor], v[:patch])
+  v
+end
+
+def configure_changelog(config, release: nil)
+  config.bug_labels         = 'Type: Bug'
+  config.enhancement_labels = 'Type: Enhancement'
+  config.since_tag          = 'v0.1.0'
+  config.future_release     = "v#{release}" if release
 end
