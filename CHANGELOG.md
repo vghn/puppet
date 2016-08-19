@@ -6,6 +6,7 @@
 
 **Implemented enhancements:**
 
+- Replace VGS release scripts, with a simpler rake task [\#29](https://github.com/vghn/puppet/issues/29)
 - Add cronjob to clean RHEA instance [\#26](https://github.com/vghn/puppet/issues/26)
 
 ## [v0.1.5](https://github.com/vghn/puppet/tree/v0.1.5) (2016-08-19)
