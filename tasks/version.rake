@@ -16,14 +16,14 @@ namespace :version do
       end
 
       Rake::Task['latest_release'].invoke
-      sh "git commit --gpg-sign --message 'Release v#{release}'"
-      Rake::Task['version:set'].invoke(v[:major], v[:minor], v[:patch])
+      sh "git commit --gpg-sign --message 'Release v#{release}' CHANGELOG.md"
+      Rake::Task['version:set'].invoke(release)
     end
   end
 
   desc 'Set specific major, minor and patch'
   task :set, [:release] do |_, args|
     sh "git tag --sign v#{args[:release]} --message 'Release v#{args[:release]}'"
-    sh "git push --tags"
+    sh "git push --follow-tags"
   end
 end

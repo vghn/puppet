@@ -5,13 +5,10 @@ set -euo pipefail
 IFS=$'\n\t'
 
 # VARs
-export APPDIR TMPDIR NOW VERSION VERSION_FILE CHANGELOG_FILE
+export APPDIR TMPDIR NOW
 APPDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
 TMPDIR=$(mktemp -d 2>/dev/null || mktemp -d -t 'tmp')
 NOW="$(date +"%Y%m%d_%H%M%S")"
-VERSION_FILE="${APPDIR}/VERSION"
-CHANGELOG_FILE="${APPDIR}/CHANGELOG.md"
-VERSION=$(cat "$VERSION_FILE" || echo '0.0.0')
 
 # Load private environment
 # shellcheck disable=1090
