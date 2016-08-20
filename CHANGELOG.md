@@ -1,5 +1,20 @@
 # Change Log
 
+## [v0.1.7](https://github.com/vghn/puppet/tree/v0.1.7) (2016-08-20)
+[Full Changelog](https://github.com/vghn/puppet/compare/v0.1.6...v0.1.7)
+
+**Implemented enhancements:**
+
+- Add hardening modules [\#28](https://github.com/vghn/puppet/issues/28)
+- Replace profile::swap with a puppet approved module [\#24](https://github.com/vghn/puppet/issues/24)
+- Simplify the release task [\#31](https://github.com/vghn/puppet/pull/31) ([vladgh](https://github.com/vladgh))
+- Replace profile::swap with a puppet approved module [\#30](https://github.com/vghn/puppet/pull/30) ([vladgh](https://github.com/vladgh))
+- Start using the puppetlabs/accounts module [\#25](https://github.com/vghn/puppet/pull/25) ([vladgh](https://github.com/vladgh))
+
+**Merged pull requests:**
+
+- Replace SSH module [\#33](https://github.com/vghn/puppet/pull/33) ([vladgh](https://github.com/vladgh))
+
 ## [v0.1.6](https://github.com/vghn/puppet/tree/v0.1.6) (2016-08-20)
 [Full Changelog](https://github.com/vghn/puppet/compare/v0.1.5...v0.1.6)
 
