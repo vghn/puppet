@@ -1,5 +1,23 @@
 # Change Log
 
+## [v0.1.8](https://github.com/vghn/puppet/tree/v0.1.8) (2016-08-20)
+[Full Changelog](https://github.com/vghn/puppet/compare/v0.1.7...v0.1.8)
+
+**Implemented enhancements:**
+
+- Bootstrap script should check if apt repo is installed [\#34](https://github.com/vghn/puppet/issues/34)
+- Add a cron job during maintenance window to update everything \(repo, docker images, restart containers\) [\#27](https://github.com/vghn/puppet/issues/27)
+
+**Fixed bugs:**
+
+- Remove MaxPermSize from docker-compose.yml [\#35](https://github.com/vghn/puppet/issues/35)
+- Fix acceptance tests [\#32](https://github.com/vghn/puppet/issues/32)
+
+**Merged pull requests:**
+
+- Rename all shared example files [\#37](https://github.com/vghn/puppet/pull/37) ([vladgh](https://github.com/vladgh))
+- Update docker-compose.yml [\#36](https://github.com/vghn/puppet/pull/36) ([vladgh](https://github.com/vladgh))
+
 ## [v0.1.7](https://github.com/vghn/puppet/tree/v0.1.7) (2016-08-20)
 [Full Changelog](https://github.com/vghn/puppet/compare/v0.1.6...v0.1.7)
 
