@@ -1,11 +1,21 @@
 require 'rainbow'
 
+def version
+  `git describe --always --tags`
+end
+
 def git_commit
   `git rev-parse --short HEAD`.strip
 end
 
-def previous_git_sha
-  `git rev-parse HEAD~1`.strip
+def git_branch
+  return ENV['GIT_BRANCH'] if ENV['GIT_BRANCH']
+  return ENV['TRAVIS_BRANCH'] if ENV['TRAVIS_BRANCH']
+  `git symbolic-ref HEAD --short 2>/dev/null`.strip
+end
+
+def git_url
+  `git config --get remote.origin.url`.strip
 end
 
 def info(message)
@@ -24,17 +34,17 @@ def command?(command)
   system("command -v #{command} >/dev/null 2>&1")
 end
 
-def version
-  @version ||= begin
-    v = `git describe --always --tags`
+def version_hash
+  @version_hash ||= begin
+    v = version
     {}.tap do |h|
       h[:major], h[:minor], h[:patch], h[:rev], h[:rev_hash] = v[1..-1].split(/[.-]/)
     end
   end
 end
 
-def increment(level)
-  v = version.dup
+def increment_version(level)
+  v = version_hash.dup
   v[level] = v[level].to_i + 1
 
   to_zero = LEVELS[LEVELS.index(level) + 1..LEVELS.size]

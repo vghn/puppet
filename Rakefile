@@ -20,6 +20,11 @@ GitHubChangelogGenerator::RakeTask.new(:unreleased) do |config|
   configure_changelog(config)
 end
 
+desc 'Display version'
+task :version do
+  puts "Current version: #{version}"
+end
+
 # List all tasks by default
 task :default do
   puts `rake -T`
