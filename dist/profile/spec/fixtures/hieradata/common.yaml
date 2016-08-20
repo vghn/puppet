@@ -1,7 +1,9 @@
 ---
 # Testing Hiera data
 
-# SSH Keys
+# SSH
+ssh::server_options:
+  PermitRootLogin: 'no'
 profile::base::ssh_authorized_keys:
   'hiera-test-key':
     user: root
