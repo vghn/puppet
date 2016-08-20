@@ -42,6 +42,7 @@
     { "name": "golja/gnupg", "version_requirement": "1.2.3" },
     { "name": "kemra102/cloudwatchlogs", "version_requirement": "2.3.0" },
     { "name": "maestrodev/rvm", "version_requirement": "1.13.1" },
+    { "name": "saz/ssh", "version_requirement": "2.8.1" },
     { "name": "saz/sudo", "version_requirement": "3.1.0" },
     { "name": "thias/samba", "version_requirement": "1.0.0" },
     { "name": "croddy/make", "version_requirement": "0.0.5" },

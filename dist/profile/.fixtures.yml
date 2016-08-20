@@ -67,6 +67,9 @@ fixtures:
     rvm:
       repo: 'maestrodev/rvm'
       ref: '1.13.1'
+    ssh:
+      repo: 'saz/ssh'
+      ref: '2.8.1'
     sudo:
       repo: 'saz/sudo'
       ref: '3.1.0'
