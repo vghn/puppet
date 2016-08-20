@@ -4,6 +4,9 @@ fixtures:
   repositories:
     apt: 'https://github.com/puppetlabs/puppetlabs-apt'
   forge_modules:
+    accounts:
+      repo: 'puppetlabs/accounts'
+      ref: '1.0.0'
     concat:
       repo: 'puppetlabs/concat'
       ref: '2.2.0'
