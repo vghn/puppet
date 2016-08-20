@@ -1,7 +1,8 @@
 # Change Log
 
-## [v0.1.7](https://github.com/vghn/puppet/tree/v0.1.7) (2016-08-20)
-[Full Changelog](https://github.com/vghn/puppet/compare/v0.1.6...v0.1.7)
+## [Unreleased](https://github.com/vghn/puppet/tree/HEAD)
+
+[Full Changelog](https://github.com/vghn/puppet/compare/v0.1.6...HEAD)
 
 **Implemented enhancements:**
 
