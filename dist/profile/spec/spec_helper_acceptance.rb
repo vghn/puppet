@@ -6,7 +6,7 @@ require 'beaker/puppet_install_helper'
 run_puppet_install_helper
 
 # Include shared examples
-Dir['./spec/acceptance/support/**/*_spec.rb'].sort.each { |f| require f }
+Dir['./spec/acceptance/support/**/*.rb'].sort.each { |f| require f }
 
 RSpec.configure do |c|
   spec_dir = File.expand_path(File.dirname(__FILE__))
