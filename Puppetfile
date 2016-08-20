@@ -1,6 +1,7 @@
 forge 'https://forgeapi.puppetlabs.com'
 
 # Puppet supported modules
+mod 'puppetlabs/accounts', '1.0.0'
 mod 'puppetlabs/apt',
     :git => 'https://github.com/puppetlabs/puppetlabs-apt',
     :ref => 'master'
