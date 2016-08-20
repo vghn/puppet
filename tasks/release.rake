@@ -10,9 +10,9 @@ namespace :release do
         configure_changelog(config, release: release)
       end
       Rake::Task['latest_release'].invoke
-      sh "git commit --gpg-sign --message 'Update changelog' CHANGELOG.md"
+      sh "git commit --gpg-sign --message 'Release v#{release}' CHANGELOG.md"
 
-      sh "git tag --sign v#{args[:version]} --message 'Release v#{args[:version]}'"
+      sh "git tag --sign v#{release} --message 'Release v#{release}'"
       sh "git push --follow-tags"
     end
   end
