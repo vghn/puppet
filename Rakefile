@@ -16,7 +16,6 @@ end
 # GitHub CHANGELOG generator
 require 'github_changelog_generator/task'
 GitHubChangelogGenerator::RakeTask.new(:unreleased) do |config|
-  ARGV.clear
   configure_changelog(config)
 end
 
