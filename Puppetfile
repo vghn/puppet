@@ -35,6 +35,7 @@ mod 'thias/samba', '1.0.0'
 
 # Dependencies (find with `sudo /opt/puppetlabs/bin/puppet module list --tree`)
 mod 'croddy/make', '0.0.5'
+mod 'fiddyspence/sysctl', '1.1.0'
 mod 'gentoo/portage', '2.3.0'
 mod 'ghoneycutt/common', '1.6.0'
 mod 'puppet/staging', '2.0.0'

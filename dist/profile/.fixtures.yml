@@ -79,6 +79,9 @@ fixtures:
     make:
       repo: 'croddy/make'
       ref: '0.0.5'
+    sysctl:
+      repo: 'fiddyspence/sysctl'
+      ref: '1.1.0'
     portage:
       repo: 'gentoo/portage'
       ref: '2.3.0'

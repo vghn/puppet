@@ -46,6 +46,7 @@
     { "name": "saz/sudo", "version_requirement": "3.1.0" },
     { "name": "thias/samba", "version_requirement": "1.0.0" },
     { "name": "croddy/make", "version_requirement": "0.0.5" },
+    { "name": "fiddyspence/sysctl", "version_requirement": "1.1.0" },
     { "name": "gentoo/portage", "version_requirement": "2.3.0" },
     { "name": "ghoneycutt/common", "version_requirement": "1.6.0" },
     { "name": "puppet/staging", "version_requirement": "2.0.0" },
