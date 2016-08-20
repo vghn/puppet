@@ -11,6 +11,7 @@ Gemfile.lock
 .rspec_system
 .vagrant
 .yardoc
+*.log
 coverage
 modules
 pkg
