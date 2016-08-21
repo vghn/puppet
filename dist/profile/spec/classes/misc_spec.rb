@@ -20,7 +20,10 @@ describe 'profile::misc' do
                 setting: 'HandleLidSwitch',
                 value: 'ignore'
               )
+              .that_notifies('Service[systemd-logind]')
           end
+
+          it { is_expected.to contain_service('systemd-logind') }
         end
       end
     end
