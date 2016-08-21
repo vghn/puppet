@@ -57,4 +57,5 @@ class profile::base {
   # Others
   include ::wget
   include ::ntp
+  include ::profile::misc
 }
