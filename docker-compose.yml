@@ -59,6 +59,8 @@ services:
     hostname: api
     environment:
       AWS_ASSETS_BUCKET: 'vladgh'
+      VAULT_S3PATH: 's3://vladgh/vault'
+      HIERA_S3PATH: 's3://vladgh/hieradata'
       DATA_CONFIG: '/etc/puppetlabs/vault/production/api.yaml'
       FORCE_SSL: 'true'
       VIRTUAL_HOST: 'https://*'
@@ -75,8 +77,6 @@ services:
       - code:/etc/puppetlabs/code
       - vault:/etc/puppetlabs/vault
       - hieradata:/etc/puppetlabs/hieradata
-      - .:/opt/vpm
-      - ../vgs:/opt/vgs
       - ~/.aws:/root/.aws:ro
       - /etc/localtime:/etc/localtime:ro
       - /var/local
