@@ -57,5 +57,6 @@ class profile::base {
   # Others
   include ::wget
   include ::ntp
+  include ::profile::time
   include ::profile::misc
 }
