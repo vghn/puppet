@@ -23,6 +23,9 @@ describe 'profile::base' do
         it { is_expected.to contain_class('ssh') }
         it { is_expected.to contain_class('wget') }
         it { is_expected.to contain_class('ntp') }
+
+        it { is_expected.to contain_class('profile::time') }
+        it { is_expected.to contain_class('profile::misc') }
       end
     end
   end

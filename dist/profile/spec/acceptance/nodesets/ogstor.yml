@@ -1,0 +1,7 @@
+HOSTS:
+  ogstor:
+    platform: ubuntu-16.04-amd64
+    hypervisor: vagrant
+    box: puppetlabs/ubuntu-16.04-64-nocm
+CONFIG:
+  type: aio
