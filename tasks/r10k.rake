@@ -14,10 +14,12 @@ namespace :r10k do
                                          .current_release.version
       installed_version = puppet_module.expected_version
       if installed_version != forge_version
-        puts "#{puppet_module.title} is OUTDATED: " \
-             "#{installed_version} vs #{forge_version}".red
+        puts Rainbow(
+          "#{puppet_module.title} is OUTDATED: " \
+          "#{installed_version} vs #{forge_version}"
+        ).red
       else
-        puts "#{puppet_module.title}: #{forge_version}".green
+        puts Rainbow("#{puppet_module.title}: #{forge_version}").green
       end
     end
   end
