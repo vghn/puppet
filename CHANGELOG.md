@@ -1,6 +1,17 @@
 # Change Log
 
-## [v0.1.9](https://github.com/vghn/puppet/tree/v0.1.9) (2016-08-21)
+## [v0.1.10](https://github.com/vghn/puppet/tree/v0.1.10) (2016-08-22)
+[Full Changelog](https://github.com/vghn/puppet/compare/v0.1.9...v0.1.10)
+
+**Implemented enhancements:**
+
+- Explicitly reject the connection if backend servers are down [\#42](https://github.com/vghn/puppet/issues/42)
+
+**Merged pull requests:**
+
+- Add the 'ogstor' role [\#47](https://github.com/vghn/puppet/pull/47) ([vladgh](https://github.com/vladgh))
+
+## [v0.1.9](https://github.com/vghn/puppet/tree/v0.1.9) (2016-08-22)
 [Full Changelog](https://github.com/vghn/puppet/compare/v0.1.8...v0.1.9)
 
 **Implemented enhancements:**
