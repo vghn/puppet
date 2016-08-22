@@ -14,7 +14,6 @@ group :test do
   gem 'rubocop', require: false
   gem 'simplecov', require: false
   gem 'simplecov-console', require: false
-  gem 'stomp', '1.4.1', require: false
 end
 
 group :development do
