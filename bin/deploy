@@ -12,5 +12,10 @@ DOCKER_SERVICE="$*"
 cd "$APPDIR" || exit
 
 # Restart docker-compose services
-docker-compose pull "$DOCKER_SERVICE"
-docker-compose up -d "$DOCKER_SERVICE"
+if [[ -n "$DOCKER_SERVICE" ]]; then
+  docker-compose pull "$DOCKER_SERVICE"
+  docker-compose up -d "$DOCKER_SERVICE"
+else
+  docker-compose pull
+  docker-compose up -d
+fi
