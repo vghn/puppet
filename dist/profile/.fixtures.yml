@@ -39,7 +39,7 @@ fixtures:
       ref: '3.43.0'
     hiera:
       repo: 'hunner/hiera'
-      ref: '2.0.1'
+      ref: '2.0.2'
     wget:
       repo: 'maestrodev/wget'
       ref: '1.7.3'

@@ -16,7 +16,7 @@ mod 'puppetlabs/vcsrepo', '1.3.2'
 
 # Puppet approved modules
 mod 'garethr/docker', '5.3.0'
-mod 'hunner/hiera', '2.0.1'
+mod 'hunner/hiera', '2.0.2'
 mod 'maestrodev/wget', '1.7.3'
 mod 'puppet/archive', '1.1.1'
 mod 'petems/swap_file', '3.0.2'
