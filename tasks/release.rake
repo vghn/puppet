@@ -13,7 +13,7 @@ namespace :release do
       sh "git commit --gpg-sign --message 'Release v#{release}' CHANGELOG.md"
 
       sh "git tag --sign v#{release} --message 'Release v#{release}'"
-      sh "git push --follow-tags"
+      sh 'git push --follow-tags'
     end
   end
 end
