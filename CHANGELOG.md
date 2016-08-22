@@ -1,5 +1,23 @@
 # Change Log
 
+## [v0.1.9](https://github.com/vghn/puppet/tree/v0.1.9) (2016-08-21)
+[Full Changelog](https://github.com/vghn/puppet/compare/v0.1.8...v0.1.9)
+
+**Implemented enhancements:**
+
+- Terminate SSL at LB level [\#43](https://github.com/vghn/puppet/issues/43)
+- Create a profile for small changes [\#38](https://github.com/vghn/puppet/issues/38)
+
+**Fixed bugs:**
+
+- Fix gem dependecies [\#41](https://github.com/vghn/puppet/issues/41)
+- Restart service in profile::misc [\#40](https://github.com/vghn/puppet/issues/40)
+
+**Merged pull requests:**
+
+- Terminate SSL at LB level [\#44](https://github.com/vghn/puppet/pull/44) ([vladgh](https://github.com/vladgh))
+- Add profile::misc [\#39](https://github.com/vghn/puppet/pull/39) ([vladgh](https://github.com/vladgh))
+
 ## [v0.1.8](https://github.com/vghn/puppet/tree/v0.1.8) (2016-08-20)
 [Full Changelog](https://github.com/vghn/puppet/compare/v0.1.7...v0.1.8)
 
