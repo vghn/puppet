@@ -9,5 +9,6 @@
 /Gemfile.lock
 /junit
 /log
+/knapsack_rspec_report.json
 .yardoc
 coverage

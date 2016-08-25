@@ -1,7 +1,13 @@
 language: ruby
 rvm: 2.2
 sudo: false
-env: PUPPET_GEM_VERSION="~> 4.0"
+env:
+  global:
+    - PUPPET_GEM_VERSION="~> 4.0"
+    - CI_NODE_TOTAL=2
+  matrix:
+    - CI_NODE_INDEX=0
+    - CI_NODE_INDEX=1
 branches:
   except:
     - /^v\d/

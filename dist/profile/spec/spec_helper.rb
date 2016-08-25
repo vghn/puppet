@@ -1,6 +1,9 @@
+require 'knapsack'
 require 'puppetlabs_spec_helper/module_spec_helper'
-
 require 'rspec-puppet-facts'
+require 'simplecov'
+require 'simplecov-console'
+
 include RspecPuppetFacts
 
 RSpec.configure do |config|
@@ -13,8 +16,6 @@ RSpec.configure do |config|
   end
 end
 
-require 'simplecov'
-require 'simplecov-console'
 SimpleCov.start do
   add_filter '/spec'
   add_filter '/vendor'
@@ -25,3 +26,5 @@ SimpleCov.start do
     ]
   )
 end
+
+Knapsack::Adapters::RSpecAdapter.bind
