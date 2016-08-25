@@ -21,7 +21,7 @@ mod 'maestrodev/wget', '1.7.3'
 mod 'puppet/archive', '1.1.1'
 mod 'petems/swap_file', '3.0.2'
 mod 'saz/rsyslog', '4.0.0'
-mod 'stankevich/python', '1.14.0'
+mod 'stankevich/python', '1.15.0'
 mod 'zack/r10k', '3.2.0'
 
 # Others
