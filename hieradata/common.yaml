@@ -11,5 +11,5 @@ profile::base::Ubuntu::xenial::packages:
   - wget
 
 # Software versions
-profile::jq::version:             '1.5'
-profile::docker::compose_version: '1.8.0'
+profile::jq::version: '1.5'
+docker::compose::version: '1.8.0'

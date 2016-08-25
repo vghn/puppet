@@ -1,11 +1,13 @@
 # Docker Profile
-class profile::docker(String $compose_version) {
+class profile::docker {
   # Docker
   if $::virtual == 'docker' {
     warning('Docker in Docker is not yet supported!')
   } else {
     # Docker main class
     include ::docker
+    # Docker Compose
+    include ::docker::compose
 
     # Pull images
     $images = hiera_hash('profile::docker::images', {})
@@ -14,8 +16,5 @@ class profile::docker(String $compose_version) {
     # Run containers
     $run = hiera_hash('profile::docker::run', {})
     create_resources(docker::run, $run)
-
-    # Docker Compose
-    class {'::docker::compose': version => $compose_version}
   }
 }

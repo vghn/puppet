@@ -37,6 +37,11 @@ profile::base::Ubuntu::xenial::packages:
 profile::base::Ubuntu::trusty::packages:
   - htop
 
+# RVM
+rvm::system_rubies:
+  'ruby-2.3':
+    default_use: true
+
 # AWS EFS
 profile::aws::efs::mount_target: 'us-east-1a.fs-1234.efs.us-east-1.amazonaws.com:/'
 profile::aws::efs::mount_point: '/efs'
@@ -76,9 +81,8 @@ samba::server::shares:
     - 'browseable = yes'
 
 # Software versions
-profile::jq::version:             '1.5'
-profile::docker::compose_version: '1.8.0'
-profile::rvm::system_ruby:        'ruby-2.3.1'
+profile::jq::version: '1.5'
+docker::compose::version: '1.8.0'
 
 # Extra firewall rules
 profile::linuxfw::rules:

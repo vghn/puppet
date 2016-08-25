@@ -8,6 +8,7 @@ describe 'profile::ruby' do
 
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to contain_class('profile::ruby') }
+        it { is_expected.to contain_class('ruby') }
       end
     end
   end

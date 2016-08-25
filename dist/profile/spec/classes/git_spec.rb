@@ -6,7 +6,6 @@ describe 'profile::git' do
       context "on #{os}" do
         let(:facts) { facts }
 
-        p os
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to contain_class('profile::git') }
 
