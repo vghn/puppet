@@ -1,5 +1,18 @@
 # Change Log
 
+## [v0.1.11](https://github.com/vghn/puppet/tree/v0.1.11) (2016-08-27)
+[Full Changelog](https://github.com/vghn/puppet/compare/v0.1.10...v0.1.11)
+
+**Implemented enhancements:**
+
+- The r10k:dependencies should check git modules too [\#51](https://github.com/vghn/puppet/issues/51)
+- Install modules from GitHub [\#50](https://github.com/vghn/puppet/issues/50)
+- Use parallel testing [\#49](https://github.com/vghn/puppet/issues/49)
+
+**Fixed bugs:**
+
+- Fix deploy command [\#48](https://github.com/vghn/puppet/issues/48)
+
 ## [v0.1.10](https://github.com/vghn/puppet/tree/v0.1.10) (2016-08-22)
 [Full Changelog](https://github.com/vghn/puppet/compare/v0.1.9...v0.1.10)
 
