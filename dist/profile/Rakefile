@@ -36,9 +36,6 @@ end
 
 PuppetSyntax.exclude_paths = exclude_paths
 
-# Parallel testing
-Knapsack.load_tasks if defined?(Knapsack)
-
 desc 'Populate CONTRIBUTORS file'
 task :contributors do
   system("git log --format='%aN' | sort -u > CONTRIBUTORS")
