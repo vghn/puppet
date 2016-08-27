@@ -3,7 +3,6 @@ source ENV['GEM_SOURCE'] || 'https://rubygems.org'
 gem 'puppet', ENV['PUPPET_GEM_VERSION'] || '~> 4.0', require: false
 
 group :test do
-  gem 'knapsack', require: false
   gem 'metadata-json-lint', require: false
   gem 'puppet-lint', require: false
   gem 'puppetlabs_spec_helper', require: false
