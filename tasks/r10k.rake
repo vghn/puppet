@@ -27,18 +27,18 @@ namespace :r10k do
 
         # Try to extract owner and repo name from remote string
         remote = mod.instance_variable_get('@remote')
-        owner  = remote.gsub(/(.*)\/(.*)\/(.*)/,"\\2")
-        repo   = remote.gsub(/(.*)\/(.*)\//,"\\3")
+        owner  = remote.gsub(%r{(.*)\/(.*)\/(.*)}, '\\2')
+        repo   = remote.gsub(%r{(.*)\/(.*)\/}, '\\3')
 
         # It's better to query the API authenticated because of the rate
         # limit. You can make up to 5,000 requests per hour. For unauthenticated
         # requests, the rate limit is only up to 60 requests per hour.
         # (https://developer.github.com/v3/#rate-limiting)
-        if ENV['GITHUB_TOKEN']
-          tags = open("https://api.github.com/repos/#{owner}/#{repo}/tags?access_token=#{ENV['GITHUB_TOKEN']}")
-        else
-          tags = open("https://api.github.com/repos/#{owner}/#{repo}/tags")
-        end
+        tags = if ENV['GITHUB_TOKEN']
+                 open("https://api.github.com/repos/#{owner}/#{repo}/tags?access_token=#{ENV['GITHUB_TOKEN']}")
+               else
+                 open("https://api.github.com/repos/#{owner}/#{repo}/tags")
+               end
 
         # Get rid of non-semantic versions (for example
         # https://github.com/puppetlabs/puppetlabs-ntp/releases/tag/push)
@@ -48,12 +48,11 @@ namespace :r10k do
 
         # Use Gem::Version to sort tags
         latest_tag = all_tags.map do |line|
-          Gem::Version.new line['name'].gsub(/[v]?(.*)/,"\\1")
+          Gem::Version.new line['name'].gsub(/[v]?(.*)/, '\\1')
         end.max.to_s
 
         # Print results
-        module_name = mod.title
-        installed_version = mod.version.gsub(/[v]?(.*)/,"\\1")
+        installed_version = mod.version.gsub(/[v]?(.*)/, '\\1')
         if installed_version == 'master'
           puts Rainbow("#{mod.title}: 'master' branch").blue
         elsif installed_version != latest_tag
