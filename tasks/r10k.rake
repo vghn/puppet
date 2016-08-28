@@ -15,11 +15,11 @@ namespace :r10k do
         installed_version = mod.expected_version
         if installed_version != forge_version
           puts Rainbow(
-            "#{mod.title} is OUTDATED: " \
+            "#{module_name} is OUTDATED: " \
             "#{installed_version} vs #{forge_version}"
           ).red
         else
-          puts Rainbow("#{mod.title}: #{forge_version}").green
+          puts Rainbow("#{module_name}: #{forge_version}").green
         end
       elsif mod.class == R10K::Module::Git
         require 'open-uri'
@@ -42,8 +42,8 @@ namespace :r10k do
 
         # Get rid of non-semantic versions (for example
         # https://github.com/puppetlabs/puppetlabs-ntp/releases/tag/push)
-        all_tags = JSON.parse(tags.read).select do |line|
-          line['name'] =~ /v?\d+\.\d+\.\d+/
+        all_tags = JSON.parse(tags.read).select do |tag|
+          tag['name'] =~ /v?\d+\.\d+\.\d+/
         end
 
         # Use Gem::Version to sort tags
