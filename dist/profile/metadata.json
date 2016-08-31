@@ -31,7 +31,7 @@
     { "name": "puppetlabs/stdlib" },
     { "name": "puppetlabs/vcsrepo" },
     { "name": "garethr/docker" },
-    { "name": "hunner/hiera" },
+    { "name": "puppet/hiera" },
     { "name": "maestrodev/wget" },
     { "name": "petems/swap_file" },
     { "name": "puppet/archive" },

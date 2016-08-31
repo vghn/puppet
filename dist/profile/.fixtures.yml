@@ -36,14 +36,14 @@ fixtures:
       repo: 'https://github.com/garethr/garethr-docker'
       ref:  'v5.3.0'
     hiera:
-      repo: 'https://github.com/hunner/hunner-hiera'
-      ref:  'v2.1.1'
+      repo: 'https://github.com/voxpupuli/puppet-hiera'
+      ref:  'v2.1.2'
     wget:
       repo: 'https://github.com/maestrodev/puppet-wget'
       ref:  'v1.7.3'
     archive:
       repo: 'https://github.com/voxpupuli/puppet-archive'
-      ref:  'v1.1.1'
+      ref:  'v1.1.2'
     swap_file:
       repo: 'https://github.com/petems/petems-swap_file'
       ref:  'v3.0.2'
@@ -73,7 +73,7 @@ fixtures:
       ref:  'v1.13.1'
     ssh:
       repo: 'https://github.com/saz/puppet-ssh'
-      ref:  'v2.8.1'
+      ref:  'v2.9.0'
     sudo:
       repo: 'https://github.com/saz/puppet-sudo'
       ref:  'v3.1.0'
@@ -91,7 +91,7 @@ fixtures:
       ref:  '2.3.0'
     staging:
       repo: 'https://github.com/voxpupuli/puppet-staging'
-      ref:  'v2.0.0'
+      ref:  'v2.0.1'
     firewall:
       repo: 'http://github.com/puppetlabs/puppetlabs-firewall'
       ref:  '1.8.1'

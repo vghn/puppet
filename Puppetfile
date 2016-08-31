@@ -35,14 +35,14 @@ mod 'docker',
     git: 'https://github.com/garethr/garethr-docker',
     ref: 'v5.3.0'
 mod 'hiera',
-    git: 'https://github.com/hunner/hunner-hiera',
-    ref: 'v2.1.1'
+    git: 'https://github.com/voxpupuli/puppet-hiera',
+    ref: 'v2.1.2'
 mod 'wget',
     git: 'https://github.com/maestrodev/puppet-wget',
     ref: 'v1.7.3'
 mod 'archive',
     git: 'https://github.com/voxpupuli/puppet-archive',
-    ref: 'v1.1.1'
+    ref: 'v1.1.2'
 mod 'swap_file',
     git: 'https://github.com/petems/petems-swap_file',
     ref: 'v3.0.2'
@@ -74,7 +74,7 @@ mod 'rvm',
     ref: 'v1.13.1'
 mod 'ssh',
     git: 'https://github.com/saz/puppet-ssh',
-    ref: 'v2.8.1'
+    ref: 'v2.9.0'
 mod 'sudo',
     git: 'https://github.com/saz/puppet-sudo',
     ref: 'v3.1.0'
@@ -94,7 +94,7 @@ mod 'portage',
     ref: '2.3.0'
 mod 'staging',
     git: 'https://github.com/voxpupuli/puppet-staging',
-    ref: 'v2.0.0'
+    ref: 'v2.0.1'
 mod 'firewall',
     git: 'http://github.com/puppetlabs/puppetlabs-firewall',
     ref: '1.8.1'
