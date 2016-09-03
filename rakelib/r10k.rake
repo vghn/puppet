@@ -54,7 +54,7 @@ namespace :r10k do
         # Print results
         installed_version = mod.version.gsub(/[v]?(.*)/, '\\1')
         if installed_version == 'master'
-          puts Rainbow("#{mod.title}: 'master' branch").blue
+          puts Rainbow("#{mod.title}: 'master' branch (#{latest_tag})").blue
         elsif installed_version != latest_tag
           puts Rainbow(
             "#{mod.title} is OUTDATED: " \
