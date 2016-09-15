@@ -13,10 +13,10 @@ mod 'git',
     ref: '0.5.0'
 mod 'inifile',
     git: 'https://github.com/puppetlabs/puppetlabs-inifile',
-    ref: '1.5.0'
+    ref: '1.6.0'
 mod 'mysql',
     git: 'https://github.com/puppetlabs/puppetlabs-mysql',
-    ref: '3.8.0'
+    ref: '3.9.0'
 mod 'ntp',
     git: 'https://github.com/puppetlabs/puppetlabs-ntp',
     ref: '4.2.0'
@@ -28,7 +28,7 @@ mod 'stdlib',
     ref: '4.12.0'
 mod 'vcsrepo',
     git: 'https://github.com/puppetlabs/puppetlabs-vcsrepo',
-    ref: '1.3.2'
+    ref: '1.4.0'
 
 # Puppet approved modules
 mod 'docker',
@@ -48,10 +48,10 @@ mod 'swap_file',
     ref: 'v3.0.2'
 mod 'rsyslog',
     git: 'https://github.com/saz/puppet-rsyslog',
-    ref: 'v4.0.1'
+    ref: 'v4.0.2'
 mod 'python',
     git: 'https://github.com/stankevich/puppet-python',
-    ref: '1.15.0'
+    ref: '1.16.0'
 mod 'r10k',
     git: 'https://github.com/acidprime/r10k',
     ref: 'v3.2.0'
@@ -59,7 +59,7 @@ mod 'r10k',
 # Others
 mod 'nfs',
     git: 'https://github.com/derdanne/puppet-nfs',
-    ref: '0.0.15'
+    ref: '0.0.16'
 mod 'fail2ban',
     git: 'https://github.com/dhoppe/puppet-fail2ban',
     ref: '1.1.1'
@@ -74,7 +74,7 @@ mod 'rvm',
     ref: 'v1.13.1'
 mod 'ssh',
     git: 'https://github.com/saz/puppet-ssh',
-    ref: 'v2.9.0'
+    ref: 'v2.9.1'
 mod 'sudo',
     git: 'https://github.com/saz/puppet-sudo',
     ref: 'v3.1.0'

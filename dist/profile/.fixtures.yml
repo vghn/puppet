@@ -16,10 +16,10 @@ fixtures:
       ref:  '0.5.0'
     inifile:
       repo: 'https://github.com/puppetlabs/puppetlabs-inifile'
-      ref:  '1.5.0'
+      ref:  '1.6.0'
     mysql:
       repo: 'https://github.com/puppetlabs/puppetlabs-mysql'
-      ref:  '3.8.0'
+      ref:  '3.9.0'
     ntp:
       repo: 'https://github.com/puppetlabs/puppetlabs-ntp'
       ref:  '4.2.0'
@@ -31,7 +31,7 @@ fixtures:
       ref:  '4.12.0'
     vcsrepo:
       repo: 'https://github.com/puppetlabs/puppetlabs-vcsrepo'
-      ref:  '1.3.2'
+      ref:  '1.4.0'
     docker:
       repo: 'https://github.com/garethr/garethr-docker'
       ref:  'v5.3.0'
@@ -49,16 +49,16 @@ fixtures:
       ref:  'v3.0.2'
     rsyslog:
       repo: 'https://github.com/saz/puppet-rsyslog'
-      ref:  'v4.0.0'
+      ref:  'v4.0.2'
     python:
       repo: 'https://github.com/stankevich/puppet-python'
-      ref:  '1.15.0'
+      ref:  '1.16.0'
     r10k:
       repo: 'https://github.com/acidprime/r10k'
       ref:  'v3.2.0'
     nfs:
       repo: 'https://github.com/derdanne/puppet-nfs'
-      ref:  '0.0.15'
+      ref:  '0.0.16'
     fail2ban:
       repo: 'https://github.com/dhoppe/puppet-fail2ban'
       ref:  '1.1.1'
@@ -73,7 +73,7 @@ fixtures:
       ref:  'v1.13.1'
     ssh:
       repo: 'https://github.com/saz/puppet-ssh'
-      ref:  'v2.9.0'
+      ref:  'v2.9.1'
     sudo:
       repo: 'https://github.com/saz/puppet-sudo'
       ref:  'v3.1.0'
