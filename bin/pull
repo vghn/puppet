@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Docker Compose Run Script
+# Pull Script
 
 # Load environment
 # shellcheck disable=1090

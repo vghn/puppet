@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Deploy Script
+# Deploy script
 
 # Load environment
 # shellcheck disable=1090
