@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# Install git hooks script
+
+# Load environment
+# shellcheck disable=1090
+. "$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd -P)/envrc"
+
+# Set working directory
+cd "$APPDIR" || exit
+
+# Install git hooks
+for file in ${APPDIR}/hooks/*; do
+  echo "Installing ${file}"
+  ln -sfn "$file" "${APPDIR}/.git/hooks/$(basename "$file")"
+done
