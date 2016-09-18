@@ -1,5 +1,12 @@
 # Change Log
 
+## [v0.1.12](https://github.com/vghn/puppet/tree/v0.1.12) (2016-09-18)
+[Full Changelog](https://github.com/vghn/puppet/compare/v0.1.11...v0.1.12)
+
+**Implemented enhancements:**
+
+- Add rubycritic and reek [\#52](https://github.com/vghn/puppet/issues/52)
+
 ## [v0.1.11](https://github.com/vghn/puppet/tree/v0.1.11) (2016-08-27)
 [Full Changelog](https://github.com/vghn/puppet/compare/v0.1.10...v0.1.11)
 
