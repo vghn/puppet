@@ -52,7 +52,7 @@ fixtures:
       ref:  'v4.0.2'
     python:
       repo: 'https://github.com/stankevich/puppet-python'
-      ref:  '1.16.0'
+      ref:  '1.17.0'
     r10k:
       repo: 'https://github.com/acidprime/r10k'
       ref:  'v3.2.0'

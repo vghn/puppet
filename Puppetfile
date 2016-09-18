@@ -51,7 +51,7 @@ mod 'rsyslog',
     ref: 'v4.0.2'
 mod 'python',
     git: 'https://github.com/stankevich/puppet-python',
-    ref: '1.16.0'
+    ref: '1.17.0'
 mod 'r10k',
     git: 'https://github.com/acidprime/r10k',
     ref: 'v3.2.0'
