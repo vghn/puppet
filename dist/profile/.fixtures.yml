@@ -4,10 +4,10 @@ fixtures:
   repositories:
     accounts:
       repo: 'https://github.com/puppetlabs/puppetlabs-accounts'
-      ref:  '1.0.0'
+      ref:  '1.1.0'
     apt:
       repo: 'https://github.com/puppetlabs/puppetlabs-apt'
-      ref:  'master'
+      ref:  '2.3.0'
     concat:
       repo: 'https://github.com/puppetlabs/puppetlabs-concat'
       ref:  '2.2.0'
@@ -58,7 +58,7 @@ fixtures:
       ref:  'v3.2.0'
     nfs:
       repo: 'https://github.com/derdanne/puppet-nfs'
-      ref:  '0.0.16'
+      ref:  '0.0.17'
     fail2ban:
       repo: 'https://github.com/dhoppe/puppet-fail2ban'
       ref:  '1.1.1'

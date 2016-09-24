@@ -1,10 +1,10 @@
 # Puppet supported modules
 mod 'accounts',
     git: 'https://github.com/puppetlabs/puppetlabs-accounts',
-    ref: '1.0.0'
+    ref: '1.1.0'
 mod 'apt',
     git: 'https://github.com/puppetlabs/puppetlabs-apt',
-    ref: 'master'
+    ref: '2.3.0'
 mod 'concat',
     git: 'https://github.com/puppetlabs/puppetlabs-concat',
     ref: '2.2.0'
@@ -59,7 +59,7 @@ mod 'r10k',
 # Others
 mod 'nfs',
     git: 'https://github.com/derdanne/puppet-nfs',
-    ref: '0.0.16'
+    ref: '0.0.17'
 mod 'fail2ban',
     git: 'https://github.com/dhoppe/puppet-fail2ban',
     ref: '1.1.1'

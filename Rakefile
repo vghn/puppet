@@ -2,7 +2,7 @@ require 'rspec/core/rake_task'
 
 require_relative 'lib/common'
 
-# Rubocop
+# RuboCop
 require 'rubocop/rake_task'
 desc 'Run RuboCop on the tasks and lib directory'
 RuboCop::RakeTask.new(:rubocop) do |task|
