@@ -38,7 +38,8 @@ def version_hash
   @version_hash ||= begin
     v = version
     {}.tap do |h|
-      h[:major], h[:minor], h[:patch], h[:rev], h[:rev_hash] = v[1..-1].split(/[.-]/)
+      h[:major], h[:minor], h[:patch], h[:rev], h[:rev_hash] = v[1..-1]
+                                                               .split(/[.-]/)
     end
   end
 end

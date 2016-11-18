@@ -1,11 +1,35 @@
 source ENV['GEM_SOURCE'] || 'https://rubygems.org'
 
-gem 'github_changelog_generator', require: false
-gem 'puppet_forge', require: false
-gem 'r10k', require: false
-gem 'rainbow', require: false
-gem 'rake', require: false
-gem 'reek', require: false
-gem 'rspec', require: false
-gem 'rubocop', require: false
-gem 'rubycritic', require: false
+gem 'puppet', ENV['PUPPET_GEM_VERSION'] || '~> 4.0', require: false
+
+group :test do
+  gem 'metadata-json-lint', require: false
+  gem 'puppet-lint', require: false
+  gem 'puppetlabs_spec_helper', require: false
+  gem 'r10k', require: false
+  gem 'rake', require: false
+  gem 'reek', require: false
+  gem 'rspec', require: false
+  gem 'rspec-puppet', require: false
+  gem 'rspec-puppet-facts', require: false
+  gem 'rubocop', require: false
+  gem 'rubycritic', require: false
+  gem 'simplecov', require: false
+  gem 'simplecov-console', require: false
+end
+
+group :development do
+  gem 'github_changelog_generator', require: false
+  gem 'guard-rake', require: false
+  gem 'puppet-blacksmith', require: false
+  gem 'puppet_forge', require: false
+  gem 'rainbow', require: false
+  gem 'travis', require: false
+  gem 'travis-lint', require: false
+end
+
+group :system_tests do
+  gem 'beaker', require: false
+  gem 'beaker-puppet_install_helper', require: false
+  gem 'beaker-rspec', require: false
+end

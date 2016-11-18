@@ -1,6 +1,7 @@
 fixtures:
   symlinks:
-    profile: "#{source_dir}"
+    role: "#{source_dir}/dist/role"
+    profile: "#{source_dir}/dist/profile"
   repositories:
     accounts:
       repo: 'https://github.com/puppetlabs/puppetlabs-accounts'
@@ -49,7 +50,7 @@ fixtures:
       ref:  'v3.0.2'
     rsyslog:
       repo: 'https://github.com/saz/puppet-rsyslog'
-      ref:  'v4.0.3'
+      ref:  'v5.0.0'
     python:
       repo: 'https://github.com/stankevich/puppet-python'
       ref:  '1.18.0'

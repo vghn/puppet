@@ -13,7 +13,11 @@ Gemfile.lock
 .yardoc
 *.log
 coverage
+junit
+log
 modules
 pkg
+spec/fixtures/*
+!spec/fixtures/hiera*
 tmp
 vendor

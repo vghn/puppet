@@ -35,6 +35,7 @@ namespace :r10k do
         # requests, the rate limit is only up to 60 requests per hour.
         # (https://developer.github.com/v3/#rate-limiting)
         tags = if ENV['GITHUB_TOKEN']
+                 # rubocop:disable Metrics/LineLength
                  open("https://api.github.com/repos/#{owner}/#{repo}/tags?access_token=#{ENV['GITHUB_TOKEN']}")
                else
                  open("https://api.github.com/repos/#{owner}/#{repo}/tags")

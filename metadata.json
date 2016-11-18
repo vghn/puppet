@@ -1,12 +1,12 @@
 {
-  "name": "vladgh-profile",
+  "name": "vghn-puppet",
   "version": "0.0.1",
-  "author": "vladgh",
-  "summary": "Vlad's profiles",
+  "author": "Vlad Ghinea",
+  "summary": "Vlad's Control Repo",
   "license": "Apache-2.0",
-  "source": "https://github.com/vladgh/puppet",
-  "project_page": "https://github.com/vladgh/puppet",
-  "issues_url": "https://github.com/vladgh/puppet/issues",
+  "source": "https://github.com/vghn/puppet",
+  "project_page": "https://github.com/vghn/puppet",
+  "issues_url": "https://github.com/vghn/puppet/issues",
   "requirements": [
     {
       "name": "puppet",
