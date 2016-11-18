@@ -48,7 +48,7 @@ mod 'swap_file',
     ref: 'v3.0.2'
 mod 'rsyslog',
     git: 'https://github.com/saz/puppet-rsyslog',
-    ref: 'v4.0.3'
+    ref: 'v5.0.0'
 mod 'python',
     git: 'https://github.com/stankevich/puppet-python',
     ref: '1.18.0'
