@@ -1,5 +1,21 @@
 # Change Log
 
+## [Unreleased](https://github.com/vghn/puppet/tree/HEAD)
+
+[Full Changelog](https://github.com/vghn/puppet/compare/v0.1.12...HEAD)
+
+**Implemented enhancements:**
+
+- Upgrade docker compose [\#58](https://github.com/vghn/puppet/pull/58) ([vladgh](https://github.com/vladgh))
+- Update puppet modules [\#53](https://github.com/vghn/puppet/pull/53) ([vladgh](https://github.com/vladgh))
+
+**Fixed bugs:**
+
+- aws sync does not download one byte changes [\#56](https://github.com/vghn/puppet/issues/56)
+- Docker module reinstalls old linux kernel packages \(after apt updates them\) [\#54](https://github.com/vghn/puppet/issues/54)
+- Add exact timestamps to aws sync command [\#57](https://github.com/vghn/puppet/pull/57) ([vladgh](https://github.com/vladgh))
+- Docker should not manage kernel [\#55](https://github.com/vghn/puppet/pull/55) ([vladgh](https://github.com/vladgh))
+
 ## [v0.1.12](https://github.com/vghn/puppet/tree/v0.1.12) (2016-09-18)
 [Full Changelog](https://github.com/vghn/puppet/compare/v0.1.11...v0.1.12)
 
@@ -104,41 +120,6 @@
 
 ## [v0.1.1](https://github.com/vghn/puppet/tree/v0.1.1) (2016-08-17)
 [Full Changelog](https://github.com/vghn/puppet/compare/v0.1.0...v0.1.1)
-
-**Implemented enhancements:**
-
-- Do not hardcode puppet environment in the configuration when bootstrapping [\#23](https://github.com/vghn/puppet/issues/23)
-- Use valid SSL certificates for the data agent [\#22](https://github.com/vghn/puppet/issues/22)
-- Add the VGS Library [\#21](https://github.com/vghn/puppet/issues/21)
-- Use host local time inside containers [\#20](https://github.com/vghn/puppet/issues/20)
-- Add vladgh/common module [\#19](https://github.com/vghn/puppet/issues/19)
-- Test each AMI before it is created [\#16](https://github.com/vghn/puppet/issues/16)
-- Do not encourage piping curl into sh [\#15](https://github.com/vghn/puppet/issues/15)
-
-**Fixed bugs:**
-
-- Ensure a logical manifest order through out [\#18](https://github.com/vghn/puppet/issues/18)
-- Upgrade git [\#17](https://github.com/vghn/puppet/issues/17)
-- Generate a CSR Attributes file before installing Puppet [\#14](https://github.com/vghn/puppet/issues/14)
-
-**Closed issues:**
-
-- RuboCop [\#2](https://github.com/vghn/puppet/issues/2)
-
-**Merged pull requests:**
-
-- Launch [\#13](https://github.com/vghn/puppet/pull/13) ([vladgh](https://github.com/vladgh))
-- Pre Launch [\#12](https://github.com/vghn/puppet/pull/12) ([vladgh](https://github.com/vladgh))
-- Bootstrap [\#11](https://github.com/vghn/puppet/pull/11) ([vladgh](https://github.com/vladgh))
-- More work [\#10](https://github.com/vghn/puppet/pull/10) ([vladgh](https://github.com/vladgh))
-- More improvements [\#9](https://github.com/vghn/puppet/pull/9) ([vladgh](https://github.com/vladgh))
-- More improvements [\#8](https://github.com/vghn/puppet/pull/8) ([vladgh](https://github.com/vladgh))
-- Improvements [\#7](https://github.com/vghn/puppet/pull/7) ([vladgh](https://github.com/vladgh))
-- Acceptance and unit testing [\#6](https://github.com/vghn/puppet/pull/6) ([vladgh](https://github.com/vladgh))
-- Updates [\#5](https://github.com/vghn/puppet/pull/5) ([vladgh](https://github.com/vladgh))
-- Enabe hiera lookups in tests [\#4](https://github.com/vghn/puppet/pull/4) ([vladgh](https://github.com/vladgh))
-- Minor changes [\#3](https://github.com/vghn/puppet/pull/3) ([vladgh](https://github.com/vladgh))
-- Add Tests [\#1](https://github.com/vghn/puppet/pull/1) ([vladgh](https://github.com/vladgh))
 
 
 
