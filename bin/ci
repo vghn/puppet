@@ -11,14 +11,12 @@ ci_install(){
   gem update bundler
 
   echo 'Install profile testing gems'
-  set_bundle_directory "${APPDIR}/dist/profile"
   bundle install --without development system_tests --path vendor/bundle
 }
 
 # CI Test
 ci_test(){
   echo 'Run profile tests'
-  set_bundle_directory "${APPDIR}/dist/profile"
   bundle exec rake test
 }
 
