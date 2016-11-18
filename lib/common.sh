@@ -35,7 +35,7 @@ download_private_data(){
     e_abort "Could not download ${VAULT_S3PATH}/${ENVTYPE}/ to ${APPDIR}/vault/"
   fi
   e_info 'Download hieradata'
-  if ! aws s3 sync "${HIERA_S3PATH}/${ENVTYPE}/" "${APPDIR}/hieradata/" --delete; then
+  if ! aws s3 sync "${HIERA_S3PATH}/${ENVTYPE}/" "${APPDIR}/hieradata/" --delete --exact-timestamps; then
     e_abort "Could not download ${HIERA_S3PATH}/${ENVTYPE}/ to ${APPDIR}/hieradata/"
   fi
 }
