@@ -7,12 +7,19 @@ require 'puppet-syntax/tasks/puppet-syntax'
 require 'metadata-json-lint/rake_task'
 require 'rspec/core/rake_task'
 
+# Require common functions
 require_relative 'lib/common'
 
 # These gems aren't always present, for instance
 # on Travis with --without development
 begin
   require 'puppet_blacksmith/rake_tasks'
+
+  # GitHub CHANGELOG generator
+  require 'github_changelog_generator/task'
+  GitHubChangelogGenerator::RakeTask.new(:unreleased) do |config|
+    configure_changelog(config)
+  end
 rescue LoadError # rubocop:disable Lint/HandleExceptions
 end
 
@@ -56,12 +63,6 @@ PuppetLint::RakeTask.new :lint do |config|
 end
 
 PuppetSyntax.exclude_paths = exclude_paths
-
-# GitHub CHANGELOG generator
-require 'github_changelog_generator/task'
-GitHubChangelogGenerator::RakeTask.new(:unreleased) do |config|
-  configure_changelog(config)
-end
 
 desc 'Display version'
 task :version do
