@@ -5,7 +5,10 @@ class profile::docker {
     warning('Docker in Docker is not yet supported!')
   } else {
     # Docker main class
-    include ::docker
+    class { '::docker':
+      manage_kernel => false,
+    }
+
     # Docker Compose
     include ::docker::compose
 
