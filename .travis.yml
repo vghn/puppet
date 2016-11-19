@@ -4,7 +4,14 @@ sudo: false
 branches:
   except:
     - /^v\d/
+env:
+  global:
+    - PUPPET_GEM_VERSION="~> 4.0" CI_NODE_TOTAL=2 PUPPET_INSTALL_TYPE=agent ORDERING=manifest BEAKER_debug=yes
 before_install: gem update bundler
+  - sudo apt-get -qy update && sudo apt-get -qy -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" install docker-engine
+  - docker --version
+install: bundle install --without development system_tests --path vendor/bundle
+script: bundle exec rake test
 cache:
   directories:
     - dist/profile/vendor/bundle
@@ -12,21 +19,27 @@ cache:
 matrix:
   fast_finish: true
   include:
-  - env: PUPPET_GEM_VERSION="~> 4.0" CI_NODE_TOTAL=2 CI_NODE_INDEX=1
-    install: bundle install --without development system_tests --path vendor/bundle
-    script: bundle exec rake test
-  - env: PUPPET_GEM_VERSION="~> 4.0" CI_NODE_TOTAL=2 CI_NODE_INDEX=2
-    install: bundle install --without development system_tests --path vendor/bundle
-    script: bundle exec rake test
-  - env: PUPPET_INSTALL_TYPE=agent ORDERING=manifest BEAKER_debug=yes BEAKER_set=docker/mini
+  - env: CI_NODE_INDEX=1
+  - env: CI_NODE_INDEX=2
+  - env: BEAKER_set=docker/mini
+    before_install:
+      - gem update bundler
+      - sudo apt-get -qy update && sudo apt-get -qy -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" install docker-engine
+      - docker --version
     install: bundle install --without development --path vendor/bundle
     script: bundle exec rake integration
-  - env: PUPPET_INSTALL_TYPE=agent ORDERING=manifest BEAKER_debug=yes BEAKER_set=docker/ogstor
+    services: docker
+    sudo: required
+  - env: BEAKER_set=docker/ogstor
     install: bundle install --without development --path vendor/bundle
     script: bundle exec rake integration
-  - env: PUPPET_INSTALL_TYPE=agent ORDERING=manifest BEAKER_debug=yes BEAKER_set=docker/rhea
+    services: docker
+    sudo: required
+  - env: BEAKER_set=docker/rhea
     install: bundle install --without development --path vendor/bundle
     script: bundle exec rake integration
+    services: docker
+    sudo: required
 notifications:
   webhooks:
     urls: https://puppet.ghn.me/travis
