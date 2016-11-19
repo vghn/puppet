@@ -51,7 +51,6 @@ class profile::base {
   $packages = $::operatingsystem ? {
     'Ubuntu' => hiera_array("profile::base::${::operatingsystem}::${::lsbdistcodename}::packages", [])
   }
-  validate_array($packages)
   ensure_packages($packages)
 
   # Others
