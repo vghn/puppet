@@ -6,10 +6,8 @@ branches:
     - /^v\d/
 env:
   global:
-    - PUPPET_GEM_VERSION="~> 4.0" CI_NODE_TOTAL=2 PUPPET_INSTALL_TYPE=agent ORDERING=manifest BEAKER_debug=yes
+    -  CI_NODE_TOTAL=2 PUPPET_GEM_VERSION="~> 4.0" PUPPET_INSTALL_TYPE=agent ORDERING=manifest BEAKER_debug=yes
 before_install: gem update bundler
-  - sudo apt-get -qy update && sudo apt-get -qy -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" install docker-engine
-  - docker --version
 install: bundle install --without development system_tests --path vendor/bundle
 script: bundle exec rake test
 cache:
@@ -31,11 +29,19 @@ matrix:
     services: docker
     sudo: required
   - env: BEAKER_set=docker/ogstor
+    before_install:
+      - gem update bundler
+      - sudo apt-get -qy update && sudo apt-get -qy -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" install docker-engine
+      - docker --version
     install: bundle install --without development --path vendor/bundle
     script: bundle exec rake integration
     services: docker
     sudo: required
   - env: BEAKER_set=docker/rhea
+    before_install:
+      - gem update bundler
+      - sudo apt-get -qy update && sudo apt-get -qy -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" install docker-engine
+      - docker --version
     install: bundle install --without development --path vendor/bundle
     script: bundle exec rake integration
     services: docker
