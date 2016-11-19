@@ -13,11 +13,17 @@ class profile::docker {
     include ::docker::compose
 
     # Pull images
-    $images = hiera_hash('profile::docker::images', {})
-    create_resources(docker::image, $images)
+    hiera_hash('profile::docker::images', {}).each |String $name, Hash $params| {
+      docker::image { $name:
+        * => $params;
+      }
+    }
 
     # Run containers
-    $run = hiera_hash('profile::docker::run', {})
-    create_resources(docker::run, $run)
+    hiera_hash('profile::docker::run', {}).each |String $name, Hash $params| {
+      docker::run { $name:
+        * => $params;
+      }
+    }
   }
 }
