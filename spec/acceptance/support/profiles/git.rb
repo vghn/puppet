@@ -1,8 +1,14 @@
 shared_examples 'profile::git' do
   release = command('/usr/bin/lsb_release -cs').stdout.chomp
 
-  describe file('/etc/apt/sources.list.d/' \
-                "git-core-ubuntu-ppa-#{release}.list") do
+  case release
+  when 'trusty'
+    repo_file = "/etc/apt/sources.list.d/git-core-ppa-#{release}.list"
+  when 'xenial'
+    repo_file = "/etc/apt/sources.list.d/git-core-ubuntu-ppa-#{release}.list"
+  end
+
+  describe file(repo_file) do
     it { is_expected.to contain 'http://ppa.launchpad.net/git-core/ppa/ubuntu' }
   end
 

@@ -1,23 +1,32 @@
 language: ruby
 rvm: 2.2
 sudo: false
-env:
-  global:
-    - PUPPET_GEM_VERSION="~> 4.0"
-    - CI_NODE_TOTAL=2
-  matrix:
-    - CI_NODE_INDEX=1
-    - CI_NODE_INDEX=2
 branches:
   except:
     - /^v\d/
 before_install: gem update bundler
-install: bundle install --without development system_tests --path vendor/bundle
-script: bundle exec rake test
 cache:
   directories:
     - dist/profile/vendor/bundle
     - dist/profile/spec/fixtures/modules
+matrix:
+  fast_finish:true
+  include:
+  - env: PUPPET_GEM_VERSION="~> 4.0" CI_NODE_TOTAL=2 CI_NODE_INDEX=1
+    install: bundle install --without development system_tests --path vendor/bundle
+    script: bundle exec rake test
+  - env: PUPPET_GEM_VERSION="~> 4.0" CI_NODE_TOTAL=2 CI_NODE_INDEX=2
+    install: bundle install --without development system_tests --path vendor/bundle
+    script: bundle exec rake test
+  - env: PUPPET_INSTALL_TYPE=agent ORDERING=manifest BEAKER_debug=yes BEAKER_set=docker/mini
+    install: bundle install --without development --path vendor/bundle
+    script: bundle exec rake integration
+  - env: PUPPET_INSTALL_TYPE=agent ORDERING=manifest BEAKER_debug=yes BEAKER_set=docker/ogstor
+    install: bundle install --without development --path vendor/bundle
+    script: bundle exec rake integration
+  - env: PUPPET_INSTALL_TYPE=agent ORDERING=manifest BEAKER_debug=yes BEAKER_set=docker/rhea
+    install: bundle install --without development --path vendor/bundle
+    script: bundle exec rake integration
 notifications:
   webhooks:
     urls: https://puppet.ghn.me/travis
