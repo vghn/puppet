@@ -8,7 +8,7 @@ class profile::time(String $zone = 'Etc/UTC') {
     mode    => '0644',
   }
 
-  case $::osfamily {
+  case $facts['os']['family'] {
     'Debian': {
       package { 'tzdata':
         ensure => present,
