@@ -4,7 +4,7 @@ class profile::base {
   include ::stdlib
 
   # APT
-  if $::osfamily == 'Debian' {
+  if $facts['os']['family'] == 'Debian' {
     # Patch until the apt module supports Ubuntu 16.04
     ensure_packages('software-properties-common')
     class { '::apt': require => Package['software-properties-common'] }
@@ -44,8 +44,8 @@ class profile::base {
   }
 
   # Packages
-  $packages = $::operatingsystem ? {
-    'Ubuntu' => hiera_array("profile::base::${::operatingsystem}::${::lsbdistcodename}::packages", [])
+  $packages = $facts['os']['name'] ? {
+    'Ubuntu' => hiera_array("profile::base::${facts['os']['name']}::${facts['os']['distro']['codename']}::packages", [])
   }
   ensure_packages($packages)
 

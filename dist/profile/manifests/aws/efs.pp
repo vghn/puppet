@@ -4,7 +4,7 @@ class profile::aws::efs (
   Optional[String] $mount_point = undef,
 ) {
   if $mount_target {
-    case $::osfamily {
+    case $facts['os']['family'] {
       'Debian': {
         ensure_packages(['nfs-common'])
       }
