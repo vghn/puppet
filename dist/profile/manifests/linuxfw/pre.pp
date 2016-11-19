@@ -45,8 +45,7 @@ class profile::linuxfw::pre {
   }
 
   # Extra rules defined in Hiera
-  $extra_rules = hiera_hash('profile::linuxfw::rules', {})
-  $extra_rules.each |String $name, Hash $params| {
+  hiera_hash('profile::linuxfw::rules', {}).each |String $name, Hash $params| {
     firewall { $name:
       * => $params;
     }

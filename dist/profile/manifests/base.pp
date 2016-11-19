@@ -19,9 +19,7 @@ class profile::base {
   include ::ssh
 
   # CRON Jobs
-  # https://docs.puppet.com/puppet/latest/reference/lang_resources_advanced.html#implementing-the-createresources-function
-  $cron_jobs = hiera_hash('profile::base::cron_jobs', {})
-  $cron_jobs.each |String $name, Hash $params| {
+  hiera_hash('profile::base::cron_jobs', {}).each |String $name, Hash $params| {
     cron {
       default: * => {
                       ensure => 'present',
@@ -32,16 +30,14 @@ class profile::base {
   }
 
   # SSH Keys
-  $ssh_authorized_keys = hiera_hash('profile::base::ssh_authorized_keys', {})
-  $ssh_authorized_keys.each |String $name, Hash $params| {
+  hiera_hash('profile::base::ssh_authorized_keys', {}).each |String $name, Hash $params| {
     ssh_authorized_key { $name:
       * => $params;
     }
   }
 
   # INI Settings
-  $ini_settings = hiera_hash('profile::base::ini_settings', {})
-  $ini_settings.each |String $name, Hash $params| {
+  hiera_hash('profile::base::ini_settings', {}).each |String $name, Hash $params| {
     ini_setting { $name:
       * => $params;
     }

@@ -15,8 +15,7 @@ class profile::log (
     }
 
     # Extra monitored files
-    $logs = hiera_hash('profile::rsyslog::imfile', {})
-    $logs.each |String $name, Hash $params| {
+    hiera_hash('profile::rsyslog::imfile', {}).each |String $name, Hash $params| {
       rsyslog::imfile { $name:
         * => $params;
       }
