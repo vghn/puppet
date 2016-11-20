@@ -8,7 +8,7 @@ class role::rhea {
   include ::profile::git
   include ::profile::jq
   include ::profile::vgs
-  include ::profile::puppet::master
   include ::profile::puppet::agent
+  include ::profile::puppet::master
   include ::profile::docker
 }

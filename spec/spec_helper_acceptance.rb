@@ -9,12 +9,11 @@ run_puppet_install_helper
 Dir['./spec/acceptance/support/**/*.rb'].sort.each { |f| require f }
 
 RSpec.configure do |c|
-  spec_dir = File.expand_path(File.dirname(__FILE__))
-  profiles_root = File.expand_path(File.join(spec_dir, '..'))
-  modules_dir = File.join(spec_dir, 'fixtures/modules')
+  proj_root = File.expand_path(File.join(File.dirname(__FILE__), '..'))
+  dist_dir = File.join(proj_root, 'dist')
+  modules_dir = File.join(proj_root, 'spec/fixtures/modules')
+  hieradata_dir = File.join(proj_root, 'spec/fixtures/hieradata')
   production_dir = '/etc/puppetlabs/code/environments/production'
-  host_modules_dir = "#{production_dir}/modules"
-  hieradata_dir = File.join(spec_dir, 'fixtures/hieradata')
 
   # Readable test descriptions
   c.formatter = :documentation
@@ -22,8 +21,23 @@ RSpec.configure do |c|
   # Configure all nodes in nodeset
   c.before :suite do
     hosts.each do |host|
+      # Fixes
+      if fact('osfamily') == 'Debian'
+        # Make sure snake-oil certs are installed.
+        apply_manifest_on(host, 'package { "ssl-cert": }')
+
+        # Make sure rsyslog is installed
+        apply_manifest_on(host, 'package { "rsyslog": }')
+      end
+
+      # Set-up environment
+      scp_to(host, "#{proj_root}/environment.conf", production_dir)
+
       # Install hieradata
       scp_to(host, hieradata_dir, production_dir)
+
+      # Install roles & profiles
+      scp_to(host, dist_dir, production_dir)
 
       # Install modules
       scp_to(
@@ -43,14 +57,6 @@ RSpec.configure do |c|
           'tests',
           'log'
         ]
-      )
-
-      # Install profiles
-      copy_module_to(
-        host,
-        source: profiles_root,
-        target_module_path: host_modules_dir,
-        module_name: 'profile'
       )
     end
   end
