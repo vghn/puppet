@@ -6,6 +6,13 @@
 
 **Implemented enhancements:**
 
+- Use `$facts\[\]` instead of global variables [\#66](https://github.com/vghn/puppet/issues/66)
+- Replace `create\_resources` with iterations [\#64](https://github.com/vghn/puppet/issues/64)
+- Replace `validate\_` functions with Puppet 4 data types [\#62](https://github.com/vghn/puppet/issues/62)
+- Clean-up hooks [\#61](https://github.com/vghn/puppet/issues/61)
+- Move RSpec tests into the root of the control repo [\#59](https://github.com/vghn/puppet/issues/59)
+- Refactor acceptance testing [\#68](https://github.com/vghn/puppet/pull/68) ([vladgh](https://github.com/vladgh))
+- Clean-up Control Repo [\#60](https://github.com/vghn/puppet/pull/60) ([vladgh](https://github.com/vladgh))
 - Upgrade docker compose [\#58](https://github.com/vghn/puppet/pull/58) ([vladgh](https://github.com/vladgh))
 - Update puppet modules [\#53](https://github.com/vghn/puppet/pull/53) ([vladgh](https://github.com/vladgh))
 
@@ -15,6 +22,12 @@
 - Docker module reinstalls old linux kernel packages \(after apt updates them\) [\#54](https://github.com/vghn/puppet/issues/54)
 - Add exact timestamps to aws sync command [\#57](https://github.com/vghn/puppet/pull/57) ([vladgh](https://github.com/vladgh))
 - Docker should not manage kernel [\#55](https://github.com/vghn/puppet/pull/55) ([vladgh](https://github.com/vladgh))
+
+**Merged pull requests:**
+
+- Use `$facts\[\]` instead of global variables [\#67](https://github.com/vghn/puppet/pull/67) ([vladgh](https://github.com/vladgh))
+- Improve iterations [\#65](https://github.com/vghn/puppet/pull/65) ([vladgh](https://github.com/vladgh))
+- Remove validate\_array function [\#63](https://github.com/vghn/puppet/pull/63) ([vladgh](https://github.com/vladgh))
 
 ## [v0.1.12](https://github.com/vghn/puppet/tree/v0.1.12) (2016-09-18)
 [Full Changelog](https://github.com/vghn/puppet/compare/v0.1.11...v0.1.12)
