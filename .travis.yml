@@ -23,6 +23,8 @@ cache:
     - dist/profile/spec/fixtures/modules
 matrix:
   fast_finish: true
+  allow_failures:
+    - services: docker
   include:
   - env: BEAKER_set=docker/mini
     before_install:
