@@ -54,7 +54,7 @@ mod 'python',
     ref: '1.18.0'
 mod 'r10k',
     git: 'https://github.com/voxpupuli/puppet-r10k',
-    ref: 'v3.2.0'
+    ref: 'v4.0.2'
 
 # Others
 mod 'nfs',

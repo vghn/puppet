@@ -56,7 +56,7 @@ fixtures:
       ref:  '1.18.0'
     r10k:
       repo: 'https://github.com/voxpupuli/puppet-r10k'
-      ref:  'v3.2.0'
+      ref:  'v4.0.2'
     nfs:
       repo: 'https://github.com/derdanne/puppet-nfs'
       ref:  '1.0.1'
