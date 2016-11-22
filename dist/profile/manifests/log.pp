@@ -3,6 +3,11 @@ class profile::log (
   Optional[String] $server_address = undef,
   Optional[Integer] $server_port = undef,
 ) {
+  # Logs
+  if $facts['os']['name'] == 'Ubuntu' {
+    class {'rsyslog': purge_rsyslog_d => true,}
+  }
+
   if ($server_address and $server_port) {
     class{'::rsyslog::client':
       remote_servers => [
