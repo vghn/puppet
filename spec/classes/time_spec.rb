@@ -12,11 +12,7 @@ describe 'profile::time' do
         end
 
         context 'w/ zone parameter' do
-          let(:params) do
-            {
-              zone: 'US/Central'
-            }
-          end
+          let(:params) { { zone: 'US/Central' } }
 
           it { is_expected.to compile.with_all_deps }
           it { is_expected.to contain_package('tzdata') }
