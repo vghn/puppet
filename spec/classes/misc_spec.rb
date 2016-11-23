@@ -10,7 +10,7 @@ describe 'profile::misc' do
         it { is_expected.to contain_class('profile::misc') }
 
         context 'with ignore_lid_switch' do
-          let(:params) { { 'ignore_lid_switch' => true } }
+          let(:params) { { ignore_lid_switch: true } }
           it do
             is_expected.to contain_ini_setting('Ignore LID close')
               .with(

@@ -8,7 +8,7 @@ describe 'profile::base' do
           facts.merge(
             os: {
               family: 'Debian',
-              name:   'Ubuntu',
+              name: 'Ubuntu',
               distro: { codename: 'trusty' },
               release: { full: '16.04', major: '16.04' }
             }
@@ -18,8 +18,9 @@ describe 'profile::base' do
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to contain_class('profile::base') }
         it { is_expected.to contain_class('stdlib') }
-        if facts[:os][:family] == 'Debian'
+        if facts[:os]['family'] == 'Debian'
           it { is_expected.to contain_class('apt') }
+          it { is_expected.to contain_package('software-properties-common') }
         end
 
         it { is_expected.to contain_cron('test').with_command('true') }
