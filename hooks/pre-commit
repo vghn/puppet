@@ -10,9 +10,6 @@
 # shellcheck disable=1090
 . "$(cd "$(dirname "${BASH_SOURCE[0]}")/../../" && pwd -P)/envrc"
 
-# Check if command exists
-is_cmd() { command -v "$@" >/dev/null 2>&1 ;}
-
 # Check YAML
 checkyaml() {
   ruby -e "require 'yaml'; YAML.load_file('$1')"
@@ -27,14 +24,15 @@ throw_error() {
 # Make sure the necessary tools are installed. If they aren't, just die and
 # stop the commit. Force the use of these tools before a commit is allowed.
 # No commit should ever happen without a puppet-lint check.
-
-is_cmd git || e_abort "The git binary wasn't found."
-is_cmd puppet || e_abort "The puppet binary wasn't found."
-is_cmd puppet-lint || e_abort "The puppet-lint binary wasn't found."
-is_cmd erb || e_abort "The erb binary wasn't found."
-is_cmd ruby || e_abort "The ruby binary wasn't found."
-is_cmd r10k || e_abort "The r10k binary wasn't found."
-is_cmd shellcheck || e_abort "The shellcheck binary wasn't found."
+check_tools(){
+  is_cmd git         || e_abort "The git binary wasn't found."
+  is_cmd puppet      || e_abort "The puppet binary wasn't found."
+  is_cmd puppet-lint || e_abort "The puppet-lint binary wasn't found."
+  is_cmd erb         || e_abort "The erb binary wasn't found."
+  is_cmd ruby        || e_abort "The ruby binary wasn't found."
+  is_cmd r10k        || e_abort "The r10k binary wasn't found."
+  is_cmd shellcheck  || e_abort "The shellcheck binary wasn't found."
+}
 
 # Checks
 
@@ -133,16 +131,23 @@ check_bash(){
 }
 
 # Report
-check_puppet_syntax
-check_puppet_manifests
-check_ruby_template
-check_puppet_template
-check_yaml
-check_puppetfile
-check_bash
+main(){
+  check_tools
 
-if [[ ${syntax_is_bad:-0} -eq 1 ]]; then
-  e_abort "Please fix the errors above before committing your code"
-else
-  e_ok "Everything looks good."
-fi
+  check_puppet_syntax
+  check_puppet_manifests
+  check_ruby_template
+  check_puppet_template
+  check_yaml
+  check_puppetfile
+  check_bash
+
+  if [[ ${syntax_is_bad:-0} -eq 1 ]]; then
+    e_abort "Please fix the errors above before committing your code"
+  else
+    e_ok "Everything looks good."
+  fi
+}
+
+# Main
+main "$@"
