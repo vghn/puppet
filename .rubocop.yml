@@ -8,3 +8,5 @@ AllCops:
     - 'spec/fixtures/**/*'
     # Ignore temporary code
     - 'tmp/**/*'
+Metrics/LineLength:
+  Enabled: false

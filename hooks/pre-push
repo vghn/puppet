@@ -6,8 +6,14 @@
 . "$(cd "$(dirname "${BASH_SOURCE[0]}")/../../" && pwd -P)/envrc"
 
 # Hooks
-e_header 'GIT Pre-Push:'
-upload_private_data
+main(){
+  # Pre-Push hook
+  e_header 'GIT Pre-Push:'
+  upload_private_data
 
-# Git Push
-e_header 'GIT Push:'
+  # Git Push
+  e_header 'GIT Push:'
+}
+
+# Main
+main "$@"
