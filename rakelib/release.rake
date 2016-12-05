@@ -1,14 +1,15 @@
 # Release Rake Task
 
-# Might not be always present, for instance
-# on Travis with --without development
+# Might not be always present, for example with
+# `bundle install --without development`
 begin
   # GitHub CHANGELOG generator
   require 'github_changelog_generator/task'
   GitHubChangelogGenerator::RakeTask.new(:unreleased) do |config|
     configure_changelog(config)
   end
-rescue LoadError # rubocop:disable Lint/HandleExceptions
+rescue LoadError
+  warn 'github_changelog_generator gem is not installed'
 end
 
 namespace :release do
