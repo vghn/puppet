@@ -1,18 +1,23 @@
 # Puppet Rake Tasks
 
 require 'puppetlabs_spec_helper/rake_tasks'
+
+# `puppetlabs_spec_helper/rake_tasks` adds a default task so ours runs twice
+Rake::Task[:default].clear
+task :default do
+  sh 'rake -T'
+end
+
 require 'puppet/version'
 require 'puppet/vendor/semantic/lib/semantic' unless Puppet.version.to_f < 3.6
 require 'metadata-json-lint/rake_task'
 
-# `puppetlabs_spec_helper/rake_tasks` adds a default task so ours runs twice
-Rake::Task[:default].clear
-
-# Might not be always present, for instance
-# on Travis with --without development
+# Might not be always present, for example with
+# `bundle install --without development`
 begin
   require 'puppet_blacksmith/rake_tasks'
-rescue LoadError # rubocop:disable Lint/HandleExceptions
+rescue LoadError
+  warn 'puppet_blacksmith gem is not installed'
 end
 
 # Exclude paths
