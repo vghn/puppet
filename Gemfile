@@ -6,7 +6,7 @@ group :test do
   gem 'metadata-json-lint', require: false
   gem 'puppet-lint', require: false
   gem 'puppetlabs_spec_helper', require: false
-  gem 'r10k', require: false
+  gem 'rainbow', require: false
   gem 'rake', require: false
   gem 'reek', require: false
   gem 'rspec', require: false
@@ -23,7 +23,7 @@ group :development do
   gem 'guard-rake', require: false
   gem 'puppet-blacksmith', require: false
   gem 'puppet_forge', require: false
-  gem 'rainbow', require: false
+  gem 'r10k', require: false
   gem 'travis', require: false
   gem 'travis-lint', require: false
 end
