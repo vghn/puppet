@@ -23,10 +23,6 @@ detect_environment 2>/dev/null || true
 detect_ci_environment 2>/dev/null || true
 ENVTYPE="${ENVTYPE:-production}"
 
-# Load functions
-# shellcheck disable=1090
-for file in ${APPDIR}/lib/*.sh; do . "$file"; done
-
 # VARs
 export AWS_ASSETS_BUCKET='vladgh'
 export AWS_DEFAULT_REGION="${AWS_DEFAULT_REGION:-us-east-1}"
