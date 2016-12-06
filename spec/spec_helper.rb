@@ -10,9 +10,9 @@ RSpec.configure do |config|
     File.join(__FILE__, '../fixtures/hiera.yaml')
   )
   config.confdir = '/etc/puppetlabs/puppet'
-  config.expect_with :rspec do |c|
-    c.syntax = :expect
-  end
+  config.formatter = :documentation
+  config.color = true
+  config.tty = true
 end
 
 SimpleCov.start do
