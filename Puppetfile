@@ -68,7 +68,7 @@ mod 'gnupg',
     ref: '1.2.3'
 mod 'cloudwatchlogs',
     git: 'https://github.com/kemra102/puppet-cloudwatchlogs',
-    ref: 'v2.3.2'
+    ref: 'v2.3.1'
 mod 'rvm',
     git: 'https://github.com/maestrodev/puppet-rvm',
     ref: 'v1.13.1'
@@ -88,7 +88,7 @@ mod 'extlib',
     ref: 'v1.0.0'
 mod 'make',
     git: 'https://github.com/cmroddy/puppet-make',
-    ref: '1.0.1'
+    ref: 'v1.0.1'
 mod 'sysctl',
     git: 'https://github.com/fiddyspence/puppet-sysctl',
     ref: '1.1.0'
