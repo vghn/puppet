@@ -11,7 +11,8 @@ shared_examples 'profile::linuxfw' do
       is_expected.to have_rule(
         '-A INPUT -p tcp -m multiport --dports 1234 ' \
         '-m comment --comment "123 test rule" ' \
-        '-m state --state NEW -j ACCEPT')
+        '-m state --state NEW -j ACCEPT'
+      )
     end
   end
 end
