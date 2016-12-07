@@ -2,9 +2,9 @@ shared_examples 'profile::linuxfw' do
   describe iptables do
     it do
       is_expected.to have_rule(
-        '-A INPUT -m state ' \
-        '-m comment --comment "003 accept related established rules"' \
-        '--state RELATED,ESTABLISHED -j ACCEPT'
+        '-A INPUT ' \
+        '-m comment --comment "003 accept related established rules" ' \
+        '-m state --state RELATED,ESTABLISHED -j ACCEPT'
       )
     end
     it do
