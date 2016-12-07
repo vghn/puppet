@@ -3,13 +3,15 @@ shared_examples 'profile::linuxfw' do
     it do
       is_expected.to have_rule(
         '-A INPUT -m state ' \
+        '-m comment --comment "003 accept related established rules"' \
         '--state RELATED,ESTABLISHED -j ACCEPT'
       )
     end
     it do
-      is_expected.to have_rule('-A INPUT -p tcp -m multiport --dports 1234 ' \
-                               '-m comment --comment "123 test rule" ' \
-                               '-m state --state NEW -j ACCEPT')
+      is_expected.to have_rule(
+        '-A INPUT -p tcp -m multiport --dports 1234 ' \
+        '-m comment --comment "123 test rule" ' \
+        '-m state --state NEW -j ACCEPT')
     end
   end
 end
