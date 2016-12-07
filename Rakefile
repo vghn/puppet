@@ -243,9 +243,6 @@ require 'puppetlabs_spec_helper/rake_tasks'
 
 # `puppetlabs_spec_helper/rake_tasks` adds a default task so ours runs twice
 Rake::Task[:default].clear
-task :default do
-  sh 'rake -T'
-end
 
 require 'puppet/version'
 require 'puppet/vendor/semantic/lib/semantic' unless Puppet.version.to_f < 3.6
