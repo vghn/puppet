@@ -68,7 +68,7 @@ fixtures:
       ref:  '1.2.3'
     cloudwatchlogs:
       repo: 'https://github.com/kemra102/puppet-cloudwatchlogs'
-      ref:  'v2.3.2'
+      ref:  'v2.3.1'
     rvm:
       repo: 'https://github.com/maestrodev/puppet-rvm'
       ref:  'v1.13.1'
@@ -86,7 +86,7 @@ fixtures:
       ref:  'v1.0.0'
     make:
       repo: 'https://github.com/cmroddy/puppet-make'
-      ref:  '1.0.1'
+      ref:  'v1.0.1'
     sysctl:
       repo: 'https://github.com/fiddyspence/puppet-sysctl'
       ref:  '1.1.0'
