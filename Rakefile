@@ -133,6 +133,15 @@ end
 require 'puppet-syntax/tasks/puppet-syntax'
 PuppetSyntax.exclude_paths = exclude_paths
 
+# Puppet Strings
+# # Might not be always present, for example with
+# `bundle install --without development`
+begin
+  require 'puppet-strings/tasks'
+rescue LoadError
+  warn 'puppet-strings gem is not installed'
+end
+
 # Compose a list of Ruby files
 ruby_files = FileList['{lib,rakelib,spec}/**/*.{rb,rake}', 'Rakefile']
              .exclude('spec/fixtures/**/*')

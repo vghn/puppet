@@ -26,8 +26,7 @@ ENVTYPE="${ENVTYPE:-production}"
 # VARs
 export AWS_ASSETS_BUCKET='vladgh'
 export AWS_DEFAULT_REGION="${AWS_DEFAULT_REGION:-us-east-1}"
-export SSL_S3PATH="s3://${AWS_ASSETS_BUCKET}/ssl"
-export ARTIFACTS_S3PATH="s3://${AWS_ASSETS_BUCKET}/artifacts"
 export ENV_S3PATH="s3://${AWS_ASSETS_BUCKET}/env"
-export VAULT_S3PATH="s3://${AWS_ASSETS_BUCKET}/vault"
 export HIERA_S3PATH="s3://${AWS_ASSETS_BUCKET}/hieradata"
+export SSL_S3PATH="s3://${AWS_ASSETS_BUCKET}/ssl"
+export VAULT_S3PATH="s3://${AWS_ASSETS_BUCKET}/vault"
