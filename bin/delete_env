@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+# Delete stale environments (local & remote branch plus S3 paths)
+
+# Load environment
+# shellcheck disable=1090
+. "$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd -P)/envrc"
+
+# Use `hub` to delete local and remote git branches
+delete_git_branch(){
+  if ! echo git delete-branch "${@}"; then
+    e_error "Could not delete '$*'"
+  fi
+}
+
+# Delete the S3 object
+delete_s3_path(){
+  if ! echo aws s3 rm "${@}" --recursive; then
+    e_error "Could not delete '$*'"
+  fi
+}
+
+# Main script logic
+main(){
+  for branch in "$@"; do
+    delete_git_branch "$branch"
+    delete_s3_path "${ENV_S3PATH}/${branch}"
+    delete_s3_path "${HIERA_S3PATH}/${branch}"
+    delete_s3_path "${VAULT_S3PATH}/${branch}"
+  done
+}
+
+main "$@"

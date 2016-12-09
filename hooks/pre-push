@@ -5,11 +5,11 @@
 # shellcheck disable=1090
 . "$(cd "$(dirname "${BASH_SOURCE[0]}")/../../" && pwd -P)/envrc"
 
-# Upload provate data to AWS S3
+# Upload private data to AWS S3
 upload_private_data(){
   e_info 'Upload .env'
-  if ! aws s3 cp "${APPDIR}/.env" "${ENV_S3PATH}/.${ENVTYPE}" --quiet; then
-    e_abort "Could not upload ${APPDIR}/.env to ${ENV_S3PATH}/.${ENVTYPE}"
+  if ! aws s3 cp "${APPDIR}/.env" "${ENV_S3PATH}/${ENVTYPE}/.env" --quiet; then
+    e_abort "Could not upload ${APPDIR}/.env to ${ENV_S3PATH}/${ENVTYPE}/.env"
   fi
   e_info 'Upload vault'
   if ! aws s3 sync "${APPDIR}/vault/" "${VAULT_S3PATH}/${ENVTYPE}/" --delete --exact-timestamps; then
@@ -21,11 +21,11 @@ upload_private_data(){
   fi
 }
 
-# Download provate data from AWS S3
+# Download private data from AWS S3
 download_private_data(){
   e_info 'Download .env'
-  if ! aws s3 cp "${ENV_S3PATH}/.${ENVTYPE}" "${APPDIR}/.env" --quiet; then
-    e_abort "Could not download ${ENV_S3PATH}/.${ENVTYPE} to ${APPDIR}/.env"
+  if ! aws s3 cp "${ENV_S3PATH}/${ENVTYPE}/.env" "${APPDIR}/.env" --quiet; then
+    e_abort "Could not download ${ENV_S3PATH}/${ENVTYPE}/.env to ${APPDIR}/.env"
   fi
   e_info 'Download vault'
   if ! aws s3 sync "${VAULT_S3PATH}/${ENVTYPE}/" "${APPDIR}/vault/" --delete --exact-timestamps; then
