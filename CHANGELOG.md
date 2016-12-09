@@ -1,5 +1,16 @@
 # Change Log
 
+## [v0.1.14](https://github.com/vghn/puppet/tree/v0.1.14) (2016-12-09)
+[Full Changelog](https://github.com/vghn/puppet/compare/v0.1.13...v0.1.14)
+
+**Implemented enhancements:**
+
+- Improvements [\#80](https://github.com/vghn/puppet/pull/80) ([vladgh](https://github.com/vladgh))
+
+**Fixed bugs:**
+
+- Fix firewall profile testing [\#79](https://github.com/vghn/puppet/pull/79) ([vladgh](https://github.com/vladgh))
+
 ## [v0.1.13](https://github.com/vghn/puppet/tree/v0.1.13) (2016-12-07)
 [Full Changelog](https://github.com/vghn/puppet/compare/v0.1.12...v0.1.13)
 
