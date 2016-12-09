@@ -23,6 +23,7 @@ group :development do
   gem 'guard-rake', require: false
   gem 'puppet-blacksmith', require: false
   gem 'puppet_forge', require: false
+  gem 'puppet-strings', require: false
   gem 'r10k', require: false
   gem 'travis', require: false
   gem 'travis-lint', require: false

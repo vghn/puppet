@@ -133,6 +133,9 @@ end
 require 'puppet-syntax/tasks/puppet-syntax'
 PuppetSyntax.exclude_paths = exclude_paths
 
+# Puppet Strings
+require 'puppet-strings/tasks'
+
 # Compose a list of Ruby files
 ruby_files = FileList['{lib,rakelib,spec}/**/*.{rb,rake}', 'Rakefile']
              .exclude('spec/fixtures/**/*')
