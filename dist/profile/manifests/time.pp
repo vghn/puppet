@@ -18,7 +18,7 @@ class profile::time(String $zone = 'Etc/UTC') {
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
-        content => inline_template('<%= @zone %>'),
+        content => $zone,
       }
     }
     default: {
