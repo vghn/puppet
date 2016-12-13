@@ -23,11 +23,13 @@ RSpec.configure do |c|
     hosts.each do |host|
 
       # Fixes
-      shell 'sudo ln -fsn /root/.ssh/environment /etc/environment'
+      ## the second run (without provisioning) fails because
+      ## /opt/puppetlabs is not in the path
+      shell 'ln -fsn /root/.ssh/environment /etc/environment'
+      ## A few packages that some modules assume are present on all distros
       if fact('osfamily') == 'Debian'
         # Make sure snake-oil certs are installed.
         apply_manifest_on(host, 'package { "ssl-cert": }')
-
         # Make sure rsyslog is installed
         apply_manifest_on(host, 'package { "rsyslog": }')
       end
