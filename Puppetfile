@@ -81,6 +81,9 @@ mod 'sudo',
 mod 'samba',
     git: 'https://github.com/thias/puppet-samba',
     ref: '1.0.0'
+mod 'unattended_upgrades',
+    git: 'https://github.com/voxpupuli/puppet-unattended_upgrades',
+    ref: 'v2.1.0'
 
 # Dependencies (find with `sudo /opt/puppetlabs/bin/puppet module list --tree`)
 mod 'extlib',

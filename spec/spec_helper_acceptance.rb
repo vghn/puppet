@@ -21,7 +21,9 @@ RSpec.configure do |c|
   # Configure all nodes in nodeset
   c.before :suite do
     hosts.each do |host|
+
       # Fixes
+      shell 'sudo ln -fsn /root/.ssh/environment /etc/environment'
       if fact('osfamily') == 'Debian'
         # Make sure snake-oil certs are installed.
         apply_manifest_on(host, 'package { "ssl-cert": }')

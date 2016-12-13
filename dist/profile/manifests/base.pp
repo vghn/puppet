@@ -8,6 +8,7 @@ class profile::base {
     # Patch until the apt module supports Ubuntu 16.04
     ensure_packages('software-properties-common')
     class { '::apt': require => Package['software-properties-common'] }
+    include unattended_upgrades
   }
 
   # Security

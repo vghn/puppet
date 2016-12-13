@@ -81,6 +81,9 @@ fixtures:
     samba:
       repo: 'https://github.com/thias/puppet-samba'
       ref:  '1.0.0'
+    unattended_upgrades:
+      repo: 'https://github.com/voxpupuli/puppet-unattended_upgrades'
+      ref: 'v2.1.0'
     extlib:
       repo: 'https://github.com/voxpupuli/puppet-extlib'
       ref:  'v1.0.0'
