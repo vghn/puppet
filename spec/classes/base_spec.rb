@@ -20,6 +20,7 @@ describe 'profile::base' do
         it { is_expected.to contain_class('stdlib') }
         if facts[:os]['family'] == 'Debian'
           it { is_expected.to contain_class('apt') }
+          it { is_expected.to contain_class('unattended_upgrades') }
           it { is_expected.to contain_package('software-properties-common') }
         end
 
