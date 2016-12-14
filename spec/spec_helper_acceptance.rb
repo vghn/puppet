@@ -21,7 +21,6 @@ RSpec.configure do |c|
   # Configure all nodes in nodeset
   c.before :suite do
     hosts.each do |host|
-
       # Fixes
       ## the second run (without provisioning) fails because
       ## /opt/puppetlabs is not in the path
