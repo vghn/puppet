@@ -22,13 +22,13 @@ mod 'ntp',
     ref: '6.0.0'
 mod 'ruby',
     git: 'https://github.com/puppetlabs/puppetlabs-ruby',
-    ref: '0.5.0'
+    ref: '0.6.0'
 mod 'stdlib',
     git: 'https://github.com/puppetlabs/puppetlabs-stdlib',
-    ref: '4.13.1'
+    ref: '4.14.0'
 mod 'vcsrepo',
     git: 'https://github.com/puppetlabs/puppetlabs-vcsrepo',
-    ref: '1.4.0'
+    ref: '1.5.0'
 
 # Puppet approved modules
 mod 'docker',
@@ -51,7 +51,7 @@ mod 'rsyslog',
     ref: 'v5.0.0'
 mod 'python',
     git: 'https://github.com/stankevich/puppet-python',
-    ref: '1.18.0'
+    ref: '1.18.2'
 mod 'r10k',
     git: 'https://github.com/voxpupuli/puppet-r10k',
     ref: 'v4.0.2'
