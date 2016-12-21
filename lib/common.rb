@@ -1,6 +1,8 @@
 require 'rainbow'
 
-# Common
+def debug(message)
+  puts Rainbow("==> #{message}").green if $DEBUG
+end
 
 def info(message)
   puts Rainbow("==> #{message}").green

@@ -102,7 +102,7 @@ mod 'staging',
     git: 'https://github.com/voxpupuli/puppet-staging',
     ref: 'v2.0.1'
 mod 'firewall',
-    git: 'http://github.com/puppetlabs/puppetlabs-firewall',
+    git: 'https://github.com/puppetlabs/puppetlabs-firewall',
     ref: '1.8.1'
 mod 'gcc',
     git: 'https://github.com/puppetlabs/puppetlabs-gcc',
@@ -111,5 +111,5 @@ mod 'pe_gem',
     git: 'https://github.com/puppetlabs/puppetlabs-pe_gem',
     ref: '0.1.2'
 mod 'epel',
-    git: 'http://github.com/stahnma/puppet-module-epel',
+    git: 'https://github.com/stahnma/puppet-module-epel',
     ref: '1.2.2'
