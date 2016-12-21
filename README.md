@@ -16,36 +16,26 @@ Contains organization-specific roles and profiles.
 This directory is specified as a modulepath in environment.conf
 [Designing Puppet – Roles and Profiles.](http://www.craigdunn.org/2012/05/239/)
 
-### docker/
-Contains various Dockerfiles for the Docker images.
-
 ### hieradata/
 Contains the hiera data files. It's intended to serve as a base only, for
 public data, with sane defaults. It should be overwritten or amended with data
 from private sources.
 
 ### lib/
-Contains various functions that can be sourced in other scripts (ruby & bash).
+Contains various ruby libraries.
 
 ### manifests/
 Contains Puppet's manifests:
   - `site.pp`: the main manifest
 
+### secure/
+Contains private files.
+
 ### spec/
 Contains test definitions.
 
-### tasks/
-Contains rake tasks.
-
-### vault/
-Contains private data.
-
 ### .env
 Contains private environment variables.
-
-### docker-compose.yml
-This file defines services, networks and volumes for the containers.
-Additional environments should be suffixed to the name (Ex: docker-compose.dev.yml)
 
 ### environment.conf
 This file can override several settings whenever the Puppet master is serving

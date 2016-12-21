@@ -11,9 +11,9 @@ upload_private_data(){
   if ! aws s3 cp "${APPDIR}/.env" "${ENV_S3PATH}" --quiet; then
     e_abort "Could not upload ${APPDIR}/.env to ${ENV_S3PATH}"
   fi
-  e_info 'Upload vault'
-  if ! aws s3 sync "${APPDIR}/vault/" "${VAULT_S3PATH}/" --delete --exact-timestamps; then
-    e_abort "Could not upload ${APPDIR}/vault/ to ${VAULT_S3PATH}/"
+  e_info 'Upload secure'
+  if ! aws s3 sync "${APPDIR}/secure/" "${SECURE_S3PATH}/" --delete --exact-timestamps; then
+    e_abort "Could not upload ${APPDIR}/secure/ to ${SECURE_S3PATH}/"
   fi
   e_info 'Upload hieradata'
   if ! aws s3 sync "${APPDIR}/hieradata/" "${HIERA_S3PATH}/" --delete --exact-timestamps; then
@@ -27,9 +27,9 @@ download_private_data(){
   if ! aws s3 cp "${ENV_S3PATH}" "${APPDIR}/.env" --quiet; then
     e_abort "Could not download ${ENV_S3PATH} to ${APPDIR}/.env"
   fi
-  e_info 'Download vault'
-  if ! aws s3 sync "${VAULT_S3PATH}/" "${APPDIR}/vault/" --delete --exact-timestamps; then
-    e_abort "Could not download ${VAULT_S3PATH}/ to ${APPDIR}/vault/"
+  e_info 'Download secure'
+  if ! aws s3 sync "${SECURE_S3PATH}/" "${APPDIR}/secure/" --delete --exact-timestamps; then
+    e_abort "Could not download ${SECURE_S3PATH}/ to ${APPDIR}/secure/"
   fi
   e_info 'Download hieradata'
   if ! aws s3 sync "${HIERA_S3PATH}/" "${APPDIR}/hieradata/" --delete --exact-timestamps; then

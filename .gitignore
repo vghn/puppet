@@ -1,6 +1,6 @@
 # Private
 /.env
-/vault/*
+/secure/*
 /hieradata/*
 !/hieradata/common.yaml
 
