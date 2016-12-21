@@ -9,7 +9,7 @@
 cd "$APPDIR" || exit
 
 # Install git hooks
-for file in ${APPDIR}/hooks/*; do
+for file in ${APPDIR}/bin/*-git-hook; do
   echo "Installing ${file}"
-  ln -sfn "$file" "${APPDIR}/.git/hooks/$(basename "$file")"
+  ln -sfn "$file" "${APPDIR}/.git/hooks/$(basename "${file%-git-hook}")"
 done
