@@ -25,7 +25,7 @@ main(){
     delete_git_branch "$branch"
     delete_s3_path "${ENV_S3PATH}/${branch}"
     delete_s3_path "${HIERA_S3PATH}/${branch}"
-    delete_s3_path "${VAULT_S3PATH}/${branch}"
+    delete_s3_path "${SECURE_S3PATH}/${branch}"
   done
 }
 
