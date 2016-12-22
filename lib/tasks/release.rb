@@ -2,12 +2,6 @@
 require 'rake'
 require 'rake/tasklib'
 
-begin
-  require 'github_changelog_generator/task'
-rescue LoadError
-  nil # Not worth mentioning libs that are not installed
-end
-
 # Local libraries
 require 'config'
 require 'git'
@@ -24,8 +18,13 @@ module Tasks
     end
 
     def define
-      GitHubChangelogGenerator::RakeTask.new(:unreleased) do |config|
-        configure_changelog(config)
+      begin
+        require 'github_changelog_generator/task'
+        GitHubChangelogGenerator::RakeTask.new(:unreleased) do |config|
+          configure_changelog(config)
+        end
+      rescue LoadError
+        nil # Not worth mentioning libs that are not installed
       end
 
       namespace :release do
