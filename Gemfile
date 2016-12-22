@@ -5,6 +5,7 @@ gem 'puppet', ENV['PUPPET_GEM_VERSION'] || '~> 4.0', require: false
 group :test do
   gem 'metadata-json-lint', require: false
   gem 'puppet-lint', require: false
+  gem 'puppet-syntax', require: false
   gem 'puppetlabs_spec_helper', require: false
   gem 'rainbow', require: false
   gem 'rake', require: false
