@@ -40,12 +40,11 @@ require 'common'
 module Tasks
   # Puppet tasks
   class Puppet < ::Rake::TaskLib
-    attr_reader :puppetfile
     attr_reader :github_token
     attr_reader :exclude_paths
+    attr_reader :puppetfile
 
     def initialize
-      @puppetfile    = ::R10K::Puppetfile.new('.')
       @github_token  = ENV['GITHUB_TOKEN']
       @exclude_paths = [
         'bundle/**/*',
@@ -101,6 +100,10 @@ module Tasks
       task :check_puppetfile_versions do
         check_puppetfile_versions
       end
+    end
+
+    def puppetfile
+      @puppetfile = ::R10K::Puppetfile.new('.')
     end
 
     def generate_fixtures
