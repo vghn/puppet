@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 # Delete stale environments (local & remote branch plus S3 paths)
+#
+# Use the `git-show-merged-branches` to make list the branches, and use a
+# 'for' loop to delete them.
+# `for branch in $(git-show-merged-branches); do bin/delete_env ${branch}; done`
 
 # Load environment
 # shellcheck disable=1090
@@ -7,14 +11,14 @@
 
 # Use `hub` to delete local and remote git branches
 delete_git_branch(){
-  if ! echo git delete-branch "${@}"; then
+  if ! git delete-branch "${@}"; then
     e_error "Could not delete '$*'"
   fi
 }
 
 # Delete the S3 object
 delete_s3_path(){
-  if ! echo aws s3 rm "${@}" --recursive; then
+  if ! aws s3 rm "${@}" --recursive; then
     e_error "Could not delete '$*'"
   fi
 }
