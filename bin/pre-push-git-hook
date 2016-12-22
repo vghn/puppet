@@ -39,6 +39,8 @@ download_private_data(){
 
 # Hooks
 main(){
+  [[ "${SKIP_PRE_PUSH_HOOK:-false}" == 'true' ]] && return
+
   # Pre-Push hook
   e_header 'GIT Pre-Push:'
   upload_private_data
