@@ -10,7 +10,7 @@ module Tasks
     attr_reader :source_files
 
     def initialize
-      define
+      define_tasks
     end
 
     # Compose a list of Ruby files
@@ -22,7 +22,7 @@ module Tasks
       ].exclude('spec/fixtures/**/*')
     end
 
-    def define
+    def define_tasks
       # RuboCop
       desc 'Run RuboCop on the tasks and lib directory'
       RuboCop::RakeTask.new(:rubocop) do |task|

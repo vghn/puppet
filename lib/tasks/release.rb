@@ -13,11 +13,11 @@ module Tasks
     attr_reader :levels
 
     def initialize
-      @levels = [:major, :minor, :patch].freeze
-      define
+      @levels ||= [:major, :minor, :patch].freeze
+      define_tasks
     end
 
-    def define
+    def define_tasks
       begin
         require 'github_changelog_generator/task'
         GitHubChangelogGenerator::RakeTask.new(:unreleased) do |config|

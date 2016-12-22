@@ -53,10 +53,10 @@ module Tasks
         'spec/**/*',
         'vendor/**/*'
       ]
-      define
+      define_tasks
     end
 
-    def define
+    def define_tasks
       # Must clear as it will not override the existing puppet-lint rake task
       ::Rake::Task[:lint].clear
       ::Rake::Task[:rubocop].clear
@@ -103,7 +103,7 @@ module Tasks
     end
 
     def puppetfile
-      @puppetfile = ::R10K::Puppetfile.new('.')
+      @puppetfile ||= ::R10K::Puppetfile.new(pwd)
     end
 
     def generate_fixtures
@@ -136,7 +136,6 @@ module Tasks
 
     def check_puppetfile_versions
       puppetfile.load
-
       error 'Puppetfile was not found or is empty!' if puppetfile.modules.empty?
 
       puppetfile.modules.each do |mod|
