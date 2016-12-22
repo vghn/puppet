@@ -107,6 +107,7 @@ module Tasks
     end
 
     def generate_fixtures
+      info 'Load Puppetfile'
       puppetfile.load
       error 'Puppetfile was not found or is empty!' if puppetfile.modules.empty?
 
@@ -131,10 +132,12 @@ module Tasks
         }
       end
 
+      warn 'Write fixtures file'
       File.open('.fixtures.yml', 'w') { |file| file.write(fixtures.to_yaml) }
     end
 
     def check_puppetfile_versions
+      info 'Load Puppetfile'
       puppetfile.load
       error 'Puppetfile was not found or is empty!' if puppetfile.modules.empty?
 
