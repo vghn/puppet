@@ -9,7 +9,6 @@ require 'metadata-json-lint/rake_task'
 require 'puppet-lint/tasks/puppet-lint'
 require 'puppet-syntax/tasks/puppet-syntax'
 require 'puppetlabs_spec_helper/rake_tasks'
-require 'r10k/puppetfile'
 
 begin
   require 'puppet_blacksmith/rake_tasks'
