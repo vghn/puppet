@@ -18,7 +18,7 @@ delete_git_branch(){
 
 # Delete the S3 object
 delete_s3_path(){
-  if ! aws s3 rm "${@}" --recursive; then
+  if ! aws s3 rm "${@}"; then
     e_error "Could not delete '$*'"
   fi
 }
@@ -26,10 +26,19 @@ delete_s3_path(){
 # Main script logic
 main(){
   for branch in "$@"; do
+    # Reload new environment
+    export ENVTYPE="$branch"
+    export SKIP_PRE_PUSH_HOOK=true
+    # shellcheck disable=1090
+    . "$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd -P)/envrc"
+
+    # Delete git branches (local and remote)
     delete_git_branch "$branch"
-    delete_s3_path "${ENV_S3PATH}/${branch}"
-    delete_s3_path "${HIERA_S3PATH}/${branch}"
-    delete_s3_path "${SECURE_S3PATH}/${branch}"
+
+    # Delete S3 stored environments
+    delete_s3_path "${ENV_S3PATH}"
+    delete_s3_path "${HIERA_S3PATH}" --recursive
+    delete_s3_path "${SECURE_S3PATH}" --recursive
   done
 }
 
