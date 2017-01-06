@@ -1,5 +1,5 @@
 shared_examples 'profile::base' do
-  describe 'apt_base_profile', :if => fact('osfamily').eql?('Debian') do
+  describe 'apt_base_profile', if: fact('osfamily').eql?('Debian') do
     describe package('software-properties-common') do
       it { is_expected.to be_installed }
     end
