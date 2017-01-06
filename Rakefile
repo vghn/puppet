@@ -330,7 +330,7 @@ namespace :release do
       new_version = version_bump(level)
       release = "#{new_version[:major]}.#{new_version[:minor]}.#{new_version[:patch]}"
       release_branch = "release_v#{release.gsub(/[^0-9A-Za-z]/, '_')}"
-      initial_branch = branch
+      initial_branch = git_branch
 
       # Check if the repo is clean
       git_clean_repo
