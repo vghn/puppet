@@ -314,9 +314,13 @@ RubyCritic::RakeTask.new do |task|
   task.paths = lint_files_list
 end
 
-require 'github_changelog_generator/task'
-GitHubChangelogGenerator::RakeTask.new(:unreleased) do |config|
-  changelog(config)
+begin
+  require 'github_changelog_generator/task'
+  GitHubChangelogGenerator::RakeTask.new(:unreleased) do |config|
+    changelog(config)
+  end
+rescue LoadError
+  nil # Might be in a group that is not installed
 end
 
 namespace :release do
