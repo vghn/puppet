@@ -1,5 +1,31 @@
 # Change Log
 
+## [v0.1.15](https://github.com/vghn/puppet/tree/v0.1.15) (2017-01-06)
+[Full Changelog](https://github.com/vghn/puppet/compare/v0.1.14...v0.1.15)
+
+**Implemented enhancements:**
+
+- Add documentation [\#46](https://github.com/vghn/puppet/issues/46)
+- Remove "essential packages" from nodes [\#45](https://github.com/vghn/puppet/issues/45)
+- Consolidate rake tasks and upgrade Puppet modules [\#95](https://github.com/vghn/puppet/pull/95) ([vladgh](https://github.com/vladgh))
+- Pin Ruby version in a file for RVM [\#93](https://github.com/vghn/puppet/pull/93) ([vladgh](https://github.com/vladgh))
+- Update LICENSE [\#92](https://github.com/vghn/puppet/pull/92) ([vladgh](https://github.com/vladgh))
+- Refactor ruby libraries and tasks [\#89](https://github.com/vghn/puppet/pull/89) ([vladgh](https://github.com/vladgh))
+- Move git hooks into `./bin` and rename during install [\#88](https://github.com/vghn/puppet/pull/88) ([vladgh](https://github.com/vladgh))
+- Rename folder for sensitive files to `./secure` [\#87](https://github.com/vghn/puppet/pull/87) ([vladgh](https://github.com/vladgh))
+- Improve ruby libraries and rake tasks [\#86](https://github.com/vghn/puppet/pull/86) ([vladgh](https://github.com/vladgh))
+- Update Puppet modules [\#85](https://github.com/vghn/puppet/pull/85) ([vladgh](https://github.com/vladgh))
+- Improve S3 path declaration [\#84](https://github.com/vghn/puppet/pull/84) ([vladgh](https://github.com/vladgh))
+- Fix acceptance tests [\#83](https://github.com/vghn/puppet/pull/83) ([vladgh](https://github.com/vladgh))
+- Add unattended upgrades [\#82](https://github.com/vghn/puppet/pull/82) ([vladgh](https://github.com/vladgh))
+
+**Fixed bugs:**
+
+- Fix Travis cache [\#94](https://github.com/vghn/puppet/pull/94) ([vladgh](https://github.com/vladgh))
+- Allow skipping the pre-push git hook and fix the delete\_env script [\#91](https://github.com/vghn/puppet/pull/91) ([vladgh](https://github.com/vladgh))
+- Fix delete\_env script [\#90](https://github.com/vghn/puppet/pull/90) ([vladgh](https://github.com/vladgh))
+- No need for ERB template on timezone [\#81](https://github.com/vghn/puppet/pull/81) ([vladgh](https://github.com/vladgh))
+
 ## [v0.1.14](https://github.com/vghn/puppet/tree/v0.1.14) (2016-12-09)
 [Full Changelog](https://github.com/vghn/puppet/compare/v0.1.13...v0.1.14)
 
