@@ -42,7 +42,7 @@ mod 'wget',
     ref: 'v1.7.3'
 mod 'archive',
     git: 'https://github.com/voxpupuli/puppet-archive',
-    ref: 'v1.1.2'
+    ref: 'v1.2.0'
 mod 'swap_file',
     git: 'https://github.com/petems/petems-swap_file',
     ref: 'v3.0.2'
@@ -54,7 +54,7 @@ mod 'python',
     ref: '1.18.2'
 mod 'r10k',
     git: 'https://github.com/voxpupuli/puppet-r10k',
-    ref: 'v4.0.2'
+    ref: 'v4.1.0'
 
 # Others
 mod 'nfs',
@@ -90,7 +90,7 @@ mod 'extlib',
     git: 'https://github.com/voxpupuli/puppet-extlib',
     ref: 'v1.0.0'
 mod 'make',
-    git: 'https://github.com/cmroddy/puppet-make',
+    git: 'https://github.com/voxpupuli/puppet-make',
     ref: 'v1.0.1'
 mod 'sysctl',
     git: 'https://github.com/fiddyspence/puppet-sysctl',
@@ -100,7 +100,7 @@ mod 'portage',
     ref: '2.3.0'
 mod 'staging',
     git: 'https://github.com/voxpupuli/puppet-staging',
-    ref: 'v2.0.1'
+    ref: 'v2.1.0'
 mod 'firewall',
     git: 'https://github.com/puppetlabs/puppetlabs-firewall',
     ref: '1.8.1'
