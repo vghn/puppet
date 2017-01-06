@@ -45,7 +45,7 @@ fixtures:
       ref: v1.7.3
     archive:
       repo: https://github.com/voxpupuli/puppet-archive
-      ref: v1.1.2
+      ref: v1.2.0
     swap_file:
       repo: https://github.com/petems/petems-swap_file
       ref: v3.0.2
@@ -57,7 +57,7 @@ fixtures:
       ref: 1.18.2
     r10k:
       repo: https://github.com/voxpupuli/puppet-r10k
-      ref: v4.0.2
+      ref: v4.1.0
     nfs:
       repo: https://github.com/derdanne/puppet-nfs
       ref: 1.0.2
@@ -89,7 +89,7 @@ fixtures:
       repo: https://github.com/voxpupuli/puppet-extlib
       ref: v1.0.0
     make:
-      repo: https://github.com/cmroddy/puppet-make
+      repo: https://github.com/voxpupuli/puppet-make
       ref: v1.0.1
     sysctl:
       repo: https://github.com/fiddyspence/puppet-sysctl
@@ -99,7 +99,7 @@ fixtures:
       ref: 2.3.0
     staging:
       repo: https://github.com/voxpupuli/puppet-staging
-      ref: v2.0.1
+      ref: v2.1.0
     firewall:
       repo: https://github.com/puppetlabs/puppetlabs-firewall
       ref: 1.8.1
