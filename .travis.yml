@@ -1,5 +1,5 @@
+dist: trusty
 language: ruby
-sudo: false
 branches:
   except:
   - "/^v\\d/"
