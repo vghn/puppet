@@ -7,10 +7,6 @@
 
 # Upload private data to AWS S3
 upload_private_data(){
-  e_info 'Upload .env'
-  if ! aws s3 cp "${APPDIR}/.env" "${ENV_S3PATH}" --quiet; then
-    e_abort "Could not upload ${APPDIR}/.env to ${ENV_S3PATH}"
-  fi
   e_info 'Upload secure'
   if ! aws s3 sync "${APPDIR}/secure/" "${SECURE_S3PATH}/" --delete --exact-timestamps; then
     e_abort "Could not upload ${APPDIR}/secure/ to ${SECURE_S3PATH}/"
@@ -23,10 +19,6 @@ upload_private_data(){
 
 # Download private data from AWS S3
 download_private_data(){
-  e_info 'Download .env'
-  if ! aws s3 cp "${ENV_S3PATH}" "${APPDIR}/.env" --quiet; then
-    e_abort "Could not download ${ENV_S3PATH} to ${APPDIR}/.env"
-  fi
   e_info 'Download secure'
   if ! aws s3 sync "${SECURE_S3PATH}/" "${APPDIR}/secure/" --delete --exact-timestamps; then
     e_abort "Could not download ${SECURE_S3PATH}/ to ${APPDIR}/secure/"
