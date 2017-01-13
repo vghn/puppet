@@ -3,13 +3,13 @@ source ENV['GEM_SOURCE'] || 'https://rubygems.org'
 gem 'dotenv', require: false
 gem 'puppet', ENV['PUPPET_GEM_VERSION'] || '~> 4.0', require: false
 gem 'rainbow', require: false
+gem 'rake', require: false
 
 group :test do
   gem 'metadata-json-lint', require: false
   gem 'puppet-lint', require: false
   gem 'puppet-syntax', require: false
   gem 'puppetlabs_spec_helper', require: false
-  gem 'rake', require: false
   gem 'reek', require: false
   gem 'rspec', require: false
   gem 'rspec-puppet', require: false
