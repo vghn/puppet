@@ -6,7 +6,8 @@ class profile::docker {
   } else {
     # Docker main class
     class { '::docker':
-      manage_kernel => false,
+      manage_kernel               => false,
+      pin_upstream_package_source => false,
     }
 
     # Docker Compose
