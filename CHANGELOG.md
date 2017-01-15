@@ -1,5 +1,20 @@
 # Change Log
 
+## [v0.1.16](https://github.com/vghn/puppet/tree/v0.1.16) (2017-01-15)
+[Full Changelog](https://github.com/vghn/puppet/compare/v0.1.15...v0.1.16)
+
+**Implemented enhancements:**
+
+- Upgrade modules [\#101](https://github.com/vghn/puppet/pull/101) ([vladgh](https://github.com/vladgh))
+- Fix logs [\#99](https://github.com/vghn/puppet/pull/99) ([vladgh](https://github.com/vladgh))
+- Add task to sync environment with TravisCI [\#98](https://github.com/vghn/puppet/pull/98) ([vladgh](https://github.com/vladgh))
+- Use default Ruby version for TravisCI [\#97](https://github.com/vghn/puppet/pull/97) ([vladgh](https://github.com/vladgh))
+- Use the new Trusty build container in TravisCI [\#96](https://github.com/vghn/puppet/pull/96) ([vladgh](https://github.com/vladgh))
+
+**Fixed bugs:**
+
+- Remove Docker package pinning [\#100](https://github.com/vghn/puppet/pull/100) ([vladgh](https://github.com/vladgh))
+
 ## [v0.1.15](https://github.com/vghn/puppet/tree/v0.1.15) (2017-01-06)
 [Full Changelog](https://github.com/vghn/puppet/compare/v0.1.14...v0.1.15)
 
