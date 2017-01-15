@@ -11,6 +11,7 @@ class profile::log (
   if ($server_address and $server_port) {
     class{'::rsyslog::client':
       log_local      => true,
+      split_config   => true,
       remote_servers => [
         {
           host    => $server_address,
