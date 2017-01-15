@@ -39,7 +39,7 @@ fixtures:
       ref: master
     hiera:
       repo: https://github.com/voxpupuli/puppet-hiera
-      ref: v2.3.0
+      ref: v2.4.0
     wget:
       repo: https://github.com/maestrodev/puppet-wget
       ref: v1.7.3
@@ -75,22 +75,22 @@ fixtures:
       ref: v1.13.1
     ssh:
       repo: https://github.com/saz/puppet-ssh
-      ref: v2.9.1
+      ref: v3.0.1
     sudo:
       repo: https://github.com/saz/puppet-sudo
-      ref: v3.1.0
+      ref: v4.1.0
     samba:
       repo: https://github.com/thias/puppet-samba
       ref: 1.0.0
     unattended_upgrades:
       repo: https://github.com/voxpupuli/puppet-unattended_upgrades
-      ref: v2.1.0
+      ref: v2.2.0
     extlib:
       repo: https://github.com/voxpupuli/puppet-extlib
-      ref: v1.0.0
+      ref: v1.1.0
     make:
       repo: https://github.com/voxpupuli/puppet-make
-      ref: v1.0.1
+      ref: v1.1.0
     sysctl:
       repo: https://github.com/fiddyspence/puppet-sysctl
       ref: 1.1.0
@@ -102,7 +102,7 @@ fixtures:
       ref: v2.1.0
     firewall:
       repo: https://github.com/puppetlabs/puppetlabs-firewall
-      ref: 1.8.1
+      ref: 1.8.2
     gcc:
       repo: https://github.com/puppetlabs/puppetlabs-gcc
       ref: 0.3.0

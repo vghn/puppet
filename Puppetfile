@@ -36,7 +36,7 @@ mod 'docker',
     ref: 'master'
 mod 'hiera',
     git: 'https://github.com/voxpupuli/puppet-hiera',
-    ref: 'v2.3.0'
+    ref: 'v2.4.0'
 mod 'wget',
     git: 'https://github.com/maestrodev/puppet-wget',
     ref: 'v1.7.3'
@@ -74,24 +74,24 @@ mod 'rvm',
     ref: 'v1.13.1'
 mod 'ssh',
     git: 'https://github.com/saz/puppet-ssh',
-    ref: 'v2.9.1'
+    ref: 'v3.0.1'
 mod 'sudo',
     git: 'https://github.com/saz/puppet-sudo',
-    ref: 'v3.1.0'
+    ref: 'v4.1.0'
 mod 'samba',
     git: 'https://github.com/thias/puppet-samba',
     ref: '1.0.0'
 mod 'unattended_upgrades',
     git: 'https://github.com/voxpupuli/puppet-unattended_upgrades',
-    ref: 'v2.1.0'
+    ref: 'v2.2.0'
 
 # Dependencies (find with `sudo /opt/puppetlabs/bin/puppet module list --tree`)
 mod 'extlib',
     git: 'https://github.com/voxpupuli/puppet-extlib',
-    ref: 'v1.0.0'
+    ref: 'v1.1.0'
 mod 'make',
     git: 'https://github.com/voxpupuli/puppet-make',
-    ref: 'v1.0.1'
+    ref: 'v1.1.0'
 mod 'sysctl',
     git: 'https://github.com/fiddyspence/puppet-sysctl',
     ref: '1.1.0'
@@ -103,7 +103,7 @@ mod 'staging',
     ref: 'v2.1.0'
 mod 'firewall',
     git: 'https://github.com/puppetlabs/puppetlabs-firewall',
-    ref: '1.8.1'
+    ref: '1.8.2'
 mod 'gcc',
     git: 'https://github.com/puppetlabs/puppetlabs-gcc',
     ref: '0.3.0'
