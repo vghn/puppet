@@ -36,7 +36,6 @@ main(){
     delete_git_branch "$branch"
 
     # Delete S3 stored environments
-    delete_s3_path "${ENV_S3PATH}"
     delete_s3_path "${HIERA_S3PATH}" --recursive
     delete_s3_path "${SECURE_S3PATH}" --recursive
   done
