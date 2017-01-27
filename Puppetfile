@@ -25,7 +25,7 @@ mod 'ruby',
     ref: '0.6.0'
 mod 'stdlib',
     git: 'https://github.com/puppetlabs/puppetlabs-stdlib',
-    ref: '4.14.0'
+    ref: '4.15.0'
 mod 'vcsrepo',
     git: 'https://github.com/puppetlabs/puppetlabs-vcsrepo',
     ref: '1.5.0'
