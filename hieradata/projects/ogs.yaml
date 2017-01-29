@@ -1,0 +1,12 @@
+---
+# VGH Project Data
+
+# Misc
+profile::time::zone: 'US/Mountain'
+
+# Centralized Logging
+profile::log::server_address: logs4.papertrailapp.com
+profile::log::server_port: 39978
+
+# SSH
+ssh::storeconfigs_enabled: false
