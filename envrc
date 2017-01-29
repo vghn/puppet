@@ -22,9 +22,3 @@ NOW="$(date +"%Y%m%d_%H%M%S")"
 detect_environment 2>/dev/null || true
 detect_ci_environment 2>/dev/null || true
 ENVTYPE="${ENVTYPE:-production}"
-
-# VARs
-export AWS_ASSETS_BUCKET='vladgh'
-export AWS_DEFAULT_REGION="${AWS_DEFAULT_REGION:-us-east-1}"
-export HIERA_S3PATH="s3://${AWS_ASSETS_BUCKET}/hieradata/${ENVTYPE}"
-export SECURE_S3PATH="s3://${AWS_ASSETS_BUCKET}/secure/${ENVTYPE}"

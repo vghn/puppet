@@ -1,8 +1,5 @@
 # Private
 /.env
-/secure/*
-/hieradata/*
-!/hieradata/common.yaml
 
 # Other
 .*.sw?
