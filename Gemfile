@@ -2,7 +2,6 @@ source ENV['GEM_SOURCE'] || 'https://rubygems.org'
 
 gem 'dotenv', require: false
 gem 'puppet', ENV['PUPPET_GEM_VERSION'] || '~> 4.0', require: false
-gem 'rainbow', require: false
 gem 'rake', require: false
 
 group :test do

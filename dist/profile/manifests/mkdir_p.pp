@@ -1,4 +1,18 @@
-# mkdir_p define
+# == Define: profile::mkdir_p
+#
+# Provide `mkdir -p` functionality for a directory
+#
+# Idea is to use this mkdir_p in conjunction with a file resource
+#
+# Example usage:
+#
+#  profile::mkdir_p { '/some/dir/structure': }
+#
+#  file { '/some/dir/structure':
+#    ensure  => directory,
+#    require => Profile::Mkdir_p['/some/dir/structure'],
+#  }
+#
 define profile::mkdir_p () {
 
   validate_absolute_path($name)
