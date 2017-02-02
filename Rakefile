@@ -211,9 +211,6 @@ module Tasks
     include Git
     include Output
 
-    require 'puppet/version'
-    require 'puppet/vendor/semantic/lib/semantic' unless ::Puppet.version.to_f < 3.6
-
     require 'json'
     require 'metadata-json-lint/rake_task'
     require 'open-uri'
