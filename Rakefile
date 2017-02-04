@@ -404,7 +404,7 @@ end # module Tasks
 module Tasks
   require 'rake/tasklib'
 
-  # Release tasks
+  # Lint tasks
   class Lint < ::Rake::TaskLib
     def initialize
       define_tasks
@@ -442,7 +442,7 @@ module Tasks
         'Rakefile'
       ].exclude('spec/fixtures/**/*')
     end
-  end # class Release
+  end # class Lint
 end # module Tasks
 
 # Tasks module
@@ -454,6 +454,7 @@ module Tasks
     # Include utility modules
     include Output
 
+    # Include libraries
     require 'dotenv'
 
     begin
@@ -498,7 +499,7 @@ module Tasks
     def dotenv
       @dotenv ||= Dotenv.load
     end
-  end # class Release
+  end # class TravisCI
 end # module Tasks
 
 # Include task modules
@@ -522,5 +523,5 @@ end
 # List all tasks by default
 Rake::Task[:default].clear if Rake::Task.task_defined?(:default)
 task :default do
-  system "rake -D"
+  system 'rake -D'
 end

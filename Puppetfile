@@ -32,7 +32,7 @@ mod 'vcsrepo',
 
 # Puppet approved modules
 mod 'docker',
-    git: 'https://github.com/garethr/garethr-docker',
+    git: 'https://github.com/vladgh/garethr-docker',
     ref: 'master'
 mod 'hiera',
     git: 'https://github.com/voxpupuli/puppet-hiera',
