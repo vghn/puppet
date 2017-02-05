@@ -1,0 +1,20 @@
+---
+version: 5
+
+defaults:
+  datadir: hieradata
+  data_hash: yaml_data
+
+hierarchy:
+  - name: Certname
+    path: nodes/%{::trusted.certname}.yaml
+  - name: Hostname
+    path: hosts/%{::trusted.domainname}/%{::trusted.hostname}.yaml
+  - name: Roles
+    path: roles/%{::trusted.extensions.pp_role}.yaml
+  - name: Application
+    path: applications/%{::trusted.extensions.pp_application}.yaml
+  - name: Project
+    path: projects/%{::trusted.extensions.pp_project}.yaml
+  - name: Common
+    path: common.yaml
