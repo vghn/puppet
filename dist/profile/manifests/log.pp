@@ -22,7 +22,9 @@ class profile::log (
     }
 
     # Extra monitored files
-    hiera_hash('profile::rsyslog::imfile', {}).each |String $name, Hash $params| {
+    lookup(
+      'profile::rsyslog::imfile', {'merge' => 'hash', 'default_value' => {}}
+    ).each |String $name, Hash $params| {
       rsyslog::imfile { $name:
         * => $params;
       }

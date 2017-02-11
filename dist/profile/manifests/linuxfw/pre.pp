@@ -44,8 +44,10 @@ class profile::linuxfw::pre {
     action => 'accept',
   }
 
-  # Extra rules defined in Hiera
-  hiera_hash('profile::linuxfw::rules', {}).each |String $name, Hash $params| {
+  # Extra rules
+  lookup(
+    'profile::linuxfw::rules', {'merge' => 'hash', 'default_value' => {}}
+  ).each |String $name, Hash $params| {
     firewall { $name:
       * => $params;
     }

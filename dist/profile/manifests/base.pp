@@ -20,7 +20,9 @@ class profile::base {
   include ::ssh
 
   # CRON Jobs
-  hiera_hash('profile::base::cron_jobs', {}).each |String $name, Hash $params| {
+  lookup(
+    'profile::base::cron_jobs', {'merge' => 'hash', 'default_value' => {}}
+  ).each |String $name, Hash $params| {
     cron {
       default: * => {
                       ensure => 'present',
@@ -31,14 +33,18 @@ class profile::base {
   }
 
   # SSH Keys
-  hiera_hash('profile::base::ssh_authorized_keys', {}).each |String $name, Hash $params| {
+  lookup(
+    'profile::base::ssh_authorized_keys', {'merge' => 'hash', 'default_value' => {}}
+  ).each |String $name, Hash $params| {
     ssh_authorized_key { $name:
       * => $params;
     }
   }
 
   # INI Settings
-  hiera_hash('profile::base::ini_settings', {}).each |String $name, Hash $params| {
+  lookup(
+    'profile::base::ini_settings', {'merge' => 'hash', 'default_value' => {}}
+  ).each |String $name, Hash $params| {
     ini_setting { $name:
       * => $params;
     }
@@ -46,7 +52,7 @@ class profile::base {
 
   # Packages
   $packages = $facts['os']['name'] ? {
-    'Ubuntu' => hiera_array("profile::base::${facts['os']['name']}::${facts['os']['distro']['codename']}::packages", [])
+    'Ubuntu' => lookup("profile::base::${facts['os']['name']}::${facts['os']['distro']['codename']}::packages", {'merge' => 'unique', 'default_value' => []})
   }
   ensure_packages($packages)
 
