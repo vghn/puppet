@@ -300,7 +300,8 @@ module Tasks
         'pkg/**/*',
         'tmp/**/*',
         'spec/**/*',
-        'vendor/**/*'
+        'vendor/**/*',
+        'modules/**/*'
       ]
     end
 
