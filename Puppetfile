@@ -31,6 +31,9 @@ mod 'vcsrepo',
     ref: '1.5.0'
 
 # Puppet approved modules
+mod 'nfs',
+    git: 'https://github.com/derdanne/puppet-nfs',
+    ref: '1.0.2'
 mod 'docker',
     git: 'https://github.com/vladgh/garethr-docker',
     ref: 'master'
@@ -42,7 +45,7 @@ mod 'wget',
     ref: 'v1.7.3'
 mod 'archive',
     git: 'https://github.com/voxpupuli/puppet-archive',
-    ref: 'v1.2.0'
+    ref: 'v1.3.0'
 mod 'swap_file',
     git: 'https://github.com/petems/petems-swap_file',
     ref: 'v3.0.2'
@@ -57,9 +60,6 @@ mod 'r10k',
     ref: 'v4.1.0'
 
 # Others
-mod 'nfs',
-    git: 'https://github.com/derdanne/puppet-nfs',
-    ref: '1.0.2'
 mod 'fail2ban',
     git: 'https://github.com/dhoppe/puppet-fail2ban',
     ref: '1.3.4'
@@ -97,10 +97,10 @@ mod 'sysctl',
     ref: '1.1.0'
 mod 'portage',
     git: 'https://github.com/gentoo/puppet-portage',
-    ref: '2.3.0'
+    ref: '2.4.0'
 mod 'staging',
     git: 'https://github.com/voxpupuli/puppet-staging',
-    ref: 'v2.1.0'
+    ref: 'v2.2.0'
 mod 'firewall',
     git: 'https://github.com/puppetlabs/puppetlabs-firewall',
     ref: '1.8.2'
