@@ -243,7 +243,10 @@ module Tasks
       nil # Might be in a group that is not installed
     end
 
-    def initialize
+    attr_reader :exclude_paths
+
+    def initialize(options = {})
+      @exclude_paths ||= options.fetch(:exclude_paths) unless options.empty?
       define_tasks
     end
 
@@ -292,18 +295,6 @@ module Tasks
         check_puppetfile_versions
       end
     end # def define_tasks
-
-    # Compose a list of exclude paths
-    def exclude_paths
-      @exclude_paths ||= [
-        'bundle/**/*',
-        'pkg/**/*',
-        'tmp/**/*',
-        'spec/**/*',
-        'vendor/**/*',
-        'modules/**/*'
-      ]
-    end
 
     def puppetfile
       @puppetfile ||= ::R10K::Puppetfile.new(pwd)
@@ -407,7 +398,10 @@ module Tasks
 
   # Lint tasks
   class Lint < ::Rake::TaskLib
-    def initialize
+    attr_reader :file_list
+
+    def initialize(options = {})
+      @file_list ||= options.fetch(:file_list) unless options.empty?
       define_tasks
     end
 
@@ -416,14 +410,14 @@ module Tasks
       require 'rubocop/rake_task'
       desc 'Run RuboCop on the tasks and lib directory'
       RuboCop::RakeTask.new(:rubocop) do |task|
-        task.patterns = lint_files_list
+        task.patterns = file_list
         task.options  = ['--display-cop-names', '--extra-details']
       end
 
       # Reek
       require 'reek/rake/task'
       Reek::Rake::Task.new do |task|
-        task.source_files  = lint_files_list
+        task.source_files  = file_list
         task.fail_on_error = false
         task.reek_opts     = '--wiki-links --color'
       end
@@ -431,18 +425,9 @@ module Tasks
       # Ruby Critic
       require 'rubycritic/rake_task'
       RubyCritic::RakeTask.new do |task|
-        task.paths = lint_files_list
+        task.paths = file_list
       end
     end # def define_tasks
-
-    # Compose a list of Ruby files
-    def lint_files_list
-      @lint_files_list ||= FileList[
-        'lib/**/*.rb',
-        'spec/**/*.rb',
-        'Rakefile'
-      ].exclude('spec/fixtures/**/*')
-    end
   end # class Lint
 end # module Tasks
 
@@ -505,8 +490,21 @@ end # module Tasks
 
 # Include task modules
 Tasks::Release.new
-Tasks::Puppet.new
-Tasks::Lint.new
+Tasks::Puppet.new(exclude_paths: [
+  'bundle/**/*',
+  'modules/**/*',
+  'pkg/**/*',
+  'spec/**/*',
+  'tmp/**/*',
+  'vendor/**/*'
+])
+Tasks::Lint.new(file_list:
+  FileList[
+    'lib/**/*.rb',
+    'spec/**/*.rb',
+    'Rakefile'
+  ].exclude('spec/fixtures/**/*')
+)
 Tasks::TravisCI.new
 
 # Display version
