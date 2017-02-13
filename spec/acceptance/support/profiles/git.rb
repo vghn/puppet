@@ -9,7 +9,7 @@ shared_examples 'profile::git' do
   end
 
   describe file(repo_file) do
-    it { is_expected.to contain 'http://ppa.launchpad.net/git-core/ppa/ubuntu' }
+    its(:content) { is_expected.to match %r{http://ppa.launchpad.net/git-core/ppa/ubuntu} }
   end
 
   describe package('git') do

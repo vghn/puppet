@@ -9,7 +9,3 @@ profile::base::Ubuntu::xenial::packages:
   - unzip
   - vim
   - wget
-
-# Software versions
-profile::jq::version: '1.5'
-docker::compose::version: '1.11.1'

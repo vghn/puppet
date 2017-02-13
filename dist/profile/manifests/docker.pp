@@ -11,17 +11,23 @@ class profile::docker {
     }
 
     # Docker Compose
-    include ::docker::compose
+    class { '::docker::compose':
+      version => '1.11.1',
+    }
 
     # Pull images
-    hiera_hash('profile::docker::images', {}).each |String $name, Hash $params| {
+    lookup(
+      'profile::docker::images', {'merge' => 'hash', 'default_value' => {}}
+    ).each |String $name, Hash $params| {
       docker::image { $name:
         * => $params;
       }
     }
 
     # Run containers
-    hiera_hash('profile::docker::run', {}).each |String $name, Hash $params| {
+    lookup(
+      'profile::docker::run', {'merge' => 'hash', 'default_value' => {}}
+    ).each |String $name, Hash $params| {
       docker::run { $name:
         * => $params;
       }

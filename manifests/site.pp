@@ -27,7 +27,7 @@ Exec {
 # DEFAULT NODE
 node default {
   # Classification option 1 - Classes defined in Hiera
-  hiera_include('classes', [])
+  include(lookup('classes', {'merge' => 'unique', 'default_value' => []}))
 
   # Classification option 2 - Classic roles and profiles classes
   if $real_role {

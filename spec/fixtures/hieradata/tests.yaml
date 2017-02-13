@@ -80,10 +80,6 @@ samba::server::shares:
     - 'writeable = yes'
     - 'browseable = yes'
 
-# Software versions
-profile::jq::version: '1.5'
-docker::compose::version: '1.8.0'
-
 # Extra firewall rules
 profile::linuxfw::rules:
   '123 test rule':
@@ -91,3 +87,6 @@ profile::linuxfw::rules:
     dport: 1234
     state: 'NEW'
     action: 'accept'
+
+# Miscellaneous
+profile::misc::ignore_lid_switch: true
