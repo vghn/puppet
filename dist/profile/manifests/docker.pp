@@ -11,7 +11,9 @@ class profile::docker {
     }
 
     # Docker Compose
-    include ::docker::compose
+    class { '::docker::compose':
+      version => '1.11.1',
+    }
 
     # Pull images
     lookup(

@@ -6,5 +6,7 @@ defaults:
   data_hash: yaml_data
 
 hierarchy:
+  - name: Role Tests
+    path: roles/%{::role}.yaml
   - name: Tests
     path: tests.yaml

@@ -14,4 +14,7 @@ shared_examples 'profile::base' do
       it { should be_mode 644 }
     end
   end
+
+  it_behaves_like 'profile::misc'
+  it_behaves_like 'profile::time'
 end

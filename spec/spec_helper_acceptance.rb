@@ -31,7 +31,9 @@ RSpec.configure do |config|
       # Set-up environment
       scp_to(host, File.join(proj_root, 'environment.conf'), production_dir)
 
-      # Install hieradata
+      # Configure Hiera
+      shell 'mkdir -p /etc/puppetlabs/facter/facts.d'
+      shell "echo 'role: #{host.name}' > /etc/puppetlabs/facter/facts.d/role.yaml"
       shell 'rm /etc/puppetlabs/puppet/hiera.yaml || true'
       scp_to(
         host,
