@@ -220,6 +220,7 @@ module Tasks
     require 'yaml'
 
     begin
+      require 'r10k/cli'
       require 'r10k/puppetfile'
     rescue LoadError
       nil # Might be in a group that is not installed
@@ -267,30 +268,40 @@ module Tasks
       # Puppet syntax tasks
       ::PuppetSyntax.exclude_paths = exclude_paths
 
-      desc 'Run syntax, lint, and spec tests.'
+      desc 'Run syntax, lint, and spec tests'
       task test: [
         :metadata_lint,
         :syntax,
         :lint,
+        :unit
+      ]
+
+      desc 'Run unit tests'
+      task unit: [
         :spec_prep,
         :spec_standalone
       ]
 
-      desc 'Run acceptance tests.'
+      desc 'Run acceptance tests'
       task integration: [
         :spec_prep,
         :beaker
       ]
 
-      desc 'Clean all test files.'
+      desc 'Clean all test files'
       task clean: [:spec_clean]
 
-      desc 'Generates a new .fixtures.yml from a Puppetfile.'
+      desc 'Use R10K to download all modules'
+      task :install_modules do
+        install_modules
+      end
+
+      desc 'Generates a new .fixtures.yml from a Puppetfile'
       task :generate_fixtures do
         generate_fixtures
       end
 
-      desc 'Print outdated Puppetfile modules.'
+      desc 'Print outdated Puppetfile modules'
       task :puppetfile_inspect do
         check_puppetfile_versions
       end
@@ -298,6 +309,10 @@ module Tasks
 
     def puppetfile
       @puppetfile ||= ::R10K::Puppetfile.new(pwd)
+    end
+
+    def install_modules
+      R10K::CLI.command.run(%w(puppetfile install --verbose))
     end
 
     def generate_fixtures

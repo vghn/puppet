@@ -6,7 +6,6 @@ branches:
 cache:
   directories:
   - vendor/bundle
-  - spec/fixtures/modules
 before_install: gem update bundler
 install: bundle install --without development system_tests --path vendor/bundle
 script: bundle exec rake test

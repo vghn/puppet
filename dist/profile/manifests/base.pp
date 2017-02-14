@@ -19,6 +19,15 @@ class profile::base {
   include ::sudo::configs
   include ::ssh
 
+  # SSH Keys
+  lookup(
+    'profile::base::ssh_authorized_keys', {'merge' => 'hash', 'default_value' => {}}
+  ).each |String $name, Hash $params| {
+    ssh_authorized_key { $name:
+      * => $params;
+    }
+  }
+
   # CRON Jobs
   lookup(
     'profile::base::cron_jobs', {'merge' => 'hash', 'default_value' => {}}
@@ -29,15 +38,6 @@ class profile::base {
                       user   => 'root',
                     };
       $name: * => $params;
-    }
-  }
-
-  # SSH Keys
-  lookup(
-    'profile::base::ssh_authorized_keys', {'merge' => 'hash', 'default_value' => {}}
-  ).each |String $name, Hash $params| {
-    ssh_authorized_key { $name:
-      * => $params;
     }
   }
 
