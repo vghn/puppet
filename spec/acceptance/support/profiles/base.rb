@@ -1,18 +1,55 @@
 shared_examples 'profile::base' do
   describe 'apt_base_profile', if: fact('osfamily').eql?('Debian') do
-    describe package('software-properties-common') do
-      it { is_expected.to be_installed }
-    end
-
-    describe package('unattended-upgrades') do
-      it { is_expected.to be_installed }
+    packages = %w(software-properties-common unattended-upgrades)
+    packages.each do |pkg|
+      describe package(pkg) do
+        it { is_expected.to be_installed }
+      end
     end
 
     describe file('/etc/apt/apt.conf.d/50unattended-upgrades') do
-      it { should be_file }
-      it { should be_owned_by 'root' }
-      it { should be_mode 644 }
+      it { is_expected.to be_file }
+      it { is_expected.to be_owned_by 'root' }
+      it { is_expected.to be_mode 644 }
     end
+  end
+
+  packages = %w(openssh-client openssh-server sudo)
+  packages.each do |pkg|
+    describe package(pkg) do
+      it { is_expected.to be_installed }
+    end
+  end
+
+  describe file('/etc/ssh/sshd_config') do
+    it { is_expected.to be_owned_by 'root' }
+    it { is_expected.to be_mode 600 }
+    its(:content) { is_expected.to match %r{PermitRootLogin no} }
+  end
+
+  describe file('/root/.ssh/authorized_keys') do
+    it { is_expected.to be_owned_by 'root' }
+    it { is_expected.to be_mode 600 }
+    its(:content) { is_expected.to match %r{ssh-rsa ABCDEF hiera-test-key} }
+  end
+
+  describe cron do
+    it { is_expected.to have_entry '* * * * * true' }
+  end
+
+  describe file('/tmp/foo.ini') do
+    its(:content) { is_expected.to match %r{setting1 = value1} }
+  end
+
+  packages = %w(htop wget ntp)
+  packages.each do |pkg|
+    describe package(pkg) do
+      it { is_expected.to be_installed }
+    end
+  end
+
+  describe file('/etc/ntp.conf') do
+    its(:content) { is_expected.to match %r{# ntp.conf: Managed by puppet.} }
   end
 
   it_behaves_like 'profile::misc'
