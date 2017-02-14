@@ -75,6 +75,15 @@ samba::server::shares:
     - 'create mask = 0664'
     - 'directory mask = 0775'
     - 'force group = sambashare'
+  ShirtAve:
+    - 'comment = ShirtAve'
+    - 'path = /data/shirtave'
+    - 'writeable = yes'
+    - 'browseable = yes'
+    - 'valid users = @sambashare'
+    - 'create mask = 0664'
+    - 'directory mask = 0775'
+    - 'force group = sambashare'
   TShirts:
     - 'comment = Clients'
     - 'path = /data/tshirts'
