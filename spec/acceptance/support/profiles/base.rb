@@ -24,13 +24,13 @@ shared_examples 'profile::base' do
   describe file('/etc/ssh/sshd_config') do
     it { is_expected.to be_owned_by 'root' }
     it { is_expected.to be_mode 600 }
-    its(:content) { is_expected.to match %r{PermitRootLogin no} }
+    its(:content) { is_expected.to match(/PermitRootLogin no/) }
   end
 
   describe file('/root/.ssh/authorized_keys') do
     it { is_expected.to be_owned_by 'root' }
     it { is_expected.to be_mode 600 }
-    its(:content) { is_expected.to match %r{ssh-rsa ABCDEF hiera-test-key} }
+    its(:content) { is_expected.to match(/ssh-rsa ABCDEF hiera-test-key/) }
   end
 
   describe cron do
@@ -38,7 +38,7 @@ shared_examples 'profile::base' do
   end
 
   describe file('/tmp/foo.ini') do
-    its(:content) { is_expected.to match %r{setting1 = value1} }
+    its(:content) { is_expected.to match(/setting1 = value1/) }
   end
 
   packages = %w(htop wget ntp)
@@ -49,7 +49,7 @@ shared_examples 'profile::base' do
   end
 
   describe file('/etc/ntp.conf') do
-    its(:content) { is_expected.to match %r{# ntp.conf: Managed by puppet.} }
+    its(:content) { is_expected.to match(/# ntp\.conf: Managed by puppet/) }
   end
 
   it_behaves_like 'profile::misc'
