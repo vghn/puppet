@@ -22,10 +22,11 @@ RSpec.configure do |config|
     hosts.each do |host|
       # Prepare host
       unless ENV['RS_PROVISION'] == 'no' || ENV['BEAKER_provision'] == 'no'
-        # Fixes
+        # Fixes environment
         ## the second run (without provisioning) fails because
         ## /opt/puppetlabs is not in the path
-        shell 'ln -fsn /root/.ssh/environment /etc/environment'
+        on host, 'ln -fsn /root/.ssh/environment /etc/environment'
+
         ## A few packages that some modules assume are present on all distros
         if fact('osfamily') == 'Debian'
           # Make sure required packages are installed.
@@ -33,52 +34,31 @@ RSpec.configure do |config|
         end
 
         # Set-up environment
-        rsync_to(host, File.join(proj_root, 'environment.conf'), production_dir)
+        env_file = File.join(proj_root, 'environment.conf')
+        scp_to(host, env_file, production_dir)
 
         # Configure Hiera
-        shell 'mkdir -p /etc/puppetlabs/facter/facts.d'
-        shell "echo 'role: #{host.name}' > /etc/puppetlabs/facter/facts.d/role.yaml"
-        shell 'rm /etc/puppetlabs/puppet/hiera.yaml || true'
-        rsync_to(
-          host,
-          File.join(proj_root, 'spec/fixtures/hiera.yaml'),
-          production_dir
-        )
+        on host, <<~EOS
+          rm /etc/puppetlabs/puppet/hiera.yaml || true
+          mkdir -p /etc/puppetlabs/facter/facts.d
+          echo 'role: #{host.name}' > /etc/puppetlabs/facter/facts.d/role.yaml
+        EOS
+
+        hiera_config = File.join(proj_root, 'spec/fixtures/hiera.yaml')
+        scp_to(host, hiera_config, production_dir)
 
         # Install modules
-        rsync_to(
-          host,
-          File.join(proj_root, 'spec/fixtures/modules'),
-          File.join(production_dir, 'modules'),
-          ignore: [
-            '.bundle',
-            '.git',
-            '.idea',
-            '.vagrant',
-            '.vendor',
-            'vendor',
-            'acceptance',
-            'bundle',
-            'spec',
-            'tests',
-            'log'
-          ]
-        )
+        mod_dir = File.join(proj_root, 'spec/fixtures/modules'),
+        scp_to(host, mod_dir, production_dir, ignore: PUPPET_MODULE_INSTALL_IGNORE)
       end
 
       # Install roles & profiles
-      rsync_to(
-        host,
-        File.join(proj_root, 'dist'),
-        File.join(production_dir, 'dist')
-      )
+      dist_dir = File.join(proj_root, 'dist')
+      scp_to(host, dist_dir, production_dir)
 
       # Install Hiera Data
-      rsync_to(
-        host,
-        File.join(proj_root, 'spec/fixtures/hieradata'),
-        File.join(production_dir, 'hieradata')
-      )
+      hieradata_dir = File.join(proj_root, 'spec/fixtures/hieradata')
+      scp_to(host, hieradata_dir, production_dir)
     end
   end
 end
