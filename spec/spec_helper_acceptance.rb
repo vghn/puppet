@@ -2,8 +2,8 @@ require 'beaker-rspec/spec_helper'
 require 'beaker-rspec/helpers/serverspec'
 require 'beaker/puppet_install_helper'
 
+# Install puppet
 unless ENV['RS_PROVISION'] == 'no' || ENV['BEAKER_provision'] == 'no'
-  # Install puppet
   run_puppet_install_helper
 end
 
@@ -25,7 +25,7 @@ RSpec.configure do |config|
         # Fixes environment
         ## the second run (without provisioning) fails because
         ## /opt/puppetlabs is not in the path
-        on host, 'ln -fsn /root/.ssh/environment /etc/environment'
+        shell 'ln -fsn /root/.ssh/environment /etc/environment'
 
         ## A few packages that some modules assume are present on all distros
         if fact('osfamily') == 'Debian'
@@ -38,7 +38,7 @@ RSpec.configure do |config|
         scp_to(host, env_file, production_dir)
 
         # Configure Hiera
-        on host, <<~EOS
+        shell <<~EOS
           rm /etc/puppetlabs/puppet/hiera.yaml || true
           mkdir -p /etc/puppetlabs/facter/facts.d
           echo 'role: #{host.name}' > /etc/puppetlabs/facter/facts.d/role.yaml
@@ -49,7 +49,8 @@ RSpec.configure do |config|
 
         # Install modules
         mod_dir = File.join(proj_root, 'spec/fixtures/modules'),
-        scp_to(host, mod_dir, production_dir, ignore: PUPPET_MODULE_INSTALL_IGNORE)
+        ignore_list = build_ignore_list(ignore_list: PUPPET_MODULE_INSTALL_IGNORE)
+        scp_to(host, mod_dir, production_dir, ignore_list)
       end
 
       # Install roles & profiles
