@@ -57,7 +57,7 @@ mod 'python',
     ref: '1.18.2'
 mod 'r10k',
     git: 'https://github.com/voxpupuli/puppet-r10k',
-    ref: 'v4.1.0'
+    ref: 'v4.2.0'
 
 # Others
 mod 'fail2ban',
