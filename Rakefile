@@ -315,11 +315,15 @@ module Tasks
       R10K::CLI.command.run(%w(puppetfile install --verbose))
     end
 
+    def check_puppetfile
+      puppetfile.load
+      error 'Puppetfile was not found or is empty!' if puppetfile.modules.empty?
+    end
+
     def generate_fixtures
       info 'Generating fixtures file'
 
-      puppetfile.load
-      error 'Puppetfile was not found or is empty!' if puppetfile.modules.empty?
+      check_puppetfile
 
       fixtures = {
         'fixtures' => {
@@ -506,20 +510,19 @@ end # module Tasks
 # Include task modules
 Tasks::Release.new
 Tasks::Puppet.new(exclude_paths: [
-  'bundle/**/*',
-  'modules/**/*',
-  'pkg/**/*',
-  'spec/**/*',
-  'tmp/**/*',
-  'vendor/**/*'
-])
+                    'bundle/**/*',
+                    'modules/**/*',
+                    'pkg/**/*',
+                    'spec/**/*',
+                    'tmp/**/*',
+                    'vendor/**/*'
+                  ])
 Tasks::Lint.new(file_list:
-  FileList[
-    'lib/**/*.rb',
-    'spec/**/*.rb',
-    'Rakefile'
-  ].exclude('spec/fixtures/**/*')
-)
+                  FileList[
+                    'lib/**/*.rb',
+                    'spec/**/*.rb',
+                    'Rakefile'
+                  ].exclude('spec/fixtures/**/*'))
 Tasks::TravisCI.new
 
 # Display version
