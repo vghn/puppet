@@ -49,8 +49,7 @@ RSpec.configure do |config|
 
         # Install modules
         mod_dir = File.join(proj_root, 'spec/fixtures/modules'),
-        ignore_list = build_ignore_list(ignore_list: PUPPET_MODULE_INSTALL_IGNORE)
-        scp_to(host, mod_dir, production_dir, ignore_list)
+        scp_to(host, mod_dir, production_dir, build_ignore_list)
       end
 
       # Install roles & profiles
