@@ -48,7 +48,10 @@ samba::server::shares:
     - 'path = /data/TV'
     - 'writeable = yes'
     - 'browseable = yes'
-    - 'valid users = vlad'
+    - 'valid users = @sambashare'
+    - 'create mask = 0664'
+    - 'directory mask = 0775'
+    - 'force group = sambashare'
 
 # Miscellaneous
 profile::misc::ignore_lid_switch: true

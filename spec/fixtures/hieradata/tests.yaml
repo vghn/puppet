@@ -76,7 +76,7 @@ profile::docker::run:
 samba::server::shares:
   Test:
     - 'comment = Test Share'
-    - 'path = /data/share'
+    - 'path = /data/test_share'
     - 'writeable = yes'
     - 'browseable = yes'
 

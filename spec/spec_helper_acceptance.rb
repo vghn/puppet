@@ -3,7 +3,9 @@ require 'beaker-rspec/helpers/serverspec'
 require 'beaker/puppet_install_helper'
 
 # Install puppet
-run_puppet_install_helper
+unless ENV['RS_PROVISION'] == 'no' || ENV['BEAKER_provision'] == 'no'
+  run_puppet_install_helper
+end
 
 # Include shared examples
 Dir['./spec/acceptance/support/**/*.rb'].sort.each { |f| require f }
@@ -18,56 +20,45 @@ RSpec.configure do |config|
   # Configure all nodes in nodeset
   config.before :suite do
     hosts.each do |host|
-      # Fixes
-      ## the second run (without provisioning) fails because
-      ## /opt/puppetlabs is not in the path
-      shell 'ln -fsn /root/.ssh/environment /etc/environment'
-      ## A few packages that some modules assume are present on all distros
-      if fact('osfamily') == 'Debian'
-        # Make sure required packages are installed.
-        apply_manifest_on(host, 'package { ["ssl-cert", "rsyslog"]: }')
+      # Prepare host
+      unless ENV['RS_PROVISION'] == 'no' || ENV['BEAKER_provision'] == 'no'
+        # Fixes environment
+        ## the second run (without provisioning) fails because
+        ## /opt/puppetlabs is not in the path
+        shell 'ln -fsn /root/.ssh/environment /etc/environment'
+
+        ## A few packages that some modules assume are present on all distros
+        if fact('osfamily') == 'Debian'
+          # Make sure required packages are installed.
+          apply_manifest_on(host, 'package { ["ssl-cert", "rsyslog"]: }')
+        end
+
+        # Set-up environment
+        env_file = File.join(proj_root, 'environment.conf')
+        scp_to host, env_file, production_dir
+
+        # Configure Hiera
+        shell <<-EOS
+          rm /etc/puppetlabs/puppet/hiera.yaml || true
+          mkdir -p /etc/puppetlabs/facter/facts.d
+          echo 'role: #{host.name}' > /etc/puppetlabs/facter/facts.d/role.yaml
+        EOS
+
+        hiera_config = File.join(proj_root, 'spec/fixtures/hiera.yaml')
+        scp_to host, hiera_config, production_dir
+
+        # Install modules
+        mod_dir = File.join(proj_root, 'spec/fixtures/modules')
+        scp_to host, mod_dir, production_dir, ignore: build_ignore_list
       end
 
-      # Set-up environment
-      scp_to(host, File.join(proj_root, 'environment.conf'), production_dir)
-
-      # Configure Hiera
-      shell 'mkdir -p /etc/puppetlabs/facter/facts.d'
-      shell "echo 'role: #{host.name}' > /etc/puppetlabs/facter/facts.d/role.yaml"
-      shell 'rm /etc/puppetlabs/puppet/hiera.yaml || true'
-      scp_to(
-        host,
-        File.join(proj_root, 'spec/fixtures/hiera.yaml'),
-        production_dir
-      )
-      scp_to(
-        host,
-        File.join(proj_root, 'spec/fixtures/hieradata'),
-        production_dir
-      )
-
       # Install roles & profiles
-      scp_to(host, File.join(proj_root, 'dist'), production_dir)
+      dist_dir = File.join(proj_root, 'dist')
+      scp_to host, dist_dir, production_dir
 
-      # Install modules
-      scp_to(
-        host,
-        File.join(proj_root, 'spec/fixtures/modules'),
-        production_dir,
-        ignore: [
-          '.bundle',
-          '.git',
-          '.idea',
-          '.vagrant',
-          '.vendor',
-          'vendor',
-          'acceptance',
-          'bundle',
-          'spec',
-          'tests',
-          'log'
-        ]
-      )
+      # Install Hiera Data
+      hieradata_dir = File.join(proj_root, 'spec/fixtures/hieradata')
+      scp_to host, hieradata_dir, production_dir
     end
   end
 end
