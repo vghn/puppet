@@ -35,30 +35,30 @@ RSpec.configure do |config|
 
         # Set-up environment
         env_file = File.join(proj_root, 'environment.conf')
-        scp_to(host, env_file, production_dir)
+        scp_to host, env_file, production_dir
 
         # Configure Hiera
-        shell <<~EOS
+        shell <<-EOS
           rm /etc/puppetlabs/puppet/hiera.yaml || true
           mkdir -p /etc/puppetlabs/facter/facts.d
           echo 'role: #{host.name}' > /etc/puppetlabs/facter/facts.d/role.yaml
         EOS
 
         hiera_config = File.join(proj_root, 'spec/fixtures/hiera.yaml')
-        scp_to(host, hiera_config, production_dir)
+        scp_to host, hiera_config, production_dir
 
         # Install modules
-        mod_dir = File.join(proj_root, 'spec/fixtures/modules'),
-        scp_to(host, mod_dir, production_dir, build_ignore_list)
+        mod_dir = File.join(proj_root, 'spec/fixtures/modules')
+        scp_to host, mod_dir, production_dir, ignore: build_ignore_list
       end
 
       # Install roles & profiles
       dist_dir = File.join(proj_root, 'dist')
-      scp_to(host, dist_dir, production_dir)
+      scp_to host, dist_dir, production_dir
 
       # Install Hiera Data
       hieradata_dir = File.join(proj_root, 'spec/fixtures/hieradata')
-      scp_to(host, hieradata_dir, production_dir)
+      scp_to host, hieradata_dir, production_dir
     end
   end
 end
