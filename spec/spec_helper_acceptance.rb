@@ -2,6 +2,9 @@ require 'beaker-rspec/spec_helper'
 require 'beaker-rspec/helpers/serverspec'
 require 'beaker/puppet_install_helper'
 
+# VARs
+ROLE = ENV['BEAKER_role'] || 'none'
+
 # Install puppet
 unless ENV['RS_PROVISION'] == 'no' || ENV['BEAKER_provision'] == 'no'
   run_puppet_install_helper

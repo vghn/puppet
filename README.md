@@ -90,11 +90,7 @@ bundle exec rake test
 
 #### Acceptance testing
 
-```
-cd dist/profile
-```
-
-Run default set for the first time (default creates all nodes)
+Run default set for the first time (default is just the base profile)
 ```
 PUPPET_INSTALL_TYPE=agent ORDERING=manifest BEAKER_destroy=no bundle exec rake integration
 ```
@@ -111,7 +107,7 @@ PUPPET_INSTALL_TYPE=agent ORDERING=manifest BEAKER_provision=no bundle exec rake
 
 Complete example:
 ```
-PUPPET_INSTALL_TYPE=agent ORDERING=manifest BEAKER_destroy=no BEAKER_provision=yes BEAKER_debug=yes BEAKER_set=default bundle exec rake integration
+PUPPET_INSTALL_TYPE=agent ORDERING=manifest BEAKER_destroy=no BEAKER_provision=yes BEAKER_debug=yes BEAKER_set=default BEAKER_role=none bundle exec rake integration
 ```
 
 Other commands:
@@ -119,6 +115,7 @@ Other commands:
 
 The following environment variables can be used to influence how beaker works:
 
+* `BEAKER_role`: choose a role from `spec/acceptance/support/roles/*.yml`
 * `BEAKER_set`: choose a nodeset from `spec/acceptance/nodesets/*.yml`
                 defaults to `default`
 * `BEAKER_setfile`: specify a nodeset using a full path
