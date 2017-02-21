@@ -1,5 +1,5 @@
 HOSTS:
-  mini:
+  trusty:
     platform: ubuntu-14.04-amd64
     hypervisor: vagrant
     box: puppetlabs/ubuntu-14.04-64-nocm
