@@ -1,20 +1,17 @@
 ---
 # Green role data
 
-# Misc
-profile::time::zone: 'US/Mountain'
-
-# Centralized Logging
-profile::log::server_address: logs4.papertrailapp.com
-profile::log::server_port: 39978
-
 # Sudo
 sudo::configs:
   admins:
     content: "cosmin ALL=(ALL) NOPASSWD: ALL"
 
 # SSH
-ssh::storeconfigs_enabled: false
+ssh::server_options:
+  PermitRootLogin: 'no'
+  PasswordAuthentication: 'no'
+  LoginGraceTime: 30
+  MaxStartups: '3:50:10'
 profile::base::ssh_authorized_keys:
   vgh_ed:
     ensure: present
