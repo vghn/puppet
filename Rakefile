@@ -170,10 +170,10 @@ module Tasks
             info 'Check if the repository is clean'
             git_clean_repo
 
-            info 'Create a new release branch'
+            info 'Switch to a new release branch'
             sh "git checkout -b #{release_branch}"
 
-            info 'Generate new changelog'
+            info 'Generate a new changelog'
             GitHubChangelogGenerator::RakeTask.new(:latest_release) do |config|
               changelog(config, release: release)
             end
@@ -184,7 +184,6 @@ module Tasks
             sh "git push --set-upstream origin #{release_branch}"
 
             info 'Waiting for CI to finish'
-            puts 'Waiting for CI to finish'
             sleep 5 until git_ci_status(release_branch) == 'success'
 
             info 'Merge release branch'
