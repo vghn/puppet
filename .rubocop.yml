@@ -1,12 +1,2 @@
-AllCops:
-  Exclude:
-    # Ignore HTML related things
-    - '**/*.erb'
-    # Ignore vendored gems
-    - 'vendor/**/*'
-    # Ignore code from test fixtures
-    - 'spec/fixtures/**/*'
-    # Ignore temporary code
-    - 'tmp/**/*'
 Metrics/LineLength:
   Enabled: false
