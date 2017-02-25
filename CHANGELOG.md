@@ -1,5 +1,34 @@
 # Change Log
 
+## [v0.1.17](https://github.com/vghn/puppet/tree/v0.1.17) (2017-02-25)
+[Full Changelog](https://github.com/vghn/puppet/compare/v0.1.16...v0.1.17)
+
+**Implemented enhancements:**
+
+- Clean-up [\#120](https://github.com/vghn/puppet/pull/120) ([vladgh](https://github.com/vladgh))
+- Upgrades [\#118](https://github.com/vghn/puppet/pull/118) ([vladgh](https://github.com/vladgh))
+- Update SSH configuration for Green [\#117](https://github.com/vghn/puppet/pull/117) ([vladgh](https://github.com/vladgh))
+- Clean-up ssh keys [\#115](https://github.com/vghn/puppet/pull/115) ([vladgh](https://github.com/vladgh))
+- Add Green Role [\#114](https://github.com/vghn/puppet/pull/114) ([vladgh](https://github.com/vladgh))
+- Improve acceptance tests [\#113](https://github.com/vghn/puppet/pull/113) ([vladgh](https://github.com/vladgh))
+- Miscellaneous improvements  [\#112](https://github.com/vghn/puppet/pull/112) ([vladgh](https://github.com/vladgh))
+- Add ShirtAve share [\#111](https://github.com/vghn/puppet/pull/111) ([vladgh](https://github.com/vladgh))
+- Improve tests [\#110](https://github.com/vghn/puppet/pull/110) ([vladgh](https://github.com/vladgh))
+- Upgrade to Hiera 5 [\#109](https://github.com/vghn/puppet/pull/109) ([vladgh](https://github.com/vladgh))
+- Upgrades [\#108](https://github.com/vghn/puppet/pull/108) ([vladgh](https://github.com/vladgh))
+- Remove direct reference to semantic puppet [\#106](https://github.com/vghn/puppet/pull/106) ([vladgh](https://github.com/vladgh))
+- Improve Rake tasks and documentation [\#105](https://github.com/vghn/puppet/pull/105) ([vladgh](https://github.com/vladgh))
+- Use Hiera EYaml [\#104](https://github.com/vghn/puppet/pull/104) ([vladgh](https://github.com/vladgh))
+- Remove command to delete .env from S3 [\#103](https://github.com/vghn/puppet/pull/103) ([vladgh](https://github.com/vladgh))
+- Update modules and docker compose [\#102](https://github.com/vghn/puppet/pull/102) ([vladgh](https://github.com/vladgh))
+
+**Fixed bugs:**
+
+- Fix release tasks in Rakefile [\#121](https://github.com/vghn/puppet/pull/121) ([vladgh](https://github.com/vladgh))
+- Bring back RSA ssh keys [\#119](https://github.com/vghn/puppet/pull/119) ([vladgh](https://github.com/vladgh))
+- Fix whitespace in ssh public keys [\#116](https://github.com/vghn/puppet/pull/116) ([vladgh](https://github.com/vladgh))
+- Fork the docker module to get rif of deprecations [\#107](https://github.com/vghn/puppet/pull/107) ([vladgh](https://github.com/vladgh))
+
 ## [v0.1.16](https://github.com/vghn/puppet/tree/v0.1.16) (2017-01-15)
 [Full Changelog](https://github.com/vghn/puppet/compare/v0.1.15...v0.1.16)
 
