@@ -24,8 +24,9 @@ describe 'profile::base' do
           it { is_expected.to contain_package('software-properties-common') }
         end
 
-        it { is_expected.to contain_cron('test').with_command('true') }
+        it { is_expected.to contain_user('testuser').with_managehome('true') }
         it { is_expected.to contain_ssh_authorized_key('hiera-test-key') }
+        it { is_expected.to contain_cron('test').with_command('true') }
         it { is_expected.to contain_ini_setting('test setting') }
         it { is_expected.to contain_package('htop') }
 

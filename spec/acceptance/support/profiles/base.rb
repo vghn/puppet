@@ -21,6 +21,11 @@ shared_examples 'profile::base' do
     end
   end
 
+  describe user('testuser') do
+    it { is_expected.to exist }
+    it { is_expected.to have_home_directory '/home/testuser' }
+  end
+
   describe file('/etc/ssh/sshd_config') do
     it { is_expected.to be_owned_by 'root' }
     it { is_expected.to be_mode 600 }

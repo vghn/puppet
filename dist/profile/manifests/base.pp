@@ -19,12 +19,28 @@ class profile::base {
   include ::sudo::configs
   include ::ssh
 
+  # Users
+  lookup(
+    'profile::base::users', {'merge' => 'hash', 'default_value' => {}}
+  ).each |String $name, Hash $params| {
+    user {
+      default: * => {
+                      ensure => 'present',
+                    };
+      $name: * => $params;
+    }
+  }
+
   # SSH Keys
   lookup(
     'profile::base::ssh_authorized_keys', {'merge' => 'hash', 'default_value' => {}}
   ).each |String $name, Hash $params| {
-    ssh_authorized_key { $name:
-      * => $params;
+    ssh_authorized_key {
+      default: * => {
+                      ensure => 'present',
+                      user   => 'root',
+                    };
+      $name: * => $params;
     }
   }
 
