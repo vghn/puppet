@@ -51,7 +51,7 @@ fixtures:
       ref: v1.3.0
     swap_file:
       repo: https://github.com/petems/petems-swap_file
-      ref: v3.0.2
+      ref: v3.1.4
     rsyslog:
       repo: https://github.com/saz/puppet-rsyslog
       ref: v5.0.0
