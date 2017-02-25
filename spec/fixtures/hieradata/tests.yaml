@@ -1,6 +1,12 @@
 ---
 # Testing Hiera data
 
+# Users
+profile::base::users:
+  'testuser':
+    comment: 'Test User'
+    managehome: true
+
 # SSH
 ssh::server_options:
   PermitRootLogin: 'no'
