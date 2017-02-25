@@ -6,14 +6,6 @@ sudo::configs:
   admins:
     content: "vlad ALL=(ALL) NOPASSWD: ALL"
 
-# SSH
-profile::base::ssh_authorized_keys:
-  vgh_ed:
-    ensure: present
-    user: vlad
-    type: ssh-ed25519
-    key: AAAAC3NzaC1lZDI1NTE5AAAAIE0yyqRUbBGOW9PcYyuaUMaRi/EFwL59E3wwMn5dJAKQ
-
 # Docker
 docker::docker_users: [vlad]
 
