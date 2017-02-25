@@ -26,6 +26,7 @@ class profile::base {
     user {
       default: * => {
                       ensure => 'present',
+                      shell  => '/bin/bash',
                     };
       $name: * => $params;
     }
