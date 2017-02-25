@@ -48,7 +48,7 @@ mod 'archive',
     ref: 'v1.3.0'
 mod 'swap_file',
     git: 'https://github.com/petems/petems-swap_file',
-    ref: 'v3.0.2'
+    ref: 'v3.1.4'
 mod 'rsyslog',
     git: 'https://github.com/saz/puppet-rsyslog',
     ref: 'v5.0.0'
