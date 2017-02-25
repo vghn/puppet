@@ -24,6 +24,7 @@ shared_examples 'profile::base' do
   describe user('testuser') do
     it { is_expected.to exist }
     it { is_expected.to have_home_directory '/home/testuser' }
+    it { is_expected.to have_login_shell '/bin/bash' }
   end
 
   describe file('/etc/ssh/sshd_config') do
