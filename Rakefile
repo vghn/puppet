@@ -170,7 +170,7 @@ module Tasks
             info 'Check if the repository is clean'
             git_clean_repo
 
-            einfo 'Create a new release branch'
+            info 'Create a new release branch'
             sh "git checkout -b #{release_branch}"
 
             info 'Generate new changelog'
