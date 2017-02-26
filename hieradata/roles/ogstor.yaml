@@ -1,13 +1,10 @@
 ---
 # OneGeeks storage role data
 
-# Sudo
-sudo::configs:
-  admins:
-    content: "cosmin ALL=(ALL) NOPASSWD: ALL"
-
 # Docker
-docker::docker_users: [cosmin]
+docker::docker_users:
+  - vlad
+  - cosmin
 
 # Cron jobs
 profile::base::cron_jobs:

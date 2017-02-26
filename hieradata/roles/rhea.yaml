@@ -19,7 +19,9 @@ python::python_pips:
     ensure: present
 
 # Docker
-docker::docker_users: [ubuntu]
+docker::docker_users:
+  - ubuntu
+  - vlad
 
 # Cron jobs
 profile::base::cron_jobs:

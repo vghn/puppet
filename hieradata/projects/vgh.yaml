@@ -14,6 +14,12 @@ profile::base::users:
     comment: 'Vlad Ghinea'
     managehome: true
 
+# Sudo
+sudo::configs:
+  admins:
+    content: |
+      vlad ALL=(ALL) NOPASSWD: ALL
+
 # SSH
 ssh::storeconfigs_enabled: false
 profile::base::ssh_authorized_keys:
