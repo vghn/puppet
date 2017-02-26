@@ -17,7 +17,7 @@ profile::base::users:
 # Sudo
 sudo::configs:
   admins:
-    content: |
+    content: |-
       vlad ALL=(ALL) NOPASSWD: ALL
 
 # SSH
