@@ -1,13 +1,9 @@
 ---
 # Mini role data
 
-# Sudo
-sudo::configs:
-  admins:
-    content: "vlad ALL=(ALL) NOPASSWD: ALL"
-
 # Docker
-docker::docker_users: [vlad]
+docker::docker_users:
+  - vlad
 
 # Cron jobs
 profile::base::cron_jobs:
