@@ -8,13 +8,37 @@ defaults:
 hierarchy:
   - name: Certname
     path: nodes/%{::trusted.certname}.yaml
+    lookup_key: eyaml_lookup_key
+    options:
+      pkcs7_private_key: /secrets/eyaml/private_key.pkcs7.pem
+      pkcs7_public_key: /secrets/eyaml/public_key.pkcs7.pem
   - name: Hostname
     path: hosts/%{::trusted.domainname}/%{::trusted.hostname}.yaml
+    lookup_key: eyaml_lookup_key
+    options:
+      pkcs7_private_key: /secrets/eyaml/private_key.pkcs7.pem
+      pkcs7_public_key: /secrets/eyaml/public_key.pkcs7.pem
   - name: Roles
     path: roles/%{::trusted.extensions.pp_role}.yaml
+    lookup_key: eyaml_lookup_key
+    options:
+      pkcs7_private_key: /secrets/eyaml/private_key.pkcs7.pem
+      pkcs7_public_key: /secrets/eyaml/public_key.pkcs7.pem
   - name: Application
     path: applications/%{::trusted.extensions.pp_application}.yaml
+    lookup_key: eyaml_lookup_key
+    options:
+      pkcs7_private_key: /secrets/eyaml/private_key.pkcs7.pem
+      pkcs7_public_key: /secrets/eyaml/public_key.pkcs7.pem
   - name: Project
     path: projects/%{::trusted.extensions.pp_project}.yaml
+    lookup_key: eyaml_lookup_key
+    options:
+      pkcs7_private_key: /secrets/eyaml/private_key.pkcs7.pem
+      pkcs7_public_key: /secrets/eyaml/public_key.pkcs7.pem
   - name: Common
     path: common.yaml
+    lookup_key: eyaml_lookup_key
+    options:
+      pkcs7_private_key: /secrets/eyaml/private_key.pkcs7.pem
+      pkcs7_public_key: /secrets/eyaml/public_key.pkcs7.pem
