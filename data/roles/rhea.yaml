@@ -25,12 +25,8 @@ docker::docker_users:
 
 # Cron jobs
 profile::base::cron_jobs:
-  'Backup':
-    command: 'echo "Not yet" 2>&1 | /usr/bin/logger -t Backup'
-    minute: '6'
-    hour: '*/6'
   'Docker Clean':
-    command: '( docker images --no-trunc --quiet --filter dangling=true | xargs --no-run-if-empty docker rmi ) 2>&1 | /usr/bin/logger -t CleanUp'
+    command: 'docker system prune --force 2>&1 | /usr/bin/logger -t CleanUp'
     minute: '2'
     hour: '2'
 
