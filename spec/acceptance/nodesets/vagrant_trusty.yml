@@ -1,5 +1,5 @@
 HOSTS:
-  xenial:
+  trusty:
     roles:
       - agent
       - default
