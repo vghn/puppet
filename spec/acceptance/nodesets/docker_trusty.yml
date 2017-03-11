@@ -1,5 +1,8 @@
 HOSTS:
   trusty:
+    roles:
+      - agent
+      - default
     platform: ubuntu-14.04-amd64
     hypervisor: docker
     image: ubuntu:14.04
@@ -7,5 +10,15 @@ HOSTS:
     docker_cmd: '["/sbin/init"]'
     docker_image_commands:
       - 'rm /usr/sbin/policy-rc.d && rm /sbin/initctl && dpkg-divert --rename --remove /sbin/initctl && apt-get update && apt-get install -y net-tools wget && locale-gen en_US.UTF-8'
+    mount_folders:
+      data:
+        host_path: ./spec/fixtures/data
+        container_path: /etc/puppetlabs/code/environments/production/data
+      modules:
+        host_path: ./spec/fixtures/modules
+        container_path: /etc/puppetlabs/code/environments/production/modules
+      profiles:
+        host_path: ./dist
+        container_path: /etc/puppetlabs/code/environments/production/dist
 CONFIG:
   type: aio
