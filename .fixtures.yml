@@ -36,7 +36,7 @@ fixtures:
       ref: 1.5.0
     nfs:
       repo: https://github.com/derdanne/puppet-nfs
-      ref: 1.0.2
+      ref: 2.0.2
     docker:
       repo: https://github.com/vladgh/garethr-docker
       ref: master
@@ -60,7 +60,7 @@ fixtures:
       ref: 1.18.2
     r10k:
       repo: https://github.com/voxpupuli/puppet-r10k
-      ref: v4.2.0
+      ref: v5.0.0
     fail2ban:
       repo: https://github.com/dhoppe/puppet-fail2ban
       ref: 1.3.4

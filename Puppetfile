@@ -33,7 +33,7 @@ mod 'vcsrepo',
 # Puppet approved modules
 mod 'nfs',
     git: 'https://github.com/derdanne/puppet-nfs',
-    ref: '1.0.2'
+    ref: '2.0.2'
 mod 'docker',
     git: 'https://github.com/vladgh/garethr-docker',
     ref: 'master'
@@ -57,7 +57,7 @@ mod 'python',
     ref: '1.18.2'
 mod 'r10k',
     git: 'https://github.com/voxpupuli/puppet-r10k',
-    ref: 'v4.2.0'
+    ref: 'v5.0.0'
 
 # Others
 mod 'fail2ban',
