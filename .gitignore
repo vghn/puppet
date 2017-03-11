@@ -2,19 +2,18 @@
 /.env
 
 # Other
+*.log
 .*.sw?
-Gemfile.lock
 .bundle
 .rspec_system
 .vagrant
 .yardoc
-*.log
+Gemfile.lock
 coverage
 junit
 log
 modules
 pkg
-spec/fixtures/*
-!spec/fixtures/hiera*
+spec/fixtures/modules
 tmp
 vendor

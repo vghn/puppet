@@ -7,8 +7,9 @@ include RspecPuppetFacts
 
 RSpec.configure do |config|
   # Hiera configuration
-  hiera_config = File.expand_path(File.join(__FILE__, '../fixtures/hiera.yaml'))
-  config.hiera_config = hiera_config
+  config.hiera_config = File.expand_path(
+    File.join(__FILE__, '../fixtures/hiera.yaml')
+  )
   config.confdir = '/etc/puppetlabs/puppet'
 
   # RSpec configuration

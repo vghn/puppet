@@ -1,7 +1,20 @@
 HOSTS:
   trusty:
+    roles:
+      - agent
+      - default
     platform: ubuntu-14.04-amd64
     hypervisor: vagrant
     box: puppetlabs/ubuntu-14.04-64-nocm
+    mount_folders:
+      data:
+        from: ./../../../spec/fixtures/data
+        to: /etc/puppetlabs/code/environments/production/data
+      modules:
+        from: ./../../../spec/fixtures/modules
+        to: /etc/puppetlabs/code/environments/production/modules
+      profiles:
+        from: ./../../../dist
+        to: /etc/puppetlabs/code/environments/production/dist
 CONFIG:
   type: aio

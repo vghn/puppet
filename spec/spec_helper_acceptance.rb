@@ -14,6 +14,7 @@ end
 Dir['./spec/acceptance/support/**/*.rb'].sort.each { |f| require f }
 
 RSpec.configure do |config|
+  # Paths
   proj_root = File.expand_path(File.join(File.dirname(__FILE__), '..'))
   production_dir = '/etc/puppetlabs/code/environments/production'
 
@@ -36,6 +37,12 @@ RSpec.configure do |config|
           apply_manifest_on(host, 'package { ["ssl-cert", "rsyslog"]: }')
         end
 
+        # Configure role
+        shell <<-EOS
+          mkdir -p /etc/puppetlabs/facter/facts.d
+          echo 'role: #{host.name}' > /etc/puppetlabs/facter/facts.d/role.yaml
+        EOS
+
         # Set-up environment
         env_file = File.join(proj_root, 'environment.conf')
         scp_to host, env_file, production_dir
@@ -43,25 +50,11 @@ RSpec.configure do |config|
         # Configure Hiera
         shell <<-EOS
           rm /etc/puppetlabs/puppet/hiera.yaml || true
-          mkdir -p /etc/puppetlabs/facter/facts.d
-          echo 'role: #{host.name}' > /etc/puppetlabs/facter/facts.d/role.yaml
+          rm -r /etc/puppetlabs/puppet/hieradata || true
         EOS
-
         hiera_config = File.join(proj_root, 'spec/fixtures/hiera.yaml')
         scp_to host, hiera_config, production_dir
-
-        # Install modules
-        mod_dir = File.join(proj_root, 'spec/fixtures/modules')
-        scp_to host, mod_dir, production_dir, ignore: build_ignore_list
       end
-
-      # Install roles & profiles
-      dist_dir = File.join(proj_root, 'dist')
-      scp_to host, dist_dir, production_dir
-
-      # Install Hiera Data
-      hieradata_dir = File.join(proj_root, 'spec/fixtures/hieradata')
-      scp_to host, hieradata_dir, production_dir
     end
   end
 end
