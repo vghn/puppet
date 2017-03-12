@@ -19,7 +19,9 @@ profile::base::ssh_authorized_keys:
 # Cron Jobs
 profile::base::cron_jobs:
   'test':
-    command: 'true'
+    command: 'echo "test" 2>&1 | /usr/bin/logger -t CronTest'
+    minute: '2'
+    hour: '2'
 
 # INI Settings
 profile::base::ini_settings:

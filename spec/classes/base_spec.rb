@@ -31,7 +31,10 @@ describe 'profile::base' do
         end
 
         it { is_expected.to contain_ssh_authorized_key('hiera-test-key') }
-        it { is_expected.to contain_cron('test').with_command('true') }
+        it do
+          is_expected.to contain_cron('test')
+            .with_command('echo "test" 2>&1 | /usr/bin/logger -t CronTest')
+        end
         it { is_expected.to contain_ini_setting('test setting') }
         it { is_expected.to contain_package('htop') }
 

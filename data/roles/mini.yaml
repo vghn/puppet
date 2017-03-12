@@ -5,13 +5,6 @@
 docker::docker_users:
   - vlad
 
-# Cron jobs
-profile::base::cron_jobs:
-  'Docker Clean':
-    command: 'docker system prune --force 2>&1 | /usr/bin/logger -t CleanUp'
-    minute: '2'
-    hour: '2'
-
 # Samba
 samba::server::workgroup: 'WORKGROUP'
 samba::server::server_string: 'Mini'

@@ -40,7 +40,7 @@ shared_examples 'profile::base' do
   end
 
   describe cron do
-    it { is_expected.to have_entry '* * * * * true' }
+    it { is_expected.to have_entry '2 2 * * * echo "test" 2>&1 | /usr/bin/logger -t CronTest' }
   end
 
   describe file('/tmp/foo.ini') do
