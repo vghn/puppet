@@ -12,6 +12,10 @@ profile::base::ssh_authorized_keys:
     user: ubuntu
     type: ssh-rsa
     key: AAAAB3NzaC1yc2EAAAADAQABAAABAQC+4vPJ554LgwIZ7qK2DoipJe9U2yuRwUZpTtjJ4EHqASn+KUbWX8XA7ipwLloQiWO25U5S4UjAxy3jcd2ykkQWD2XeXnE9qZZTgRAJfOpTKNIlng7NBPg9gHJcUADU8EXTd52sYQRl67inQpExb9TnshAAmrShh2T2cVqzybLdHbukchEHRUgKINp/Ci/zPffhv7yWKz4EUzvZdisRVgd3tuHJotvrHk18OOhSaGGlcuiig2AQgpd4MV7+yyyYoT0keOPiRrf3OAAnFMzaQbaoekDvwRg8GmCY3oFZVzsxehB+jTGj1ICz60L8qTN2oeD6zOw1EQWOQldNw5TnTuUz
+  deploy_vlad:
+    user: ubuntu
+    type: ssh-ed25519
+    key: AAAAC3NzaC1lZDI1NTE5AAAAIE0yyqRUbBGOW9PcYyuaUMaRi/EFwL59E3wwMn5dJAKQ
 
 # Python
 python::python_pips:
