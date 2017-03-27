@@ -11,25 +11,19 @@ Vlad's Puppet Control Repo.
 ### bin/
 Contains various executable scripts.
 
+### data/
+Contains the hiera data files. It's intended to serve as a base only, for
+public data, with sane defaults. It should be overwritten or amended with data
+from private sources.
+
 ### dist/
 Contains organization-specific roles and profiles.
 This directory is specified as a modulepath in environment.conf
 [Designing Puppet – Roles and Profiles.](http://www.craigdunn.org/2012/05/239/)
 
-### hieradata/
-Contains the hiera data files. It's intended to serve as a base only, for
-public data, with sane defaults. It should be overwritten or amended with data
-from private sources.
-
-### lib/
-Contains various ruby libraries.
-
 ### manifests/
 Contains Puppet's manifests:
   - `site.pp`: the main manifest
-
-### secure/
-Contains private files.
 
 ### spec/
 Contains test definitions.
@@ -45,6 +39,9 @@ nodes assigned to that environment.
 ### envrc
 This file contains global variables.
 **All variables declared here are public**
+
+### hiera.yaml
+This file configures Hiera per environment
 
 ### Puppetfile
 r10k needs this file to figure out what component modules you want from the
@@ -131,12 +128,15 @@ The following environment variables can be used to influence how beaker works:
 * `PUPPET_INSTALL_VERSION`: specify the version to install
 
 ### Clean-up
+
 ```
 cd dist/profile
 bundle exec rake test_clean
 ```
 
 ## Contribute
+
+Bug reports and pull requests are welcome. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 1. Open an issue to discuss proposed changes
 2. Fork the repository
