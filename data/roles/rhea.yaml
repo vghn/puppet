@@ -49,7 +49,11 @@ profile::linuxfw::rules:
     proto:  'icmp'
     action: 'accept'
     source: '149.56.97.250/32'
-  '21 allow access to HTTPS':
+  '21 allow access to HTTP':
+    proto:  'tcp'
+    action: 'accept'
+    dport:  '80'
+  '22 allow access to HTTPS':
     proto:  'tcp'
     action: 'accept'
     dport:  '443'
