@@ -51,7 +51,6 @@ environment.conf's modulepath.
 
 ## Testing
 ### Prerequisites
-
 - Vagrant: https://www.vagrantup.com/
 - Docker: https://www.docker.com/
 - RVM: https://rvm.io/
@@ -62,23 +61,6 @@ cd dist/profile
 bundle install
 ```
 
-### Docker
-Start Puppet Server (without dependencies like sync or log agents)
-```
-docker-compose up -d server
-docker-compose logs -f
-```
-
-Generate a CSR attributes file
-```
-echo -e "extension_requests:\n  pp_role: none" > /tmp/csr_attributes.yaml
-```
-
-Run Puppet Agent
-```
-docker run --rm -it --link puppet_server_1:puppet --net puppet_default -v /tmp/csr_attributes.yaml:/etc/puppetlabs/puppet/csr_attributes.yaml vladgh/puppet agent --test
-```
-
 ### Unit testing
 ```
 cd dist/profile
@@ -86,18 +68,17 @@ bundle exec rake test
 ```
 
 #### Acceptance testing
-
-Run default set for the first time (default is just the base profile)
+Run default set for the first time (default is just the base profile):
 ```
 PUPPET_INSTALL_TYPE=agent ORDERING=manifest BEAKER_destroy=no bundle exec rake integration
 ```
 
-Subsequent runs
+Subsequent runs:
 ```
 PUPPET_INSTALL_TYPE=agent ORDERING=manifest BEAKER_destroy=no BEAKER_provision=no bundle exec rake integration
 ```
 
-Last run (will destroy the machines)
+Last run (will destroy the machines):
 ```
 PUPPET_INSTALL_TYPE=agent ORDERING=manifest BEAKER_provision=no bundle exec rake integration
 ```
@@ -111,7 +92,6 @@ Other commands:
 * List nodes: `bundle exec rake beaker_nodes`
 
 The following environment variables can be used to influence how beaker works:
-
 * `BEAKER_role`: choose a role from `spec/acceptance/support/roles/*.yml`
 * `BEAKER_set`: choose a nodeset from `spec/acceptance/nodesets/*.yml`
                 defaults to `default`
@@ -128,16 +108,13 @@ The following environment variables can be used to influence how beaker works:
 * `PUPPET_INSTALL_VERSION`: specify the version to install
 
 ### Clean-up
-
 ```
 cd dist/profile
 bundle exec rake test_clean
 ```
 
 ## Contribute
-
 Bug reports and pull requests are welcome. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
-
 1. Open an issue to discuss proposed changes
 2. Fork the repository
 3. Create your feature branch: `git checkout -b my-new-feature`
