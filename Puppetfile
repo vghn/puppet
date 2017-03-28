@@ -25,7 +25,7 @@ mod 'ruby',
     ref: '0.6.0'
 mod 'stdlib',
     git: 'https://github.com/puppetlabs/puppetlabs-stdlib',
-    ref: '4.15.0'
+    ref: '4.16.0'
 mod 'vcsrepo',
     git: 'https://github.com/puppetlabs/puppetlabs-vcsrepo',
     ref: '1.5.0'
@@ -33,7 +33,7 @@ mod 'vcsrepo',
 # Puppet approved modules
 mod 'nfs',
     git: 'https://github.com/derdanne/puppet-nfs',
-    ref: '2.0.2'
+    ref: '2.0.3'
 mod 'docker',
     git: 'https://github.com/vladgh/garethr-docker',
     ref: 'master'
