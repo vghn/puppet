@@ -1,19 +1,11 @@
 # Configure the load path so all dependencies in your Gemfile can be required
 require 'bundler/setup'
 
-# Add libraries to the load path
-$LOAD_PATH.unshift File.expand_path('../lib', __FILE__)
-
 # Include task modules
-require 'tasks/lint'
-Tasks::Lint.new(file_list:
-                  FileList[
-                    'lib/**/*.rb',
-                    'spec/**/*.rb',
-                    'Rakefile'
-                  ].exclude('spec/fixtures/**/*'))
-require 'tasks/puppet'
-Tasks::Puppet.new(exclude_paths: [
+require 'vtasks/lint'
+Vtasks::Lint.new(file_list: FileList['Rakefile'].exclude('spec/fixtures/**/*'))
+require 'vtasks/puppet'
+Vtasks::Puppet.new(exclude_paths: [
                     'bundle/**/*',
                     'modules/**/*',
                     'pkg/**/*',
@@ -21,16 +13,17 @@ Tasks::Puppet.new(exclude_paths: [
                     'tmp/**/*',
                     'vendor/**/*'
                   ])
-require 'tasks/release'
-Tasks::Release.new
-require 'tasks/travisci'
-Tasks::TravisCI.new
+require 'vtasks/release'
+Vtasks::Release.new
+require 'vtasks/travisci'
+Vtasks::TravisCI.new
 
 # Display version
-require 'version'
 desc 'Display version'
 task :version do
-  puts "Current version: #{Version::FULL}"
+  require 'vtasks/version'
+  include Vtasks::Utils::Semver
+  puts "Current version: #{gitver}"
 end
 
 # Create a list of contributors from GitHub
