@@ -30,13 +30,13 @@ fixtures:
       ref: 0.6.0
     stdlib:
       repo: https://github.com/puppetlabs/puppetlabs-stdlib
-      ref: 4.15.0
+      ref: 4.16.0
     vcsrepo:
       repo: https://github.com/puppetlabs/puppetlabs-vcsrepo
       ref: 1.5.0
     nfs:
       repo: https://github.com/derdanne/puppet-nfs
-      ref: 2.0.2
+      ref: 2.0.3
     docker:
       repo: https://github.com/vladgh/garethr-docker
       ref: master
