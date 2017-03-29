@@ -1,6 +1,16 @@
 ---
 # Mini role data
 
+# Cron jobs
+profile::base::cron_jobs:
+  'Docker CleanUp':
+    command: >
+      docker image ls --no-trunc --quiet --filter dangling=true | xargs --no-run-if-empty docker image rm 2>&1 &&
+      docker volume ls --quiet --filter dangling=true | xargs --no-run-if-empty docker volume rm 2>&1
+      | /usr/bin/logger -t DockerCleanUp'
+    minute: '2'
+    hour: '2'
+
 # Docker
 docker::docker_users:
   - vlad
