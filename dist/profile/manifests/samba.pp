@@ -18,8 +18,8 @@ class profile::samba {
   }
 
   $samba_paths.flatten.each |Stdlib::Absolutepath $share_path| {
-    profile::mkdir_p { $share_path: } ->
-    file { $share_path :
+    profile::mkdir_p { $share_path: }
+    -> file { $share_path :
       ensure  => directory,
       group   => 'sambashare',
       mode    => '0775',

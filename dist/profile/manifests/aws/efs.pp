@@ -13,8 +13,8 @@ class profile::aws::efs (
       }
     }
 
-    profile::mkdir_p { $mount_point: } ->
-    mount { $mount_point:
+    profile::mkdir_p { $mount_point: }
+    -> mount { $mount_point:
       ensure  => present,
       device  => $mount_target,
       fstype  => 'nfs4',

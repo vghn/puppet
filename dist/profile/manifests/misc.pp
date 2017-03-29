@@ -10,8 +10,8 @@ class profile::misc(
       section => 'Login',
       setting => 'HandleLidSwitch',
       value   => 'ignore',
-    } ~>
-    service { 'systemd-logind' :
+    }
+    ~> service { 'systemd-logind' :
       ensure => running,
       enable => true,
     }
