@@ -14,7 +14,10 @@ Vtasks::Puppet.new(exclude_paths: [
                     'vendor/**/*'
                   ])
 require 'vtasks/release'
-Vtasks::Release.new
+Vtasks::Release.new(
+  write_changelog: true,
+  ci_status: true
+)
 require 'vtasks/travisci'
 Vtasks::TravisCI.new
 
