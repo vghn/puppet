@@ -13,6 +13,10 @@ Vtasks::Puppet.new(exclude_paths: [
                     'tmp/**/*',
                     'vendor/**/*'
                   ])
+
+desc 'Run puppet tests'
+task test: ['puppet:test']
+
 require 'vtasks/release'
 Vtasks::Release.new(
   write_changelog: true,

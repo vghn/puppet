@@ -21,6 +21,7 @@ group :test do
 end
 
 group :development do
+  gem 'faraday', '0.11', require: false
   gem 'github_changelog_generator', require: false
   gem 'guard-rake', require: false
   gem 'puppet-blacksmith', require: false
