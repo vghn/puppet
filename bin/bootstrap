@@ -36,6 +36,9 @@
 set -euo pipefail
 IFS=$'\n\t'
 
+# DEBUG
+[ -z "${DEBUG:-}" ] || set -x
+
 # DEFAULTS
 PP_SERVER=${PP_SERVER:-puppet}
 PP_ROLE=${PP_ROLE:-none}
