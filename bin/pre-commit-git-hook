@@ -10,6 +10,16 @@
 # shellcheck disable=1090
 . "$(cd "$(dirname "${BASH_SOURCE[0]}")/../../" && pwd -P)/envrc"
 
+# Add /usr/local/bin to PATH
+PATH="/usr/local/bin:${PATH}"
+
+# Load RVM
+set +eu
+# shellcheck disable=SC1091
+[[ -s /etc/profile.d/rvm.sh ]] && . /etc/profile.d/rvm.sh
+[[ -s "${HOME}/.rvm/scripts/rvm" ]] && . "${HOME}/.rvm/scripts/rvm"
+set -eu
+
 # Check YAML
 checkyaml() {
   ruby -e "require 'yaml'; YAML.load_file('$1')"
