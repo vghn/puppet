@@ -1,5 +1,41 @@
 # Change Log
 
+## [v0.2.0](https://github.com/vghn/puppet/tree/v0.2.0) (2017-04-19)
+[Full Changelog](https://github.com/vghn/puppet/compare/v0.1.17...v0.2.0)
+
+**Implemented enhancements:**
+
+- Module updates [\#148](https://github.com/vghn/puppet/pull/148) ([vladgh](https://github.com/vladgh))
+- Upgrade Docker Compose [\#147](https://github.com/vghn/puppet/pull/147) ([vladgh](https://github.com/vladgh))
+- Improve pre-commit hook [\#146](https://github.com/vghn/puppet/pull/146) ([vladgh](https://github.com/vladgh))
+- Add DEBUG global variable [\#145](https://github.com/vghn/puppet/pull/145) ([vladgh](https://github.com/vladgh))
+- Remove Faraday gem version requirement [\#144](https://github.com/vghn/puppet/pull/144) ([vladgh](https://github.com/vladgh))
+- Use the new release task options [\#142](https://github.com/vghn/puppet/pull/142) ([vladgh](https://github.com/vladgh))
+- Add docker cleanup cron jobs [\#141](https://github.com/vghn/puppet/pull/141) ([vladgh](https://github.com/vladgh))
+- Update modules [\#139](https://github.com/vghn/puppet/pull/139) ([vladgh](https://github.com/vladgh))
+- Migrate to Vtasks [\#138](https://github.com/vghn/puppet/pull/138) ([vladgh](https://github.com/vladgh))
+- Update README [\#137](https://github.com/vghn/puppet/pull/137) ([vladgh](https://github.com/vladgh))
+- Allow port 80 [\#136](https://github.com/vghn/puppet/pull/136) ([vladgh](https://github.com/vladgh))
+- Update README [\#135](https://github.com/vghn/puppet/pull/135) ([vladgh](https://github.com/vladgh))
+- Clean-up ssh keys [\#134](https://github.com/vghn/puppet/pull/134) ([vladgh](https://github.com/vladgh))
+- Add Vlad's public key to the ubuntu user [\#133](https://github.com/vghn/puppet/pull/133) ([vladgh](https://github.com/vladgh))
+- Improve rake tasks [\#131](https://github.com/vghn/puppet/pull/131) ([vladgh](https://github.com/vladgh))
+- Upgrade modules [\#130](https://github.com/vghn/puppet/pull/130) ([vladgh](https://github.com/vladgh))
+- Use shared paths in acceptance tests [\#129](https://github.com/vghn/puppet/pull/129) ([vladgh](https://github.com/vladgh))
+- Hiera v5 [\#128](https://github.com/vghn/puppet/pull/128) ([vladgh](https://github.com/vladgh))
+- Add Hiera EYaml V5 [\#127](https://github.com/vghn/puppet/pull/127) ([vladgh](https://github.com/vladgh))
+- No trailing new line for the sudoers file [\#126](https://github.com/vghn/puppet/pull/126) ([vladgh](https://github.com/vladgh))
+- Improve ssh and sudo settings [\#125](https://github.com/vghn/puppet/pull/125) ([vladgh](https://github.com/vladgh))
+- Allow adding users in the base profile [\#123](https://github.com/vghn/puppet/pull/123) ([vladgh](https://github.com/vladgh))
+- Improve output on the release rake task [\#122](https://github.com/vghn/puppet/pull/122) ([vladgh](https://github.com/vladgh))
+
+**Fixed bugs:**
+
+- Pin faraday gem version and fix test task [\#143](https://github.com/vghn/puppet/pull/143) ([vladgh](https://github.com/vladgh))
+- Fix chaining arrow syntax [\#140](https://github.com/vghn/puppet/pull/140) ([vladgh](https://github.com/vladgh))
+- Remove docker system prune cron jobs [\#132](https://github.com/vghn/puppet/pull/132) ([vladgh](https://github.com/vladgh))
+- Default to BASH shell for new users [\#124](https://github.com/vghn/puppet/pull/124) ([vladgh](https://github.com/vladgh))
+
 ## [v0.1.17](https://github.com/vghn/puppet/tree/v0.1.17) (2017-02-25)
 [Full Changelog](https://github.com/vghn/puppet/compare/v0.1.16...v0.1.17)
 
