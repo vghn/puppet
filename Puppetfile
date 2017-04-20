@@ -4,10 +4,10 @@ mod 'accounts',
     ref: '1.1.0'
 mod 'apt',
     git: 'https://github.com/puppetlabs/puppetlabs-apt',
-    ref: '2.3.0'
+    ref: '3.0.0'
 mod 'concat',
     git: 'https://github.com/puppetlabs/puppetlabs-concat',
-    ref: '2.2.0'
+    ref: '3.0.0'
 mod 'git',
     git: 'https://github.com/puppetlabs/puppetlabs-git',
     ref: '0.5.0'
@@ -19,7 +19,7 @@ mod 'mysql',
     ref: '3.10.0'
 mod 'ntp',
     git: 'https://github.com/puppetlabs/puppetlabs-ntp',
-    ref: '6.0.0'
+    ref: '6.1.0'
 mod 'ruby',
     git: 'https://github.com/puppetlabs/puppetlabs-ruby',
     ref: '0.6.0'
@@ -57,7 +57,7 @@ mod 'python',
     ref: '1.18.2'
 mod 'r10k',
     git: 'https://github.com/voxpupuli/puppet-r10k',
-    ref: 'v5.0.0'
+    ref: 'v5.0.2'
 
 # Others
 mod 'fail2ban',
