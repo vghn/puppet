@@ -8,7 +8,22 @@ class profile::base {
     # Patch until the apt module supports Ubuntu 16.04
     ensure_packages('software-properties-common')
     class { '::apt': require => Package['software-properties-common'] }
-    include unattended_upgrades
+
+    if $facts['os']['name'] == 'Ubuntu' {
+      # Upgrade system
+      class { 'unattended_upgrades':
+        auto    => { 'reboot' => true },
+        origins => [
+          '${distro_id}:${distro_codename}', #lint:ignore:single_quote_string_with_variables
+          '${distro_id}:${distro_codename}-updates', #lint:ignore:single_quote_string_with_variables
+          '${distro_id}:${distro_codename}-security', #lint:ignore:single_quote_string_with_variables
+        ]
+      }
+    } else {
+      class { 'unattended_upgrades':
+        auto    => { 'reboot' => true },
+      }
+    }
   }
 
   # Security
