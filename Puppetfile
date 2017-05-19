@@ -4,10 +4,10 @@ mod 'accounts',
     ref: '1.1.0'
 mod 'apt',
     git: 'https://github.com/puppetlabs/puppetlabs-apt',
-    ref: '3.0.0'
+    ref: '4.0.0'
 mod 'concat',
     git: 'https://github.com/puppetlabs/puppetlabs-concat',
-    ref: '3.0.0'
+    ref: '4.0.0'
 mod 'git',
     git: 'https://github.com/puppetlabs/puppetlabs-git',
     ref: '0.5.0'
@@ -16,16 +16,16 @@ mod 'inifile',
     ref: '1.6.0'
 mod 'mysql',
     git: 'https://github.com/puppetlabs/puppetlabs-mysql',
-    ref: '3.10.0'
+    ref: '3.11.0'
 mod 'ntp',
     git: 'https://github.com/puppetlabs/puppetlabs-ntp',
-    ref: '6.1.0'
+    ref: '6.2.0'
 mod 'ruby',
     git: 'https://github.com/puppetlabs/puppetlabs-ruby',
     ref: '0.6.0'
 mod 'stdlib',
     git: 'https://github.com/puppetlabs/puppetlabs-stdlib',
-    ref: '4.16.0'
+    ref: '4.17.0'
 mod 'vcsrepo',
     git: 'https://github.com/puppetlabs/puppetlabs-vcsrepo',
     ref: '1.5.0'
@@ -39,7 +39,7 @@ mod 'docker',
     ref: 'master'
 mod 'hiera',
     git: 'https://github.com/voxpupuli/puppet-hiera',
-    ref: 'v2.4.0'
+    ref: 'v3.0.0'
 mod 'wget',
     git: 'https://github.com/maestrodev/puppet-wget',
     ref: 'v1.7.3'
@@ -57,7 +57,7 @@ mod 'python',
     ref: '1.18.2'
 mod 'r10k',
     git: 'https://github.com/voxpupuli/puppet-r10k',
-    ref: 'v5.0.2'
+    ref: 'v6.0.0'
 
 # Others
 mod 'fail2ban',
