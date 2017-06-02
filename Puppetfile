@@ -103,7 +103,7 @@ mod 'staging',
     ref: 'v2.2.0'
 mod 'firewall',
     git: 'https://github.com/puppetlabs/puppetlabs-firewall',
-    ref: '1.8.2'
+    ref: '1.9.0'
 mod 'gcc',
     git: 'https://github.com/puppetlabs/puppetlabs-gcc',
     ref: '0.3.0'
