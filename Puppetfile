@@ -17,6 +17,9 @@ mod 'inifile',
 mod 'mysql',
     git: 'https://github.com/puppetlabs/puppetlabs-mysql',
     ref: '3.11.0'
+mod 'motd',
+    git: 'https://github.com/puppetlabs/puppetlabs-motd',
+    ref: '1.4.0'
 mod 'ntp',
     git: 'https://github.com/puppetlabs/puppetlabs-ntp',
     ref: '6.2.0'
@@ -31,85 +34,91 @@ mod 'vcsrepo',
     ref: '1.5.0'
 
 # Puppet approved modules
-mod 'nfs',
-    git: 'https://github.com/derdanne/puppet-nfs',
-    ref: '2.0.3'
+mod 'archive',
+    git: 'https://github.com/voxpupuli/puppet-archive',
+    ref: 'v1.3.0'
 mod 'docker',
     git: 'https://github.com/vladgh/garethr-docker',
     ref: 'master'
 mod 'hiera',
     git: 'https://github.com/voxpupuli/puppet-hiera',
     ref: 'v3.0.0'
-mod 'wget',
-    git: 'https://github.com/maestrodev/puppet-wget',
-    ref: 'v1.7.3'
-mod 'archive',
-    git: 'https://github.com/voxpupuli/puppet-archive',
-    ref: 'v1.3.0'
-mod 'swap_file',
-    git: 'https://github.com/petems/petems-swap_file',
-    ref: 'v3.1.4'
-mod 'rsyslog',
-    git: 'https://github.com/saz/puppet-rsyslog',
-    ref: 'v5.0.0'
+mod 'nfs',
+    git: 'https://github.com/derdanne/puppet-nfs',
+    ref: '2.0.3'
 mod 'python',
     git: 'https://github.com/stankevich/puppet-python',
     ref: '1.18.2'
 mod 'r10k',
     git: 'https://github.com/voxpupuli/puppet-r10k',
     ref: 'v6.0.0'
+mod 'rsyslog',
+    git: 'https://github.com/saz/puppet-rsyslog',
+    ref: 'v5.0.0'
+mod 'swap_file',
+    git: 'https://github.com/petems/petems-swap_file',
+    ref: 'v3.1.4'
+mod 'wget',
+    git: 'https://github.com/maestrodev/puppet-wget',
+    ref: 'v1.7.3'
 
 # Others
+mod 'cloudwatchlogs',
+    git: 'https://github.com/kemra102/puppet-cloudwatchlogs',
+    ref: 'v2.3.1'
+mod 'ec2tagfacts',
+    git: 'https://github.com/BIAndrews/ec2tagfacts',
+    ref: '0.2.0'
 mod 'fail2ban',
     git: 'https://github.com/dhoppe/puppet-fail2ban',
     ref: '1.3.4'
 mod 'gnupg',
     git: 'https://github.com/n1tr0g/golja-gnupg',
     ref: '1.2.3'
-mod 'cloudwatchlogs',
-    git: 'https://github.com/kemra102/puppet-cloudwatchlogs',
-    ref: 'v2.3.1'
 mod 'rvm',
     git: 'https://github.com/maestrodev/puppet-rvm',
     ref: 'v1.13.1'
+mod 'samba',
+    git: 'https://github.com/thias/puppet-samba',
+    ref: '1.0.0'
 mod 'ssh',
     git: 'https://github.com/saz/puppet-ssh',
     ref: 'v3.0.1'
 mod 'sudo',
     git: 'https://github.com/saz/puppet-sudo',
     ref: 'v4.1.0'
-mod 'samba',
-    git: 'https://github.com/thias/puppet-samba',
-    ref: '1.0.0'
 mod 'unattended_upgrades',
     git: 'https://github.com/voxpupuli/puppet-unattended_upgrades',
     ref: 'v2.2.0'
 
 # Dependencies (find with `sudo /opt/puppetlabs/bin/puppet module list --tree`)
+mod 'epel',
+    git: 'https://github.com/stahnma/puppet-module-epel',
+    ref: '1.2.2'
 mod 'extlib',
     git: 'https://github.com/voxpupuli/puppet-extlib',
     ref: 'v1.1.0'
-mod 'make',
-    git: 'https://github.com/voxpupuli/puppet-make',
-    ref: 'v1.1.0'
-mod 'sysctl',
-    git: 'https://github.com/fiddyspence/puppet-sysctl',
-    ref: '1.1.0'
-mod 'portage',
-    git: 'https://github.com/gentoo/puppet-portage',
-    ref: '2.4.0'
-mod 'staging',
-    git: 'https://github.com/voxpupuli/puppet-staging',
-    ref: 'v2.2.0'
 mod 'firewall',
     git: 'https://github.com/puppetlabs/puppetlabs-firewall',
     ref: '1.9.0'
 mod 'gcc',
     git: 'https://github.com/puppetlabs/puppetlabs-gcc',
     ref: '0.3.0'
+mod 'make',
+    git: 'https://github.com/voxpupuli/puppet-make',
+    ref: 'v1.1.0'
 mod 'pe_gem',
     git: 'https://github.com/puppetlabs/puppetlabs-pe_gem',
     ref: '0.1.2'
-mod 'epel',
-    git: 'https://github.com/stahnma/puppet-module-epel',
-    ref: '1.2.2'
+mod 'portage',
+    git: 'https://github.com/gentoo/puppet-portage',
+    ref: '2.4.0'
+mod 'registry',
+    git: 'https://github.com/puppetlabs/puppetlabs-registry',
+    ref: '1.1.4'
+mod 'staging',
+    git: 'https://github.com/voxpupuli/puppet-staging',
+    ref: 'v2.2.0'
+mod 'sysctl',
+    git: 'https://github.com/fiddyspence/puppet-sysctl',
+    ref: '1.1.0'
