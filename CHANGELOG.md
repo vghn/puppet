@@ -1,6 +1,26 @@
 # Change Log
 
-## [v0.2.0](https://github.com/vghn/puppet/tree/v0.2.0) (2017-04-19)
+## [v0.2.1](https://github.com/vghn/puppet/tree/v0.2.1) (2017-06-06)
+[Full Changelog](https://github.com/vghn/puppet/compare/v0.2.0...v0.2.1)
+
+**Implemented enhancements:**
+
+- Configure Samba to use at least SMBv2 [\#156](https://github.com/vghn/puppet/issues/156)
+- Run docker system prune in a cron job [\#158](https://github.com/vghn/puppet/pull/158) ([vladgh](https://github.com/vladgh))
+- Add bryana/ec2tagfacts and puppetlabs/motd modules [\#157](https://github.com/vghn/puppet/pull/157) ([vladgh](https://github.com/vladgh))
+- Module and gem updates [\#155](https://github.com/vghn/puppet/pull/155) ([vladgh](https://github.com/vladgh))
+- Read Hiera-EYAML keys from Docker Secrets [\#154](https://github.com/vghn/puppet/pull/154) ([vladgh](https://github.com/vladgh))
+- Update Readme [\#153](https://github.com/vghn/puppet/pull/153) ([vladgh](https://github.com/vladgh))
+- Update modules [\#152](https://github.com/vghn/puppet/pull/152) ([vladgh](https://github.com/vladgh))
+- Minor changes [\#151](https://github.com/vghn/puppet/pull/151) ([vladgh](https://github.com/vladgh))
+- Update Tasks options [\#150](https://github.com/vghn/puppet/pull/150) ([vladgh](https://github.com/vladgh))
+- Automatically update apt packages [\#149](https://github.com/vghn/puppet/pull/149) ([vladgh](https://github.com/vladgh))
+
+**Fixed bugs:**
+
+- Remove ec2tagfacts module [\#159](https://github.com/vghn/puppet/issues/159)
+
+## [v0.2.0](https://github.com/vghn/puppet/tree/v0.2.0) (2017-04-20)
 [Full Changelog](https://github.com/vghn/puppet/compare/v0.1.17...v0.2.0)
 
 **Implemented enhancements:**
