@@ -66,9 +66,6 @@ mod 'wget',
 mod 'cloudwatchlogs',
     git: 'https://github.com/kemra102/puppet-cloudwatchlogs',
     ref: 'v2.3.1'
-mod 'ec2tagfacts',
-    git: 'https://github.com/BIAndrews/ec2tagfacts',
-    ref: '0.2.0'
 mod 'fail2ban',
     git: 'https://github.com/dhoppe/puppet-fail2ban',
     ref: '1.3.4'
