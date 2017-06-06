@@ -26,6 +26,8 @@ python::python_pips:
     ensure: present
 
 # Docker
+docker::labels:
+  - role=rhea
 docker::docker_users:
   - ubuntu
   - vlad
