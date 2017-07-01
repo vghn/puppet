@@ -4,10 +4,10 @@ mod 'accounts',
     ref: '1.1.0'
 mod 'apt',
     git: 'https://github.com/puppetlabs/puppetlabs-apt',
-    ref: '4.0.0'
+    ref: '4.1.0'
 mod 'concat',
     git: 'https://github.com/puppetlabs/puppetlabs-concat',
-    ref: '4.0.0'
+    ref: '4.0.1'
 mod 'git',
     git: 'https://github.com/puppetlabs/puppetlabs-git',
     ref: '0.5.0'
@@ -25,13 +25,13 @@ mod 'ntp',
     ref: '6.2.0'
 mod 'ruby',
     git: 'https://github.com/puppetlabs/puppetlabs-ruby',
-    ref: '0.6.0'
+    ref: '1.0.0'
 mod 'stdlib',
     git: 'https://github.com/puppetlabs/puppetlabs-stdlib',
-    ref: '4.17.0'
+    ref: '4.17.1'
 mod 'vcsrepo',
     git: 'https://github.com/puppetlabs/puppetlabs-vcsrepo',
-    ref: '1.5.0'
+    ref: '2.0.0'
 
 # Puppet approved modules
 mod 'archive',
@@ -51,7 +51,7 @@ mod 'python',
     ref: '1.18.2'
 mod 'r10k',
     git: 'https://github.com/voxpupuli/puppet-r10k',
-    ref: 'v6.0.0'
+    ref: 'v6.1.0'
 mod 'rsyslog',
     git: 'https://github.com/saz/puppet-rsyslog',
     ref: 'v5.0.0'
@@ -83,7 +83,7 @@ mod 'ssh',
     ref: 'v3.0.1'
 mod 'sudo',
     git: 'https://github.com/saz/puppet-sudo',
-    ref: 'v4.1.0'
+    ref: 'v4.2.0'
 mod 'unattended_upgrades',
     git: 'https://github.com/voxpupuli/puppet-unattended_upgrades',
     ref: 'v2.2.0'
