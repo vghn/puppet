@@ -4,39 +4,53 @@ class profile::docker {
   if $::virtual == 'docker' {
     warning('Docker in Docker is not yet supported!')
   } else {
-    # Docker main class
-    if $::lsbdistid == 'Ubuntu' {
-      $package_url = 'https://download.docker.com/linux/ubuntu'
-    }
-    class { '::docker':
-      package_name                => 'docker-ce',
-      package_key_source          => "${package_url}/gpg",
-      package_source_location     => "[arch=amd64] ${package_url}",
-      manage_kernel               => false,
-      pin_upstream_package_source => false,
+    apt::key { 'docker':
+      source => 'https://download.docker.com/linux/ubuntu/gpg',
+      id     => '9DC858229FC7DD38854AE2D88D81803C0EBFCD88',
     }
 
-    # Docker Compose
-    class { '::docker::compose':
-      version => '1.14.0',
+    apt::source { 'docker':
+      location => 'https://download.docker.com/linux/ubuntu',
+      repos    => 'stable',
+      release  => $facts['os']['distro']['codename'],
+      require  => Apt::Key['docker'],
     }
 
-    # Pull images
-    lookup(
-      'profile::docker::images', {'merge' => 'hash', 'default_value' => {}}
-    ).each |String $name, Hash $params| {
-      docker::image { $name:
-        * => $params;
-      }
+    package { 'docker-ce':
+      ensure  => present,
+      require => [Apt::Source['docker'], Class['apt::update']],
     }
 
-    # Run containers
-    lookup(
-      'profile::docker::run', {'merge' => 'hash', 'default_value' => {}}
-    ).each |String $name, Hash $params| {
-      docker::run { $name:
-        * => $params;
-      }
+    package { ['docker.io','docker-engine']:
+      ensure => absent,
     }
+    # # Docker main class
+    # class { '::docker':
+      # manage_kernel               => false,
+      # pin_upstream_package_source => false,
+    # }
+
+    # # Docker Compose
+    # class { '::docker::compose':
+      # version => '1.14.0',
+    # }
+
+    # # Pull images
+    # lookup(
+      # 'profile::docker::images', {'merge' => 'hash', 'default_value' => {}}
+    # ).each |String $name, Hash $params| {
+      # docker::image { $name:
+        # * => $params;
+      # }
+    # }
+
+    # # Run containers
+    # lookup(
+      # 'profile::docker::run', {'merge' => 'hash', 'default_value' => {}}
+    # ).each |String $name, Hash $params| {
+      # docker::run { $name:
+        # * => $params;
+      # }
+    # }
   }
 }
