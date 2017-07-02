@@ -3,7 +3,7 @@ source ENV['GEM_SOURCE'] || 'https://rubygems.org'
 gem 'vtasks', :git => 'https://github.com/vladgh/vtasks', require: false
 
 gem 'dotenv', require: false
-gem 'puppet', ENV['PUPPET_GEM_VERSION'] || '~> 4.0', require: false
+gem 'puppet', ENV['PUPPET_GEM_VERSION'] || '~> 5.0', require: false
 
 group :test do
   gem 'metadata-json-lint', require: false
