@@ -11,7 +11,7 @@ class profile::docker {
     class { '::docker':
       package_name                => 'docker-ce',
       package_key_source          => "${package_url}/gpg",
-      package_source_location     => "${package_url}/dists/${::lsbdistcodename}/pool/stable",
+      package_source_location     => $package_url,
       manage_kernel               => false,
       pin_upstream_package_source => false,
     }
