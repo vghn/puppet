@@ -9,7 +9,9 @@ class profile::docker {
       $package_url = 'https://download.docker.com/linux/ubuntu'
     }
     class { '::docker':
-      manage_package              => false,
+      package_name                => 'docker-ce',
+      package_key_source          => "${package_url}/gpg",
+      package_source_location     => "[arch=amd64] ${package_url}",
       manage_kernel               => false,
       pin_upstream_package_source => false,
     }
