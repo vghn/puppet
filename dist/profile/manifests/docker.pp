@@ -5,7 +5,13 @@ class profile::docker {
     warning('Docker in Docker is not yet supported!')
   } else {
     # Docker main class
+    if $::lsbdistid == 'Ubuntu' {
+      $package_url = 'https://download.docker.com/linux/ubuntu'
+    }
     class { '::docker':
+      package_name                => 'docker-ce',
+      package_key_source          => "${package_url}/gpg",
+      package_source_location     => "${package_url}/dists/${::lsbdistcodename}/pool/stable",
       manage_kernel               => false,
       pin_upstream_package_source => false,
     }
