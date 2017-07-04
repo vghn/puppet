@@ -14,10 +14,11 @@ class profile::docker {
       }
 
       apt::source { 'docker':
-        location => 'https://download.docker.com/linux/ubuntu',
-        repos    => 'stable',
-        release  => $facts['os']['distro']['codename'],
-        require  => Apt::Key['docker'],
+        location     => 'https://download.docker.com/linux/ubuntu',
+        architecture => 'amd64',
+        repos        => 'stable',
+        release      => $facts['os']['distro']['codename'],
+        require      => Apt::Key['docker'],
       }
 
       package { 'docker-ce':
