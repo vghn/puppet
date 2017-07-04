@@ -16,7 +16,7 @@ class profile::docker {
       apt::source { 'docker':
         location => 'https://download.docker.com/linux/ubuntu',
         repos    => 'stable',
-        release  => "ubuntu-${facts['os']['distro']['codename']}",
+        release  => $facts['os']['distro']['codename'],
         require  => Apt::Key['docker'],
       }
 
