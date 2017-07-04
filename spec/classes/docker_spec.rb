@@ -20,9 +20,19 @@ describe 'profile::docker' do
 
         # Fix until the docker module supports the latest repository and package
         it { is_expected.to contain_class('apt') }
-        it { is_expected.to contain_package('docker-ce') }
         it { is_expected.to contain_apt__key('docker') }
         it { is_expected.to contain_apt__source('docker') }
+        it { is_expected.to contain_package('docker-ce') }
+        it do
+          is_expected.to contain_package('docker-engine').with({
+            'ensure' => 'absent'
+          })
+        end
+        it do
+          is_expected.to contain_package('docker.io').with({
+            'ensure' => 'absent'
+          })
+        end
 
         # it { is_expected.to contain_class('docker') }
         # it { is_expected.to contain_class('docker::compose') }

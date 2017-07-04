@@ -5,14 +5,13 @@ require 'simplecov-console'
 
 include RspecPuppetFacts
 
-RSpec.configure do |config|
-  # Hiera configuration
-  config.hiera_config = File.expand_path(
-    File.join(__FILE__, '../fixtures/hiera.yaml')
-  )
-  config.confdir = '/etc/puppetlabs/puppet'
+fixture_path = File.expand_path(File.join(__FILE__, '..', 'fixtures'))
 
-  # RSpec configuration
+# RSpec configuration
+RSpec.configure do |config|
+  config.module_path = File.join(fixture_path, 'modules')
+  config.manifest_dir = File.join(fixture_path, 'manifests')
+  config.hiera_config = File.join(fixture_path, 'hiera.yaml')
   config.formatter = :documentation
   config.color = true
   config.tty = true
