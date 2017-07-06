@@ -3,13 +3,13 @@
 # Bootstraps Puppet
 #
 # USAGE:
-# git clone https://github.com/vladgh/puppet.git /opt/vpm
-# bash /opt/vpm/bin/bootstrap
+# $ git clone https://github.com/vladgh/puppet.git
+# $ bash ./puppet/bin/bootstrap
+# OR
+# $ wget -qO- 'https://raw.githubusercontent.com/vghn/puppet/production/bin/bootstrap' | sudo -E bash
 #
 # Environment variables:
-# PP_SERVER: [String] The URL of the Puppet Server. If the value is `none`, the
-#            script will run `puppet apply` with the current configuration
-#            (defaults to `puppet`)
+# PP_SERVER: [String] The URL of the Puppet Server. (defaults to `puppet`)
 # PP_ROLE: [String] Declares the role of the node as a trusted fact*
 # PP_PROJECT: [String] Declares the project name as a trusted fact*
 # PP_APPLICATION: [String] Declares the application name as a trusted fact*
@@ -53,7 +53,7 @@ PP_COLOR=${PP_COLOR:-true}
 ENVTYPE=${ENVTYPE:-production}
 
 # INTERNALS
-if [ -n "${BASH_SOURCE[0]:-}" ]; then
+if [[ -n "${BASH_SOURCE[0]:-}" ]]; then
   APPDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd -P)"
 else
   APPDIR='/tmp'
@@ -122,13 +122,13 @@ install_puppet_agent(){
   deb_path="${TMPDIR}/${deb_name}"
   apt_url='https://apt.puppetlabs.com'
 
-  if [ ! -x /opt/puppetlabs/bin/puppet ] ; then
+  if [[ ! -x /opt/puppetlabs/bin/puppet ]] ; then
     e_info 'Downloading Puppet release package'
     if !  curl -sSL -o "$deb_path" "${apt_url}/${deb_name}"; then
       e_abort 'Could not download the release package'
     fi
 
-    if [ -s "$deb_path" ]; then
+    if [[ -s "$deb_path" ]]; then
       e_info 'Installing Puppet release package'
       dpkg -i "$deb_path" && rm "$deb_path"
       e_info 'Installing Puppet Agent'
@@ -201,57 +201,9 @@ configure_puppet_agent(){
   fi
 
   configure_puppet_environment
-
-  if [[ "$PP_SERVER" != 'none' ]]; then
-    configure_puppet_server
-    configure_puppet_certname
-    install_csr_attributes
-  fi
-}
-
-# Install puppet modules with R10K
-install_modules(){
-  if ! is_cmd r10k; then
-    e_info 'Install R10K gem'
-    puppet resource package r10k ensure=latest provider=puppet_gem
-  fi
-
-  if ! is_cmd git; then
-    e_info 'Install git'
-    puppet resource package git ensure=latest
-  fi
-
-  if [[ -s "${APPDIR}/Puppetfile" ]]; then
-    e_info 'Unload RVM'
-    if ! __rvm_unload 2>/dev/null; then unset GEM_HOME GEM_PATH; fi
-    e_info 'Install R10K Puppetfile'
-    ( cd "$APPDIR" && r10k puppetfile install --verbose )
-  fi
-}
-
-configure_hiera(){
-  # This should be the same as the configuration in VPM-SERVER Docker image
-  e_info 'Configure Hiera'
-  ln -fsn "${APPDIR}/hieradata" /etc/puppetlabs/hieradata
-  cat <<HIERACFG > /etc/puppetlabs/puppet/hiera.yaml
----
-:backends:
-  - yaml
-:yaml:
-  :datadir: /etc/puppetlabs/hieradata
-:hierarchy:
-  - nodes/%{::trusted.certname}
-  - hosts/%{::trusted.domainname}/%{::trusted.hostname}
-  - roles/%{::trusted.extensions.pp_role}
-  - roles/%{::role}
-  - application/%{::trusted.extensions.pp_application}
-  - application/%{::application}
-  - projects/%{::trusted.extensions.pp_project}
-  - projects/%{::project}
-  - virtual/%{::virtual}
-  - osfamily/%{::osfamily}
-  - common
-HIERACFG
+  configure_puppet_server
+  configure_puppet_certname
+  install_csr_attributes
 }
 
 # Process the exit code
@@ -291,26 +243,6 @@ run_puppet(){
     --verbose || process_exit_code $?
 }
 
-# Apply puppet
-apply_puppet(){
-  # FACTS
-  export FACTER_ROLE="$PP_ROLE"
-  export FACTER_PROJECT="$PP_PROJECT"
-  export FACTER_APPLICATION="$PP_APPLICATION"
-
-  e_info 'Applying puppet'
-  puppet apply \
-  --verbose \
-  --report \
-  --show_diff \
-  --summarize \
-  --detailed-exitcodes \
-  --color="$PP_COLOR" \
-  --environment="${ENVTYPE}" \
-  --modulepath "${APPDIR}/modules:${APPDIR}/dist" \
-  "${APPDIR}/manifests/site.pp" || process_exit_code $?
-}
-
 # Logic
 main(){
   e_info "Role: '${PP_ROLE}'"
@@ -323,11 +255,7 @@ main(){
   install_puppet_agent
   configure_puppet_agent
 
-  if [[ "$PP_SERVER" == 'none' ]]; then
-    install_modules
-    configure_hiera
-    apply_puppet
-  elif [[ "$PP_AGENT_RUN" == 'true' ]]; then
+  if [[ "$PP_AGENT_RUN" == 'true' ]]; then
     run_puppet
   fi
 }
