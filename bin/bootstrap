@@ -118,7 +118,7 @@ install_csr_attributes(){
 # Install Puppet release package
 install_puppet_agent(){
   local deb_name deb_path apt_url
-  deb_name="puppet5-release-${PP_CODENAME:-$(lsb_release -cs)}.deb"
+  deb_name="puppet-release-${PP_CODENAME:-$(lsb_release -cs)}.deb"
   deb_path="${TMPDIR}/${deb_name}"
   apt_url='https://apt.puppetlabs.com'
 
