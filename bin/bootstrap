@@ -3,10 +3,10 @@
 # Bootstraps Puppet
 #
 # USAGE:
-# $ git clone https://github.com/vladgh/puppet.git
-# $ bash ./puppet/bin/bootstrap
-# OR
-# $ wget -qO- 'https://raw.githubusercontent.com/vghn/puppet/production/bin/bootstrap' | sudo -E bash
+# $ export PP_var=value
+# $ curl -fsSL 'https://raw.githubusercontent.com/vghn/puppet/production/bin/bootstrap' | sudo -E bash
+#
+# **Note:** Using `curl | bash` is not recommended for production systems; always download and inspect the file before use.
 #
 # Environment variables:
 # PP_SERVER: [String] The URL of the Puppet Server. (defaults to `puppet`)
