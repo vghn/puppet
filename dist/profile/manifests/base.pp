@@ -35,9 +35,11 @@ class profile::base {
   include ::ssh
 
   # Users
-  lookup(
-    'profile::base::users', {'merge' => 'hash', 'default_value' => {}}
-  ).each |String $name, Hash $params| {
+  lookup({
+    'name'          => 'profile::base::users',
+    'merge'         => 'hash',
+    'default_value' => {}
+  }).each |String $name, Hash $params| {
     user {
       default: * => {
                       ensure => 'present',
@@ -48,9 +50,11 @@ class profile::base {
   }
 
   # SSH Keys
-  lookup(
-    'profile::base::ssh_authorized_keys', {'merge' => 'hash', 'default_value' => {}}
-  ).each |String $name, Hash $params| {
+  lookup({
+    'name'          => 'profile::base::ssh_authorized_keys',
+    'merge'         => 'hash',
+    'default_value' => {}
+  }).each |String $name, Hash $params| {
     ssh_authorized_key {
       default: * => {
                       ensure => 'present',
@@ -61,9 +65,11 @@ class profile::base {
   }
 
   # CRON Jobs
-  lookup(
-    'profile::base::cron_jobs', {'merge' => 'hash', 'default_value' => {}}
-  ).each |String $name, Hash $params| {
+  lookup({
+    'name'          => 'profile::base::cron_jobs',
+    'merge'         => 'hash',
+    'default_value' => {}
+  }).each |String $name, Hash $params| {
     cron {
       default: * => {
                       ensure => 'present',
@@ -74,9 +80,11 @@ class profile::base {
   }
 
   # INI Settings
-  lookup(
-    'profile::base::ini_settings', {'merge' => 'hash', 'default_value' => {}}
-  ).each |String $name, Hash $params| {
+  lookup({
+    'name'          => 'profile::base::ini_settings',
+    'merge'         => 'hash',
+    'default_value' => {}
+  }).each |String $name, Hash $params| {
     ini_setting { $name:
       * => $params;
     }
@@ -84,7 +92,11 @@ class profile::base {
 
   # Packages
   $packages = $facts['os']['name'] ? {
-    'Ubuntu' => lookup("profile::base::${facts['os']['name']}::${facts['os']['distro']['codename']}::packages", {'merge' => 'unique', 'default_value' => []})
+    'Ubuntu' => lookup({
+      'name'          => "profile::base::${facts['os']['name']}::${facts['os']['distro']['codename']}::packages",
+      'merge'         => 'unique',
+      'default_value' => []
+    })
   }
   ensure_packages($packages)
 

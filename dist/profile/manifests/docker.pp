@@ -43,18 +43,22 @@ class profile::docker {
     # }
 
     # # Pull images
-    # lookup(
-      # 'profile::docker::images', {'merge' => 'hash', 'default_value' => {}}
-    # ).each |String $name, Hash $params| {
+    # lookup({
+      # 'name'          => 'profile::docker::images',
+      # 'merge'         => 'hash',
+      # 'default_value' => {}
+    # }).each |String $name, Hash $params| {
       # docker::image { $name:
         # * => $params;
       # }
     # }
 
     # # Run containers
-    # lookup(
-      # 'profile::docker::run', {'merge' => 'hash', 'default_value' => {}}
-    # ).each |String $name, Hash $params| {
+    # lookup({
+      # 'name'          => 'profile::docker::run',
+      # 'merge'         => 'hash',
+      # 'default_value' => {}
+    # }).each |String $name, Hash $params| {
       # docker::run { $name:
         # * => $params;
       # }

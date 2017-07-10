@@ -45,9 +45,11 @@ class profile::linuxfw::pre {
   }
 
   # Extra rules
-  lookup(
-    'profile::linuxfw::rules', {'merge' => 'hash', 'default_value' => {}}
-  ).each |String $name, Hash $params| {
+  lookup({
+    'name'          => 'profile::linuxfw::rules',
+    'merge'         => 'hash',
+    'default_value' => {}
+  }).each |String $name, Hash $params| {
     firewall { $name:
       * => $params;
     }

@@ -22,9 +22,11 @@ class profile::log (
     }
 
     # Extra monitored files
-    lookup(
-      'profile::rsyslog::imfile', {'merge' => 'hash', 'default_value' => {}}
-    ).each |String $name, Hash $params| {
+    lookup({
+      'name'          => 'profile::rsyslog::imfile',
+      'merge'         => 'hash',
+      'default_value' => {}
+    }).each |String $name, Hash $params| {
       rsyslog::imfile { $name:
         * => $params;
       }

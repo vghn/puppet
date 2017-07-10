@@ -7,9 +7,10 @@ class profile::samba {
   }
 
   # Create shares
-  $samba_shares = lookup(
-    'samba::server::shares', {'default_value' => {}}
-  )
+  $samba_shares = lookup({
+    'name'          => 'samba::server::shares',
+    'default_value' => {}
+  })
 
   $samba_paths = $samba_shares.map |$share_name,$share_options| {
     $options  = $share_options # Fix for something similar to https://github.com/rodjek/puppet-lint/issues/450
