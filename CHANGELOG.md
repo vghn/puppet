@@ -1,5 +1,25 @@
 # Change Log
 
+## [v0.2.2](https://github.com/vghn/puppet/tree/v0.2.2) (2017-07-11)
+[Full Changelog](https://github.com/vghn/puppet/compare/v0.2.1...v0.2.2)
+
+**Implemented enhancements:**
+
+- Improve bootstrap usage instructions [\#170](https://github.com/vghn/puppet/issues/170)
+- Adhere to recommended community standards [\#169](https://github.com/vghn/puppet/issues/169)
+- Improve lookup functions [\#168](https://github.com/vghn/puppet/issues/168)
+- Use the new Puppet rolling repos [\#167](https://github.com/vghn/puppet/issues/167)
+- Simplify Puppet bootstrap script [\#166](https://github.com/vghn/puppet/issues/166)
+- Use the containerized TravisCI environment [\#164](https://github.com/vghn/puppet/issues/164)
+- Use the new docker package [\#162](https://github.com/vghn/puppet/issues/162)
+- Update docker-compose [\#161](https://github.com/vghn/puppet/issues/161)
+- Switch to Puppet 5 [\#160](https://github.com/vghn/puppet/issues/160)
+
+**Fixed bugs:**
+
+- Pin down docker repository architecture [\#165](https://github.com/vghn/puppet/issues/165)
+- Remove docker profile until the module is updated [\#163](https://github.com/vghn/puppet/issues/163)
+
 ## [v0.2.1](https://github.com/vghn/puppet/tree/v0.2.1) (2017-06-06)
 [Full Changelog](https://github.com/vghn/puppet/compare/v0.2.0...v0.2.1)
 
