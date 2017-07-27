@@ -15,10 +15,10 @@ HOSTS:
         host_path: ./spec/fixtures/data
         container_path: /etc/puppetlabs/code/environments/production/data
       modules:
-        host_path: ./spec/fixtures/modules
+        host_path: ./spec/fixtures/modules/r10k
         container_path: /etc/puppetlabs/code/environments/production/modules
       profiles:
-        host_path: ./dist
+        host_path: ./spec/fixtures/modules/dist
         container_path: /etc/puppetlabs/code/environments/production/dist
 CONFIG:
   type: aio

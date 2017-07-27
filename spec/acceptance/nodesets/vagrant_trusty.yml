@@ -11,10 +11,10 @@ HOSTS:
         from: ./../../../spec/fixtures/data
         to: /etc/puppetlabs/code/environments/production/data
       modules:
-        from: ./../../../spec/fixtures/modules
+        from: ./../../../spec/fixtures/modules/r10k
         to: /etc/puppetlabs/code/environments/production/modules
       profiles:
-        from: ./../../../dist
+        from: ./../../../spec/fixtures/modules/dist
         to: /etc/puppetlabs/code/environments/production/dist
 CONFIG:
   type: aio
