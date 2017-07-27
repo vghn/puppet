@@ -13,7 +13,7 @@ mod 'git',
     ref: '0.5.0'
 mod 'inifile',
     git: 'https://github.com/puppetlabs/puppetlabs-inifile',
-    ref: '1.6.0'
+    ref: '2.0.0'
 mod 'mysql',
     git: 'https://github.com/puppetlabs/puppetlabs-mysql',
     ref: '3.11.0'
@@ -45,7 +45,7 @@ mod 'hiera',
     ref: 'v3.0.0'
 mod 'nfs',
     git: 'https://github.com/derdanne/puppet-nfs',
-    ref: '2.0.3'
+    ref: '2.0.4'
 mod 'python',
     git: 'https://github.com/stankevich/puppet-python',
     ref: '1.18.2'
@@ -57,7 +57,7 @@ mod 'rsyslog',
     ref: 'v5.0.0'
 mod 'swap_file',
     git: 'https://github.com/petems/petems-swap_file',
-    ref: 'v3.1.4'
+    ref: 'v4.0.0'
 mod 'wget',
     git: 'https://github.com/maestrodev/puppet-wget',
     ref: 'v1.7.3'
@@ -86,7 +86,7 @@ mod 'sudo',
     ref: 'v4.2.0'
 mod 'unattended_upgrades',
     git: 'https://github.com/voxpupuli/puppet-unattended_upgrades',
-    ref: 'v2.2.0'
+    ref: 'v3.0.0'
 
 # Dependencies (find with `sudo /opt/puppetlabs/bin/puppet module list --tree`)
 mod 'epel',
