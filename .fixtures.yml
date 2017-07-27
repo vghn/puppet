@@ -2,4 +2,4 @@
 fixtures:
   symlinks:
     dist: "#{source_dir}/dist"
-    modules: "#{source_dir}/r10k"
+    r10k: "#{source_dir}/modules"
