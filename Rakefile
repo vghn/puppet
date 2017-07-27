@@ -5,14 +5,7 @@ require 'bundler/setup'
 require 'vtasks/lint'
 Vtasks::Lint.new(file_list: FileList['Rakefile'].exclude('spec/fixtures/**/*'))
 require 'vtasks/puppet'
-Vtasks::Puppet.new(exclude_paths: [
-                    'bundle/**/*',
-                    'modules/**/*',
-                    'pkg/**/*',
-                    'spec/**/*',
-                    'tmp/**/*',
-                    'vendor/**/*'
-                  ])
+Vtasks::Puppet.new
 
 desc 'Run puppet tests'
 task test: ['puppet:test']
