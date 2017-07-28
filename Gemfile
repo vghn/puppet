@@ -10,6 +10,7 @@ group :test do
   gem 'puppet-lint', require: false
   gem 'puppet-syntax', require: false
   gem 'puppetlabs_spec_helper', require: false
+  gem 'r10k', require: false
   gem 'reek', require: false
   gem 'rspec', require: false
   gem 'rspec-puppet', require: false
@@ -26,7 +27,6 @@ group :development do
   gem 'puppet-blacksmith', require: false
   gem 'puppet_forge', require: false
   gem 'puppet-strings', require: false
-  gem 'r10k', require: false
   gem 'travis', require: false
 end
 

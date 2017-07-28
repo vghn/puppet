@@ -1,15 +1,23 @@
 # Configure the load path so all dependencies in your Gemfile can be required
 require 'bundler/setup'
 
-# Include task modules
-require 'vtasks/lint'
-Vtasks::Lint.new(file_list: FileList['Rakefile'].exclude('spec/fixtures/**/*'))
+# Puppet tasks
 require 'vtasks/puppet'
 Vtasks::Puppet.new
 
 desc 'Run puppet tests'
 task test: ['puppet:test']
 
+# Lint tasks
+require 'vtasks/lint'
+Vtasks::Lint.new(
+  file_list: FileList[
+    '{lib,spec}/**/*.rb',
+    'Rakefile'
+  ].exclude('spec/fixtures/**/*')
+)
+
+# Release tasks
 require 'vtasks/release'
 Vtasks::Release.new(
   write_changelog: true,
