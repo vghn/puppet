@@ -5,6 +5,7 @@ rvm: 2.4.1
 branches:
   except:
   - "/^v\\d/"
+before_install: gem update bundler
 install: bundle install --without development system_tests --path vendor/bundle
 script: bundle exec rake test
 env:
@@ -14,6 +15,10 @@ env:
   matrix:
   - CI_NODE_INDEX=1
   - CI_NODE_INDEX=2
+cache:
+  directories:
+  - vendor/bundle
+  - modules
 notifications:
   webhooks:
     urls: https://puppet.ghn.me/travis
