@@ -17,8 +17,6 @@ group :test do
   gem 'rspec-puppet-facts', require: false
   gem 'rubocop', require: false
   gem 'rubycritic', require: false
-  gem 'simplecov', require: false
-  gem 'simplecov-console', require: false
 end
 
 group :development do
