@@ -70,7 +70,7 @@ mod 'fail2ban',
     git: 'https://github.com/dhoppe/puppet-fail2ban',
     ref: '1.3.4'
 mod 'gnupg',
-    git: 'https://github.com/n1tr0g/golja-gnupg',
+    git: 'https://github.com/dgolja/golja-gnupg',
     ref: '1.2.3'
 mod 'rvm',
     git: 'https://github.com/maestrodev/puppet-rvm',
