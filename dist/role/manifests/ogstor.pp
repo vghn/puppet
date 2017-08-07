@@ -4,6 +4,6 @@ class role::ogstor {
   include ::profile::log
   include ::profile::git
   include ::profile::puppet::agent
-  include ::profile::docker
+  include ::profile::docker_vgh
   include ::profile::samba
 }

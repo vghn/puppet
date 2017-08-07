@@ -10,5 +10,5 @@ class role::rhea {
   include ::profile::vgs
   include ::profile::puppet::agent
   include ::profile::puppet::master
-  include ::profile::docker
+  include ::profile::docker_vgh
 }

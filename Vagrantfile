@@ -18,6 +18,7 @@ Vagrant.configure('2') do |config|
   # Provision
   config.vm.provision 'shell', inline: <<-SHELL
     # Update APT
+    export DEBIAN_FRONTEND=noninteractive
     apt-get -qy update && apt-get -qy upgrade
 
     # Add gateway to hosts

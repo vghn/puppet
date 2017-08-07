@@ -4,7 +4,6 @@ class profile::docker {
   if $::virtual == 'docker' {
     warning('Docker in Docker is not yet supported!')
   } else {
-    # Fix until the docker module supports the latest repository and package
     if $facts['lsbdistid'] == 'Ubuntu' {
       # Docker main class
       class { '::docker':
