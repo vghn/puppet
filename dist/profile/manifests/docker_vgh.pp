@@ -6,15 +6,16 @@ class profile::docker_vgh {
   } else {
     require ::apt
 
+    $os_string = downcase($::operatingsystem)
+
     case $::osfamily {
     'Debian': {
-      $os_string = downcase($::operatingsystem)
-
       apt::source { 'docker':
-        location => "https://download.docker.com/linux/${os_string}",
-        release  => $::lsbdistcodename,
-        repos    => 'stable',
-        key      => {
+        location     => "https://download.docker.com/linux/${os_string}",
+        architecture => 'amd64',
+        release      => $::lsbdistcodename,
+        repos        => 'stable',
+        key          => {
           'id'     => '9DC858229FC7DD38854AE2D88D81803C0EBFCD88',
           'source' => "https://download.docker.com/linux/${os_string}/gpg",
         },
