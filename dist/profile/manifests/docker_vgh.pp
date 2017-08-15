@@ -1,19 +1,19 @@
 # Vlad's Docker Profile
 class profile::docker_vgh {
   # Docker
-  if $::virtual == 'docker' {
+  if $facts['virtual'] == 'docker' {
     warning('Docker in Docker is not yet supported!')
   } else {
     require ::apt
 
-    $os_string = downcase($::operatingsystem)
+    $os_string = downcase($facts['os']['name'])
 
     case $::osfamily {
     'Debian': {
       apt::source { 'docker':
         location     => "https://download.docker.com/linux/${os_string}",
         architecture => 'amd64',
-        release      => $::lsbdistcodename,
+        release      => $facts['lsbdistcodename'],
         repos        => 'stable',
         key          => {
           'id'     => '9DC858229FC7DD38854AE2D88D81803C0EBFCD88',
@@ -36,7 +36,7 @@ class profile::docker_vgh {
         require => Package['docker-ce'],
       }
     }
-    default: { warning("Docker is not yet supported on ${::osfamily}!") }
+    default: { warning("Docker is not yet supported on ${facts['os']['family']}!") }
     }
   }
 }

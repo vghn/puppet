@@ -22,7 +22,7 @@ class profile::time(String $zone = 'Etc/UTC') {
       }
     }
     default: {
-      fail("The OS ${::operatingsystem} is not supported by this module.")
+      fail("The ${module_name} module is not supported on an ${facts['os']['family']} distribution.")
     }
   }
 }

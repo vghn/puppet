@@ -6,14 +6,11 @@ describe 'profile::base' do
       context "on #{os}" do
         let(:facts) { facts }
 
-        it { is_expected.to compile.with_all_deps }
         it { is_expected.to contain_class('profile::base') }
         it { is_expected.to contain_class('stdlib') }
-        if facts[:os]['family'] == 'Debian'
-          it { is_expected.to contain_class('apt') }
-          it { is_expected.to contain_class('unattended_upgrades') }
-          it { is_expected.to contain_package('software-properties-common') }
-        end
+        it { is_expected.to contain_class('apt') }
+        it { is_expected.to contain_class('unattended_upgrades') }
+        it { is_expected.to contain_package('software-properties-common') }
 
         it do
           is_expected.to contain_user('testuser')

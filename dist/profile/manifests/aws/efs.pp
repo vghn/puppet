@@ -9,7 +9,7 @@ class profile::aws::efs (
         ensure_packages(['nfs-common'])
       }
       default: {
-        fail("The ${module_name} module is not supported on an ${::osfamily} distribution.")
+        fail("The ${module_name} module is not supported on an ${facts['os']['family']} distribution.")
       }
     }
 
