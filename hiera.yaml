@@ -15,5 +15,5 @@ hierarchy:
       - "common.yaml"
     lookup_key: eyaml_lookup_key
     options:
-      pkcs7_private_key: /run/secrets/eyaml_private_key.pkcs7.pem
-      pkcs7_public_key: /run/secrets/eyaml_public_key.pkcs7.pem
+      pkcs7_private_key: /etc/puppetlabs/puppet/eyaml/eyaml_private_key.pkcs7.pem
+      pkcs7_public_key: /etc/puppetlabs/puppet/eyaml/eyaml_public_key.pkcs7.pem
