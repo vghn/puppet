@@ -1,22 +1,21 @@
-# Role
-if $::trusted['authenticated'] == 'remote' {
-  $real_role = $::trusted['extensions']['pp_role']
-} elsif $::trusted['authenticated'] == 'local' {
-  if defined('$::role') {
-    $real_role = $::role
-  } else {
-    warning('The \'role\' fact was not found!')
-    $real_role = undef
-  }
-} else {
-  warning('Unauthorized node!')
-}
+# Main Puppet manifest
 
 # File defaults:
-File {
-  owner => 'root',
-  group => 'root',
-  mode  => '0644',
+case $::kernel {
+  'Darwin': {
+    File {
+      owner => 'root',
+      group => 'wheel',
+      mode  => '0644',
+    }
+  }
+  default: {
+    File {
+      owner => 'root',
+      group => 'root',
+      mode  => '0644',
+    }
+  }
 }
 
 # Exec defaults:
@@ -25,6 +24,8 @@ Exec {
 }
 
 # DEFAULT NODE
+# Only trusted facts are allowed for authenticated nodes.
+# See: https://docs.puppet.com/puppet/latest/lang_facts_and_builtin_vars.html#trusted-facts
 node default {
   # Classification option 1 - Classes defined in Hiera
   lookup({
@@ -34,8 +35,7 @@ node default {
   }).include
 
   # Classification option 2 - Classic roles and profiles classes
-  if $real_role {
-    info("Applying catalog for role ${real_role}")
-    include "::role::${real_role}"
-  }
+  $role = $trusted['extensions']['pp_role']
+  info("Applying catalog for role ${role}")
+  include "::role::${role}"
 }
