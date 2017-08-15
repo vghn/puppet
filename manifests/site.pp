@@ -1,7 +1,7 @@
 # Main Puppet manifest
 
 # File defaults:
-case $::kernel {
+case $facts['kernel'] {
   'Darwin': {
     File {
       owner => 'root',

@@ -1,10 +1,10 @@
 # Docker Profile
 class profile::docker {
   # Docker
-  if $::virtual == 'docker' {
+  if $facts['virtual'] == 'docker' {
     warning('Docker in Docker is not yet supported!')
   } else {
-    if $facts['lsbdistid'] == 'Ubuntu' {
+    if $facts['os']['name'] == 'Ubuntu' {
       # Docker main class
       class { '::docker':
         package_name                => 'docker-ce',

@@ -4,12 +4,12 @@ class profile::base {
   include ::stdlib
 
   # APT
-  if $facts['osfamily'] == 'Debian' {
+  if $facts['os']['family'] == 'Debian' {
     # Patch until the apt module supports Ubuntu 16.04
     ensure_packages('software-properties-common')
     class { '::apt': require => Package['software-properties-common'] }
 
-    if $facts['lsbdistid'] == 'Ubuntu' {
+    if $facts['os']['name'] == 'Ubuntu' {
       # Upgrade system
       class { 'unattended_upgrades':
         auto    => { 'reboot' => true },
@@ -93,7 +93,7 @@ class profile::base {
   # Packages
   $packages = $facts['os']['name'] ? {
     'Ubuntu' => lookup({
-      'name'          => "profile::base::${facts['lsbdistid']}::${facts['lsbdistcodename']}::packages",
+      'name'          => "profile::base::${facts['os']['name']}::${facts['lsbdistcodename']}::packages",
       'merge'         => 'unique',
       'default_value' => []
     })

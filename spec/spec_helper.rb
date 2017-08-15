@@ -9,6 +9,7 @@ fixtures_path = File.expand_path(File.join(__FILE__, '..', 'fixtures'))
 RSpec.configure do |config|
   config.tty = true
   config.color = true
+  config.fail_fast = true
   config.formatter = :documentation
   config.trusted_node_data = true
   config.module_path = File.join(fixtures_path, 'modules/dist') +
