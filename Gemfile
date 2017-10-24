@@ -25,7 +25,6 @@ group :development do
   gem 'puppet-blacksmith', require: false
   gem 'puppet_forge', require: false
   gem 'puppet-strings', require: false
-  gem 'travis', require: false
 end
 
 group :system_tests do

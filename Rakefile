@@ -25,8 +25,6 @@ Vtasks::Release.new(
   bug_labels: 'Type: Bug',
   enhancement_labels: 'Type: Enhancement'
 )
-require 'vtasks/travisci'
-Vtasks::TravisCI.new
 
 # Display version
 desc 'Display version'
