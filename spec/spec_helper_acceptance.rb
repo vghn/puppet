@@ -49,8 +49,8 @@ RSpec.configure do |config|
 
         # Configure Hiera
         shell <<-EOS
-          rm /etc/puppetlabs/puppet/hiera.yaml || true
-          rm -r /etc/puppetlabs/puppet/hieradata || true
+          rm -f /etc/puppetlabs/puppet/hiera.yaml
+          rm -fr /etc/puppetlabs/puppet/hieradata
         EOS
         hiera_config = File.join(proj_root, 'spec/fixtures/hiera.yaml')
         scp_to host, hiera_config, production_dir

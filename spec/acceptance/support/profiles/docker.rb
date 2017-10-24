@@ -2,7 +2,7 @@ shared_examples 'profile::docker' do
   virtual = command('/opt/puppetlabs/bin/facter virtual').stdout.chomp
 
   if virtual != 'docker'
-    describe package('docker') do
+    describe package('docker-ce:') do
       it { is_expected.to be_installed }
     end
 

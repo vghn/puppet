@@ -1,4 +1,4 @@
-shared_examples 'profile::docker' do
+shared_examples 'profile::docker_vgh' do
   virtual = command('/opt/puppetlabs/bin/facter virtual').stdout.chomp
 
   if virtual != 'docker'
