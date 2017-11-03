@@ -9,6 +9,7 @@
 .vagrant
 .yardoc
 Gemfile.lock
+gems.locked
 coverage
 junit
 log
