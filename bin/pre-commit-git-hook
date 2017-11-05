@@ -8,7 +8,7 @@
 
 # Load environment
 # shellcheck disable=1090
-. "$(cd "$(dirname "${BASH_SOURCE[0]}")/../../" && pwd -P)/envrc"
+. "$(cd "$(dirname "${BASH_SOURCE[0]}")/../../" && pwd -P)/.env.sh"
 
 # Add /usr/local/bin to PATH
 PATH="/usr/local/bin:${PATH}"

@@ -3,7 +3,7 @@
 
 # Load environment
 # shellcheck disable=1090
-. "$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd -P)/envrc"
+. "$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd -P)/.env.sh"
 
 # Set working directory
 cd "$APPDIR" || exit

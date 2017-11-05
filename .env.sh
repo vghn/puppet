@@ -15,13 +15,11 @@ NOW="$(date +"%Y%m%d_%H%M%S")"
 
 # Load private environment
 # shellcheck disable=1090
-[[ -s "${APPDIR}/.env" ]] && . "${APPDIR}/.env"
+. "${APPDIR}/.env" 2>/dev/null || true
 
 # Load VGS library (https://github.com/vghn/vgs)
-# shellcheck disable=1091
-[[ -s /opt/vgs/load ]] && . /opt/vgs/load
 # shellcheck disable=1090
-[[ -s ~/vgs/load ]] && . ~/vgs/load
+. ~/vgs/load || echo 'VGS library is required' 1>&2
 
 # Detect environment
 detect_environment 2>/dev/null || true
