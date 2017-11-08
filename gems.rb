@@ -22,7 +22,7 @@ end
 group :development do
   gem 'github_changelog_generator', '~> 1.0', require: false
   gem 'guard-rake', '~> 1.0', require: false
-  gem 'puppet-blacksmith', '~> 3.0', require: false
+  gem 'puppet-blacksmith', '~> 4.0', require: false
   gem 'puppet_forge', '~> 2.0', require: false
   gem 'puppet-strings', '~> 1.0', require: false
 end
