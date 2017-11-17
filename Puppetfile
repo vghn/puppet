@@ -1,13 +1,13 @@
 # Puppet supported modules
 mod 'accounts',
     git: 'https://github.com/puppetlabs/puppetlabs-accounts',
-    ref: '1.1.0'
+    ref: '1.2.0'
 mod 'apt',
     git: 'https://github.com/puppetlabs/puppetlabs-apt',
-    ref: '4.2.0'
+    ref: '4.4.0'
 mod 'concat',
     git: 'https://github.com/puppetlabs/puppetlabs-concat',
-    ref: '4.0.1'
+    ref: '4.1.1'
 mod 'git',
     git: 'https://github.com/puppetlabs/puppetlabs-git',
     ref: '0.5.0'
@@ -16,42 +16,42 @@ mod 'inifile',
     ref: '2.0.0'
 mod 'mysql',
     git: 'https://github.com/puppetlabs/puppetlabs-mysql',
-    ref: '4.0.1'
+    ref: '5.1.0'
 mod 'motd',
     git: 'https://github.com/puppetlabs/puppetlabs-motd',
-    ref: '1.4.0'
+    ref: '1.5.1'
 mod 'ntp',
     git: 'https://github.com/puppetlabs/puppetlabs-ntp',
-    ref: '6.2.0'
+    ref: '7.0.0'
 mod 'ruby',
     git: 'https://github.com/puppetlabs/puppetlabs-ruby',
     ref: '1.0.0'
 mod 'stdlib',
     git: 'https://github.com/puppetlabs/puppetlabs-stdlib',
-    ref: '4.20.0'
+    ref: '4.22.0'
 mod 'vcsrepo',
     git: 'https://github.com/puppetlabs/puppetlabs-vcsrepo',
-    ref: '2.0.0'
+    ref: '2.2.0'
 
 # Puppet approved modules
 mod 'archive',
     git: 'https://github.com/voxpupuli/puppet-archive',
-    ref: 'v2.0.0'
+    ref: 'v2.1.0'
 mod 'docker',
     git: 'https://github.com/vladgh/garethr-docker',
     ref: 'master'
 mod 'hiera',
     git: 'https://github.com/voxpupuli/puppet-hiera',
-    ref: 'v3.2.0'
+    ref: 'v3.3.0'
 mod 'nfs',
     git: 'https://github.com/derdanne/puppet-nfs',
-    ref: '2.0.4'
+    ref: '2.0.5'
 mod 'python',
     git: 'https://github.com/stankevich/puppet-python',
     ref: '1.18.2'
 mod 'r10k',
     git: 'https://github.com/voxpupuli/puppet-r10k',
-    ref: 'v6.1.0'
+    ref: 'v6.2.0'
 mod 'rsyslog',
     git: 'https://github.com/saz/puppet-rsyslog',
     ref: 'v5.0.0'
@@ -86,36 +86,36 @@ mod 'sudo',
     ref: 'v4.2.0'
 mod 'unattended_upgrades',
     git: 'https://github.com/voxpupuli/puppet-unattended_upgrades',
-    ref: 'v3.0.0'
+    ref: 'v3.0.1'
 
 # Dependencies (find with `sudo /opt/puppetlabs/bin/puppet module list --tree`)
 mod 'epel',
     git: 'https://github.com/stahnma/puppet-module-epel',
-    ref: '1.2.2'
+    ref: '1.3.0'
 mod 'extlib',
     git: 'https://github.com/voxpupuli/puppet-extlib',
-    ref: 'v1.1.0'
+    ref: 'v2.0.0'
 mod 'firewall',
     git: 'https://github.com/puppetlabs/puppetlabs-firewall',
-    ref: '1.9.0'
+    ref: '1.10.0'
 mod 'gcc',
     git: 'https://github.com/puppetlabs/puppetlabs-gcc',
     ref: '0.3.0'
 mod 'make',
     git: 'https://github.com/voxpupuli/puppet-make',
-    ref: 'v1.1.0'
+    ref: 'v2.0.0'
 mod 'pe_gem',
     git: 'https://github.com/puppetlabs/puppetlabs-pe_gem',
     ref: '0.1.2'
 mod 'portage',
     git: 'https://github.com/gentoo/puppet-portage',
-    ref: '2.4.0'
+    ref: '2.4.5'
 mod 'registry',
     git: 'https://github.com/puppetlabs/puppetlabs-registry',
     ref: '1.1.4'
 mod 'staging',
     git: 'https://github.com/voxpupuli/puppet-staging',
-    ref: 'v2.2.0'
+    ref: 'v3.0.0'
 mod 'sysctl',
     git: 'https://github.com/fiddyspence/puppet-sysctl',
     ref: '1.1.0'
