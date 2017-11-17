@@ -2,6 +2,7 @@
 class profile::linuxfw::pre {
   Firewall {
     require => undef,
+    provider => 'iptables',
   }
 
   # Only filter INPUT (leave other chains; for example the docker chain)
