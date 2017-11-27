@@ -53,11 +53,7 @@ profile::linuxfw::rules:
   '15 accept OVH SLA monitoring':
     proto:  'icmp'
     action: 'accept'
-    source: '198.100.154.30/32'
-  '16 accept OVH SLA monitoring':
-    proto:  'icmp'
-    action: 'accept'
-    source: '149.56.97.250/32'
+    source: '198.100.154.2/32'
   '21 allow access to HTTP':
     proto:  'tcp'
     action: 'accept'
@@ -66,3 +62,28 @@ profile::linuxfw::rules:
     proto:  'tcp'
     action: 'accept'
     dport:  '443'
+  '31 allow access to Unifi 8080':
+    proto:  'tcp'
+    action: 'accept'
+    dport:  '8080'
+  '32 allow access to Unifi 8443':
+    proto:  'tcp'
+    action: 'accept'
+    dport:  '8443'
+  '33 allow access to Unifi 3478':
+    proto:  'udp'
+    action: 'accept'
+    dport:  '3478'
+  '34 allow access to Unifi 10001':
+    proto:  'udp'
+    action: 'accept'
+    dport:  '10001'
+  '22 allow access to HTTPS':
+    proto:  'tcp'
+    action: 'accept'
+    dport:  '443'
+  '22 allow access to HTTPS':
+    proto:  'tcp'
+    action: 'accept'
+    dport:  '443'
+
