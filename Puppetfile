@@ -54,7 +54,7 @@ mod 'r10k',
     ref: 'v6.2.0'
 mod 'rsyslog',
     git: 'https://github.com/saz/puppet-rsyslog',
-    ref: 'v5.0.0'
+    ref: 'master'
 mod 'swap_file',
     git: 'https://github.com/petems/petems-swap_file',
     ref: 'v4.0.0'
