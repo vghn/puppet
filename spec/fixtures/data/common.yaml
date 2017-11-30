@@ -54,10 +54,6 @@ rvm::system_rubies:
 profile::aws::efs::mount_target: 'us-east-1a.fs-1234.efs.us-east-1.amazonaws.com:/'
 profile::aws::efs::mount_point: '/efs'
 
-# Centralized Logging
-profile::log::server_address: my.logserver.com
-profile::log::server_port: 514
-
 # RSysLog Additional Files
 profile::rsyslog::imfile:
   'testing':
