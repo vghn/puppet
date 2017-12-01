@@ -38,9 +38,10 @@ class profile::log (
         split_config       => true,
         remote_servers     => [
           {
-            host    => $server_address,
-            port    => $server_port,
-            pattern => '*.*',
+            host     => $server_address,
+            port     => $server_port,
+            pattern  => '*.*',
+            protocol => 'tcp',
           },
         ],
         require            => File['Log Certificates'],
