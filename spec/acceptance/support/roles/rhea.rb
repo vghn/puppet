@@ -9,5 +9,5 @@ shared_examples 'role::rhea' do
   it_behaves_like 'profile::vgs'
   it_behaves_like 'profile::puppet::agent'
   it_behaves_like 'profile::puppet::master'
-  it_behaves_like 'profile::docker_vgh'
+  it_behaves_like 'profile::docker'
 end

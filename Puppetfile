@@ -8,6 +8,9 @@ mod 'apt',
 mod 'concat',
     git: 'https://github.com/puppetlabs/puppetlabs-concat',
     ref: '4.1.1'
+mod 'docker',
+    git: 'https://github.com/puppetlabs/puppetlabs-docker',
+    ref: '1.0.2'
 mod 'git',
     git: 'https://github.com/puppetlabs/puppetlabs-git',
     ref: '0.5.0'
@@ -37,9 +40,6 @@ mod 'vcsrepo',
 mod 'archive',
     git: 'https://github.com/voxpupuli/puppet-archive',
     ref: 'v2.1.0'
-mod 'docker',
-    git: 'https://github.com/vladgh/garethr-docker',
-    ref: 'master'
 mod 'hiera',
     git: 'https://github.com/voxpupuli/puppet-hiera',
     ref: 'v3.3.0'
