@@ -31,4 +31,8 @@ group :system_tests do
   gem 'beaker', '~> 3.0', require: false
   gem 'beaker-puppet_install_helper', '~> 0.0', require: false
   gem 'beaker-rspec', '~> 6.0', require: false
+  # SSH ED25519 support
+  gem 'rbnacl', '~> 4.0', require: false
+  gem 'rbnacl-libsodium', '~> 1.0', require: false
+  gem 'bcrypt_pbkdf', '~> 1.0', require: false
 end
