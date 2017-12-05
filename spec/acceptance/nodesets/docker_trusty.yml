@@ -1,8 +1,5 @@
 HOSTS:
   trusty:
-    roles:
-      - agent
-      - default
     platform: ubuntu-14.04-amd64
     hypervisor: docker
     image: ubuntu:14.04
