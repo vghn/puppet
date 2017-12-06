@@ -4,7 +4,7 @@
 # Cron jobs
 profile::base::cron_jobs:
   'Docker CleanUp':
-    command: docker system prune --all --force 2>&1 | /usr/bin/logger -t DockerCleanUp
+    command: docker system prune --force 2>&1 | /usr/bin/logger -t DockerCleanUp
     minute: '2'
     hour: '2'
 
