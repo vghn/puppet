@@ -70,20 +70,23 @@ profile::linuxfw::rules:
     proto:  'tcp'
     action: 'accept'
     dport:  '8443'
-  '33 allow access to Unifi 3478':
+  '33 allow access to Unifi 8880':
+    proto:  'tcp'
+    action: 'accept'
+    dport:  '8880'
+  '34 allow access to Unifi 8843':
+    proto:  'tcp'
+    action: 'accept'
+    dport:  '8843'
+  '35 allow access to Unifi 6789':
+    proto:  'tcp'
+    action: 'accept'
+    dport:  '6789'
+  '36 allow access to Unifi 3478':
     proto:  'udp'
     action: 'accept'
     dport:  '3478'
-  '34 allow access to Unifi 10001':
+  '37 allow access to Unifi 10001':
     proto:  'udp'
     action: 'accept'
     dport:  '10001'
-  '22 allow access to HTTPS':
-    proto:  'tcp'
-    action: 'accept'
-    dport:  '443'
-  '22 allow access to HTTPS':
-    proto:  'tcp'
-    action: 'accept'
-    dport:  '443'
-
