@@ -1,10 +1,10 @@
 # Puppet supported modules
 mod 'accounts',
     git: 'https://github.com/puppetlabs/puppetlabs-accounts',
-    ref: '1.2.0'
+    ref: '1.2.1'
 mod 'apt',
     git: 'https://github.com/puppetlabs/puppetlabs-apt',
-    ref: '4.4.0'
+    ref: '4.4.1'
 mod 'concat',
     git: 'https://github.com/puppetlabs/puppetlabs-concat',
     ref: '4.1.1'
@@ -16,7 +16,7 @@ mod 'git',
     ref: '0.5.0'
 mod 'inifile',
     git: 'https://github.com/puppetlabs/puppetlabs-inifile',
-    ref: '2.0.0'
+    ref: '2.1.1'
 mod 'mysql',
     git: 'https://github.com/puppetlabs/puppetlabs-mysql',
     ref: '5.1.0'
@@ -31,7 +31,7 @@ mod 'ruby',
     ref: '1.0.0'
 mod 'stdlib',
     git: 'https://github.com/puppetlabs/puppetlabs-stdlib',
-    ref: '4.22.0'
+    ref: '4.24.0'
 mod 'vcsrepo',
     git: 'https://github.com/puppetlabs/puppetlabs-vcsrepo',
     ref: '2.2.0'
@@ -39,10 +39,10 @@ mod 'vcsrepo',
 # Puppet approved modules
 mod 'archive',
     git: 'https://github.com/voxpupuli/puppet-archive',
-    ref: 'v2.1.0'
+    ref: 'v2.2.0'
 mod 'hiera',
     git: 'https://github.com/voxpupuli/puppet-hiera',
-    ref: 'v3.3.0'
+    ref: 'v3.3.1'
 mod 'nfs',
     git: 'https://github.com/derdanne/puppet-nfs',
     ref: '2.0.5'
@@ -51,7 +51,7 @@ mod 'python',
     ref: '1.18.2'
 mod 'r10k',
     git: 'https://github.com/voxpupuli/puppet-r10k',
-    ref: 'v6.2.0'
+    ref: 'v6.3.1'
 mod 'rsyslog',
     git: 'https://github.com/saz/puppet-rsyslog',
     ref: 'master'
@@ -86,7 +86,7 @@ mod 'sudo',
     ref: 'v4.2.0'
 mod 'unattended_upgrades',
     git: 'https://github.com/voxpupuli/puppet-unattended_upgrades',
-    ref: 'v3.0.1'
+    ref: 'v3.1.0'
 
 # Dependencies (find with `sudo /opt/puppetlabs/bin/puppet module list --tree`)
 mod 'epel',
@@ -97,7 +97,7 @@ mod 'extlib',
     ref: 'v2.0.0'
 mod 'firewall',
     git: 'https://github.com/puppetlabs/puppetlabs-firewall',
-    ref: '1.10.0'
+    ref: '1.11.0'
 mod 'gcc',
     git: 'https://github.com/puppetlabs/puppetlabs-gcc',
     ref: '0.3.0'
