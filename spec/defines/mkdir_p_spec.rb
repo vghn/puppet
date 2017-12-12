@@ -5,7 +5,7 @@ describe 'profile::mkdir_p' do
     let(:title) { '/some/dir/structure' }
 
     it do
-      should contain_exec('mkdir_p-/some/dir/structure')
+      is_expected.to contain_exec('mkdir_p-/some/dir/structure')
         .with(
           'command' => 'mkdir -p /some/dir/structure',
           'unless'  => 'test -d /some/dir/structure'
@@ -18,7 +18,7 @@ describe 'profile::mkdir_p' do
 
     it do
       expect do
-        should contain_exec('mkdir_p-not/a/valid/absolute/path')
+        is_expected.to contain_exec('mkdir_p-not/a/valid/absolute/path')
           .with(
             'command' => 'mkdir -p not/a/valid/absolute/path',
             'unless'  => 'test -d not/a/valid/absolute/path'

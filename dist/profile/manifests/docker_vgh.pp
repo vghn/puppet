@@ -8,7 +8,7 @@ class profile::docker_vgh {
 
     $os_string = downcase($facts['os']['name'])
 
-    case $::osfamily {
+    case $facts['os']['family'] {
     'Debian': {
       apt::source { 'docker':
         location     => "https://download.docker.com/linux/${os_string}",

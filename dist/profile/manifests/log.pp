@@ -17,15 +17,6 @@ class profile::log (
 
   if ($server_address and $server_port) {
     if ($ssl and $ssl_ca) {
-      # Populate certificates
-      file {'Log Certificates':
-        ensure  => 'directory',
-        path    => '/etc/ssl/log_certs',
-        purge   => true,
-        recurse => true,
-        source  => "puppet:///modules/${module_name}/log_certs",
-      }
-
       # Configure client
       class{'::rsyslog::client':
         ssl                => true,
@@ -44,7 +35,7 @@ class profile::log (
             protocol => 'tcp',
           },
         ],
-        require            => File['Log Certificates'],
+        require            => Class['profile::ca_certs'],
       }
     } else {
       # Configure client

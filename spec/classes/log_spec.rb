@@ -28,11 +28,6 @@ describe 'profile::log' do
               'ssl_ca'        => 'sample_certificate',
             })
           end
-
-          it do
-            is_expected.to contain_file('Log Certificates')
-              .with_path('/etc/ssl/log_certs')
-          end
         end
       end
     end
