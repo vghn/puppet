@@ -11,7 +11,7 @@ describe 'profile::ca_certs' do
 
         it do
           is_expected.to contain_file('CA Certificates')
-            .with_path('/usr/share/ca-certificates/ca_certs')
+            .with_path('/usr/local/share/ca-certificates')
         end
 
         it do
