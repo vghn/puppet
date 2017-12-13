@@ -11,6 +11,9 @@ mod 'concat',
 mod 'docker',
     git: 'https://github.com/puppetlabs/puppetlabs-docker',
     ref: '1.0.2'
+mod 'firewall',
+    git: 'https://github.com/puppetlabs/puppetlabs-firewall',
+    ref: 'master'
 mod 'git',
     git: 'https://github.com/puppetlabs/puppetlabs-git',
     ref: '0.5.0'
@@ -95,9 +98,6 @@ mod 'epel',
 mod 'extlib',
     git: 'https://github.com/voxpupuli/puppet-extlib',
     ref: 'v2.0.0'
-mod 'firewall',
-    git: 'https://github.com/puppetlabs/puppetlabs-firewall',
-    ref: '1.11.0'
 mod 'gcc',
     git: 'https://github.com/puppetlabs/puppetlabs-gcc',
     ref: '0.3.0'
