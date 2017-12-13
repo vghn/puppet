@@ -7,7 +7,7 @@ class profile::ca_certs () {
   # Populate certificates
   file {'CA Certificates':
     ensure  => 'directory',
-    path    => '/usr/share/ca-certificates/ca_certs',
+    path    => '/usr/local/share/ca-certificates',
     purge   => true,
     recurse => true,
     source  => "puppet:///modules/${module_name}/ca_certs",
