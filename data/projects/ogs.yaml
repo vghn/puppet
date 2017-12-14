@@ -5,8 +5,12 @@
 profile::time::zone: 'US/Mountain'
 
 # Centralized Logging
-profile::log::server_address: logs4.papertrailapp.com
-profile::log::server_port: 39978
+profile::log::server_address: logs.ghn.me
+profile::log::server_port: 10514
+profile::log::ssl: true
+profile::log::ssl_ca: /etc/ssl/certs/VladGhCARoot.pem
+profile::log::ssl_auth_mode: x509/name
+profile::log::ssl_permitted_peer: logs.ghn.me
 
 # Users
 profile::base::users:
