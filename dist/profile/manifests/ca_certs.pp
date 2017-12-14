@@ -10,6 +10,7 @@ class profile::ca_certs () {
     path    => '/usr/local/share/ca-certificates',
     purge   => true,
     recurse => true,
+    froce   => true,
     source  => "puppet:///modules/${module_name}/ca_certs",
     notify  => Exec['update-ca-certificates'],
   }
