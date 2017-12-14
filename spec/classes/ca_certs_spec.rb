@@ -17,7 +17,7 @@ describe 'profile::ca_certs' do
         it do
           is_expected.to contain_exec('update-ca-certificates')
             .with(
-              'command'     => '/usr/sbin/update-ca-certificates',
+              'command'     => '/usr/sbin/update-ca-certificates --fresh',
               'refreshonly' => true,
             )
         end
