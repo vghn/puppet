@@ -11,14 +11,14 @@ HOSTS:
       data:
         host_path: ./spec/fixtures/data
         container_path: /etc/puppetlabs/code/environments/production/data
+        opts: ro
       modules:
         host_path: ./spec/fixtures/modules/r10k
         container_path: /etc/puppetlabs/code/environments/production/modules
+        opts: ro
       profiles:
         host_path: ./spec/fixtures/modules/dist
         container_path: /etc/puppetlabs/code/environments/production/dist
+        opts: ro
 CONFIG:
   type: aio
-ssh:
-  password: root
-  auth_methods: ["password"]

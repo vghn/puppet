@@ -1,17 +1,24 @@
 HOSTS:
   xenial:
     platform: ubuntu-16.04-amd64
-    hypervisor: vagrant
-    box: puppetlabs/ubuntu-16.04-64-nocm
+    hypervisor: docker
+    image: ubuntu:16.04
+    docker_preserve_image: true
+    docker_cmd: '["/sbin/init"]'
+    docker_image_commands:
+      - 'rm /usr/sbin/policy-rc.d && rm /sbin/initctl && dpkg-divert --rename --remove /sbin/initctl && apt-get update && apt-get install -y locales net-tools wget && locale-gen en_US.UTF-8'
     mount_folders:
       data:
-        from: ./../../../spec/fixtures/data
-        to: /etc/puppetlabs/code/environments/production/data
+        host_path: ./spec/fixtures/data
+        container_path: /etc/puppetlabs/code/environments/production/data
+        opts: ro
       modules:
-        from: ./../../../spec/fixtures/modules/r10k
-        to: /etc/puppetlabs/code/environments/production/modules
+        host_path: ./spec/fixtures/modules/r10k
+        container_path: /etc/puppetlabs/code/environments/production/modules
+        opts: ro
       profiles:
-        from: ./../../../spec/fixtures/modules/dist
-        to: /etc/puppetlabs/code/environments/production/dist
+        host_path: ./spec/fixtures/modules/dist
+        container_path: /etc/puppetlabs/code/environments/production/dist
+        opts: ro
 CONFIG:
   type: aio
