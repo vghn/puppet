@@ -5,6 +5,7 @@ class role::rhea {
   include ::profile::fail2ban
   include ::profile::ca_certs
   include ::profile::log
+  include ::profile::monitor
   include ::profile::python
   include ::profile::git
   include ::profile::jq

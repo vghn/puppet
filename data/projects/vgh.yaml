@@ -12,6 +12,13 @@ profile::log::ssl_ca: /etc/ssl/certs/VladGhCARoot.pem
 profile::log::ssl_auth_mode: x509/name
 profile::log::ssl_permitted_peer: logs.ghn.me
 
+# Prometheus
+profile::linuxfw::rules:
+  '50 accept Prometheus monitoring':
+    proto:  'tcp'
+    action: 'accept'
+    source: '34.234.6.84/32'
+
 # Users
 profile::base::users:
   vlad:
