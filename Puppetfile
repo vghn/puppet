@@ -75,6 +75,9 @@ mod 'fail2ban',
 mod 'gnupg',
     git: 'https://github.com/dgolja/golja-gnupg',
     ref: '1.2.3'
+mod 'prometheus',
+    git: 'https://github.com/voxpupuli/puppet-prometheus',
+    ref: 'v3.1.0'
 mod 'rvm',
     git: 'https://github.com/maestrodev/puppet-rvm',
     ref: 'v1.13.1'
@@ -116,6 +119,9 @@ mod 'registry',
 mod 'staging',
     git: 'https://github.com/voxpupuli/puppet-staging',
     ref: 'v3.0.0'
+mod 'systemd',
+    git: 'https://github.com/camptocamp/puppet-systemd',
+    ref: '1.1.1'
 mod 'sysctl',
     git: 'https://github.com/fiddyspence/puppet-sysctl',
     ref: '1.1.0'
