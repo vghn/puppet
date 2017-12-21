@@ -1,5 +1,6 @@
 shared_examples 'role::rhea' do
   it_behaves_like 'profile::base'
+  it_behaves_like 'profile::swap'
   it_behaves_like 'profile::linuxfw'
   it_behaves_like 'profile::fail2ban'
   it_behaves_like 'profile::ca_certs'

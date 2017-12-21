@@ -5,6 +5,7 @@
 swap_file::files:
   'default':
     ensure: 'present'
+    swapfile: '/var/swap.space'
     swapfilesize: '2 GB'
 
 # SSH
