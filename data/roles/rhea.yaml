@@ -1,6 +1,12 @@
 ---
 # RHEA role data
 
+# Swap
+swap_file::files:
+  'default':
+    ensure: 'present'
+    swapfilesize: '2 GB'
+
 # SSH
 ssh::server_options:
   PermitRootLogin: 'no'
