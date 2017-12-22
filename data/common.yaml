@@ -9,3 +9,4 @@ profile::base::Ubuntu::xenial::packages:
   - unzip
   - vim
   - wget
+  - lvm2

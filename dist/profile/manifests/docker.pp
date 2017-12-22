@@ -14,7 +14,7 @@ class profile::docker {
 
       # Docker Compose
       class { '::docker::compose':
-        version => '1.17.1',
+        version => '1.18.0',
       }
 
       # Pull images
