@@ -27,16 +27,16 @@ shared_examples 'profile::base' do
     it { is_expected.to have_login_shell '/bin/bash' }
   end
 
+  describe file('/home/testuser/.ssh/authorized_keys') do
+    it { is_expected.to be_owned_by 'root' }
+    it { is_expected.to be_mode 600 }
+    its(:content) { is_expected.to match(/ssh-rsa ABCDEF hiera-test-key/) }
+  end
+
   describe file('/etc/ssh/sshd_config') do
     it { is_expected.to be_owned_by 'root' }
     it { is_expected.to be_mode 600 }
     its(:content) { is_expected.to match(/PermitRootLogin no/) }
-  end
-
-  describe file('/root/.ssh/authorized_keys') do
-    it { is_expected.to be_owned_by 'root' }
-    it { is_expected.to be_mode 600 }
-    its(:content) { is_expected.to match(/ssh-rsa ABCDEF hiera-test-key/) }
   end
 
   describe cron do
