@@ -49,7 +49,7 @@ class profile::base {
     }
   }
 
-  # SSH Keys
+  # SSH Keys(make sure the name us unique, even with existing keys)
   lookup({
     'name'          => 'profile::base::ssh_authorized_keys',
     'merge'         => 'hash',
