@@ -15,6 +15,10 @@ ssh::server_options:
   LoginGraceTime: 30
   MaxStartups: '3:50:10'
 profile::base::ssh_authorized_keys:
+  vgh_ed:
+    user: vlad
+    type: ssh-ed25519
+    key: AAAAC3NzaC1lZDI1NTE5AAAAIE0yyqRUbBGOW9PcYyuaUMaRi/EFwL59E3wwMn5dJAKQ
   deploy:
     user: ubuntu
     type: ssh-rsa
