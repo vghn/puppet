@@ -3,7 +3,7 @@
 
 # Swap
 swap_file::files:
-  'default':
+  default:
     ensure: 'present'
     swapfile: '/var/swap.space'
     swapfilesize: '2 GB'

@@ -3,7 +3,7 @@
 
 # Users
 profile::base::users:
-  'testuser':
+  testuser:
     comment: 'Test User'
     managehome: true
 
@@ -11,14 +11,14 @@ profile::base::users:
 ssh::server_options:
   PermitRootLogin: 'no'
 profile::base::ssh_authorized_keys:
-  'hiera-test-key':
-    user: root
+  hiera-test-key:
+    user: testuser
     type: ssh-rsa
     key: ABCDEF
 
 # Cron Jobs
 profile::base::cron_jobs:
-  'test':
+  test:
     command: 'echo "test" 2>&1 | /usr/bin/logger -t CronTest'
     minute: '2'
     hour: '2'
@@ -34,7 +34,7 @@ profile::base::ini_settings:
 
 # SWAP
 swap_file::files:
-  'default':
+  default:
     ensure: 'present'
     swapfile: '/var/swap.space'
     swapfilesize: '1G'
@@ -47,7 +47,7 @@ profile::base::Ubuntu::trusty::packages:
 
 # RVM
 rvm::system_rubies:
-  'ruby-2.3':
+  ruby-2.3:
     default_use: true
 
 # AWS EFS
@@ -56,7 +56,7 @@ profile::aws::efs::mount_point: '/efs'
 
 # RSysLog Additional Files
 profile::rsyslog::imfile:
-  'testing':
+  testing:
     file_name: /var/log/test.log
     file_tag: testing
     file_facility: local0
