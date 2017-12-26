@@ -42,8 +42,9 @@ class profile::base {
   }).each |String $name, Hash $params| {
     user {
       default: * => {
-                      ensure => 'present',
-                      shell  => '/bin/bash',
+                      ensure         => 'present',
+                      shell          => '/bin/bash',
+                      purge_ssh_keys => true,
                     };
       $name: * => $params;
     }
