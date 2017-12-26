@@ -44,6 +44,7 @@ class profile::base {
       default: * => {
                       ensure         => 'present',
                       shell          => '/bin/bash',
+                      home           => "/home/${name}",
                       purge_ssh_keys => true,
                     };
       $name: * => $params;
