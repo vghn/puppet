@@ -47,8 +47,9 @@ describe 'profile::log' do
             is_expected.to contain_class('rsyslog::server')
               .with(
                 relay_server: true,
-                enable_tcp: true,
                 enable_udp: true,
+                enable_tcp: false,
+                enable_relp: false,
               )
           end
         end

@@ -58,8 +58,9 @@ class profile::log (
   if $relay_server {
     class { 'rsyslog::server':
       relay_server => true,
-      enable_tcp   => true,
       enable_udp   => true,
+      enable_tcp   => false,
+      enable_relp  => false,
     }
   }
 

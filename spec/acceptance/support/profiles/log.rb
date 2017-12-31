@@ -10,7 +10,8 @@ shared_examples 'profile::log' do
 
   describe file('/etc/rsyslog.d/00_server.conf') do
     its(:content) { is_expected.to match %r{UDPServerRun} }
-    its(:content) { is_expected.to match %r{InputTCPServerRun} }
+    its(:content) { is_expected.not_to match %r{InputTCPServerRun} }
+    its(:content) { is_expected.not_to match %r{InputRELPServerRun} }
   end
 
   describe file('/etc/rsyslog.d/testing.conf') do
