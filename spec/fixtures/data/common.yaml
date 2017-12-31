@@ -55,11 +55,14 @@ profile::aws::efs::mount_target: 'us-east-1a.fs-1234.efs.us-east-1.amazonaws.com
 profile::aws::efs::mount_point: '/efs'
 
 # RSysLog Additional Files
-profile::rsyslog::imfile:
+profile::log::imfile:
   testing:
     file_name: /var/log/test.log
     file_tag: testing
     file_facility: local0
+
+# Relay Log Server
+profile::log::relay_server: true
 
 # CloudWatch Logs
 profile::aws::cloudwatch::logs:

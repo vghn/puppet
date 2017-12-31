@@ -8,6 +8,7 @@ class profile::log (
   Optional[String]  $ssl_key = undef,
   Optional[String]  $ssl_auth_mode = 'anon',
   Optional[String]  $ssl_permitted_peer = undef,
+  Optional[Boolean] $relay_server = false,
 ) {
 
   # Logs
@@ -53,9 +54,18 @@ class profile::log (
     }
   }
 
+  # UDP Relay
+  if $relay_server {
+    class { 'rsyslog::server':
+      relay_server => true,
+      enable_tcp   => true,
+      enable_udp   => true,
+    }
+  }
+
   # Extra monitored files
   lookup({
-    'name'          => 'profile::rsyslog::imfile',
+    'name'          => 'profile::log::imfile',
     'merge'         => 'hash',
     'default_value' => {}
   }).each |String $name, Hash $params| {

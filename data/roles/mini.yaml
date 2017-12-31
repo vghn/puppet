@@ -1,6 +1,9 @@
 ---
 # Mini role data
 
+# Relay Log Server
+profile::log::relay_server: true
+
 # Cron jobs
 profile::base::cron_jobs:
   'Docker CleanUp':
