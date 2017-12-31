@@ -6,7 +6,7 @@ HOSTS:
     docker_preserve_image: true
     docker_cmd: '["/sbin/init"]'
     docker_image_commands:
-      - 'rm /usr/sbin/policy-rc.d && rm /sbin/initctl && dpkg-divert --rename --remove /sbin/initctl && apt-get update && apt-get install -y locales net-tools wget && locale-gen en_US.UTF-8'
+      - 'rm /usr/sbin/policy-rc.d && rm /sbin/initctl && dpkg-divert --rename --remove /sbin/initctl && apt-get update && apt-get install -y locales net-tools wget ssl-cert rsyslog && locale-gen en_US.UTF-8'
     mount_folders:
       data:
         host_path: ./spec/fixtures/data

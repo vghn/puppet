@@ -3,7 +3,7 @@ require 'beaker-rspec/helpers/serverspec'
 require 'beaker/puppet_install_helper'
 
 # VARs
-ROLE = ENV['BEAKER_role'] || 'none'
+TEST_CLASS = ENV['BEAKER_class'] || 'role::none'
 
 # Install puppet
 unless ENV['RS_PROVISION'] == 'no' || ENV['BEAKER_provision'] == 'no'
@@ -30,12 +30,6 @@ RSpec.configure do |config|
         ## the second run (without provisioning) fails because
         ## /opt/puppetlabs is not in the path
         shell 'ln -fsn /root/.ssh/environment /etc/environment'
-
-        ## A few packages that some modules assume are present on all distros
-        if fact('osfamily') == 'Debian'
-          # Make sure required packages are installed.
-          apply_manifest_on(host, 'package { ["ssl-cert", "rsyslog"]: }')
-        end
 
         # Configure role
         shell <<-EOS
