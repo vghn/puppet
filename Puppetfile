@@ -10,7 +10,7 @@ mod 'concat',
     ref: '4.1.1'
 mod 'docker',
     git: 'https://github.com/puppetlabs/puppetlabs-docker',
-    ref: '1.0.2'
+    ref: '1.0.4'
 mod 'firewall',
     git: 'https://github.com/puppetlabs/puppetlabs-firewall',
     ref: 'master'
@@ -48,7 +48,7 @@ mod 'hiera',
     ref: 'v3.3.1'
 mod 'nfs',
     git: 'https://github.com/derdanne/puppet-nfs',
-    ref: '2.0.5'
+    ref: '2.0.6'
 mod 'python',
     git: 'https://github.com/stankevich/puppet-python',
     ref: '1.18.2'
@@ -100,7 +100,7 @@ mod 'epel',
     ref: '1.3.0'
 mod 'extlib',
     git: 'https://github.com/voxpupuli/puppet-extlib',
-    ref: 'v2.0.0'
+    ref: 'v2.0.1'
 mod 'gcc',
     git: 'https://github.com/puppetlabs/puppetlabs-gcc',
     ref: '0.3.0'
