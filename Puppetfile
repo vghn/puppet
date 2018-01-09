@@ -25,7 +25,7 @@ mod 'mysql',
     ref: '5.1.0'
 mod 'motd',
     git: 'https://github.com/puppetlabs/puppetlabs-motd',
-    ref: '1.5.1'
+    ref: '1.6.0'
 mod 'ntp',
     git: 'https://github.com/puppetlabs/puppetlabs-ntp',
     ref: '7.0.0'
@@ -54,7 +54,7 @@ mod 'python',
     ref: '1.18.2'
 mod 'r10k',
     git: 'https://github.com/voxpupuli/puppet-r10k',
-    ref: 'v6.3.1'
+    ref: 'v6.3.2'
 mod 'rsyslog',
     git: 'https://github.com/saz/puppet-rsyslog',
     ref: 'master'
@@ -77,7 +77,7 @@ mod 'gnupg',
     ref: '1.2.3'
 mod 'prometheus',
     git: 'https://github.com/voxpupuli/puppet-prometheus',
-    ref: 'v3.1.0'
+    ref: 'v4.0.0'
 mod 'rvm',
     git: 'https://github.com/maestrodev/puppet-rvm',
     ref: 'v1.13.1'
@@ -118,7 +118,7 @@ mod 'registry',
     ref: '1.1.4'
 mod 'staging',
     git: 'https://github.com/voxpupuli/puppet-staging',
-    ref: 'v3.0.0'
+    ref: 'v3.1.0'
 mod 'systemd',
     git: 'https://github.com/camptocamp/puppet-systemd',
     ref: '1.1.1'
