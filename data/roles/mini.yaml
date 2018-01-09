@@ -12,6 +12,9 @@ profile::base::cron_jobs:
     hour: '2'
 
 # Docker
+docker::manage_package: false
+docker::labels:
+  - role=mini
 docker::docker_users:
   - vlad
 

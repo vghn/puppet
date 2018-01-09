@@ -8,6 +8,7 @@ class role::mini {
   include ::profile::monitor
   include ::profile::git
   include ::profile::puppet::agent
+  include ::profile::docker_vgh
   include ::profile::docker
   include ::profile::samba
 }
