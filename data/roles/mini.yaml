@@ -12,7 +12,7 @@ profile::base::cron_jobs:
     hour: '2'
 
 # Docker
-docker::docker_ce_source_location: '[arch=amd64] https://download.docker.com/linux/ubuntu'
+docker::repos::location: '[arch=amd64] https://download.docker.com/linux/ubuntu'
 docker::labels:
   - role=mini
 docker::docker_users:
