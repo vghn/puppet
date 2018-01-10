@@ -102,6 +102,24 @@ class profile::base {
   }
   ensure_packages($packages)
 
+  # Repositories
+  include ::profile::git
+  lookup({
+    'name'          => 'profile::base::vcsrepos',
+    'merge'         => 'hash',
+    'default_value' => {}
+  }).each |String $name, Hash $params| {
+    vcsrepo {
+      default: * => {
+                      ensure   => 'latest',
+                      provider => 'git',
+                      revision => 'master',
+                      require  => Package['git'],
+                    };
+      $name: * => $params;
+    }
+  }
+
   # Others
   include ::wget
   include ::ntp

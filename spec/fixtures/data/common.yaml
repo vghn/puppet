@@ -32,6 +32,13 @@ profile::base::ini_settings:
     value: 'value1'
     path: '/tmp/foo.ini'
 
+# Repos
+profile::base::vcsrepos:
+  'Test Repo':
+    source: 'https://github.com/vladgh/test'
+    path: '/home/testuser/test'
+    user: 'testuser'
+
 # SWAP
 swap_file::files:
   default:

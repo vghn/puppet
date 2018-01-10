@@ -28,7 +28,7 @@ shared_examples 'profile::base' do
   end
 
   describe file('/home/testuser/.ssh/authorized_keys') do
-    it { is_expected.to be_owned_by 'root' }
+    it { is_expected.to be_owned_by 'testuser' }
     it { is_expected.to be_mode 600 }
     its(:content) { is_expected.to match(/ssh-rsa ABCDEF hiera-test-key/) }
   end
@@ -45,6 +45,10 @@ shared_examples 'profile::base' do
 
   describe file('/tmp/foo.ini') do
     its(:content) { is_expected.to match(/setting1 = value1/) }
+  end
+
+  describe file('/home/testuser/test/README.md') do
+    it { is_expected.to exist }
   end
 
   packages = %w(htop wget ntp)

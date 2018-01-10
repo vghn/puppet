@@ -1,8 +1,6 @@
 # Prometheus Role (VGH Monitoring)
 class role::prometheus {
   include ::profile::base
-  include ::profile::vgs
-  include ::profile::dotfiles
   include ::profile::swap
   include ::profile::fail2ban
   include ::profile::ca_certs

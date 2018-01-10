@@ -4,6 +4,15 @@
 # Misc
 profile::time::zone: 'US/Central'
 
+# Repos
+profile::base::vcsrepos:
+  'DotFiles Vlad':
+    source: 'https://github.com/vladgh/dotfiles'
+    path: '/home/vlad/dotfiles'
+  'VGS Library':
+    source: 'https://github.com/vghn/vgs'
+    path: '/home/vlad/vgs'
+
 # Centralized Logging
 profile::log::server_address: logs.ghn.me
 profile::log::server_port: 10514

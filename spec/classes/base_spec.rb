@@ -26,6 +26,13 @@ describe 'profile::base' do
         it { is_expected.to contain_ini_setting('test setting') }
         it { is_expected.to contain_package('htop') }
 
+        it { is_expected.to contain_class('profile::git') }
+        it do
+          is_expected.to contain_vcsrepo('Test Repo')
+            .with_source('https://github.com/vladgh/test')
+            .with_path('/home/testuser/test')
+        end
+
         it { is_expected.to contain_class('sudo') }
         it { is_expected.to contain_class('sudo::configs') }
         it { is_expected.to contain_class('ssh') }
