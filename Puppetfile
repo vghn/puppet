@@ -77,7 +77,7 @@ mod 'gnupg',
     ref: '1.2.3'
 mod 'prometheus',
     git: 'https://github.com/voxpupuli/puppet-prometheus',
-    ref: 'v4.0.0'
+    ref: 'master'
 mod 'rvm',
     git: 'https://github.com/maestrodev/puppet-rvm',
     ref: 'v1.13.1'
