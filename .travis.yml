@@ -1,5 +1,4 @@
 dist: trusty
-sudo: false
 group: travis_latest
 language: ruby
 rvm: 2.4.2
