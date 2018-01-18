@@ -43,6 +43,8 @@ class profile::linuxfw::pre {
     dport  => '22',
     state  => ['NEW', 'ESTABLISHED'],
     action => 'accept',
+    limit  => '6/min',
+    burst  => '6',
   }
 
   # Extra rules
