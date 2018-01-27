@@ -11,6 +11,11 @@ profile::base::cron_jobs:
     minute: '2'
     hour: '2'
 
+# Python
+python::python_pips:
+  awscli:
+    ensure: present
+
 # Docker
 docker::repos::location: '[arch=amd64] https://download.docker.com/linux/ubuntu'
 docker::labels:
