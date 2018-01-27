@@ -21,6 +21,6 @@ cache:
   - modules
 notifications:
   webhooks:
-    urls: https://tqcyffnork.execute-api.us-east-1.amazonaws.com/prod/travis
+    urls: https://vbot.ghn.me/travis
   slack:
     secure: PO+9V7wfK1zJZTO3RgewarOo2Uk6bhPXTAUFwDhwEoBnbhOEIq1ItLkOZfXW4LgQ9WpK03x1y9LNA4xHK89Z3yxO/s+/Csf5YOcv9+CUuwQR4vjfiFmedB8DCObGKc5HdsuohJx6G/YyLag8gFTJMGIDyQRN4uodXjrK2NGuMG8QRYhq4qwYtmnw3Q4q3o9Nsso1486qTnbWuRtF78ofgVnBurNYefbOiycGRvX4on2WI8syGcBVLQWIO/9Lc3Nye3arKdvtrVKI15/QM5DpgyPCmSTeqeu122XgVP/vPqYtmBXttU3lTladAq3S5VpMo9DQlltgTLvAl4a8ma+mzqtux1K628tMsAcNLUpcsXYbbUTRQILCmIQlDomC8oQOtSWnYPCtMpTr/5pGElVlNoWUSahlZS/VV9m/1Om64lgFdxY+MI9sI8UlXi6Ny47JfpHp7xQJPe80sFVLtwtrs9ievcEyw1R+9rSL1ASs3JIevKu5q9wTFL8Dy8lzWHlwyth8kkSruzUc7b5wsLpOPhJoKXuEJjY1ac3abgBjuX06Vk0y0y/dJdPDKy3Uo+ajY4IdjoppuJPRklXv77/hU04W8XTlD5eBR+M4tWAsUZgU1GkgtoUV05GSfNwhRfpeqzqqqzVjeUDUmXvhUG1YmkNd3wdRaW6t57iCi7P6ikI=
