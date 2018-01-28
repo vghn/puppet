@@ -9,9 +9,11 @@ profile::base::vcsrepos:
   'DotFiles Vlad':
     source: 'https://github.com/vladgh/dotfiles'
     path: '/home/vlad/dotfiles'
+    user: 'vlad'
   'VGS Library':
     source: 'https://github.com/vghn/vgs'
     path: '/home/vlad/vgs'
+    user: 'vlad'
 
 # Centralized Logging
 profile::log::server_address: logs.ghn.me
