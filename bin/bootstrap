@@ -61,12 +61,13 @@ fi
 TMPDIR=$(mktemp -d 2>/dev/null || mktemp -d -t 'tmp')
 CSRTMP="${TMPDIR}/csr_attributes.yaml"
 PATH="/opt/puppetlabs/bin:/opt/puppetlabs/puppet/bin:/usr/local/bin:${PATH}"
+export APPDIR TMPDIR CSRTMP PATH
 
 # Output
-e_ok()    { printf "  ✔  %s\n" "$@" ;}
-e_info()  { printf "  ➜  %s\n" "$@" ;}
-e_error() { printf "  ✖  %s\n" "$@" ;}
-e_warn()  { printf "    %s\n" "$@" ;}
+e_ok()    { printf "  ✔  %s\\n" "$@" ;}
+e_info()  { printf "  ➜  %s\\n" "$@" ;}
+e_error() { printf "  ✖  %s\\n" "$@" ;}
+e_warn()  { printf "    %s\\n" "$@" ;}
 e_abort() { e_error "$1"; return "${2:-1}" ;}
 
 # Check if command exists
@@ -89,21 +90,34 @@ sanity_checks(){
 generate_csr_attributes(){
   e_info 'Generating a CSR Attributes file'
 
-  # Get EC2 info
-  instance_id="$(curl --max-time 2 -s http://169.254.169.254/latest/meta-data/instance-id || echo '')"
-  ami_id="$(curl --max-time 2 -s http://169.254.169.254/latest/meta-data/ami-id || echo '')"
+  if [[ -n "$PP_SECRET" ]]; then
+    echo 'custom_attributes:' >> "$CSRTMP"
+    echo "  challengePassword: ${PP_SECRET}" >> "$CSRTMP"
+  fi
 
-  # Define file template
-  cat > "$CSRTMP" <<CSR
-custom_attributes:
-  challengePassword: ${PP_SECRET}
-extension_requests:
-  pp_role: ${PP_ROLE}
-  pp_project: ${PP_PROJECT}
-  pp_application: ${PP_APPLICATION}
-  pp_instance_id: ${instance_id}
-  pp_image_name: ${ami_id}
-CSR
+  echo 'extension_requests:' >> "$CSRTMP"
+
+  if [[ -n "$PP_ROLE" ]]; then
+    echo "  pp_role: ${PP_ROLE}" >> "$CSRTMP"
+  fi
+
+  if [[ -n "$PP_PROJECT" ]]; then
+    echo "  pp_project: ${PP_PROJECT}" >> "$CSRTMP"
+  fi
+
+  if [[ -n "$PP_APPLICATION" ]]; then
+    echo "  pp_application: ${PP_APPLICATION}" >> "$CSRTMP"
+  fi
+
+  instance_id="$(curl --max-time 2 -s http://169.254.169.254/latest/meta-data/instance-id || echo '')"
+  if [[ "${instance_id}" =~ ^i-.* ]]; then
+    echo "  pp_instance_id: ${instance_id}" >> "$CSRTMP"
+  fi
+
+  ami_id="$(curl --max-time 2 -s http://169.254.169.254/latest/meta-data/ami-id || echo '')"
+  if [[ "${ami_id}" =~ ^i-.* ]]; then
+    echo "  pp_image_name: ${ami_id}" >> "$CSRTMP"
+  fi
 }
 
 # Move the CSR Attributes file to the right place and set permissions
