@@ -93,14 +93,11 @@ class profile::base {
   }
 
   # Packages
-  $packages = $facts['os']['name'] ? {
-    'Ubuntu' => lookup({
-      'name'          => "profile::base::${facts['os']['name']}::${facts['lsbdistcodename']}::packages",
-      'merge'         => 'unique',
-      'default_value' => []
-    })
-  }
-  ensure_packages($packages)
+  ensure_packages(lookup({
+    'name'          => "profile::base::${facts['os']['name']}::${facts['lsbdistcodename']}::packages",
+    'merge'         => 'unique',
+    'default_value' => []
+  }))
 
   # Repositories
   include ::profile::git
