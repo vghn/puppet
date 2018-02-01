@@ -136,7 +136,11 @@ install_puppet_agent(){
   deb_path="${TMPDIR}/${deb_name}"
   apt_url='https://apt.puppetlabs.com'
 
-  if [[ ! -x /opt/puppetlabs/bin/puppet ]] ; then
+  if is_cmd puppet; then
+    e_info "Puppet installation detected:"
+    e_info "Path $(which puppet)"
+    e_info "Version $(puppet --version)"
+  else
     e_info 'Downloading Puppet release package'
     if !  curl -sSL -o "$deb_path" "${apt_url}/${deb_name}"; then
       e_abort 'Could not download the release package'
@@ -150,8 +154,6 @@ install_puppet_agent(){
     else
       e_abort 'Could not install Puppet release package'
     fi
-  else
-    e_info "Puppet is already installed - version $(puppet --version)"
   fi
 }
 
