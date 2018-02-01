@@ -17,10 +17,10 @@ python::python_pips:
     ensure: present
 
 # Docker
-docker::repos::location: '[arch=amd64] https://download.docker.com/linux/ubuntu'
 docker::labels:
   - role=mini
 docker::docker_users:
+  - pi
   - vlad
 
 # Swap
