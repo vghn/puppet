@@ -5,7 +5,6 @@ class role::vpi {
   include ::profile::ca_certs
   include ::profile::log
   include ::profile::python
-  include ::profile::git
   include ::profile::jq
   include ::profile::puppet::agent
   include ::profile::docker
