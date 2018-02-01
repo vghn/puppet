@@ -1,34 +1,34 @@
 # Puppet supported modules
 mod 'accounts',
     git: 'https://github.com/puppetlabs/puppetlabs-accounts',
-    ref: '1.2.1'
+    ref: '1.3.0'
 mod 'apt',
     git: 'https://github.com/puppetlabs/puppetlabs-apt',
-    ref: '4.4.1'
+    ref: '4.5.0'
 mod 'concat',
     git: 'https://github.com/puppetlabs/puppetlabs-concat',
     ref: '4.1.1'
 mod 'docker',
     git: 'https://github.com/puppetlabs/puppetlabs-docker',
-    ref: '1.0.4'
+    ref: '1.0.5'
 mod 'firewall',
     git: 'https://github.com/puppetlabs/puppetlabs-firewall',
-    ref: 'master'
+    ref: '1.12.0'
 mod 'git',
     git: 'https://github.com/puppetlabs/puppetlabs-git',
     ref: '0.5.0'
 mod 'inifile',
     git: 'https://github.com/puppetlabs/puppetlabs-inifile',
-    ref: '2.1.1'
+    ref: '2.2.0'
 mod 'mysql',
     git: 'https://github.com/puppetlabs/puppetlabs-mysql',
-    ref: '5.1.0'
+    ref: '5.2.0'
 mod 'motd',
     git: 'https://github.com/puppetlabs/puppetlabs-motd',
-    ref: '1.6.0'
+    ref: '1.7.0'
 mod 'ntp',
     git: 'https://github.com/puppetlabs/puppetlabs-ntp',
-    ref: '7.0.0'
+    ref: '7.1.0'
 mod 'ruby',
     git: 'https://github.com/puppetlabs/puppetlabs-ruby',
     ref: '1.0.0'
@@ -37,7 +37,7 @@ mod 'stdlib',
     ref: '4.24.0'
 mod 'vcsrepo',
     git: 'https://github.com/puppetlabs/puppetlabs-vcsrepo',
-    ref: '2.2.0'
+    ref: '2.3.0'
 
 # Puppet approved modules
 mod 'archive',
@@ -89,7 +89,7 @@ mod 'ssh',
     ref: 'v3.0.1'
 mod 'sudo',
     git: 'https://github.com/saz/puppet-sudo',
-    ref: 'v4.2.0'
+    ref: 'v5.0.0'
 mod 'unattended_upgrades',
     git: 'https://github.com/voxpupuli/puppet-unattended_upgrades',
     ref: 'v3.1.0'
@@ -115,7 +115,7 @@ mod 'portage',
     ref: '2.4.5'
 mod 'registry',
     git: 'https://github.com/puppetlabs/puppetlabs-registry',
-    ref: '1.1.4'
+    ref: '2.0.1'
 mod 'staging',
     git: 'https://github.com/voxpupuli/puppet-staging',
     ref: 'v3.1.0'
