@@ -4,7 +4,7 @@ class profile::docker {
   if $facts['virtual'] == 'docker' {
     warning('Docker in Docker is not yet supported!')
   } else {
-    if $facts['os']['name'] == 'Ubuntu' {
+    if $facts['os']['family'] == 'Debian' {
       # Docker main class
       class { '::docker':
         docker_ce_package_name => 'docker-ce',
