@@ -6,6 +6,7 @@ class role::mini {
   include ::profile::monitor
   include ::profile::python
   include ::profile::git
+  include ::profile::jq
   include ::profile::puppet::agent
   include ::profile::docker
   include ::profile::samba
