@@ -100,12 +100,12 @@ class profile::base {
   }))
 
   # Repositories
-  include ::profile::git
   lookup({
     'name'          => 'profile::base::vcsrepos',
     'merge'         => 'hash',
     'default_value' => {}
   }).each |String $name, Hash $params| {
+    include ::profile::git
     vcsrepo {
       default: * => {
                       ensure   => 'latest',
