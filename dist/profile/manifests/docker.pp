@@ -7,7 +7,6 @@ class profile::docker {
     if $facts['os']['name'] == 'Ubuntu' {
       # Docker main class
       class { '::docker':
-        manage_kernel          => false,
         docker_ce_package_name => 'docker-ce',
         docker_ce_channel      => 'edge'
       }
