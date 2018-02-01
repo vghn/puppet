@@ -1,3 +1,4 @@
+# Rhea Role
 shared_examples 'role::rhea' do
   it_behaves_like 'profile::base'
   it_behaves_like 'profile::swap'

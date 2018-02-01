@@ -1,3 +1,4 @@
+# OGStore Role
 shared_examples 'role::ogstor' do
   it_behaves_like 'profile::base'
   it_behaves_like 'profile::ca_certs'
