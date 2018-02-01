@@ -167,6 +167,10 @@ configure_puppet_server(){
 
 # Configure puppet environment
 configure_puppet_environment(){
+  # Make sure configuration directory exists
+  mkdir -p "${PP_CONFDIR}"
+
+  # Make sure environment directory is present
   if [[ "$ENVTYPE" != 'production' ]]; then
     e_info "Set puppet environment - '$ENVTYPE'"
     mkdir -p "$PP_ENVDIR"
