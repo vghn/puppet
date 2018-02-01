@@ -137,7 +137,7 @@ install_puppet_agent(){
   apt_url='https://apt.puppetlabs.com'
 
   if is_cmd puppet; then
-    e_info "Puppet installation detected:"
+    e_info "Puppet installation detected"
     e_info "Path $(which puppet)"
     e_info "Version $(puppet --version)"
   else
