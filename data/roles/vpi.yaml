@@ -17,6 +17,7 @@ python::python_pips:
     ensure: present
 
 # Docker
+docker::repos::location: 'https://download.docker.com/linux/raspbian'
 docker::labels:
   - role=mini
 docker::docker_users:
