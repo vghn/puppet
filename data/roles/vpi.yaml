@@ -8,6 +8,9 @@ profile::base::cron_jobs:
     minute: '2'
     hour: '2'
 
+# Use system Git
+profile::git::system: true
+
 # Python
 python::python_pips:
   awscli:
