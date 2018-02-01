@@ -17,8 +17,7 @@ python::python_pips:
     ensure: present
 
 # Docker
-docker::repos::location: 'https://download.docker.com/linux/raspbian'
-docker::repos::architecture: 'armhf'
+docker::repos::manage_package: false
 docker::labels:
   - role=mini
 docker::docker_users:
