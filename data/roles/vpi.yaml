@@ -17,7 +17,7 @@ python::python_pips:
     ensure: present
 
 # Docker
-docker::repos::manage_package: false
+docker::manage_package: false
 docker::labels:
   - role=mini
 docker::docker_users:
