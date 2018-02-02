@@ -7,5 +7,4 @@ shared_examples 'role::rhea' do
   it_behaves_like 'profile::python'
   it_behaves_like 'profile::jq'
   it_behaves_like 'profile::puppet::agent'
-  it_behaves_like 'profile::docker'
 end

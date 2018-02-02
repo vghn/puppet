@@ -7,5 +7,4 @@ class role::vpi {
   include ::profile::python
   include ::profile::jq
   include ::profile::puppet::agent
-  include ::profile::docker
 }
