@@ -1,6 +1,9 @@
 ---
 # VPI role data
 
+# Disable /dev/xconsole in RSysLog
+rsyslog::client::disable_xconsole: true
+
 # Use system Git
 profile::git::system: true
 
