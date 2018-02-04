@@ -7,8 +7,8 @@ describe 'profile::log' do
         let(:facts) { facts }
         let(:params) do
           {
-            'server_address' => 'my.logserver.com',
-            'server_port'    => 514,
+            'server_address'  => 'my.logserver.com',
+            'server_tcp_port' => 514,
           }
         end
 

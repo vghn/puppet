@@ -1,7 +1,7 @@
 # Centralized Logging Profile
 class profile::log (
   Optional[String]  $server_address = undef,
-  Optional[Integer] $server_port = undef,
+  Optional[Integer] $server_tcp_port = 514,
   Optional[Boolean] $ssl = false,
   Optional[String]  $ssl_ca = undef,
   Optional[String]  $ssl_cert = undef,
@@ -16,7 +16,7 @@ class profile::log (
     class {'rsyslog': purge_rsyslog_d => true,}
   }
 
-  if ($server_address and $server_port) {
+  if ($server_address and $server_tcp_port) {
     if ($ssl and $ssl_ca) {
       # Configure client
       class{'::rsyslog::client':
@@ -31,7 +31,7 @@ class profile::log (
         remote_servers     => [
           {
             host     => $server_address,
-            port     => $server_port,
+            port     => $server_tcp_port,
             pattern  => '*.*',
             protocol => 'tcp',
           },
@@ -46,7 +46,7 @@ class profile::log (
         remote_servers => [
           {
             host    => $server_address,
-            port    => $server_port,
+            port    => $server_tcp_port,
             pattern => '*.*',
           },
         ],
