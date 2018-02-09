@@ -33,7 +33,7 @@ python::python_pips:
     ensure: present
 
 # Prometheus PuppetServer Metrics
-prometheus::node_exporter::extra_options: '--collector.textfile.directory=/var/lib/prometheus-dropzone'
+prometheus::node_exporter::extra_options: '--collector.textfile.directory=/var/lib/docker/volumes/vpm_metrics/_data'
 
 # Docker
 docker::labels:
