@@ -35,7 +35,7 @@ python::python_pips:
 # Prometheus PuppetServer Metrics
 prometheus::node_exporter::extra_groups:
   - docker
-prometheus::node_exporter::extra_options: '--collector.textfile.directory=/var/lib/docker/volumes/vpm_metrics/_data'
+prometheus::node_exporter::extra_options: '--collector.textfile.directory /var/lib/node_exporter/textfile_collector'
 
 # Docker
 docker::labels:
