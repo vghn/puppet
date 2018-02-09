@@ -32,6 +32,9 @@ python::python_pips:
   awscli:
     ensure: present
 
+# Prometheus PuppetServer Metrics
+prometheus::node_exporter::extra_options: '-collector.textfile.directory=/var/lib/prometheus-dropzone'
+
 # Docker
 docker::labels:
   - role=rhea
