@@ -10,8 +10,7 @@ describe 'profile::monitor' do
         it { is_expected.to contain_class('profile::monitor') }
         it { is_expected.to contain_class('prometheus::node_exporter') }
 
-        it { is_expected.to contain_profile__mkdir_p('/var/lib/node_exporter/textfile_collector') }
-        it { is_expected.to contain_exec('mkdir_p-/var/lib/node_exporter/textfile_collector') }
+        it { is_expected.to contain_file('/var/lib/prometheus_node_exporter')}
       end
     end
   end

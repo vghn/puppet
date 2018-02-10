@@ -4,6 +4,10 @@ shared_examples 'profile::monitor' do
     it { is_expected.to be_executable }
   end
 
+  describe file('/var/lib/prometheus_node_exporter') do
+    it { is_expected.to be_directory }
+  end
+
   describe service('node_exporter') do
     it { is_expected.to be_enabled }
     it { is_expected.to be_running }

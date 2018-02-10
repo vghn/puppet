@@ -1,13 +1,19 @@
 # Monitor Class
 class profile::monitor (
-  Optional[String] $collector_directory = '/var/lib/node_exporter/textfile_collector'
+  String $textfile_directory = '/var/lib/prometheus_node_exporter'
 ){
-  # Make sure directory exists
+  # Ensure directory
+  file { $textfile_directory:
+      ensure  => directory,
+      mode    => '0770',
+      owner   => 'node-exporter',
+      group   => 'node-exporter',
+      require => Class['prometheus::node_exporter'],
+  }
 
   # Node exporter class
-  profile::mkdir_p { $collector_directory: }
-  -> class { 'prometheus::node_exporter':
+  class { 'prometheus::node_exporter':
     version       => '0.15.2',
-    extra_options => "--collector.textfile.directory ${collector_directory}"
+    extra_options => "--collector.textfile.directory ${textfile_directory}"
   }
 }
