@@ -32,11 +32,6 @@ python::python_pips:
   awscli:
     ensure: present
 
-# Prometheus PuppetServer Metrics
-prometheus::node_exporter::extra_groups:
-  - docker
-prometheus::node_exporter::extra_options: '--collector.textfile.directory /var/lib/node_exporter/textfile_collector'
-
 # Docker
 docker::labels:
   - role=rhea
