@@ -1,5 +1,18 @@
 # Change Log
 
+## [v0.3.1](https://github.com/vghn/puppet/tree/v0.3.1) (2018-02-11)
+[Full Changelog](https://github.com/vghn/puppet/compare/v0.3.0...v0.3.1)
+
+**Implemented enhancements:**
+
+- Node exporter on Rhea should collect textfile metrics from folder [\#227](https://github.com/vghn/puppet/issues/227)
+- Test Prometheus Report Processor [\#226](https://github.com/vghn/puppet/issues/226)
+- Test increasing test concurrency [\#225](https://github.com/vghn/puppet/issues/225)
+
+**Fixed bugs:**
+
+- Disable xconsole in VPI's RSysLog [\#224](https://github.com/vghn/puppet/issues/224)
+
 ## [v0.3.0](https://github.com/vghn/puppet/tree/v0.3.0) (2018-02-02)
 [Full Changelog](https://github.com/vghn/puppet/compare/v0.2.2...v0.3.0)
 
