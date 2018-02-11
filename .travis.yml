@@ -7,7 +7,7 @@ branches:
   - "/^v\\d/"
 before_install: gem update bundler
 install: bundle install --without development system_tests --path vendor/bundle
-script: bundle exec rake test
+script: bundle exec rake test; exit 1
 env:
   global:
   - CI_NODE_TOTAL=2
