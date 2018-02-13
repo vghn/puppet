@@ -19,3 +19,4 @@ spec/fixtures/dist
 spec/fixtures/modules
 tmp
 vendor
+doc
