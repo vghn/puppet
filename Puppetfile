@@ -4,7 +4,7 @@ mod 'accounts',
     ref: '1.3.0'
 mod 'apt',
     git: 'https://github.com/puppetlabs/puppetlabs-apt',
-    ref: '4.5.0'
+    ref: '4.5.1'
 mod 'concat',
     git: 'https://github.com/puppetlabs/puppetlabs-concat',
     ref: '4.1.1'
@@ -22,13 +22,13 @@ mod 'inifile',
     ref: '2.2.0'
 mod 'mysql',
     git: 'https://github.com/puppetlabs/puppetlabs-mysql',
-    ref: '5.2.0'
+    ref: '5.2.1'
 mod 'motd',
     git: 'https://github.com/puppetlabs/puppetlabs-motd',
     ref: '1.7.0'
 mod 'ntp',
     git: 'https://github.com/puppetlabs/puppetlabs-ntp',
-    ref: '7.1.0'
+    ref: '7.1.1'
 mod 'ruby',
     git: 'https://github.com/puppetlabs/puppetlabs-ruby',
     ref: '1.0.0'
