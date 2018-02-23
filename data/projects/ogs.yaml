@@ -1,6 +1,17 @@
 ---
 # OneGeeks project Data
 
+# APT
+unattended_upgrades::auto:
+  reboot: true
+unattended_upgrades::origins:
+  - '${distro_id}:${distro_codename}'
+  - '${distro_id}:${distro_codename}-updates'
+  - '${distro_id}:${distro_codename}-security'
+  - 'Docker:${distro_codename}'
+  - 'LP-PPA-git-core:${distro_codename}'
+  - 'Puppetlabs:${distro_codename}'
+
 # Misc
 profile::time::zone: 'US/Mountain'
 

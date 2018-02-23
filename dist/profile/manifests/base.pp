@@ -9,21 +9,8 @@ class profile::base {
     ensure_packages('software-properties-common')
     class { '::apt': require => Package['software-properties-common'] }
 
-    if $facts['os']['name'] == 'Ubuntu' {
-      # Upgrade system
-      class { 'unattended_upgrades':
-        auto    => { 'reboot' => true },
-        origins => [
-          '${distro_id}:${distro_codename}', #lint:ignore:single_quote_string_with_variables
-          '${distro_id}:${distro_codename}-updates', #lint:ignore:single_quote_string_with_variables
-          '${distro_id}:${distro_codename}-security', #lint:ignore:single_quote_string_with_variables
-        ]
-      }
-    } else {
-      class { 'unattended_upgrades':
-        auto    => { 'reboot' => true },
-      }
-    }
+    # Upgrade system
+    include ::unattended_upgrades
   }
 
   # Security
