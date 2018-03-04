@@ -7,7 +7,7 @@ mod 'apt',
     ref: '4.5.1'
 mod 'concat',
     git: 'https://github.com/puppetlabs/puppetlabs-concat',
-    ref: '4.1.1'
+    ref: '4.2.0'
 mod 'docker',
     git: 'https://github.com/puppetlabs/puppetlabs-docker',
     ref: '1.0.5'
@@ -22,10 +22,10 @@ mod 'inifile',
     ref: '2.2.0'
 mod 'mysql',
     git: 'https://github.com/puppetlabs/puppetlabs-mysql',
-    ref: '5.2.1'
+    ref: '5.3.0'
 mod 'motd',
     git: 'https://github.com/puppetlabs/puppetlabs-motd',
-    ref: '1.7.0'
+    ref: '1.8.0'
 mod 'ntp',
     git: 'https://github.com/puppetlabs/puppetlabs-ntp',
     ref: '7.1.1'
@@ -42,13 +42,13 @@ mod 'vcsrepo',
 # Puppet approved modules
 mod 'archive',
     git: 'https://github.com/voxpupuli/puppet-archive',
-    ref: 'v2.2.0'
+    ref: 'v2.3.0'
 mod 'hiera',
     git: 'https://github.com/voxpupuli/puppet-hiera',
     ref: 'v3.3.1'
 mod 'nfs',
     git: 'https://github.com/derdanne/puppet-nfs',
-    ref: '2.0.6'
+    ref: '2.0.7'
 mod 'python',
     git: 'https://github.com/stankevich/puppet-python',
     ref: '1.18.2'
