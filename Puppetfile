@@ -7,10 +7,10 @@ mod 'apt',
     ref: '4.5.1'
 mod 'concat',
     git: 'https://github.com/puppetlabs/puppetlabs-concat',
-    ref: '4.2.0'
+    ref: '4.2.1'
 mod 'docker',
     git: 'https://github.com/puppetlabs/puppetlabs-docker',
-    ref: '1.0.5'
+    ref: '1.1.0'
 mod 'firewall',
     git: 'https://github.com/puppetlabs/puppetlabs-firewall',
     ref: '1.12.0'
@@ -34,7 +34,7 @@ mod 'ruby',
     ref: '1.0.0'
 mod 'stdlib',
     git: 'https://github.com/puppetlabs/puppetlabs-stdlib',
-    ref: '4.24.0'
+    ref: '4.25.0'
 mod 'vcsrepo',
     git: 'https://github.com/puppetlabs/puppetlabs-vcsrepo',
     ref: '2.3.0'
@@ -42,10 +42,10 @@ mod 'vcsrepo',
 # Puppet approved modules
 mod 'archive',
     git: 'https://github.com/voxpupuli/puppet-archive',
-    ref: 'v2.3.0'
+    ref: 'v3.0.0'
 mod 'hiera',
     git: 'https://github.com/voxpupuli/puppet-hiera',
-    ref: 'v3.3.1'
+    ref: 'v3.3.2'
 mod 'nfs',
     git: 'https://github.com/derdanne/puppet-nfs',
     ref: '2.0.7'
@@ -54,7 +54,7 @@ mod 'python',
     ref: '1.18.2'
 mod 'r10k',
     git: 'https://github.com/voxpupuli/puppet-r10k',
-    ref: 'v6.3.2'
+    ref: 'v6.4.0'
 mod 'rsyslog',
     git: 'https://github.com/saz/puppet-rsyslog',
     ref: 'master'
@@ -71,7 +71,7 @@ mod 'cloudwatchlogs',
     ref: 'v2.3.1'
 mod 'fail2ban',
     git: 'https://github.com/dhoppe/puppet-fail2ban',
-    ref: '1.3.4'
+    ref: 'v2.0.0'
 mod 'gnupg',
     git: 'https://github.com/dgolja/golja-gnupg',
     ref: '1.2.3'
@@ -121,7 +121,7 @@ mod 'registry',
     ref: '2.0.1'
 mod 'staging',
     git: 'https://github.com/voxpupuli/puppet-staging',
-    ref: 'v3.1.0'
+    ref: 'v3.2.0'
 mod 'systemd',
     git: 'https://github.com/camptocamp/puppet-systemd',
     ref: '1.1.1'
