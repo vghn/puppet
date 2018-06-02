@@ -21,3 +21,4 @@ docker::docker_users:
 
 # Miscellaneous
 profile::misc::ignore_lid_switch: true
+apt::ppa_package: 'software-properties-common' # Temporary fix until the APT module supports Ubuntu Bionic Beaver
