@@ -13,7 +13,7 @@ class profile::monitor (
 
   # Node exporter class
   class { 'prometheus::node_exporter':
-    version       => '0.15.2',
+    version       => '0.16.0',
     extra_options => "--collector.textfile.directory=${textfile_directory} --collector.filesystem.ignored-mount-points=\\'^/(var/lib/docker|run/docker)($|/)\\'"
   }
 }

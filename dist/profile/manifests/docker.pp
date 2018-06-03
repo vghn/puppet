@@ -13,7 +13,7 @@ class profile::docker {
 
       # Docker Compose
       class { '::docker::compose':
-        version => '1.21.1',
+        version => '1.21.2',
       }
 
       # Pull images
