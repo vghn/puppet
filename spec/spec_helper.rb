@@ -12,8 +12,8 @@ RSpec.configure do |config|
   config.fail_fast = true
   config.formatter = :documentation
   config.trusted_node_data = true
-  config.module_path = File.join(fixtures_path, 'modules/dist') +
-                       ':' + File.join(fixtures_path, 'modules/r10k')
+  config.module_path = File.join(fixtures_path, 'modules/dist') + ':' +
+                       File.join(fixtures_path, 'modules/r10k')
   config.manifest_dir = File.join(fixtures_path, 'manifests')
   config.hiera_config = File.join(fixtures_path, 'hiera.yaml')
   config.after(:suite) { RSpec::Puppet::Coverage.report! }
