@@ -21,7 +21,5 @@ NOW="$(date +"%Y%m%d_%H%M%S")"
 # shellcheck disable=1090
 . ~/vgs/load || echo 'VGS library is required' 1>&2
 
-# Detect environment
-detect_environment 2>/dev/null || true
-detect_ci_environment 2>/dev/null || true
-ENVTYPE="${ENVTYPE:-production}"
+# Load environment
+load_env
