@@ -1,15 +1,21 @@
 #!/usr/bin/env bash
 # Install git hooks script
 
-# Load environment
-# shellcheck disable=1090
-. "$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd -P)/.env.sh"
+# Bash strict mode
+set -euo pipefail
+IFS=$'\n\t'
+
+# DEBUG
+[ -z "${DEBUG:-}" ] || set -x
+
+# VARs
+APPDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../" && pwd -P)"
 
 # Set working directory
 cd "$APPDIR" || exit
 
 # Install git hooks
-for file in ${APPDIR}/bin/*-git-hook; do
+for file in "${APPDIR}"/bin/*-git-hook; do
   echo "Installing ${file}"
   ln -sfn "$file" "${APPDIR}/.git/hooks/$(basename "${file%-git-hook}")"
 done

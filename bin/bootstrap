@@ -138,7 +138,7 @@ install_puppet_agent(){
 
   if is_cmd puppet; then
     e_info "Puppet installation detected"
-    e_info "Path $(which puppet)"
+    e_info "Path $(command -v puppet)"
     e_info "Version $(puppet --version)"
   else
     e_info 'Downloading Puppet release package'

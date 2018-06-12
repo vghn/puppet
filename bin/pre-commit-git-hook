@@ -6,9 +6,12 @@
 #  Mattias Geniar <m@ttias.be>
 #  Rob Nelson <rnelson0@gmail.com>
 
-# Load environment
-# shellcheck disable=1090
-. "$(cd "$(dirname "${BASH_SOURCE[0]}")/../../" && pwd -P)/.env.sh"
+# Bash strict mode
+set -euo pipefail
+IFS=$'\n\t'
+
+# DEBUG
+[ -z "${DEBUG:-}" ] || set -x
 
 # Add /usr/local/bin to PATH
 PATH="/usr/local/bin:${PATH}"
@@ -17,8 +20,19 @@ PATH="/usr/local/bin:${PATH}"
 set +eu
 # shellcheck disable=SC1091
 [[ -s /etc/profile.d/rvm.sh ]] && . /etc/profile.d/rvm.sh
+# shellcheck disable=SC1090
 [[ -s "${HOME}/.rvm/scripts/rvm" ]] && . "${HOME}/.rvm/scripts/rvm"
 set -eu
+
+# Output
+e_ok()    { printf "  ✔  %s\\n" "$@" ;}
+e_info()  { printf "  ➜  %s\\n" "$@" ;}
+e_error() { printf "  ✖  %s\\n" "$@" ;}
+e_warn()  { printf "    %s\\n" "$@" ;}
+e_abort() { e_error "$1"; return "${2:-1}" ;}
+
+# Check if command exists
+is_cmd() { command -v "$@" >/dev/null 2>&1 ;}
 
 # Check YAML
 checkyaml() {

@@ -1,7 +1,7 @@
 dist: trusty
 group: travis_latest
 language: ruby
-rvm: 2.4.2
+rvm: 2.4.4
 branches:
   except:
   - "/^v\\d/"
