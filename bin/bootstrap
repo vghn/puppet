@@ -18,10 +18,13 @@
 # PP_CODENAME: [String] The distribution code name (default: `lsb_release -cs`)
 # PP_AGENT_RUN: [Boolean] Whether to run puppet agent after installation or not
 #               (default: true)
+# PP_AGENT_ONLY: [Boolean] Whether to run puppet agent after installation or not
+#               (default: false)
 # PP_AGENT_CERT_REGEN: [Boolean] If `true`, the puppet services will be stopped,
 #                      the certificates and catalog cache will be deleted prior
 #                      to puppet run;
 #                      https://docs.puppet.com/pe/latest/agent_cert_regen.html
+#                      (default: false)
 # PP_WAITFORCERT: [INTEGER] The number of seconds between connections to server
 #                 while waiting for a certificate to be signed. You can turn off
 #                 waiting for certificates by specifying a time of 0 (default)
@@ -47,6 +50,7 @@ PP_SECRET=${PP_SECRET:-}
 PP_CERTNAME=${PP_CERTNAME:-}
 PP_CODENAME=${PP_CODENAME:-}
 PP_AGENT_RUN=${PP_AGENT_RUN:-true}
+PP_AGENT_ONLY=${PP_AGENT_ONLY:-false}
 PP_AGENT_CERT_REGEN=${PP_AGENT_CERT_REGEN:-false}
 PP_WAITFORCERT=${PP_WAITFORCERT:-0}
 PP_COLOR=${PP_COLOR:-true}
@@ -271,12 +275,17 @@ main(){
   e_info "Puppet Server: '${PP_SERVER}'"
 
   sanity_checks
-  generate_csr_attributes
-  install_puppet_agent
-  configure_puppet_agent
 
-  if [[ "$PP_AGENT_RUN" == 'true' ]]; then
-    run_puppet
+  if [[ "$PP_AGENT_ONLY" == 'true' ]]; then
+    install_puppet_agent
+  else
+    generate_csr_attributes
+    install_puppet_agent
+    configure_puppet_agent
+
+    if [[ "$PP_AGENT_RUN" == 'true' ]]; then
+      run_puppet
+    fi
   fi
 }
 
