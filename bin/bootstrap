@@ -86,8 +86,15 @@ apt_install(){ e_info "Installing $*"; apt-get -qy install "$@" < /dev/null ;}
 # Sanity checks
 sanity_checks(){
   [[ $EUID == 0 ]] || e_abort 'This script needs to run as root'
-  is_cmd lsb_release || { apt_update && e_info 'Install LSB-Release' && apt_install lsb-release ;}
-  is_cmd curl || { apt_update && e_info 'Install CURL' && apt_install curl ;}
+  local packages=''
+  is_cmd lsb_release || packages="${packages} lsb-release"
+  is_cmd curl || packages="${packages} curl"
+  if [[ -n "$packages" ]]; then
+    local IFS=$' '
+    e_info "Following packages need to be installed:$packages"
+    # shellcheck disable=2086
+    apt_update && apt_install ${packages[*]}
+  fi
 }
 
 # Generate certificate request attributes file
