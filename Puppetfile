@@ -42,7 +42,7 @@ mod 'vcsrepo',
 # Puppet approved modules
 mod 'archive',
     git: 'https://github.com/voxpupuli/puppet-archive',
-    ref: 'v3.0.0'
+    ref: 'v3.1.0'
 mod 'hiera',
     git: 'https://github.com/voxpupuli/puppet-hiera',
     ref: 'v3.3.2'
@@ -70,14 +70,14 @@ mod 'cloudwatchlogs',
     git: 'https://github.com/kemra102/puppet-cloudwatchlogs',
     ref: 'v2.3.1'
 mod 'fail2ban',
-    git: 'https://github.com/dhoppe/puppet-fail2ban',
+    git: 'https://github.com/voxpupuli/puppet-fail2ban',
     ref: 'v2.2.0'
 mod 'gnupg',
     git: 'https://github.com/dgolja/golja-gnupg',
     ref: '1.2.3'
 mod 'prometheus',
     git: 'https://github.com/voxpupuli/puppet-prometheus',
-    ref: 'v6.0.0'
+    ref: 'v6.0.3'
 mod 'prometheus_reporter',
     git: 'https://github.com/voxpupuli/puppet-prometheus_reporter',
     ref: 'v0.3.0'
@@ -95,33 +95,48 @@ mod 'sudo',
     ref: 'v5.0.0'
 mod 'unattended_upgrades',
     git: 'https://github.com/voxpupuli/puppet-unattended_upgrades',
-    ref: 'v3.1.0'
+    ref: 'v3.2.0'
 
 # Dependencies (find with `sudo /opt/puppetlabs/bin/puppet module list --tree`)
+mod 'augeasproviders_core',
+    git: 'https://github.com/hercules-team/augeasproviders_core',
+    ref: '2.1.4'
+mod 'augeasproviders_sysctl',
+    git: 'https://github.com/hercules-team/augeasproviders_sysctl',
+    ref: '2.2.0'
 mod 'epel',
     git: 'https://github.com/stahnma/puppet-module-epel',
     ref: '1.3.0'
 mod 'extlib',
     git: 'https://github.com/voxpupuli/puppet-extlib',
-    ref: 'v2.0.1'
+    ref: 'v2.1.0'
 mod 'gcc',
     git: 'https://github.com/puppetlabs/puppetlabs-gcc',
     ref: '0.3.0'
 mod 'make',
     git: 'https://github.com/voxpupuli/puppet-make',
-    ref: 'v2.0.0'
+    ref: 'v2.1.0'
 mod 'pe_gem',
     git: 'https://github.com/puppetlabs/puppetlabs-pe_gem',
     ref: '0.1.2'
 mod 'portage',
     git: 'https://github.com/gentoo/puppet-portage',
     ref: '2.4.5'
+mod 'powershell',
+    git: 'https://github.com/puppetlabs/puppetlabs-powershell',
+    ref: '2.1.5'
+mod 'reboot',
+    git: 'https://github.com/puppetlabs/puppetlabs-reboot',
+    ref: '2.0.0'
 mod 'registry',
     git: 'https://github.com/puppetlabs/puppetlabs-registry',
     ref: '2.0.1'
 mod 'staging',
     git: 'https://github.com/voxpupuli/puppet-staging',
     ref: 'v3.2.0'
+mod 'translate',
+    git: 'https://github.com/puppetlabs/puppetlabs-translate',
+    ref: '1.1.0'
 mod 'systemd',
     git: 'https://github.com/camptocamp/puppet-systemd',
     ref: '1.1.1'
