@@ -22,14 +22,12 @@ describe 'profile::base' do
           is_expected.to contain_ssh_authorized_key('hiera-ssh-test-key')
             .with_user('testuser')
             .with_type('ssh-rsa')
-            .with_key('ABCDEF')
         end
 
         it do
           is_expected.to contain_gnupg_key('hiera-gpg-test-key')
             .with_user('testuser')
-            .with_key_id('ABCDEF')
-            .with_key_content('ABCDEF')
+            .with_key_id('B3E9A9F3')
         end
 
         it do
