@@ -7,14 +7,33 @@ profile::base::users:
     comment: 'Test User'
     managehome: true
 
-# SSH
+# SSH (RSA1024 Test Key)
 ssh::server_options:
   PermitRootLogin: 'no'
 profile::base::ssh_authorized_keys:
-  hiera-test-key:
+  hiera-ssh-test-key:
     user: testuser
     type: ssh-rsa
-    key: ABCDEF
+    key: ABCDAAAAB3NzaC1yc2EAAAADAQABAAAAgQDeNjkYh/B0IGF8MmOUM0auLSleS+v7sQx4JAmmfYiBih31aLdF1GRH+1KlLcldWuPSjyGtVWUjm4ytA5zUfPUp6DyHAYzYIdz1zDIbL+DiOsmJBwD/PyQsA3gOQWcbgfk9RxqFm6fbmL0MhE/WwaAIveneawCKdUYoLL/4gkOVWw==EF
+
+# GPG ("RSA1024 TestUser <test@example.com>")
+profile::base::gpg_keys:
+  hiera-gpg-test-key:
+    user: testuser
+    key_id: B3E9A9F3
+    key_content: |
+      -----BEGIN PGP PUBLIC KEY BLOCK-----
+
+      mI0EWyz/8wEEAKXv4TK+Rz+ezQxaI5lYyKEQPmV+ghXlWcRxWArzp811BKp3VU7d
+      9TbKWjjJH0us2sY0CTP75ED/qc14Tihl4B1ZLH40EinjykXoShuGquny+wuuUi+y
+      sDFCVqeTbR3OPaSjBaJyyRnSt934HVumMpJe14DKr2p71cpAIkmgKJt7ABEBAAG0
+      G1Rlc3RVc2VyIDx0ZXN0QGV4YW1wbGUuY29tPojOBBMBCgA4FiEEZYQO0NGCnBt0
+      9TNmIafS0LPpqfMFAlss//MCGwMFCwkIBwMFFQoJCAsFFgIDAQACHgECF4AACgkQ
+      IafS0LPpqfMqcwP9E8+E2ElSzYAmz3a19Dfpy8GTV1O+0W2h2gCIPp5MUhI/dOqg
+      t6xuXs39uOwxywn7+++qcPY3plzRQzp4JvOq/6+qzc9XyWIU4TJ+5D1yozprbCdV
+      hizCfMsS6jJA9sENhwyxjnpXJXMPomO5QHFtzuz2I/2R3/qE3KadD5PmfIk=
+      =tNxN
+      -----END PGP PUBLIC KEY BLOCK-----
 
 # Cron Jobs
 profile::base::cron_jobs:

@@ -30,13 +30,18 @@ shared_examples 'profile::base' do
   describe file('/home/testuser/.ssh/authorized_keys') do
     it { is_expected.to be_owned_by 'testuser' }
     it { is_expected.to be_mode 600 }
-    its(:content) { is_expected.to match(/ssh-rsa ABCDEF hiera-test-key/) }
+    its(:content) { is_expected.to match(/ssh-rsa ABCDAAAAB3NzaC1yc2EAAAADAQABAAAAgQDeNjkYh\/B0IGF8MmOUM0auLSleS\+v7sQx4JAmmfYiBih31aLdF1GRH\+1KlLcldWuPSjyGtVWUjm4ytA5zUfPUp6DyHAYzYIdz1zDIbL\+DiOsmJBwD\/PyQsA3gOQWcbgfk9RxqFm6fbmL0MhE\/WwaAIveneawCKdUYoLL\/4gkOVWw==EF hiera-ssh-test-key/) }
   end
 
   describe file('/etc/ssh/sshd_config') do
     it { is_expected.to be_owned_by 'root' }
     it { is_expected.to be_mode 600 }
     its(:content) { is_expected.to match(/PermitRootLogin no/) }
+  end
+
+  describe command('sudo gpg --homedir /home/testuser/.gnupg --list-keys B3E9A9F3') do
+    its(:stdout) { is_expected.to match /B3E9A9F3/ }
+    its(:exit_status) { is_expected.to eq 0 }
   end
 
   describe cron do

@@ -18,7 +18,20 @@ describe 'profile::base' do
             .with_shell('/bin/bash')
         end
 
-        it { is_expected.to contain_ssh_authorized_key('hiera-test-key') }
+        it do
+          is_expected.to contain_ssh_authorized_key('hiera-ssh-test-key')
+            .with_user('testuser')
+            .with_type('ssh-rsa')
+            .with_key('ABCDEF')
+        end
+
+        it do
+          is_expected.to contain_gnupg_key('hiera-gpg-test-key')
+            .with_user('testuser')
+            .with_key_id('ABCDEF')
+            .with_key_content('ABCDEF')
+        end
+
         it do
           is_expected.to contain_cron('test')
             .with_command('echo "test" 2>&1 | /usr/bin/logger -t CronTest')

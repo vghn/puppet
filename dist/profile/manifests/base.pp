@@ -53,6 +53,22 @@ class profile::base {
     }
   }
 
+  # GPG Keys
+  include ::gnupg
+  lookup({
+    'name'          => 'profile::base::gpg_keys',
+    'merge'         => 'hash',
+    'default_value' => {}
+  }).each |String $name, Hash $params| {
+    gnupg_key {
+      default: * => {
+                      ensure => 'present',
+                      user   => 'root',
+                    };
+      $name: * => $params;
+    }
+  }
+
   # CRON Jobs
   lookup({
     'name'          => 'profile::base::cron_jobs',
