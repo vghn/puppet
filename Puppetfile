@@ -1,145 +1,56 @@
 # Puppet supported modules
-mod 'accounts',
-    git: 'https://github.com/puppetlabs/puppetlabs-accounts',
-    ref: '1.3.0'
-mod 'apt',
-    git: 'https://github.com/puppetlabs/puppetlabs-apt',
-    ref: '4.5.1'
-mod 'concat',
-    git: 'https://github.com/puppetlabs/puppetlabs-concat',
-    ref: '4.2.1'
-mod 'docker',
-    git: 'https://github.com/puppetlabs/puppetlabs-docker',
-    ref: '1.1.0'
-mod 'firewall',
-    git: 'https://github.com/puppetlabs/puppetlabs-firewall',
-    ref: '1.12.0'
-mod 'git',
-    git: 'https://github.com/puppetlabs/puppetlabs-git',
-    ref: '0.5.0'
-mod 'inifile',
-    git: 'https://github.com/puppetlabs/puppetlabs-inifile',
-    ref: '2.2.2'
-mod 'mysql',
-    git: 'https://github.com/puppetlabs/puppetlabs-mysql',
-    ref: '5.4.0'
-mod 'motd',
-    git: 'https://github.com/puppetlabs/puppetlabs-motd',
-    ref: '1.9.0'
-mod 'ntp',
-    git: 'https://github.com/puppetlabs/puppetlabs-ntp',
-    ref: '7.1.1'
-mod 'ruby',
-    git: 'https://github.com/puppetlabs/puppetlabs-ruby',
-    ref: '1.0.0'
-mod 'stdlib',
-    git: 'https://github.com/puppetlabs/puppetlabs-stdlib',
-    ref: '4.25.1'
-mod 'vcsrepo',
-    git: 'https://github.com/puppetlabs/puppetlabs-vcsrepo',
-    ref: '2.3.0'
+mod 'puppetlabs-accounts', '1.3.0'
+mod 'puppetlabs-apt', '4.5.1'
+mod 'puppetlabs-concat', '4.2.1'
+mod 'puppetlabs-docker', '1.1.0'
+mod 'puppetlabs-firewall', '1.12.0'
+mod 'puppetlabs-git', '0.5.0'
+mod 'puppetlabs-inifile', '2.2.2'
+mod 'puppetlabs-motd', '1.9.0'
+mod 'puppetlabs-mysql', '5.4.0'
+mod 'puppetlabs-ntp', '7.1.1'
+mod 'puppetlabs-ruby', '1.0.0'
+mod 'puppetlabs-stdlib', '4.25.1'
+mod 'puppetlabs-vcsrepo', '2.3.0'
 
 # Puppet approved modules
-mod 'archive',
-    git: 'https://github.com/voxpupuli/puppet-archive',
-    ref: 'v3.1.0'
-mod 'hiera',
-    git: 'https://github.com/voxpupuli/puppet-hiera',
-    ref: 'v3.3.2'
-mod 'nfs',
-    git: 'https://github.com/derdanne/puppet-nfs',
-    ref: '2.0.8'
-mod 'python',
-    git: 'https://github.com/stankevich/puppet-python',
-    ref: '1.19.0'
-mod 'r10k',
-    git: 'https://github.com/voxpupuli/puppet-r10k',
-    ref: 'v6.5.1'
+mod 'derdanne-nfs', '2.0.8'
+mod 'maestrodev-wget', '1.7.3'
+mod 'petems-swap_file', '4.0.0'
+mod 'puppet-archive', '3.1.0'
+mod 'puppet-hiera', '3.3.2'
+mod 'puppet-r10k', '6.5.1'
 mod 'rsyslog',
     git: 'https://github.com/saz/puppet-rsyslog',
     ref: 'master'
-mod 'swap_file',
-    git: 'https://github.com/petems/petems-swap_file',
-    ref: 'v4.0.0'
-mod 'wget',
-    git: 'https://github.com/maestrodev/puppet-wget',
-    ref: 'v1.7.3'
+mod 'stankevich-python', '1.19.0'
 
 # Others
-mod 'cloudwatchlogs',
-    git: 'https://github.com/kemra102/puppet-cloudwatchlogs',
-    ref: 'v2.3.1'
-mod 'fail2ban',
-    git: 'https://github.com/voxpupuli/puppet-fail2ban',
-    ref: 'v2.2.0'
-mod 'gnupg',
-    git: 'https://github.com/dgolja/golja-gnupg',
-    ref: '1.2.3'
-mod 'prometheus',
-    git: 'https://github.com/voxpupuli/puppet-prometheus',
-    ref: 'v6.0.3'
-mod 'prometheus_reporter',
-    git: 'https://github.com/voxpupuli/puppet-prometheus_reporter',
-    ref: 'v0.3.0'
-mod 'rvm',
-    git: 'https://github.com/maestrodev/puppet-rvm',
-    ref: 'v1.13.1'
-mod 'samba',
-    git: 'https://github.com/thias/puppet-samba',
-    ref: '1.0.0'
-mod 'ssh',
-    git: 'https://github.com/saz/puppet-ssh',
-    ref: 'v3.0.1'
-mod 'sudo',
-    git: 'https://github.com/saz/puppet-sudo',
-    ref: 'v5.0.0'
-mod 'unattended_upgrades',
-    git: 'https://github.com/voxpupuli/puppet-unattended_upgrades',
-    ref: 'v3.2.0'
+mod 'golja-gnupg', '1.2.3'
+mod 'kemra102-cloudwatchlogs', '2.3.1'
+mod 'maestrodev-rvm', '1.13.1'
+mod 'puppet-fail2ban', '2.2.0'
+mod 'puppet-prometheus_reporter', '0.3.0'
+mod 'puppet-prometheus', '6.0.5'
+mod 'puppet-unattended_upgrades', '3.2.0'
+mod 'saz-ssh', '3.0.1'
+mod 'saz-sudo', '5.0.0'
+mod 'thias-samba', '1.0.0'
 
 # Dependencies (find with `sudo /opt/puppetlabs/bin/puppet module list --tree`)
-mod 'augeasproviders_core',
-    git: 'https://github.com/hercules-team/augeasproviders_core',
-    ref: '2.1.4'
-mod 'augeasproviders_sysctl',
-    git: 'https://github.com/hercules-team/augeasproviders_sysctl',
-    ref: '2.2.0'
-mod 'epel',
-    git: 'https://github.com/stahnma/puppet-module-epel',
-    ref: '1.3.0'
-mod 'extlib',
-    git: 'https://github.com/voxpupuli/puppet-extlib',
-    ref: 'v2.1.0'
-mod 'gcc',
-    git: 'https://github.com/puppetlabs/puppetlabs-gcc',
-    ref: '0.3.0'
-mod 'make',
-    git: 'https://github.com/voxpupuli/puppet-make',
-    ref: 'v2.1.0'
-mod 'pe_gem',
-    git: 'https://github.com/puppetlabs/puppetlabs-pe_gem',
-    ref: '0.1.2'
-mod 'portage',
-    git: 'https://github.com/gentoo/puppet-portage',
-    ref: '2.4.5'
-mod 'powershell',
-    git: 'https://github.com/puppetlabs/puppetlabs-powershell',
-    ref: '2.1.5'
-mod 'reboot',
-    git: 'https://github.com/puppetlabs/puppetlabs-reboot',
-    ref: '2.0.0'
-mod 'registry',
-    git: 'https://github.com/puppetlabs/puppetlabs-registry',
-    ref: '2.0.1'
-mod 'staging',
-    git: 'https://github.com/voxpupuli/puppet-staging',
-    ref: 'v3.2.0'
-mod 'translate',
-    git: 'https://github.com/puppetlabs/puppetlabs-translate',
-    ref: '1.1.0'
-mod 'systemd',
-    git: 'https://github.com/camptocamp/puppet-systemd',
-    ref: '1.1.1'
-mod 'sysctl',
-    git: 'https://github.com/fiddyspence/puppet-sysctl',
-    ref: '1.1.0'
+mod 'camptocamp-systemd', '1.1.1'
+mod 'fiddyspence-sysctl', '1.1.0'
+mod 'gentoo-portage', '2.3.0'
+mod 'herculesteam-augeasproviders_core', '2.1.4'
+mod 'herculesteam-augeasproviders_sysctl', '2.2.0'
+mod 'puppet-extlib', '2.1.0'
+mod 'puppet-make', '2.1.0'
+mod 'puppet-staging', '3.2.0'
+mod 'puppetlabs-gcc', '0.3.0'
+mod 'puppetlabs-pe_gem', '0.2.0'
+mod 'puppetlabs-pe_puppetserver_gem', '0.0.1'
+mod 'puppetlabs-powershell', '2.1.5'
+mod 'puppetlabs-reboot', '2.0.0'
+mod 'puppetlabs-registry', '2.0.1'
+mod 'puppetlabs-translate', '1.1.0'
+mod 'stahnma-epel', '1.3.0'
