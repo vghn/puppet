@@ -66,6 +66,8 @@ swap_file::files:
     swapfilesize: '1G'
 
 # Packages
+profile::base::Ubuntu::bionic::packages:
+  - htop
 profile::base::Ubuntu::xenial::packages:
   - htop
 profile::base::Ubuntu::trusty::packages:
