@@ -2,7 +2,7 @@ HOSTS:
   trusty:
     platform: ubuntu-14.04-amd64
     hypervisor: vagrant
-    box: puppetlabs/ubuntu-14.04-64-nocm
+    box: ubuntu/trusty64
     mount_folders:
       data:
         from: ./../../../spec/fixtures/data
