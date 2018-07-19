@@ -8,7 +8,6 @@ class profile::docker {
       # Docker main class
       class { '::docker':
         docker_ce_package_name => 'docker-ce',
-        docker_ce_channel      => 'edge'
       }
 
       # Docker Compose
