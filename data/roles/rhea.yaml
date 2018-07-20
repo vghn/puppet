@@ -38,6 +38,7 @@ docker::labels:
 docker::docker_users:
   - ubuntu
   - vlad
+  - cosmin
 
 # Firewall rules
 profile::linuxfw::rules:

@@ -47,6 +47,9 @@ profile::base::users:
   vlad:
     comment: 'Vlad Ghinea'
     managehome: true
+  cosmin:
+    comment: 'Cosmin Ionica'
+    managehome: true
 
 # Sudo
 sudo::configs:
@@ -61,6 +64,10 @@ profile::base::ssh_authorized_keys:
     user: vlad
     type: ssh-ed25519
     key: AAAAC3NzaC1lZDI1NTE5AAAAIE0yyqRUbBGOW9PcYyuaUMaRi/EFwL59E3wwMn5dJAKQ
+  cosmin_ed:
+    user: cosmin
+    type: ssh-ed25519
+    key: AAAAC3NzaC1lZDI1NTE5AAAAIKUqyPb6WXJ0RzQKDTGtGEMG8jS11PTWWsJq+nz9fWQ9
 
 # GPG
 profile::base::gpg_keys:
