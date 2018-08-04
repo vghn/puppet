@@ -2,7 +2,9 @@
 mod 'puppetlabs-accounts', '2.0.0'
 mod 'puppetlabs-apt', '5.0.1'
 mod 'puppetlabs-concat', '4.2.1'
-mod 'puppetlabs-docker', '2.0.0'
+mod 'puppetlabs-docker',
+    git: 'https://github.com/puppetlabs/puppetlabs-docker',
+    ref: 'master'
 mod 'puppetlabs-firewall', '1.12.0'
 mod 'puppetlabs-git', '0.5.0'
 mod 'puppetlabs-inifile', '2.3.0'
