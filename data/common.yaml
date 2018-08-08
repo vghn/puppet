@@ -2,6 +2,15 @@
 # Global Hiera data
 
 # Essential packages
+profile::base::Ubuntu::trusty::packages:
+  - curl
+  - htop
+  - tmux
+  - unzip
+  - vim
+  - wget
+  - lvm2
+  - nfs-common
 profile::base::Ubuntu::xenial::packages:
   - curl
   - htop
@@ -10,3 +19,13 @@ profile::base::Ubuntu::xenial::packages:
   - vim
   - wget
   - lvm2
+  - nfs-common
+profile::base::Ubuntu::bionic::packages:
+  - curl
+  - htop
+  - tmux
+  - unzip
+  - vim
+  - wget
+  - lvm2
+  - nfs-common
