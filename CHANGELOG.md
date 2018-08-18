@@ -1,5 +1,30 @@
 # Change Log
 
+## [v0.4.0](https://github.com/vghn/puppet/tree/v0.4.0) (2018-08-18)
+[Full Changelog](https://github.com/vghn/puppet/compare/v0.3.1...v0.4.0)
+
+**Implemented enhancements:**
+
+- Add essential packages to all servers [\#242](https://github.com/vghn/puppet/issues/242)
+- Default to hostname if instance id is absent [\#241](https://github.com/vghn/puppet/issues/241)
+- Add Cosmin user [\#240](https://github.com/vghn/puppet/issues/240)
+- Use stable docker-ce package by default [\#239](https://github.com/vghn/puppet/issues/239)
+- Use official vagrant boxes for acceptance testing [\#238](https://github.com/vghn/puppet/issues/238)
+- Support Ubuntu 18.04 Bionic Beaver [\#237](https://github.com/vghn/puppet/issues/237)
+- Use Forge modules in the Puppetfile [\#236](https://github.com/vghn/puppet/issues/236)
+- Add GPG keys to servers [\#235](https://github.com/vghn/puppet/issues/235)
+- Update dependencies in the Puppetfile [\#234](https://github.com/vghn/puppet/issues/234)
+- Improve bootstrap script [\#233](https://github.com/vghn/puppet/issues/233)
+- Bootstrap should have an install only option [\#232](https://github.com/vghn/puppet/issues/232)
+- Eliminate the VGS dependency [\#231](https://github.com/vghn/puppet/issues/231)
+- Add 3rd party repos to unattended upgrades [\#229](https://github.com/vghn/puppet/issues/229)
+
+**Fixed bugs:**
+
+- Do not show diff by default in logs [\#243](https://github.com/vghn/puppet/issues/243)
+- Fix test for the monitor class [\#230](https://github.com/vghn/puppet/issues/230)
+- Node exporter ignore mount points [\#228](https://github.com/vghn/puppet/issues/228)
+
 ## [v0.3.1](https://github.com/vghn/puppet/tree/v0.3.1) (2018-02-11)
 [Full Changelog](https://github.com/vghn/puppet/compare/v0.3.0...v0.3.1)
 
