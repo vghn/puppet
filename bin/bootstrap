@@ -267,7 +267,6 @@ run_puppet(){
     --no-usecacheonfailure \
     --waitforcert "$PP_WAITFORCERT" \
     --report \
-    --show_diff \
     --summarize \
     --detailed-exitcodes \
     --color="$PP_COLOR" \
