@@ -39,7 +39,7 @@ profile::linuxfw::rules:
   '50 accept Prometheus monitoring':
     proto:  'tcp'
     action: 'accept'
-    source: '18.209.38.178/32'
+    source: '18.210.236.53/32'
     dport:  [9100, 9101]
 
 # Users
