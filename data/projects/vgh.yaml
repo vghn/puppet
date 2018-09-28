@@ -47,9 +47,6 @@ profile::base::users:
   vlad:
     comment: 'Vlad Ghinea'
     managehome: true
-  cosmin:
-    comment: 'Cosmin Ionica'
-    managehome: true
 
 # Sudo
 sudo::configs:
@@ -60,18 +57,14 @@ sudo::configs:
 # SSH
 ssh::storeconfigs_enabled: false
 profile::base::ssh_authorized_keys:
-  vgh_ed:
+  vgh_ed25519:
     user: vlad
     type: ssh-ed25519
     key: AAAAC3NzaC1lZDI1NTE5AAAAIE0yyqRUbBGOW9PcYyuaUMaRi/EFwL59E3wwMn5dJAKQ
-  cosmin_ed:
-    user: cosmin
-    type: ssh-ed25519
-    key: AAAAC3NzaC1lZDI1NTE5AAAAIKUqyPb6WXJ0RzQKDTGtGEMG8jS11PTWWsJq+nz9fWQ9
 
 # GPG
 profile::base::gpg_keys:
-  vgh_ed:
+  vgh:
     user: vlad
     key_id: FCF51557
     key_source: https://keybase.io/vgh/pgp_keys.asc
