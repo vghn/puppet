@@ -1,5 +1,5 @@
 ---
-# VGH project Data
+# Cosmin's Media Project Data
 
 # APT
 unattended_upgrades::auto:
@@ -13,18 +13,7 @@ unattended_upgrades::origins:
   - 'Puppetlabs:${distro_codename}'
 
 # Misc
-profile::time::zone: 'US/Central'
-
-# Repos
-profile::base::vcsrepos:
-  'DotFiles Vlad':
-    source: 'https://github.com/vladgh/dotfiles'
-    path: '/home/vlad/dotfiles'
-    user: 'vlad'
-  'VGS Library':
-    source: 'https://github.com/vghn/vgs'
-    path: '/home/vlad/vgs'
-    user: 'vlad'
+profile::time::zone: 'US/Mountain'
 
 # Centralized Logging
 profile::log::server_address: logs.ghn.me
@@ -34,22 +23,22 @@ profile::log::ssl_ca: /etc/ssl/certs/VladGhCARoot.pem
 profile::log::ssl_auth_mode: x509/name
 profile::log::ssl_permitted_peer: logs.ghn.me
 
-# Prometheus
-profile::linuxfw::rules:
-  '50 accept Prometheus monitoring':
-    proto:  'tcp'
-    action: 'accept'
-    source: '18.210.236.53/32'
-    dport:  [9100, 9101]
-
 # User accounts
 profile::base::accounts:
+  cosmin:
+    comment: 'Cosmin Ionica'
+    managehome: true
+    uid: '7355'
+    gid: '7355'
+    sshkeys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAN+Ge6UYazTf6rnwdBP7okOdyBNeMUW0pQYkN79ajis europn@gmail.com
   vlad:
     comment: 'Vlad Ghinea'
     managehome: true
     uid: '8523'
     gid: '8523'
-    sshkeys: 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIE0yyqRUbBGOW9PcYyuaUMaRi/EFwL59E3wwMn5dJAKQ vlad@ghn.me'
+    sshkeys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIE0yyqRUbBGOW9PcYyuaUMaRi/EFwL59E3wwMn5dJAKQ vlad@ghn.me
 
 # GPG
 profile::base::gpg_keys:
@@ -57,12 +46,17 @@ profile::base::gpg_keys:
     user: vlad
     key_id: FCF51557
     key_source: https://keybase.io/vgh/pgp_keys.asc
+  cosmin:
+    user: cosmin
+    key_id: C8B45DA9
+    key_source: https://keybase.io/europn/pgp_keys.asc
 
 # Sudo
 sudo::configs:
   admins:
     content: |-
       vlad ALL=(ALL) NOPASSWD: ALL
+      cosmin ALL=(ALL) NOPASSWD: ALL
 
 # SSH
 ssh::storeconfigs_enabled: false

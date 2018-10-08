@@ -1,0 +1,14 @@
+---
+# Cosmin's Media Role Data
+
+# User accounts
+profile::base::accounts:
+  cmedia:
+    comment: 'Media User'
+    uid: '7777'
+    gid: '7777'
+
+# Docker
+docker::docker_users:
+  - vlad
+  - cosmin

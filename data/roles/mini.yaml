@@ -10,6 +10,10 @@ profile::base::cron_jobs:
     command: docker system prune --force 2>&1 | /usr/bin/logger -t DockerCleanUp
     minute: '2'
     hour: '2'
+  DSFiles:
+    command: 'find /data \( -name ".DS_Store" -or -name ".Trashes" -or -name "._*" -or -name ".TemporaryItems" \) -exec rm {} \; 2>&1 | /usr/bin/logger -t DSFilesCleanUp'
+    minute: '2'
+    hour: '2'
 
 # Python
 python::python_pips:

@@ -21,6 +21,24 @@ class profile::base {
   include ::sudo::configs
   include ::ssh
 
+  # Accounts (using https://forge.puppet.com/puppetlabs/accounts)
+  # Opted to name parameter purge_sshkeys to match sshkeys parameter, although
+  # the base user type breaks it up into purge_ssh_keys
+  lookup({
+    'name'          => 'profile::base::accounts',
+    'merge'         => 'hash',
+    'default_value' => {}
+  }).each |String $name, Hash $params| {
+    accounts::user {
+      default: * => {
+                      ensure        => 'present',
+                      shell         => '/bin/bash',
+                      purge_sshkeys => true,
+                    };
+      $name: * => $params;
+    }
+  }
+
   # Users
   lookup({
     'name'          => 'profile::base::users',

@@ -1,5 +1,6 @@
-require 'beaker-rspec/spec_helper'
-require 'beaker-rspec/helpers/serverspec'
+require 'puppet'
+require 'beaker-puppet'
+require 'beaker-rspec'
 require 'beaker/puppet_install_helper'
 
 # VARs
@@ -8,6 +9,7 @@ TEST_CLASS = ENV['BEAKER_class'] || 'role::none'
 # Install puppet
 unless ENV['RS_PROVISION'] == 'no' || ENV['BEAKER_provision'] == 'no'
   run_puppet_install_helper
+  configure_type_defaults_on(hosts)
 end
 
 # Include shared examples

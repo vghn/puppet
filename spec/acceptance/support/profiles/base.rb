@@ -21,16 +21,25 @@ shared_examples 'profile::base' do
     end
   end
 
+  describe group('testaccount') do
+    it { is_expected.to exist }
+    it { is_expected.to have_gid '11111' }
+  end
+
+  describe user('testaccount') do
+    it { is_expected.to exist }
+    it { is_expected.to have_home_directory '/home/testaccount' }
+    it { is_expected.to have_login_shell '/bin/bash' }
+    it { is_expected.to belong_to_primary_group 'testaccount' }
+    it { is_expected.to have_uid '11111' }
+    it { is_expected.to have_authorized_key 'ABCDAAAAB3NzaC1yc2EAAAADAQABAAAAgQDeNjkYh/B0IGF8MmOUM0auLSleS+v7sQx4JAmmfYiBih31aLdF1GRH+1KlLcldWuPSjyGtVWUjm4ytA5zUfPUp6DyHAYzYIdz1zDIbL+DiOsmJBwD/PyQsA3gOQWcbgfk9RxqFm6fbmL0MhE/WwaAIveneawCKdUYoLL/4gkOVWw==EF' }
+  end
+
   describe user('testuser') do
     it { is_expected.to exist }
     it { is_expected.to have_home_directory '/home/testuser' }
     it { is_expected.to have_login_shell '/bin/bash' }
-  end
-
-  describe file('/home/testuser/.ssh/authorized_keys') do
-    it { is_expected.to be_owned_by 'testuser' }
-    it { is_expected.to be_mode 600 }
-    its(:content) { is_expected.to match(/ssh-rsa ABCDAAAAB3NzaC1yc2EAAAADAQABAAAAgQDeNjkYh\/B0IGF8MmOUM0auLSleS\+v7sQx4JAmmfYiBih31aLdF1GRH\+1KlLcldWuPSjyGtVWUjm4ytA5zUfPUp6DyHAYzYIdz1zDIbL\+DiOsmJBwD\/PyQsA3gOQWcbgfk9RxqFm6fbmL0MhE\/WwaAIveneawCKdUYoLL\/4gkOVWw==EF hiera-ssh-test-key/) }
+    it { is_expected.to have_authorized_key 'ABCDAAAAB3NzaC1yc2EAAAADAQABAAAAgQDeNjkYh/B0IGF8MmOUM0auLSleS+v7sQx4JAmmfYiBih31aLdF1GRH+1KlLcldWuPSjyGtVWUjm4ytA5zUfPUp6DyHAYzYIdz1zDIbL+DiOsmJBwD/PyQsA3gOQWcbgfk9RxqFm6fbmL0MhE/WwaAIveneawCKdUYoLL/4gkOVWw==EF' }
   end
 
   describe file('/etc/ssh/sshd_config') do
