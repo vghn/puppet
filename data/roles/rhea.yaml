@@ -8,11 +8,15 @@ swap_file::files:
     swapfile: '/var/swap.space'
     swapfilesize: '2 GB'
 
-# Users
-profile::base::users:
+# User Accounts
+profile::base::accounts:
   cosmin:
     comment: 'Cosmin Ionica'
     managehome: true
+    uid: '7355'
+    gid: '7355'
+    sshkeys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAN+Ge6UYazTf6rnwdBP7okOdyBNeMUW0pQYkN79ajis europn@gmail.com
 
 # SSH
 ssh::server_options:

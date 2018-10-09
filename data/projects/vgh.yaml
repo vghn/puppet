@@ -49,7 +49,8 @@ profile::base::accounts:
     managehome: true
     uid: '8523'
     gid: '8523'
-    sshkeys: 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIE0yyqRUbBGOW9PcYyuaUMaRi/EFwL59E3wwMn5dJAKQ vlad@ghn.me'
+    sshkeys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIE0yyqRUbBGOW9PcYyuaUMaRi/EFwL59E3wwMn5dJAKQ vlad@ghn.me
 
 # GPG
 profile::base::gpg_keys:
