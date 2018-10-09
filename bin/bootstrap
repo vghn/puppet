@@ -18,8 +18,7 @@
 # PP_CODENAME: [String] The distribution code name (default: `lsb_release -cs`)
 # PP_AGENT_RUN: [Boolean] Whether to run puppet agent after installation or not
 #               (default: true)
-# PP_AGENT_ONLY: [Boolean] Whether to run puppet agent after installation or not
-#               (default: false)
+# PP_AGENT_ONLY: [Boolean] Only install puppet agent (default: false)
 # PP_AGENT_CERT_REGEN: [Boolean] If `true`, the puppet services will be stopped,
 #                      the certificates and catalog cache will be deleted prior
 #                      to puppet run;
@@ -153,7 +152,7 @@ install_puppet_agent(){
     e_info "Version $(puppet --version)"
   else
     e_info 'Downloading Puppet release package'
-    if !  curl -sSL -o "$deb_path" "${apt_url}/${deb_name}"; then
+    if ! curl -sSL -o "$deb_path" "${apt_url}/${deb_name}"; then
       e_abort 'Could not download the release package'
     fi
 
@@ -284,6 +283,7 @@ main(){
 
   if [[ "$PP_AGENT_ONLY" == 'true' ]]; then
     install_puppet_agent
+    stop_puppet_agent_services
   else
     generate_csr_attributes
     install_puppet_agent

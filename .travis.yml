@@ -1,7 +1,7 @@
 dist: trusty
 group: travis_latest
 language: ruby
-rvm: 2.4.4
+rvm: 2.5.1
 branches:
   except:
   - "/^v\\d/"
@@ -11,7 +11,6 @@ script: bundle exec rake test
 env:
   global:
   - CI_NODE_TOTAL=2
-  - PUPPET_GEM_VERSION="~> 5.0"
   matrix:
   - CI_NODE_INDEX=1
   - CI_NODE_INDEX=2
