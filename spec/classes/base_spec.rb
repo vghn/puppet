@@ -13,13 +13,22 @@ describe 'profile::base' do
         it { is_expected.to contain_package('software-properties-common') }
 
         it do
+          is_expected.to contain_accounts__user('testaccount')
+            .with_managehome('true')
+            .with_shell('/bin/bash')
+            .with_uid('11111')
+            .with_gid('11111')
+            .with_sshkeys(['ssh-rsa ABCDAAAAB3NzaC1yc2EAAAADAQABAAAAgQDeNjkYh/B0IGF8MmOUM0auLSleS+v7sQx4JAmmfYiBih31aLdF1GRH+1KlLcldWuPSjyGtVWUjm4ytA5zUfPUp6DyHAYzYIdz1zDIbL+DiOsmJBwD/PyQsA3gOQWcbgfk9RxqFm6fbmL0MhE/WwaAIveneawCKdUYoLL/4gkOVWw==EF demokey'])
+        end
+
+        it do
           is_expected.to contain_user('testuser')
             .with_managehome('true')
             .with_shell('/bin/bash')
         end
 
         it do
-          is_expected.to contain_ssh_authorized_key('hiera-ssh-test-key')
+          is_expected.to contain_ssh_authorized_key('hiera-ssh-testuser-key')
             .with_user('testuser')
             .with_type('ssh-rsa')
         end
