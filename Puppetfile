@@ -1,3 +1,8 @@
+# Core
+mod 'puppetlabs-cron_core', '1.0.0'
+mod 'puppetlabs-mount_core', '1.0.2'
+mod 'puppetlabs-sshkeys_core', '1.0.1'
+
 # Puppet supported modules
 mod 'puppetlabs-accounts', '3.1.0'
 mod 'puppetlabs-apt', '6.0.0'
