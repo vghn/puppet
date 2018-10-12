@@ -5,10 +5,6 @@ class profile::base {
 
   # APT
   if $facts['os']['family'] == 'Debian' {
-    # Patch until the apt module supports Ubuntu 16.04
-    ensure_packages('software-properties-common')
-    class { '::apt': require => Package['software-properties-common'] }
-
     # Upgrade system
     include ::unattended_upgrades
   }
