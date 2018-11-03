@@ -1,6 +1,6 @@
 # JQ JSON Processor Profile
 class profile::jq {
-  $version = '1.5'
+  $version = '1.6'
 
   wget::fetch {'JQ JSON Processor':
     source      => "https://github.com/stedolan/jq/releases/download/jq-${version}/jq-linux64",
