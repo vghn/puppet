@@ -1,0 +1,68 @@
+---
+# Cosmin's NAS Role Data
+
+# User accounts
+profile::base::accounts:
+  cmedia:
+    comment: 'Media User'
+    uid: '7777'
+    gid: '7777'
+
+# Cron jobs
+profile::base::cron_jobs:
+  DSFiles:
+    command: 'find /data \( -name ".DS_Store" -or -name ".Trashes" -or -name "._*" -or -name ".TemporaryItems" \) -exec rm {} \; 2>&1 | /usr/bin/logger -t CleanUp'
+    minute: '2'
+    hour: '2'
+
+# Samba
+samba::server::workgroup: 'WORKGROUP'
+samba::server::server_string: 'Storage'
+samba::server::netbios_name: 'Storage'
+samba::server::domain_master: true
+samba::server::security: 'user'
+samba::server::map_to_guest: 'Bad User'
+samba::server::extra_global_options:
+  - 'wins support = yes'
+  - 'min protocol = SMB2'
+samba::server::shares:
+  Home:
+    - 'comment = Home'
+    - 'path = /data/home'
+    - 'writeable = yes'
+    - 'browseable = yes'
+    - 'create mask = 0644'
+    - 'directory mask = 0755'
+    - 'valid users = cmedia'
+    - 'force user = cmedia'
+    - 'force group = cmedia'
+  MEC7:
+    - 'comment = MEC7'
+    - 'path = /data/mec7'
+    - 'writeable = yes'
+    - 'browseable = yes'
+    - 'create mask = 0644'
+    - 'directory mask = 0755'
+    - 'valid users = cmedia'
+    - 'force user = cmedia'
+    - 'force group = cmedia'
+  Media:
+    - 'comment = Media'
+    - 'path = /data/media'
+    - 'writeable = yes'
+    - 'browseable = yes'
+    - 'create mask = 0644'
+    - 'directory mask = 0755'
+    - 'valid users = cmedia'
+    - 'force user = cmedia'
+    - 'force group = cmedia'
+  Backups:
+    - 'comment = Backups'
+    - 'path = /data/backups'
+    - 'writeable = yes'
+    - 'browseable = yes'
+    - 'create mask = 0644'
+    - 'directory mask = 0755'
+    - 'valid users = cmedia'
+    - 'force user = cmedia'
+    - 'force group = cmedia'
