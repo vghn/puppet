@@ -6,7 +6,7 @@
 # $ export PP_var=value
 # $ curl -fsSL 'https://raw.githubusercontent.com/vghn/puppet/production/bin/bootstrap' | sudo -E bash
 #
-# **Note:** Using `curl | bash` is not recommended for production systems; always download and inspect the file before use.
+# **Note:** Our code is completely open, but piping to bash can be dangerous and is not recommended for production systems. For a safer install, review the code and then run the installer locally.
 #
 # Environment variables:
 # PP_SERVER: [String] The URL of the Puppet Server. (defaults to `puppet`)
