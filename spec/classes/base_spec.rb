@@ -12,6 +12,17 @@ describe 'profile::base' do
         it { is_expected.to contain_class('unattended_upgrades') }
         it { is_expected.to contain_package('software-properties-common') }
 
+        case facts[:os]['name']
+        when 'Ubuntu'
+          it do
+            is_expected.to contain_apt__source('archive.ubuntu.com')
+              .with_location('http://archive.ubuntu.com/ubuntu')
+              .with_key('630239CC130E1A7FD81A27B140976EAF437D05B5')
+              .with_repos('main universe multiverse restricted')
+              .that_comes_before('Class[apt::update]')
+          end
+        end
+
         it do
           is_expected.to contain_accounts__user('testaccount')
             .with_managehome('true')

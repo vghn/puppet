@@ -8,6 +8,15 @@ class profile::base {
     # Upgrade system
     include ::unattended_upgrades
   }
+  if $facts['os']['name'] == 'Ubuntu' {
+    # Add main, universe, multiverse and restricted repositories
+    # https://help.ubuntu.com/community/Repositories
+    apt::source { 'archive.ubuntu.com':
+      location => 'http://archive.ubuntu.com/ubuntu',
+      key      => '630239CC130E1A7FD81A27B140976EAF437D05B5',
+      repos    => 'main universe multiverse restricted',
+    } -> Class['apt::update'] -> Package <| provider == 'apt' |>
+  }
 
   # Security
   class { '::sudo':

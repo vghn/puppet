@@ -1,4 +1,13 @@
 shared_examples 'profile::base' do
+  describe 'apt_base_repos', if: fact('os')['name'].eql?('Ubuntu') do
+    describe file('/etc/apt/sources.list') do
+      its(:content) { is_expected.to match(/main/) }
+      its(:content) { is_expected.to match(/universe/) }
+      its(:content) { is_expected.to match(/multiverse/) }
+      its(:content) { is_expected.to match(/restricted/) }
+    end
+  end
+
   describe 'apt_base_profile', if: fact('osfamily').eql?('Debian') do
     packages = %w(software-properties-common unattended-upgrades)
     packages.each do |pkg|
