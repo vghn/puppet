@@ -23,7 +23,7 @@ describe 'profile::time' do
           end
           it do
             is_expected.to contain_file('/etc/timezone')
-              .with_content('US/Central')
+              .with_content("US/Central\n")
           end
         end
       end
