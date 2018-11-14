@@ -1,5 +1,5 @@
 # VPI Role
-shared_examples 'role::rhea' do
+shared_examples 'role::vpi' do
   it_behaves_like 'profile::base'
   it_behaves_like 'profile::swap'
   it_behaves_like 'profile::ca_certs'
