@@ -1,14 +1,12 @@
 shared_examples 'profile::git' do
-  release = command('/usr/bin/lsb_release -cs').stdout.chomp
-
   if release == 'trusty'
-    repo_file = "/etc/apt/sources.list.d/git-core-ppa-#{release}.list"
+    repo_file = "/etc/apt/sources.list.d/git-core-ppa-#{fact('os')['distro']['codename']}.list"
   else
-    repo_file = "/etc/apt/sources.list.d/git-core-ubuntu-ppa-#{release}.list"
+    repo_file = "/etc/apt/sources.list.d/git-core-ubuntu-ppa-#{fact('os')['distro']['codename']}.list"
   end
 
   describe file(repo_file) do
-    its(:content) { is_expected.to match %r{http://ppa.launchpad.net/git-core/ppa/ubuntu} }
+    its(:content) { is_expected.to match %r{deb http://ppa.launchpad.net/git-core/ppa/ubuntu #{fact('os')['distro']['codename']} main} }
   end
 
   describe package('git') do

@@ -9,6 +9,16 @@ describe 'profile::puppet::agent' do
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to contain_class('profile::puppet::agent') }
 
+        case facts[:os]['name']
+        when 'Ubuntu'
+          it do
+            is_expected.to contain_apt__source("apt.puppetlabs.com-#{facts[:os]['lsb']['distcodename']}")
+              .with_location('http://apt.puppetlabs.com')
+              .with_repos('main')
+              .with_key('6F6B15509CF8E59E6E469F327F438280EF8D349F')
+          end
+        end
+
         it do
           is_expected.to contain_service('puppet')
             .with_ensure('stopped')

@@ -1,10 +1,20 @@
 shared_examples 'profile::base' do
   describe 'apt_base_repos', if: fact('os')['name'].eql?('Ubuntu') do
+
     describe file('/etc/apt/sources.list') do
-      its(:content) { is_expected.to match(/main/) }
-      its(:content) { is_expected.to match(/universe/) }
-      its(:content) { is_expected.to match(/multiverse/) }
-      its(:content) { is_expected.to match(/restricted/) }
+      its(:content) { is_expected.to match(/# Repos managed by puppet./) }
+    end
+    describe file("/etc/apt/sources.list.d/archive.ubuntu.com-#{fact('os')['distro']['codename']}.list") do
+      its(:content) { is_expected.to match(%r{deb http://archive.ubuntu.com/ubuntu #{fact('os')['distro']['codename']} main universe multiverse restricted}) }
+    end
+    describe file("/etc/apt/sources.list.d/archive.ubuntu.com-#{fact('os')['distro']['codename']}-updates.list") do
+      its(:content) { is_expected.to match(%r{deb http://archive.ubuntu.com/ubuntu #{fact('os')['distro']['codename']}-updates main universe multiverse restricted}) }
+    end
+    describe file("/etc/apt/sources.list.d/archive.ubuntu.com-#{fact('os')['distro']['codename']}-security.list") do
+      its(:content) { is_expected.to match(%r{deb http://archive.ubuntu.com/ubuntu #{fact('os')['distro']['codename']}-security main universe multiverse restricted}) }
+    end
+    describe file("/etc/apt/sources.list.d/archive.ubuntu.com-#{fact('os')['distro']['codename']}-backports.list") do
+      its(:content) { is_expected.to match(%r{deb http://archive.ubuntu.com/ubuntu #{fact('os')['distro']['codename']}-backports main universe multiverse restricted}) }
     end
   end
 

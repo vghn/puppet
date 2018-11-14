@@ -15,11 +15,27 @@ describe 'profile::base' do
         case facts[:os]['name']
         when 'Ubuntu'
           it do
-            is_expected.to contain_apt__source('archive.ubuntu.com')
+            is_expected.to contain_apt__source("archive.ubuntu.com-#{facts[:os]['lsb']['distcodename']}")
               .with_location('http://archive.ubuntu.com/ubuntu')
-              .with_key('630239CC130E1A7FD81A27B140976EAF437D05B5')
               .with_repos('main universe multiverse restricted')
-              .that_comes_before('Class[apt::update]')
+          end
+
+          it do
+            is_expected.to contain_apt__source("archive.ubuntu.com-#{facts[:os]['lsb']['distcodename']}-updates")
+              .with_location('http://archive.ubuntu.com/ubuntu')
+              .with_repos('main universe multiverse restricted')
+          end
+
+          it do
+            is_expected.to contain_apt__source("archive.ubuntu.com-#{facts[:os]['lsb']['distcodename']}-security")
+              .with_location('http://archive.ubuntu.com/ubuntu')
+              .with_repos('main universe multiverse restricted')
+          end
+
+          it do
+            is_expected.to contain_apt__source("archive.ubuntu.com-#{facts[:os]['lsb']['distcodename']}-backports")
+              .with_location('http://archive.ubuntu.com/ubuntu')
+              .with_repos('main universe multiverse restricted')
           end
         end
 

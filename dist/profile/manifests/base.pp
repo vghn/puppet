@@ -3,19 +3,80 @@ class profile::base {
   # Standard Library
   include ::stdlib
 
-  # APT
-  if $facts['os']['family'] == 'Debian' {
-    # Upgrade system
-    include ::unattended_upgrades
+  # GPG Keys
+  include ::gnupg
+  lookup({
+    'name'          => 'profile::base::gpg_keys',
+    'merge'         => 'hash',
+    'default_value' => {}
+  }).each |String $name, Hash $params| {
+    gnupg_key {
+      default: * => {
+                      ensure => 'present',
+                      user   => 'root',
+                    };
+      $name: * => $params;
+    }
   }
+
+  # APT
   if $facts['os']['name'] == 'Ubuntu' {
+    require ::gnupg # The apt-key command needs GPG to retrieve the keys
+
+    # Make sure `software-properties-common` is installed
+    Apt::Ppa {
+      package_manage => true,
+      notify         => Class['apt::update'],
+    }
+
+    # Make sure `gnupg` is installed
+    Apt::Source {
+      require => Package['gnupg'],
+      notify  => Class['apt::update'],
+    }
+
+    # Ensure the correct chain of dependencies for APT
+    Apt::Source <| |> -> Apt::Ppa <| |> -> Class['apt::update'] -> Package <| title != 'gnupg' and title != 'python-software-properties' and title != 'software-properties-common' |>
+
     # Add main, universe, multiverse and restricted repositories
     # https://help.ubuntu.com/community/Repositories
-    apt::source { 'archive.ubuntu.com':
+    class { '::apt':
+      purge => {
+        'sources.list'   => true,
+        'sources.list.d' => true,
+      },
+    }
+
+    # Do not purge APT backup files
+    File <| title == 'sources.list.d' |> {
+      ignore => ['*.list.save'],
+    }
+
+    apt::source { "archive.ubuntu.com-${::lsbdistcodename}":
       location => 'http://archive.ubuntu.com/ubuntu',
-      key      => '630239CC130E1A7FD81A27B140976EAF437D05B5',
       repos    => 'main universe multiverse restricted',
-    } -> Class['apt::update'] -> Package <| provider == 'apt' |>
+    }
+
+    apt::source { "archive.ubuntu.com-${::lsbdistcodename}-security":
+      location => 'http://archive.ubuntu.com/ubuntu',
+      repos    => 'main universe multiverse restricted',
+      release  => "${::lsbdistcodename}-security"
+    }
+
+    apt::source { "archive.ubuntu.com-${::lsbdistcodename}-updates":
+      location => 'http://archive.ubuntu.com/ubuntu',
+      repos    => 'main universe multiverse restricted',
+      release  => "${::lsbdistcodename}-updates"
+    }
+
+    apt::source { "archive.ubuntu.com-${::lsbdistcodename}-backports":
+    location => 'http://archive.ubuntu.com/ubuntu',
+    repos    => 'main universe multiverse restricted',
+    release  => "${::lsbdistcodename}-backports"
+    }
+
+    # Upgrade system
+    include ::unattended_upgrades
   }
 
   # Security
@@ -68,22 +129,6 @@ class profile::base {
     'default_value' => {}
   }).each |String $name, Hash $params| {
     ssh_authorized_key {
-      default: * => {
-                      ensure => 'present',
-                      user   => 'root',
-                    };
-      $name: * => $params;
-    }
-  }
-
-  # GPG Keys
-  include ::gnupg
-  lookup({
-    'name'          => 'profile::base::gpg_keys',
-    'merge'         => 'hash',
-    'default_value' => {}
-  }).each |String $name, Hash $params| {
-    gnupg_key {
       default: * => {
                       ensure => 'present',
                       user   => 'root',

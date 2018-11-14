@@ -1,5 +1,14 @@
 # Puppet Agent Class
 class profile::puppet::agent {
+  if $facts['os']['name'] == 'Ubuntu' {
+    # Add PuppetLabs Repository
+    apt::source { "apt.puppetlabs.com-${::lsbdistcodename}":
+      location => 'http://apt.puppetlabs.com',
+      repos    => 'main',
+      key      => '6F6B15509CF8E59E6E469F327F438280EF8D349F',
+    }
+  }
+
   # Disable Puppet services
   service {['puppet', 'mcollective', 'pxp-agent']:
     ensure => stopped,
