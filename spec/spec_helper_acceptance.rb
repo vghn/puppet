@@ -28,10 +28,7 @@ RSpec.configure do |config|
     hosts.each do |host|
       # Prepare host
       unless ENV['RS_PROVISION'] == 'no' || ENV['BEAKER_provision'] == 'no'
-        # Fixes environment
-        ## the second run (without provisioning) fails because
-        ## /opt/puppetlabs is not in the path
-        shell 'ln -fsn /root/.ssh/environment /etc/environment'
+        #FIXME https://www.rubydoc.info/github/puppetlabs/beaker/Beaker%2FHostPrebuiltSteps%3Aset_env
 
         # Configure role
         shell <<-EOS

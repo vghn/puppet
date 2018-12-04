@@ -36,7 +36,7 @@ class profile::base {
     }
 
     # Ensure the correct chain of dependencies for APT
-    Apt::Source <| |> -> Apt::Ppa <| |> -> Class['apt::update'] -> Package <| title != 'gnupg' and title != 'python-software-properties' and title != 'software-properties-common' |>
+    Apt::Source <| |> -> Apt::Ppa <| |> -> Class['apt::update'] -> Package <| title != 'gnupg' and title != 'python-software-properties' and title != 'software-properties-common' and title != 'apt-transport-https' |>
 
     # Add main, universe, multiverse and restricted repositories
     # https://help.ubuntu.com/community/Repositories
