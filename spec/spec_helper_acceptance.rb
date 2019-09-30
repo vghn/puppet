@@ -28,7 +28,7 @@ RSpec.configure do |config|
     hosts.each do |host|
       # Prepare host
       unless ENV['RS_PROVISION'] == 'no' || ENV['BEAKER_provision'] == 'no'
-        #FIXME https://www.rubydoc.info/github/puppetlabs/beaker/Beaker%2FHostPrebuiltSteps%3Aset_env
+        # https://www.rubydoc.info/github/puppetlabs/beaker/Beaker%2FHostPrebuiltSteps%3Aset_env
 
         # Configure role
         shell <<-EOS
